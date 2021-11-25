@@ -40,7 +40,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             using (new TraceScope())
                 {
                 if (handle != IntPtr.Zero) {
-                    EntryPoint.CryptDestroyKey(handle);
+                    CryptDestroyKey(handle);
                     handle = IntPtr.Zero;
                     }
                 base.Dispose(disposing);
@@ -77,17 +77,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("capi20")] private static extern Boolean CryptExportKey(IntPtr key, IntPtr expkey, CryptKeyBLOBType blobtype, CryptKeyFlags flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, ref Int32 c);
         [DllImport("capi20")] private static extern Boolean CryptGetKeyParam(IntPtr key, KEY_PARAM param, [MarshalAs(UnmanagedType.LPArray)]Byte[] data, ref Int32 datasize, UInt32 flags);
         #else
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptDestroyKey(IntPtr handle);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr key, KEY_PARAM param, [MarshalAs(UnmanagedType.LPArray)]Byte[] data, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetKeyParam(IntPtr key, KEY_PARAM param, [MarshalAs(UnmanagedType.LPArray)]Byte[] data, ref Int32 datasize, UInt32 flags);
         #endif
 
         internal void SetParameter(KEY_PARAM key, UInt32 flags, Byte[] value) {
-            Validate(EntryPoint.CryptSetKeyParam(handle, key, value, flags));
+            Validate(CryptSetKeyParam(handle, key, value, flags));
             }
 
         #region M:GetParameter(KEY_PARAM,UInt32):Byte[]
         internal Byte[] GetParameter(KEY_PARAM key, UInt32 flags) {
             for (var i = 0x200;;) {
                 var r = new Byte[i];
-                if (EntryPoint.CryptGetKeyParam(handle, key, r, ref i, flags)) { return r; }
+                if (CryptGetKeyParam(handle, key, r, ref i, flags)) { return r; }
                 var e = GetLastWin32Error();
                 if ((Win32ErrorCode)e == Win32ErrorCode.ERROR_MORE_DATA) { continue; }
                 if ((HRESULT)e == HRESULT.NTE_BAD_KEY) {

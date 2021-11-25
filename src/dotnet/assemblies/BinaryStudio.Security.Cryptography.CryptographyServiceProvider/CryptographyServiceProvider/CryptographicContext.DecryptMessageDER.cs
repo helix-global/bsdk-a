@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -27,9 +28,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     #endif
                     };
                 para.CertStore[0] = storage.Handle;
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblock.Length, null, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblock.Length, null, ref c, IntPtr.Zero));
                 var r = new Byte[c];
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblock.Length, r, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblock.Length, r, ref c, IntPtr.Zero));
                 return r;
                 }
             }
@@ -51,9 +52,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     #endif
                     };
                 para.CertStore[0] = storage.Handle;
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,blocksize, null, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,blocksize, null, ref c, IntPtr.Zero));
                 var r = new Byte[c];
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,blocksize, r, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,blocksize, r, ref c, IntPtr.Zero));
                 return r;
                 }
             }
@@ -73,9 +74,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     MsgAndCertEncodingType = CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING
                     };
                 para.CertStore[0] = storage.Handle;
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblock.Length, null, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblock.Length, null, ref c, IntPtr.Zero));
                 var r = new Byte[c];
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblock.Length, r, ref c, ref cert));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblock.Length, r, ref c, ref cert));
                 certificate = new X509Certificate(cert);
                 return r;
                 }
@@ -96,9 +97,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     MsgAndCertEncodingType = CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING
                     };
                 para.CertStore[0] = storage.Handle;
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblocksize, null, ref c, IntPtr.Zero));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblocksize, null, ref c, IntPtr.Zero));
                 var r = new Byte[c];
-                Validate(EntryPoint.CryptDecryptMessage(ref para,inputblock,inputblocksize, r, ref c, ref cert));
+                Validate(CryptDecryptMessage(ref para,inputblock,inputblocksize, r, ref c, ref cert));
                 certificate = new X509Certificate(cert);
                 return r;
                 }
@@ -447,5 +448,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
+
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDecryptMessage(ref CRYPT_DECRYPT_MESSAGE_PARA para, [MarshalAs(UnmanagedType.LPArray)] Byte[] encblob, Int32 encblobsize, [MarshalAs(UnmanagedType.LPArray)] Byte[] decblob, ref Int32 decblobsize, ref IntPtr r);
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDecryptMessage(ref CRYPT_DECRYPT_MESSAGE_PARA para, [MarshalAs(UnmanagedType.LPArray)] Byte[] encblob, Int32 encblobsize, [MarshalAs(UnmanagedType.LPArray)] Byte[] decblob, ref Int32 decblobsize, IntPtr r);
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDecryptMessage(ref CRYPT_DECRYPT_MESSAGE_PARA para, IntPtr encblob, Int32 encblobsize, [MarshalAs(UnmanagedType.LPArray)] Byte[] decblob, ref Int32 decblobsize, ref IntPtr r);
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDecryptMessage(ref CRYPT_DECRYPT_MESSAGE_PARA para, IntPtr encblob, Int32 encblobsize, [MarshalAs(UnmanagedType.LPArray)] Byte[] decblob, ref Int32 decblobsize, IntPtr r);
         }
     }

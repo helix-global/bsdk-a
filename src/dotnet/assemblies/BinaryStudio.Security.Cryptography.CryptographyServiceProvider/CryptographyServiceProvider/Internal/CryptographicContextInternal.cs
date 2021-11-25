@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using Microsoft.Win32;
@@ -20,7 +21,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             using (new TraceScope()) {
                 if (disposing) {
                     if (handle != IntPtr.Zero) {
-                        EntryPoint.CryptReleaseContext(handle, 0);
+                        CryptReleaseContext(handle, 0);
                         handle = IntPtr.Zero;
                         }
                     }
@@ -50,5 +51,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #endregion
 
         private IntPtr handle;
+
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptReleaseContext(IntPtr handle, Int32 flags);
         }
     }

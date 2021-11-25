@@ -90,7 +90,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             var builder = new StringBuilder(512);
             for (;;) {
                 var sz = builder.Capacity;
-                if (!EntryPoint.CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                if (!CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
                     var e = (Win32ErrorCode)GetLastWin32Error();
                     if (e == Win32ErrorCode.ERROR_MORE_DATA) {
                         builder.Capacity = sz + 1;
@@ -116,7 +116,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             var builder = new StringBuilder(512);
             for (;;) {
                 var sz = builder.Capacity;
-                if (!EntryPoint.CryptEnumProviderTypes(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                if (!CryptEnumProviderTypes(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
                     var e = (Win32ErrorCode)GetLastWin32Error();
                     if (e == Win32ErrorCode.ERROR_MORE_DATA) {
                         builder.Capacity = sz + 1;
@@ -136,7 +136,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Int32 sz = 1024;
             var buffer = new LocalMemory(sz);
             var cflags = CRYPT_FIRST;
-            while (EntryPoint.CryptGetProvParam(context.Handle, (Int32)CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
+            while (CryptGetProvParam(context.Handle, (Int32)CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
                 var alg = (PROV_ENUMALGS*)buffer;
                 r.Add(alg->AlgId, ToString(&(alg->Name), alg->NameLength, Encoding.ASCII));
                 cflags = CRYPT_NEXT;
@@ -190,7 +190,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     var i = Marshal.SecureStringToGlobalAllocAnsi(value);
                     try
                         {
-                        Validate(EntryPoint.CryptSetProvParam(Handle, PP_KEYEXCHANGE_PIN, i, 0));
+                        Validate(CryptSetProvParam(Handle, PP_KEYEXCHANGE_PIN, i, 0));
                         }
                     finally
                         {
@@ -199,12 +199,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     }
                 else
                     {
-                    Validate(EntryPoint.CryptSetProvParam(Handle, PP_KEYEXCHANGE_PIN, IntPtr.Zero, 0));
+                    Validate(CryptSetProvParam(Handle, PP_KEYEXCHANGE_PIN, IntPtr.Zero, 0));
                     }
                 }
             }
 
-        public event PercentageChangedEventHandler PercentageChanged;
+        //public event PercentageChangedEventHandler PercentageChanged;
 
         #region M:EnumUserKeys:IEnumerable<CryptKey>
         public IEnumerable<CryptKey> EnumUserKeys(Boolean @throw) {
@@ -239,7 +239,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Logger = null;
             var nalgid = OidToAlgId(algid);
             foreach (var type in AvailableProviders) {
-                if (EntryPoint.CryptAcquireContext(out var r, container, type.Key, (Int32)type.Value, (Int32)flags)) {
+                if (CryptAcquireContext(out var r, container, type.Key, (Int32)type.Value, (Int32)flags)) {
                     foreach (var alg in GetSupportedAlgorithms(r)) {
                         if (alg.Key == nalgid) {
                             Flags = flags;
@@ -268,7 +268,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     }
                 }
             Name = provider;
-            Validate(EntryPoint.CryptAcquireContext(out var r, container, provider, (Int32)providertype, (Int32)flags));
+            Validate(CryptAcquireContext(out var r, container, provider, (Int32)providertype, (Int32)flags));
             context = CryptographicContextInternal.Create(Type, r, logger);
             Flags = flags;
             this.container = container;
@@ -309,7 +309,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Type = provider.Type;
             Name = provider.Name;
             UseMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
-            Validate(EntryPoint.CryptAcquireContext(out var r, container, Name, (Int32)Type, (Int32)flags));
+            Validate(CryptAcquireContext(out var r, container, Name, (Int32)Type, (Int32)flags));
             context = CryptographicContextInternal.Create(Type, r, provider.Logger);
             CallerFree = true;
             Version = GetVersionInternal();
@@ -322,7 +322,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Logger = provider.Logger;
             Type = provider.Type;
             UseMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
-            Validate(EntryPoint.CryptAcquireContext(out var r, container, null, (Int32)Type, (Int32)flags));
+            Validate(CryptAcquireContext(out var r, container, null, (Int32)Type, (Int32)flags));
             context = CryptographicContextInternal.Create(Type, r, provider.Logger);
             Flags = flags;
             CallerFree = true;
@@ -346,7 +346,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 handle = new CryptographicContextHandle(r);
                 CallerFree = false;
                 #else
-                Validate(EntryPoint.CryptAcquireCertificatePrivateKey(certificate.Handle, flags, IntPtr.Zero, out var r, out var keyspec, out var freeprov));
+                Validate(CryptAcquireCertificatePrivateKey(certificate.Handle, flags, IntPtr.Zero, out var r, out var keyspec, out var freeprov));
                 context = CryptographicContextInternal.Create(Type, r, provider.Logger);
                 CallerFree = freeprov;
                 Version = GetVersionInternal();
@@ -587,8 +587,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 using (var message = new CryptographicMessage(
                     Validate(
                         (IntPtr.Size == 4)
-                            ? EntryPoint.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,nflags, CMSG_TYPE.CMSG_SIGNED,ref si_32, IntPtr.Zero, ref so)
-                            : EntryPoint.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,nflags, CMSG_TYPE.CMSG_SIGNED,ref si_64, IntPtr.Zero, ref so))
+                            ? CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,nflags, CMSG_TYPE.CMSG_SIGNED,ref si_32, IntPtr.Zero, ref so)
+                            : CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,nflags, CMSG_TYPE.CMSG_SIGNED,ref si_64, IntPtr.Zero, ref so))
                         ))
                     {
                     var percentage = inputstream.CanSeek;
@@ -598,8 +598,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         percentage = false;
                         length = 1;
                         }
-                    var state  = (percentage) ? ProgressState.Normal : ProgressState.Indeterminate;
-                    OnPercentageChanged(0.0, state);
+                    //var state  = (percentage) ? ProgressState.Normal : ProgressState.Indeterminate;
+                    //OnPercentageChanged(0.0, state);
                     var block = new Byte[BLOCK_SIZE_64K];
                     var size = 0.0;
                     for (;;) {
@@ -608,10 +608,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         if (sz == 0) { break; }
                         message.Update(block, sz, false);
                         size += sz;
-                        OnPercentageChanged(size / length, state);
+                        //OnPercentageChanged(size / length, state);
                         }
                     message.Update(block, 0, true);
-                    OnPercentageChanged(percentage ? 1.0 : size, ProgressState.None);
+                    //OnPercentageChanged(percentage ? 1.0 : size, ProgressState.None);
                     }
                 }
             finally
@@ -713,7 +713,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                             certificates.Add(certificate);
                                             }
                                         if (certificate != null) {
-                                            if (!EntryPoint.CryptMsgControl(message.Handle,
+                                            if (!CryptMsgControl(message.Handle,
                                                     CRYPT_MESSAGE_FLAGS.CRYPT_MESSAGE_NONE,
                                                     CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
                                                     (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
@@ -822,7 +822,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             }
                         return true;
                         }, IntPtr.Zero);
-                    using (var message = new CryptographicMessage(EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, CRYPT_OPEN_MESSAGE_FLAGS.CMSG_DETACHED_FLAG, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so)))
+                    using (var message = new CryptographicMessage(CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, CRYPT_OPEN_MESSAGE_FLAGS.CMSG_DETACHED_FLAG, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so)))
                         {
                         var block = new Byte[input.Length];
                         for (;;) {
@@ -885,7 +885,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                             certificates.Add(certificate);
                                             }
                                         if (certificate != null) {
-                                            if (!EntryPoint.CryptMsgControl(message.Handle,
+                                            if (!CryptMsgControl(message.Handle,
                                                     CRYPT_MESSAGE_FLAGS.CRYPT_MESSAGE_NONE,
                                                     CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
                                                     (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
@@ -948,7 +948,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public unsafe CryptKey ImportPublicKey(out Exception e, IntPtr certificate) {
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
             var context = (CERT_CONTEXT*)certificate;
-            Validate(out e, EntryPoint.CryptImportPublicKeyInfo(Handle,
+            Validate(out e, CryptImportPublicKeyInfo(Handle,
                 CRYPT_MSG_TYPE.X509_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                 &(context->CertInfo->SubjectPublicKeyInfo),
                 out var r
@@ -965,7 +965,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 {
                 var context = (CERT_CONTEXT*)certificate;
                 var pubkey = context->CertInfo->SubjectPublicKeyInfo;
-                Validate(EntryPoint.CryptImportPublicKeyInfo(Handle,
+                Validate(CryptImportPublicKeyInfo(Handle,
                     CRYPT_MSG_TYPE.X509_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                     &(context->CertInfo->SubjectPublicKeyInfo),
                     out var r
@@ -980,13 +980,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             try
                 {
                 IntPtr r;
-                     if (keyspec == X509KeySpec.Exchange)  { Validate(EntryPoint.CryptGetUserKey(Handle, (Int32)keyspec, out r)); }
-                else if (keyspec == X509KeySpec.Signature) { Validate(EntryPoint.CryptGetUserKey(Handle, (Int32)keyspec, out r)); }
+                     if (keyspec == X509KeySpec.Exchange)  { Validate(CryptGetUserKey(Handle, (Int32)keyspec, out r)); }
+                else if (keyspec == X509KeySpec.Signature) { Validate(CryptGetUserKey(Handle, (Int32)keyspec, out r)); }
                 else
                      {
-                     if (!EntryPoint.CryptGetUserKey(Handle, (Int32)X509KeySpec.Exchange, out r)) {
+                     if (!CryptGetUserKey(Handle, (Int32)X509KeySpec.Exchange, out r)) {
                         keyspec = X509KeySpec.Signature;
-                        if (!EntryPoint.CryptGetUserKey(Handle, (Int32)X509KeySpec.Signature, out r)) {
+                        if (!CryptGetUserKey(Handle, (Int32)X509KeySpec.Signature, out r)) {
                             if (@throw)
                                 {
                                 Validate(GetHRForLastWin32Error());
@@ -1009,12 +1009,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
-        #region M:OnPercentageChanged(Double)
-        protected void OnPercentageChanged(Double value, ProgressState state)
-            {
-            PercentageChanged?.Invoke(this, new PercentageChangedEventArgs(value, state));
-            }
-        #endregion
+        //#region M:OnPercentageChanged(Double)
+        //protected void OnPercentageChanged(Double value, ProgressState state)
+        //    {
+        //    PercentageChanged?.Invoke(this, new PercentageChangedEventArgs(value, state));
+        //    }
+        //#endregion
 
         #if UBUNTU
         #if CAPILITE
@@ -1044,6 +1044,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #endif
         #else
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)] private static extern Int16 SetThreadUILanguage(UInt16 LangId);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptEnumProviderTypes(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, [In][Out] StringBuilder name, ref Int32 sz);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptEnumProviders(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, [In][Out] StringBuilder name, ref Int32 sz);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]         private static extern Boolean CryptGetProvParam(IntPtr provider, Int32 parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 pdwDataLen, Int32 flags);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]         private static extern Boolean CryptGetProvParam(IntPtr provider, Int32 parameter, IntPtr data, ref Int32 pdwDataLen, Int32 flags);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]         private static extern Boolean CryptGetProvParam(IntPtr provider, CRYPT_PARAM parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 pdwDataLen, Int32 flags);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]         private static extern Boolean CryptGetProvParam(IntPtr provider, CRYPT_PARAM parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 pdwDataLen, SECURITY_INFORMATION flags);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern Boolean CryptSetProvParam(IntPtr provider, Int32 parameter, IntPtr data, Int32 flags);
+        [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern Boolean CryptSetProvParam(IntPtr provider, Int32 parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, Int32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Ansi, EntryPoint = "CryptAcquireContextA", SetLastError = true)] private static extern Boolean CryptAcquireContext(out IntPtr hCryptProv, [MarshalAs(UnmanagedType.LPStr)] String pszContainer, [MarshalAs(UnmanagedType.LPStr)]String pszProvider, Int32 dwProvType, Int32 dwFlags);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, ref CMSG_ENVELOPED_ENCODE_INFO pvmsgencodeinfo, IntPtr pszinnercontentobjid, ref CMSG_STREAM_INFO streaminfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, ref CMSG_SIGNED_ENCODE_INFO32 encodeinfo, IntPtr innercontentobjid, ref CMSG_STREAM_INFO streaminfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, ref CMSG_SIGNED_ENCODE_INFO32 encodeinfo, IntPtr innercontentobjid, IntPtr streaminfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, ref CMSG_SIGNED_ENCODE_INFO64 encodeinfo, IntPtr innercontentobjid, ref CMSG_STREAM_INFO streaminfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, ref CMSG_SIGNED_ENCODE_INFO64 encodeinfo, IntPtr innercontentobjid, IntPtr streaminfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, IntPtr pvMsgEncodeInfo, IntPtr pszInnerContentObjID, IntPtr pStreamInfo);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE encodingtype, CMSG_FLAGS flags, CMSG_TYPE type, IntPtr pvMsgEncodeInfo, [MarshalAs(UnmanagedType.LPStr)] String pszInnerContentObjID, [In] IntPtr pStreamInfo);
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptAcquireCertificatePrivateKey(IntPtr cert, CRYPT_ACQUIRE_FLAGS flags, IntPtr parameters,[Out] out IntPtr prov, out Int32 keyspec, out Boolean freeprov);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, ref CMSG_STREAM_INFO si);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, IntPtr si);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty([In] IntPtr context, [In] Int32 property, [In][Out][MarshalAs(UnmanagedType.LPArray)] Byte[] data, [In][Out] ref Int32 size);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, ref CRYPT_KEY_PROV_INFO data);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, IntPtr data);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe CRYPT_OID_INFO* CryptFindOIDInfo(CRYPT_OID_INFO_TYPE type, IntPtr key, CRYPT_OID_GROUP_ID group);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetUserKey(IntPtr provider, Int32 keyspec, out IntPtr r);
+        [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CryptImportPublicKeyInfo(IntPtr provider, CRYPT_MSG_TYPE encoding, CERT_PUBLIC_KEY_INFO* info,  out IntPtr handle);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgGetParam(IntPtr msg, CMSG_PARAM parameter, Int32 signerindex, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 size);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, IntPtr ctrlpara);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, ref CMSG_CTRL_DECRYPT_PARA ctrlpara);
         #endif
 
         private const Int32 CRYPT_FIRST = 1;
@@ -1209,7 +1237,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         internal Byte[] GetParameter(CRYPT_PARAM key, Int32 flags) {
             for (var i = 0x200;;) {
                 var r = new Byte[i];
-                if (EntryPoint.CryptGetProvParam(Handle, key, r, ref i, flags)) { return r; }
+                if (CryptGetProvParam(Handle, key, r, ref i, flags)) { return r; }
                 var e = (Win32ErrorCode)Marshal.GetLastWin32Error();
                 if (e == Win32ErrorCode.ERROR_MORE_DATA)
                     {
@@ -1225,7 +1253,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         internal Byte[] GetParameter(CRYPT_PARAM key, SECURITY_INFORMATION flags) {
             for (var i = 0x200;;) {
                 var r = new Byte[i];
-                if (EntryPoint.CryptGetProvParam(Handle, key, r, ref i, flags)) { return r; }
+                if (CryptGetProvParam(Handle, key, r, ref i, flags)) { return r; }
                 var e = (Win32ErrorCode)Marshal.GetLastWin32Error();
                 if (e == Win32ErrorCode.ERROR_MORE_DATA)
                     {
@@ -1239,7 +1267,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #endregion
         #region M:SetParameter(CRYPT_PARAM,Int32):void*
         internal Boolean SetParameter(out Exception e, CRYPT_PARAM key, Int32 flags, Byte[] value) {
-            return Validate(out e, EntryPoint.CryptSetProvParam(Handle, (Int32)key, value, flags));
+            return Validate(out e, CryptSetProvParam(Handle, (Int32)key, value, flags));
             }
         #endregion
         #region M:SetParameter<T>(CRYPT_PARAM,Int32,Encoding):T
@@ -1368,7 +1396,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             var sz = 1024;
             var buffer = new LocalMemory(sz);
             var cflags = CRYPT_FIRST;
-            while (EntryPoint.CryptGetProvParam(handle, (Int32)CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
+            while (CryptGetProvParam(handle, (Int32)CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
                 var alg = (PROV_ENUMALGS*)buffer;
                 r.Add(alg->AlgId, ToString(&(alg->Name), alg->NameLength, Encoding.ASCII));
                 cflags = CRYPT_NEXT;
@@ -1430,7 +1458,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             var lcid = (UInt16)(culture ?? PlatformSettings.DefaultCulture).LCID;
             SetThreadUILanguage(lcid);
             #endif
-            var r = EntryPoint.CryptFindOIDInfo(CRYPT_OID_INFO_TYPE.CRYPT_OID_INFO_OID_KEY, Marshal.StringToHGlobalAnsi(oid), 0);
+            var r = CryptFindOIDInfo(CRYPT_OID_INFO_TYPE.CRYPT_OID_INFO_OID_KEY, Marshal.StringToHGlobalAnsi(oid), 0);
             return (r != null)
                 ? Marshal.PtrToStringUni(r->pwszName)
                 : oid;
@@ -1485,7 +1513,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     ProviderParameterCount = 2,
                     ProviderParameters = T
                     };
-                Validate(EntryPoint.CertSetCertificateContextProperty(H, CERT_KEY_PROV_INFO_PROP_ID, 0, ref P));
+                Validate(CertSetCertificateContextProperty(H, CERT_KEY_PROV_INFO_PROP_ID, 0, ref P));
                 }
             }
         }

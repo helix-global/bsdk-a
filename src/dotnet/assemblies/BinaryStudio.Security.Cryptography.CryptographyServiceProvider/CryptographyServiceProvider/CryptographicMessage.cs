@@ -43,6 +43,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport(CAPI20, CharSet = CharSet.None)] private static extern unsafe CryptographicMessageHandle CryptMsgOpenToEncode([In] CRYPT_MSG_TYPE dwmsgencodingtype, [In] CMSG_FLAGS flags, [In] CMSG_TYPE dwmsgtype, [In] ref CMSG_SIGNED_ENCODE_INFO pvmsgencodeinfo, [In] IntPtr pszinnercontentobjid, [In] IntPtr pstreaminfo);
         [DllImport(CAPI20, CharSet = CharSet.None)] private static extern unsafe CryptographicMessageHandle CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, ref CMSG_STREAM_INFO si);
         #else
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, ref CMSG_STREAM_INFO si);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, IntPtr si);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgClose(IntPtr handle);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, IntPtr ctrlpara);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, ref CMSG_CTRL_DECRYPT_PARA ctrlpara);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgUpdate(IntPtr hcryptmsg, [MarshalAs(UnmanagedType.LPArray)] Byte[] pbdata, Int32 cbdata, Boolean final);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgUpdate(IntPtr hcryptmsg, IntPtr pbdata, Int32 cbdata, Boolean final);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgGetParam(IntPtr msg, CMSG_PARAM parameter, Int32 signerindex, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 size);
         #endif
 
         internal CryptographicMessage(IntPtr source)
@@ -69,7 +77,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 outputhandler(bytes, final);
                 return true;
                 }, IntPtr.Zero);
-            return new CryptographicMessage(EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, 0, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
+            return new CryptographicMessage(CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, 0, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
             }
         #endregion
 
@@ -78,7 +86,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 if (disposing) {
                     if (source != IntPtr.Zero)
                         {
-                        EntryPoint.CryptMsgClose(source);
+                        CryptMsgClose(source);
                         source = IntPtr.Zero;
                         }
 
@@ -96,14 +104,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #region M:Control(CRYPT_MESSAGE_FLAGS,CMSG_CTRL,IntPtr)
         internal void Control(CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, IntPtr ctrlpara) {
             using (new TraceScope()) {
-                Validate(EntryPoint.CryptMsgControl(source, flags, ctrltype, ctrlpara));
+                Validate(CryptMsgControl(source, flags, ctrltype, ctrlpara));
                 }
             }
         #endregion
         #region M:Control(CRYPT_MESSAGE_FLAGS,CMSG_CTRL,CMSG_CTRL_DECRYPT_PARA)
         internal void Control(CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, ref CMSG_CTRL_DECRYPT_PARA ctrlpara) {
             using (new TraceScope()) {
-                Validate(EntryPoint.CryptMsgControl(source, flags, ctrltype, ref ctrlpara));
+                Validate(CryptMsgControl(source, flags, ctrltype, ref ctrlpara));
                 }
             }
         #endregion
@@ -117,7 +125,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #region M:Update(Byte*,Int32,Boolean)
         public unsafe void Update(Byte* data, Int32 length, Boolean final) {
             using (new TraceScope(length)) {
-                Validate(EntryPoint.CryptMsgUpdate(source, (IntPtr)data, length, final));
+                Validate(CryptMsgUpdate(source, (IntPtr)data, length, final));
                 }
             }
         #endregion
@@ -131,12 +139,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         internal Byte[] GetParameter(CMSG_PARAM parameter, Int32 signerindex, out HRESULT hr)
             {
             var c = 0;
-            if (!EntryPoint.CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
+            if (!CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
                 hr = (HRESULT)Marshal.GetLastWin32Error();
                 return EmptyArray<Byte>.Value;
                 }
             var r = new Byte[c];
-            if (!EntryPoint.CryptMsgGetParam(source, parameter, signerindex, r, ref c)) {
+            if (!CryptMsgGetParam(source, parameter, signerindex, r, ref c)) {
                 hr = (HRESULT)Marshal.GetLastWin32Error();
                 return EmptyArray<Byte>.Value;
                 }
@@ -149,13 +157,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             HRESULT hr;
             var c = 0;
-            if (!EntryPoint.CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
+            if (!CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
                 hr = (HRESULT)Marshal.GetLastWin32Error();
                 if (hr != HRESULT.CRYPT_E_INVALID_INDEX) { Marshal.ThrowExceptionForHR((Int32)hr); }
                 return EmptyArray<Byte>.Value;
                 }
             var r = new Byte[c];
-            if (!EntryPoint.CryptMsgGetParam(source, parameter, signerindex, r, ref c)) {
+            if (!CryptMsgGetParam(source, parameter, signerindex, r, ref c)) {
                 hr = (HRESULT)Marshal.GetLastWin32Error();
                 if (hr != HRESULT.CRYPT_E_INVALID_INDEX) { Marshal.ThrowExceptionForHR((Int32)hr); }
                 return EmptyArray<Byte>.Value;
@@ -167,7 +175,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         internal Int32 GetParameterSize(CMSG_PARAM parameter, Int32 signerindex)
             {
             var c = 0;
-            if (!EntryPoint.CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
+            if (!CryptMsgGetParam(source, parameter, signerindex, null, ref c)) {
                 var hr = (HRESULT)Marshal.GetLastWin32Error();
                 if (hr != HRESULT.CRYPT_E_INVALID_INDEX) { Marshal.ThrowExceptionForHR((Int32)hr); }
                 return 0;

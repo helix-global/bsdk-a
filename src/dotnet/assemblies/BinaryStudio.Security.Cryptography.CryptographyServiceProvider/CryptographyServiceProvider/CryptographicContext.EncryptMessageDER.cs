@@ -39,10 +39,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 fixed (CERT_CONTEXT** certs = certificates) {
                     fixed (Byte* iblock = block) {
                         var sz = 0;
-                        Validate(EntryPoint.CryptEncryptMessage(&para, certificates.Length, certs,iblock,blocksize,null,&sz));
+                        Validate(CryptEncryptMessage(&para, certificates.Length, certs,iblock,blocksize,null,&sz));
                         var output = new Byte[sz];
                         fixed (Byte* oblock = output) {
-                            Validate(EntryPoint.CryptEncryptMessage(&para, certificates.Length, certs,iblock,blocksize,oblock,&sz));
+                            Validate(CryptEncryptMessage(&para, certificates.Length, certs,iblock,blocksize,oblock,&sz));
                             var r = new Byte[sz];
                             Array.Copy(output, r, sz);
                             return r;
@@ -256,5 +256,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
+
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CryptEncryptMessage(CRYPT_ENCRYPT_MESSAGE_PARA* para, Int32 recipientcount, CERT_CONTEXT** recipients, Byte* block, Int32 blocksize, Byte* encryptedblob, [In, Out] Int32* encryptedblobsize);
         }
     }

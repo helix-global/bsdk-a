@@ -27,6 +27,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Crypt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.Certificates", "assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj", "{CDF4B726-43EA-4E5D-A02F-D31D20D3E13E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax", "assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj", "{A622507C-F7BE-4AB4-A491-11033482FDA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.Xml", "assemblies\BinaryStudio.Security.Cryptography.Xml\BinaryStudio.Security.Cryptography.Xml.csproj", "{4A88C55A-F8EE-4B96-AAF1-F667618E56FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographyServiceProvider", "assemblies\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj", "{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +83,18 @@ Global
 		{CDF4B726-43EA-4E5D-A02F-D31D20D3E13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDF4B726-43EA-4E5D-A02F-D31D20D3E13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDF4B726-43EA-4E5D-A02F-D31D20D3E13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A622507C-F7BE-4AB4-A491-11033482FDA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A622507C-F7BE-4AB4-A491-11033482FDA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A622507C-F7BE-4AB4-A491-11033482FDA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A622507C-F7BE-4AB4-A491-11033482FDA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A88C55A-F8EE-4B96-AAF1-F667618E56FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A88C55A-F8EE-4B96-AAF1-F667618E56FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A88C55A-F8EE-4B96-AAF1-F667618E56FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A88C55A-F8EE-4B96-AAF1-F667618E56FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +110,9 @@ Global
 		{0FBE7DDF-E527-4023-9A85-6AC8E2368714} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{0B7AEC07-5746-4A0B-A987-AF90DE6100DF} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{CDF4B726-43EA-4E5D-A02F-D31D20D3E13E} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{A622507C-F7BE-4AB4-A491-11033482FDA4} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{4A88C55A-F8EE-4B96-AAF1-F667618E56FB} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}

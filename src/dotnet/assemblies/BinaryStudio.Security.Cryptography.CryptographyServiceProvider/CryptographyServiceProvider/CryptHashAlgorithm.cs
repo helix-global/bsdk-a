@@ -11,8 +11,6 @@ using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.Security.Cryptography.CryptoAPI;
-using BinaryStudio.Security.Cryptography.CryptoAPI.Win32;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
@@ -36,7 +34,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             using (new TraceScope())
                 {
                 if (handle != IntPtr.Zero) {
-                    EntryPoint.CryptDestroyHash(handle);
+                    CryptDestroyHash(handle);
                     handle = IntPtr.Zero;
                     }
                 context = null;
@@ -54,7 +52,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         protected void EnsureCore() {
             using (new TraceScope()) {
                 if (handle == IntPtr.Zero) {
-                    Validate(EntryPoint.CryptCreateHash(context.Handle, algorithm, IntPtr.Zero, 0, out handle));
+                    Validate(CryptCreateHash(context.Handle, algorithm, IntPtr.Zero, 0, out handle));
                     }
                 }
             }
@@ -75,7 +73,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 Debug.Print($"HashCore:[{Encoding.ASCII.GetString(array, startindex, size)}]");
                 #endif
                 fixed (Byte* block = array) {
-                    Validate(EntryPoint.CryptHashData(handle, (IntPtr)(block + startindex), size, 0));
+                    Validate(CryptHashData(handle, (IntPtr)(block + startindex), size, 0));
                     }
                 }
             }
@@ -101,10 +99,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             using (new TraceScope()) {
                 Int32 c;
                 var sz = sizeof(Int32);
-                Validate(EntryPoint.CryptGetHashParam(handle, HP_HASHSIZE, out c, ref sz, 0));
+                Validate(CryptGetHashParam(handle, HP_HASHSIZE, out c, ref sz, 0));
                 var r = new Byte[c];
                 sz = c;
-                Validate(EntryPoint.CryptGetHashParam(handle, HP_HASHVAL, r, ref sz, 0));
+                Validate(CryptGetHashParam(handle, HP_HASHVAL, r, ref sz, 0));
                 #if DEBUG
                 Debug.Print($"HashFinal:[{Convert.ToBase64String(r)}]");
                 #endif
@@ -148,9 +146,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public Boolean VerifySignature(out Exception e, Byte[] signature, CryptKey key) {
             if (signature == null) { throw new ArgumentNullException(nameof(signature)); }
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
-            if (!Validate(out e, EntryPoint.CryptVerifySignature(handle, signature, signature.Length, key.handle, IntPtr.Zero, 0)))
+            if (!Validate(out e, CryptVerifySignature(handle, signature, signature.Length, key.handle, IntPtr.Zero, 0)))
                 {
-                return Validate(out e, EntryPoint.CryptVerifySignature(handle, signature.Reverse().ToArray(), signature.Length, key.handle, IntPtr.Zero, 0));
+                return Validate(out e, CryptVerifySignature(handle, signature.Reverse().ToArray(), signature.Length, key.handle, IntPtr.Zero, 0));
                 }
             return false;
             }
@@ -159,9 +157,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public void VerifySignature(Byte[] signature, CryptKey key) {
             if (signature == null) { throw new ArgumentNullException(nameof(signature)); }
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
-            if (EntryPoint.CryptVerifySignature(handle, signature, signature.Length, key.handle, IntPtr.Zero, 0))
+            if (CryptVerifySignature(handle, signature, signature.Length, key.handle, IntPtr.Zero, 0))
                 {
-                Validate(EntryPoint.CryptVerifySignature(handle, signature.Reverse().ToArray(), signature.Length, key.handle, IntPtr.Zero, 0));
+                Validate(CryptVerifySignature(handle, signature.Reverse().ToArray(), signature.Length, key.handle, IntPtr.Zero, 0));
                 }
             }
         #endregion
@@ -169,7 +167,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         internal HRESULT VerifySignatureInternal(Byte[] signature, ICryptKey key) {
             if (signature == null) { throw new ArgumentNullException(nameof(signature)); }
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
-            if (!EntryPoint.CryptVerifySignature(handle, signature, signature.Length, key.Handle, IntPtr.Zero, 0)) {
+            if (!CryptVerifySignature(handle, signature, signature.Length, key.Handle, IntPtr.Zero, 0)) {
                 #if FEATURE_ROTATE_SIGNATURE
                 if (!EntryPoint.CryptVerifySignature(handle, signature.Reverse().ToArray(), signature.Length, key.Handle, IntPtr.Zero, 0)) {
                     return (HRESULT)(Marshal.GetHRForLastWin32Error());
@@ -187,9 +185,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             EnsureCore();
             Int32 c;
             var sz = sizeof(Int32);
-            Validate(EntryPoint.CryptGetHashParam(handle, HP_HASHSIZE, out c, ref sz, 0));
+            Validate(CryptGetHashParam(handle, HP_HASHSIZE, out c, ref sz, 0));
             if (c != digest.Length) { throw new ArgumentOutOfRangeException(nameof(digest)); }
-            Validate(EntryPoint.CryptSetHashParam(handle, HP_HASHVAL, digest, 0));
+            Validate(CryptSetHashParam(handle, HP_HASHVAL, digest, 0));
             return VerifySignatureInternal(signature, key);
             }
         #endregion
@@ -208,9 +206,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (digest == null) { throw new ArgumentNullException(nameof(digest)); }
             EnsureCore();
             var sz = sizeof(Int32);
-            Validate(EntryPoint.CryptGetHashParam(handle, HP_HASHSIZE, out var c, ref sz, 0));
+            Validate(CryptGetHashParam(handle, HP_HASHSIZE, out var c, ref sz, 0));
             if (c != digest.Length) { throw new ArgumentOutOfRangeException(nameof(digest)); }
-            Validate(EntryPoint.CryptSetHashParam(handle, HP_HASHVAL, digest, 0));
+            Validate(CryptSetHashParam(handle, HP_HASHVAL, digest, 0));
             var r = VerifySignatureInternal(signature, key);
             e = (r != HRESULT.S_OK)
                 ? GetExceptionForHR(r)
@@ -224,10 +222,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (signature == null) { throw new ArgumentNullException(nameof(signature)); }
             var c = 0;
             L:
-            EntryPoint.SetLastError(0);
-            if (EntryPoint.CryptSignHash(handle, keyspec, IntPtr.Zero, flags, null, ref c)) {
+            SetLastError(0);
+            if (CryptSignHash(handle, keyspec, IntPtr.Zero, flags, null, ref c)) {
                 var r = new Byte[c];
-                Validate(EntryPoint.CryptSignHash(handle, keyspec, IntPtr.Zero, flags, r, ref c));
+                Validate(CryptSignHash(handle, keyspec, IntPtr.Zero, flags, r, ref c));
                 signature.Write(r, 0, c);
                 return;
                 }
@@ -296,9 +294,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     using (var engine = new CryptHashAlgorithm(signing, CryptographicObject.OidToAlgId(certificate.HashAlgorithm))) {
                         engine.EnsureCore();
                         var sz = sizeof(Int32);
-                        engine.Validate(EntryPoint.CryptGetHashParam(engine.handle, HP_HASHSIZE, out var c, ref sz, 0));
+                        engine.Validate(CryptGetHashParam(engine.handle, HP_HASHSIZE, out var c, ref sz, 0));
                         if (c != digest.Length) { throw new ArgumentOutOfRangeException(nameof(digest)); }
-                        engine.Validate(EntryPoint.CryptSetHashParam(engine.handle, HP_HASHVAL, digest, 0));
+                        engine.Validate(CryptSetHashParam(engine.handle, HP_HASHVAL, digest, 0));
                         engine.CreateSignature(signature, (KeySpec)certificate.KeySpec);
                         }
                     }
@@ -391,7 +389,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     }
                 finally
                     {
-                    EntryPoint.LocalFree((IntPtr)r);
+                    LocalFree((IntPtr)r);
                     }
                 }
             return null;
@@ -446,6 +444,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport(CAPI20, CharSet = CharSet.None)] private static extern unsafe void SetLastError(Int32 errorcode);
         #else
         #endif
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDestroyHash(IntPtr handle);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptCreateHash(IntPtr provider, ALG_ID algorithm, IntPtr key, UInt32 flags, out IntPtr handle);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptHashData(IntPtr handle, [MarshalAs(UnmanagedType.LPArray)]Byte[] data, Int32 datasize, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptHashData(IntPtr handle, IntPtr data, Int32 datasize, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptSetHashParam(IntPtr handle, Int32 parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] block, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetHashParam(IntPtr handle, Int32 parameter, IntPtr block, ref Int32 blocksize, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetHashParam(IntPtr handle, Int32 parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] block, ref Int32 blocksize, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetHashParam(IntPtr handle, Int32 parameter, out Int32 block, ref Int32 blocksize, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptVerifySignature(IntPtr handle, [MarshalAs(UnmanagedType.LPArray)] Byte[] signature, Int32 signaturesize, IntPtr key, IntPtr desc, UInt32 flags);
+        [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptSignHash(IntPtr handle, UInt32 keyspec, IntPtr description, CRYPT_FLAGS flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] signature, ref Int32 length);
+        [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern void SetLastError(Int32 errorcode);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr LocalFree(IntPtr handle);
 
         private IntPtr handle;
         private CryptographicContext context;
@@ -517,7 +527,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (HashSizeValue < 0) {
                 EnsureCore();
                 var sz = sizeof(Int32);
-                Validate(EntryPoint.CryptGetHashParam(handle, HP_HASHSIZE, out var c, ref sz, 0));
+                Validate(CryptGetHashParam(handle, HP_HASHSIZE, out var c, ref sz, 0));
                 HashSizeValue = c;
                 }
             return HashSizeValue;
@@ -547,10 +557,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
 
-        protected static ICryptoAPI EntryPoint { get; }
         static CryptHashAlgorithm()
             {
-            EntryPoint = new CryptoAPILibrary();    
             }
         }
     }

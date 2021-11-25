@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics.Logging;
-using BinaryStudio.Security.Cryptography.CryptoAPI;
-using BinaryStudio.Security.Cryptography.CryptoAPI.Win32;
 using BinaryStudio.Security.Cryptography.Win32;
 using Microsoft.Win32;
 
@@ -185,7 +183,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     }
                 finally
                     {
-                    EntryPoint.LocalFree((IntPtr)r);
+                    LocalFree((IntPtr)r);
                     }
                 }
             return null;
@@ -242,6 +240,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #else
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] protected static extern void SetLastError(Int32 errorcode);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr LocalFree(IntPtr handle);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern UInt32 CertNameToStr([In] UInt32 dwCertEncodingType, [In] ref CERT_NAME_BLOB pName, [In] UInt32 dwStrType, [In] [Out] IntPtr psz, [In] UInt32 csz);
         [DllImport("crypt32.dll",  BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe ALG_ID CertOIDToAlgId([MarshalAs(UnmanagedType.LPStr)] String objid);
         #endif
@@ -257,7 +256,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         private const UInt32 CERT_X500_NAME_STR          = CERT_OID_NAME_STR    + 1;
 
         internal LocalMemoryManager manager;
-        protected static ICryptoAPI EntryPoint { get; }
         public abstract IntPtr Handle { get; }
         protected internal abstract ILogger Logger { get; }
 
@@ -391,7 +389,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         static CryptographicObject()
             {
-            EntryPoint = new CryptoAPILibrary();
             }
         }
     }

@@ -29,7 +29,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     outputstream.Write(bytes, 0, bytes.Length);
                     return true;
                     }, IntPtr.Zero);
-                msg = EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
+                msg = CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                     CRYPT_OPEN_MESSAGE_FLAGS.CMSG_NONE,
                     CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero,
                     ref si);
@@ -111,7 +111,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     outputstream.Write(bytes, 0, bytes.Length);
                     return true;
                     }, IntPtr.Zero);
-                msg = EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
+                msg = CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                     CRYPT_OPEN_MESSAGE_FLAGS.CMSG_NONE,
                     CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero,
                     ref si);
@@ -202,7 +202,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     outputstream.Write(bytes, 0, bytes.Length);
                     return true;
                     }, IntPtr.Zero);
-                msg = EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
+                msg = CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                     CRYPT_OPEN_MESSAGE_FLAGS.CMSG_NONE,
                     CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero,
                     ref si);
@@ -286,7 +286,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     outputstream.Write(bytes, 0, bytes.Length);
                     return true;
                     }, IntPtr.Zero);
-                msg = EntryPoint.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
+                msg = CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
                     CRYPT_OPEN_MESSAGE_FLAGS.CMSG_NONE,
                     CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero,
                     ref si);

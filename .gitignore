@@ -27,3 +27,7 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Xml/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Xml/obj

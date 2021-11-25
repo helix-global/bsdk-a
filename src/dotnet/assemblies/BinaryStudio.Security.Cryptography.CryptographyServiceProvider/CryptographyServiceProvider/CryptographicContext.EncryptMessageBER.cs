@@ -47,7 +47,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     return true;
                     }, IntPtr.Zero);
                 using (var r = new CryptographicMessage(
-                    EntryPoint.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING | CRYPT_MSG_TYPE.X509_ASN_ENCODING, 0, CMSG_TYPE.CMSG_ENVELOPED, ref ei, IntPtr.Zero, ref so)
+                    CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING | CRYPT_MSG_TYPE.X509_ASN_ENCODING, 0, CMSG_TYPE.CMSG_ENVELOPED, ref ei, IntPtr.Zero, ref so)
                     ))
                     {
                     var block = new Byte[BLOCK_SIZE_64M];
