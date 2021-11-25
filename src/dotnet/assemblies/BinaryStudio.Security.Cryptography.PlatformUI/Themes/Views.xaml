@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:BinaryStudio.Security.Cryptography.PlatformUI.Controls"
+                    xmlns:e="clr-namespace:BinaryStudio.Security.Cryptography.PlatformUI.Views">
+  <DataTemplate DataType="{x:Type e:EAsn1}">
+    <Decorator>
+      <c:Asn1Control Margin="5"
+                     SnapsToDevicePixels="True"
+                     DataContext="{Binding Content}"/>
+    </Decorator>
+  </DataTemplate>
+
+</ResourceDictionary>

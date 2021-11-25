@@ -33,3 +33,5 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Xml/obj
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/bin
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/obj
