@@ -2,20 +2,24 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/src/dotnet/.vs/shell
-/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/net45
-/src/dotnet/assemblies/BinaryStudio.DataProcessing/obj
-/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/net45
-/src/dotnet/assemblies/BinaryStudio.PlatformUI/obj
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
-/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/netcoreapp3.1
-/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/netcoreapp3.1
-/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/net5.0-windows
-/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/net5.0-windows
-/src/dotnet/assemblies/BinaryStudio.Diagnostics/bin/Release
+/src/dotnet/.vs/shell
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/obj
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/obj
+/src/dotnet/assemblies/BinaryStudio.Diagnostics/bin
 /src/dotnet/assemblies/BinaryStudio.Diagnostics/obj
-/src/dotnet/assemblies/BinaryStudio.DirectoryServices/bin/Release
+/src/dotnet/assemblies/BinaryStudio.DirectoryServices/bin
 /src/dotnet/assemblies/BinaryStudio.DirectoryServices/obj
-/src/dotnet/assemblies/BinaryStudio.IO/bin/Release
+/src/dotnet/assemblies/BinaryStudio.IO/bin
 /src/dotnet/assemblies/BinaryStudio.IO/obj
+/src/dotnet/assemblies/BinaryStudio.PlatformComponents/bin
+/src/dotnet/assemblies/BinaryStudio.PlatformComponents/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/bin
+/src/dotnet/assemblies/BinaryStudio.Serialization/bin
+/src/dotnet/assemblies/BinaryStudio.Serialization/obj

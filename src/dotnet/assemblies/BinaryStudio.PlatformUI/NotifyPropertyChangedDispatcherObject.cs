@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace BinaryStudio.DataProcessing
+namespace BinaryStudio.PlatformUI
     {
     public abstract class NotifyPropertyChangedDispatcherObject : INotifyPropertyChanged
         {

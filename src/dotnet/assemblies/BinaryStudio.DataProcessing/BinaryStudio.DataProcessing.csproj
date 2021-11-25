@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp3.1;net5.0-windows</TargetFrameworks>
-    <UseWPF>true</UseWPF>
+    <TargetFrameworks>net40;net45;netcoreapp3.1;net5.0</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="WindowsBase" />
   </ItemGroup>

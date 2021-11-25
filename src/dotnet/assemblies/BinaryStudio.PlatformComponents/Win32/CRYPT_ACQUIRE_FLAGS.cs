@@ -1,0 +1,20 @@
+﻿using System;
+
+namespace Microsoft.Win32
+    {
+    [Flags]
+    public enum CRYPT_ACQUIRE_FLAGS
+        {
+        CRYPT_ACQUIRE_NONE = 0,
+        CRYPT_ACQUIRE_CACHE_FLAG                = 0x00000001,
+        CRYPT_ACQUIRE_USE_PROV_INFO_FLAG        = 0x00000002,
+        CRYPT_ACQUIRE_COMPARE_KEY_FLAG          = 0x00000004,
+        CRYPT_ACQUIRE_NO_HEALING                = 0x00000008,
+        CRYPT_ACQUIRE_SILENT_FLAG               = 0x00000040,
+        CRYPT_ACQUIRE_WINDOW_HANDLE_FLAG        = 0x00000080,
+        CRYPT_ACQUIRE_NCRYPT_KEY_FLAGS_MASK     = 0x00070000,
+        CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG     = 0x00010000,
+        CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG    = 0x00020000,
+        CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG      = 0x00040000
+        }
+    }

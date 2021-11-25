@@ -1,0 +1,23 @@
+﻿using System;
+
+namespace Microsoft.Win32
+    {
+    [Flags]
+    public enum SECURITY_INFORMATION : uint
+        {
+        OWNER_SECURITY_INFORMATION                  = (0x00000001),
+        GROUP_SECURITY_INFORMATION                  = (0x00000002),
+        DACL_SECURITY_INFORMATION                   = (0x00000004),
+        SACL_SECURITY_INFORMATION                   = (0x00000008),
+        LABEL_SECURITY_INFORMATION                  = (0x00000010),
+        ATTRIBUTE_SECURITY_INFORMATION              = (0x00000020),
+        SCOPE_SECURITY_INFORMATION                  = (0x00000040),
+        PROCESS_TRUST_LABEL_SECURITY_INFORMATION    = (0x00000080), 
+        ACCESS_FILTER_SECURITY_INFORMATION          = (0x00000100),
+        BACKUP_SECURITY_INFORMATION                 = (0x00010000),
+        PROTECTED_DACL_SECURITY_INFORMATION         = (0x80000000),
+        PROTECTED_SACL_SECURITY_INFORMATION         = (0x40000000),
+        UNPROTECTED_DACL_SECURITY_INFORMATION       = (0x20000000),
+        UNPROTECTED_SACL_SECURITY_INFORMATION       = (0x10000000)
+        }
+    }

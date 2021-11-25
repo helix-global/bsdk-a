@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Desktop.Shell.Extensions": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\RegAsm.exe",
+      "commandLineArgs": "C:\\TFS\\h2\\src\\dotnet\\desktop\\Desktop.Shell.Extensions\\bin\\Debug\\net45\\Desktop.Shell.Extensions.dll ",
+      "workingDirectory": "C:\\TFS\\h2\\src\\dotnet\\desktop\\Desktop.Shell.Extensions\\bin\\Debug\\net45",
+      "nativeDebugging": true
+    }
+  }
+}

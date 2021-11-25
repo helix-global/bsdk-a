@@ -1,0 +1,1581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="0.2.262.1.10.0" xml:space="preserve">
+    <value>extension</value>
+  </data>
+  <data name="0.2.262.1.10.1.1" xml:space="preserve">
+    <value>signature</value>
+  </data>
+  <data name="1.2.840.113549.1.1" xml:space="preserve">
+    <value>pkcs-1</value>
+  </data>
+  <data name="1.2.840.113549.1.7" xml:space="preserve">
+    <value>pkcs-7</value>
+  </data>
+  <data name="1.2.840.113549.1.7.7" xml:space="preserve">
+    <value>dataWithAttributes</value>
+  </data>
+  <data name="1.2.840.113549.1.7.8" xml:space="preserve">
+    <value>encryptedPrivateKeyInfo</value>
+  </data>
+  <data name="1.2.840.113549.1.9.22.1" xml:space="preserve">
+    <value>x509Certificate(for.PKCS.#12)</value>
+  </data>
+  <data name="1.2.840.113549.1.9.23.1" xml:space="preserve">
+    <value>x509Crl(for.PKCS.#12)</value>
+  </data>
+  <data name="2.16.840.1.113730.1" xml:space="preserve">
+    <value>cert-extension</value>
+  </data>
+  <data name="2.23.42.0" xml:space="preserve">
+    <value>contentType</value>
+  </data>
+  <data name="2.23.42.1" xml:space="preserve">
+    <value>msgExt</value>
+  </data>
+  <data name="2.23.42.10" xml:space="preserve">
+    <value>national</value>
+  </data>
+  <data name="2.23.42.2" xml:space="preserve">
+    <value>field</value>
+  </data>
+  <data name="2.23.42.2.0" xml:space="preserve">
+    <value>fullName</value>
+  </data>
+  <data name="2.23.42.2.1" xml:space="preserve">
+    <value>givenName</value>
+  </data>
+  <data name="2.23.42.2.10" xml:space="preserve">
+    <value>amount</value>
+  </data>
+  <data name="2.23.42.2.2" xml:space="preserve">
+    <value>familyName</value>
+  </data>
+  <data name="2.23.42.2.3" xml:space="preserve">
+    <value>birthFamilyName</value>
+  </data>
+  <data name="2.23.42.2.4" xml:space="preserve">
+    <value>placeName</value>
+  </data>
+  <data name="2.23.42.2.5" xml:space="preserve">
+    <value>identificationNumber</value>
+  </data>
+  <data name="2.23.42.2.6" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="2.23.42.2.7" xml:space="preserve">
+    <value>date</value>
+  </data>
+  <data name="2.23.42.2.7.11" xml:space="preserve">
+    <value>accountNumber</value>
+  </data>
+  <data name="2.23.42.2.7.12" xml:space="preserve">
+    <value>passPhrase</value>
+  </data>
+  <data name="2.23.42.2.8" xml:space="preserve">
+    <value>address</value>
+  </data>
+  <data name="2.23.42.3" xml:space="preserve">
+    <value>attribute</value>
+  </data>
+  <data name="2.23.42.3.0" xml:space="preserve">
+    <value>cert</value>
+  </data>
+  <data name="2.23.42.3.0.0" xml:space="preserve">
+    <value>rootKeyThumb</value>
+  </data>
+  <data name="2.23.42.3.0.1" xml:space="preserve">
+    <value>additionalPolicy</value>
+  </data>
+  <data name="2.23.42.4" xml:space="preserve">
+    <value>algorithm</value>
+  </data>
+  <data name="2.23.42.5" xml:space="preserve">
+    <value>policy</value>
+  </data>
+  <data name="2.23.42.5.0" xml:space="preserve">
+    <value>root</value>
+  </data>
+  <data name="2.23.42.6" xml:space="preserve">
+    <value>module</value>
+  </data>
+  <data name="2.23.42.7" xml:space="preserve">
+    <value>certExt</value>
+  </data>
+  <data name="2.23.42.7.0" xml:space="preserve">
+    <value>hashedRootKey</value>
+  </data>
+  <data name="2.23.42.7.1" xml:space="preserve">
+    <value>certificateType</value>
+  </data>
+  <data name="2.23.42.7.2" xml:space="preserve">
+    <value>merchantData</value>
+  </data>
+  <data name="2.23.42.7.3" xml:space="preserve">
+    <value>cardCertRequired</value>
+  </data>
+  <data name="2.23.42.7.5" xml:space="preserve">
+    <value>setExtensions</value>
+  </data>
+  <data name="2.23.42.7.6" xml:space="preserve">
+    <value>setQualifier</value>
+  </data>
+  <data name="2.23.42.8" xml:space="preserve">
+    <value>brand</value>
+  </data>
+  <data name="2.23.42.9" xml:space="preserve">
+    <value>vendor</value>
+  </data>
+  <data name="2.23.42.9.22" xml:space="preserve">
+    <value>eLab</value>
+  </data>
+  <data name="2.23.42.9.31" xml:space="preserve">
+    <value>espace-net</value>
+  </data>
+  <data name="2.23.42.9.37" xml:space="preserve">
+    <value>e-COMM</value>
+  </data>
+  <data name="2.5.29.11" xml:space="preserve">
+    <value>nameConstraints</value>
+  </data>
+  <data name="2.5.29.12" xml:space="preserve">
+    <value>policyConstraints</value>
+  </data>
+  <data name="2.5.29.13" xml:space="preserve">
+    <value>basicConstraints</value>
+  </data>
+  <data name="2.5.29.22" xml:space="preserve">
+    <value>expirationDate</value>
+  </data>
+  <data name="2.5.29.23" xml:space="preserve">
+    <value>Hold Instruction Code</value>
+  </data>
+  <data name="2.5.29.24" xml:space="preserve">
+    <value>Invalidity Date</value>
+  </data>
+  <data name="2.5.29.25" xml:space="preserve">
+    <value>cRLDistributionPoints</value>
+  </data>
+  <data name="2.5.29.26" xml:space="preserve">
+    <value>issuingDistributionPoint</value>
+  </data>
+  <data name="2.5.29.29" xml:space="preserve">
+    <value>Certificate Issuer</value>
+  </data>
+  <data name="2.5.29.3" xml:space="preserve">
+    <value>Certificate Policies</value>
+  </data>
+  <data name="2.5.29.34" xml:space="preserve">
+    <value>Policy Constraints</value>
+  </data>
+  <data name="2.5.29.6" xml:space="preserve">
+    <value>subtreesConstraint</value>
+  </data>
+  <data name="2.5.29.9" xml:space="preserve">
+    <value>Subject Directory Attributes</value>
+  </data>
+  <data name="2.5.4.0" xml:space="preserve">
+    <value>Object Class</value>
+  </data>
+  <data name="2.5.4.1" xml:space="preserve">
+    <value>aliasedEntryName</value>
+  </data>
+  <data name="2.5.4.10.1" xml:space="preserve">
+    <value>Collective Organization Name</value>
+  </data>
+  <data name="2.5.4.11.1" xml:space="preserve">
+    <value>Collective Organizational Unit Name</value>
+  </data>
+  <data name="2.5.4.14" xml:space="preserve">
+    <value>Search Guide</value>
+  </data>
+  <data name="2.5.4.15" xml:space="preserve">
+    <value>Business Category</value>
+  </data>
+  <data name="2.5.4.16" xml:space="preserve">
+    <value>Postal Address</value>
+  </data>
+  <data name="2.5.4.16.1" xml:space="preserve">
+    <value>Collective Postal Address</value>
+  </data>
+  <data name="2.5.4.17.1" xml:space="preserve">
+    <value>Collective Postal Code</value>
+  </data>
+  <data name="2.5.4.18.1" xml:space="preserve">
+    <value>collectivePostOfficeBox</value>
+  </data>
+  <data name="2.5.4.19" xml:space="preserve">
+    <value>physicalDeliveryOfficeName</value>
+  </data>
+  <data name="2.5.4.19.1" xml:space="preserve">
+    <value>collectivePhysicalDeliveryOfficeName</value>
+  </data>
+  <data name="2.5.4.2" xml:space="preserve">
+    <value>knowledgeInformation</value>
+  </data>
+  <data name="2.5.4.20.1" xml:space="preserve">
+    <value>collectiveTelephoneNumber</value>
+  </data>
+  <data name="2.5.4.21" xml:space="preserve">
+    <value>telexNumber</value>
+  </data>
+  <data name="2.5.4.21.1" xml:space="preserve">
+    <value>collectiveTelexNumber</value>
+  </data>
+  <data name="2.5.4.22.1" xml:space="preserve">
+    <value>collectiveTeletexTerminalIdentifier</value>
+  </data>
+  <data name="2.5.4.23" xml:space="preserve">
+    <value>facsimileTelephoneNumber</value>
+  </data>
+  <data name="2.5.4.23.1" xml:space="preserve">
+    <value>collectiveFacsimileTelephoneNumber</value>
+  </data>
+  <data name="2.5.4.25" xml:space="preserve">
+    <value>internationalISDNNumber</value>
+  </data>
+  <data name="2.5.4.25.1" xml:space="preserve">
+    <value>collectiveInternationalISDNNumber</value>
+  </data>
+  <data name="2.5.4.26" xml:space="preserve">
+    <value>registeredAddress</value>
+  </data>
+  <data name="2.5.4.27" xml:space="preserve">
+    <value>destinationIndicator</value>
+  </data>
+  <data name="2.5.4.28" xml:space="preserve">
+    <value>preferredDeliveryMehtod</value>
+  </data>
+  <data name="2.5.4.29" xml:space="preserve">
+    <value>presentationAddress</value>
+  </data>
+  <data name="2.5.4.31" xml:space="preserve">
+    <value>member</value>
+  </data>
+  <data name="2.5.4.32" xml:space="preserve">
+    <value>owner</value>
+  </data>
+  <data name="2.5.4.33" xml:space="preserve">
+    <value>roleOccupant</value>
+  </data>
+  <data name="2.5.4.34" xml:space="preserve">
+    <value>seeAlso</value>
+  </data>
+  <data name="2.5.4.35" xml:space="preserve">
+    <value>userPassword</value>
+  </data>
+  <data name="2.5.4.36" xml:space="preserve">
+    <value>userCertificate</value>
+  </data>
+  <data name="2.5.4.37" xml:space="preserve">
+    <value>caCertificate</value>
+  </data>
+  <data name="2.5.4.38" xml:space="preserve">
+    <value>authorityRevocationList</value>
+  </data>
+  <data name="2.5.4.39" xml:space="preserve">
+    <value>certificateRevocationList</value>
+  </data>
+  <data name="2.5.4.40" xml:space="preserve">
+    <value>crossCertificatePair</value>
+  </data>
+  <data name="2.5.4.41" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="2.5.4.43" xml:space="preserve">
+    <value>initials</value>
+  </data>
+  <data name="2.5.4.44" xml:space="preserve">
+    <value>generationQualifier</value>
+  </data>
+  <data name="2.5.4.45" xml:space="preserve">
+    <value>uniqueIdentifier</value>
+  </data>
+  <data name="2.5.4.46" xml:space="preserve">
+    <value>dnQualifier</value>
+  </data>
+  <data name="2.5.4.47" xml:space="preserve">
+    <value>enhancedSearchGuide</value>
+  </data>
+  <data name="2.5.4.48" xml:space="preserve">
+    <value>protocolInformation</value>
+  </data>
+  <data name="2.5.4.49" xml:space="preserve">
+    <value>distinguishedName</value>
+  </data>
+  <data name="2.5.4.50" xml:space="preserve">
+    <value>uniqueMember</value>
+  </data>
+  <data name="2.5.4.51" xml:space="preserve">
+    <value>houseIdentifier</value>
+  </data>
+  <data name="2.5.4.52" xml:space="preserve">
+    <value>supportedAlgorithms</value>
+  </data>
+  <data name="2.5.4.53" xml:space="preserve">
+    <value>deltaRevocationList</value>
+  </data>
+  <data name="2.5.4.55" xml:space="preserve">
+    <value>clearance</value>
+  </data>
+  <data name="2.5.4.58" xml:space="preserve">
+    <value>crossCertificatePair</value>
+  </data>
+  <data name="2.5.4.7.1" xml:space="preserve">
+    <value>collectiveLocalityName</value>
+  </data>
+  <data name="2.5.4.8.1" xml:space="preserve">
+    <value>collectiveStateOrProvinceName</value>
+  </data>
+  <data name="2.5.4.9.1" xml:space="preserve">
+    <value>collectiveStreetAddress</value>
+  </data>
+  <data name="2.5.6.0" xml:space="preserve">
+    <value>top</value>
+  </data>
+  <data name="1.2.840.113533.7.77.6" xml:space="preserve">
+    <value>entrustMessageOfTheDay</value>
+  </data>
+  <data name="1.2.840.113533.7.77.7" xml:space="preserve">
+    <value>entrustAttrName</value>
+  </data>
+  <data name="1.2.840.113533.7.77.8" xml:space="preserve">
+    <value>Entrust Application Flags</value>
+  </data>
+  <data name="1.2.840.113533.7.77.9" xml:space="preserve">
+    <value>entrustSignKeyType</value>
+  </data>
+  <data name="1.2.840.113533.7.77.10" xml:space="preserve">
+    <value>Entrust Enc Key Type</value>
+  </data>
+  <data name="1.2.840.113533.7.77.11" xml:space="preserve">
+    <value>Entrust Bus Ctrl Pol Oids</value>
+  </data>
+  <data name="1.2.840.113533.7.77.12" xml:space="preserve">
+    <value>entrustBusCtrlFlags</value>
+  </data>
+  <data name="1.2.840.113533.7.77.13" xml:space="preserve">
+    <value>entrustPCertLifetime</value>
+  </data>
+  <data name="1.2.840.113533.7.77.14" xml:space="preserve">
+    <value>entrustDNEncoding</value>
+  </data>
+  <data name="1.2.840.113533.7.77.15" xml:space="preserve">
+    <value>entrustCertConsistencyChecking</value>
+  </data>
+  <data name="1.2.840.113533.7.77.16" xml:space="preserve">
+    <value>entrustUserEncAlgm</value>
+  </data>
+  <data name="1.2.840.113533.7.77.17" xml:space="preserve">
+    <value>entrustCRLGracePeriod</value>
+  </data>
+  <data name="1.2.840.113533.7.77.18" xml:space="preserve">
+    <value>entrustSkipRLChecks</value>
+  </data>
+  <data name="1.2.840.113533.7.77.19" xml:space="preserve">
+    <value>entrustHTTPProxySetting</value>
+  </data>
+  <data name="1.2.840.113533.7.77.20" xml:space="preserve">
+    <value>Entrust Offline Profile Use</value>
+  </data>
+  <data name="1.2.840.113533.7.77.21" xml:space="preserve">
+    <value>Entrust Allow Server Login</value>
+  </data>
+  <data name="1.2.840.113533.7.77.22" xml:space="preserve">
+    <value>Entrust Enforce Identity Use</value>
+  </data>
+  <data name="1.2.840.113533.7.77.23" xml:space="preserve">
+    <value>entrustAllowPKCS12Export</value>
+  </data>
+  <data name="1.2.840.113533.7.77.24" xml:space="preserve">
+    <value>entrustPKCS12ExportMinimumHashCount</value>
+  </data>
+  <data name="1.2.840.113533.7.77.25" xml:space="preserve">
+    <value>entrustClientNKeyType</value>
+  </data>
+  <data name="1.2.840.113533.7.77.26" xml:space="preserve">
+    <value>entrustAllowed3rdPartySymmetricAlgms</value>
+  </data>
+  <data name="1.2.840.113533.7.77.27" xml:space="preserve">
+    <value>entrustPreventManualAppRegistration</value>
+  </data>
+  <data name="1.2.840.113533.7.77.28" xml:space="preserve">
+    <value>entrustPasswordMaxAttempts</value>
+  </data>
+  <data name="1.2.840.113533.7.77.29" xml:space="preserve">
+    <value>entrustPasswordMinTime</value>
+  </data>
+  <data name="1.2.840.113533.7.77.30" xml:space="preserve">
+    <value>entrustPasswordMinSuspend</value>
+  </data>
+  <data name="1.2.840.113533.7.77.31" xml:space="preserve">
+    <value>entrustAllowCAPIExport</value>
+  </data>
+  <data name="1.2.840.113533.7.77.32" xml:space="preserve">
+    <value>Entrust ICE Admin Policy</value>
+  </data>
+  <data name="1.2.840.113533.7.77.33" xml:space="preserve">
+    <value>Entrust Enable Cache Usage</value>
+  </data>
+  <data name="1.2.840.113533.7.77.34" xml:space="preserve">
+    <value>entrustUserEncAlgm2</value>
+  </data>
+  <data name="1.2.840.113533.7.77.35" xml:space="preserve">
+    <value>entrustSecureDeliveryServiceSMTP</value>
+  </data>
+  <data name="1.2.840.113533.7.77.36" xml:space="preserve">
+    <value>entrustContentScannerServiceSMTP</value>
+  </data>
+  <data name="1.2.840.113533.7.77.37" xml:space="preserve">
+    <value>entrustExpressSearchSourceOrder</value>
+  </data>
+  <data name="1.2.840.113533.7.77.38" xml:space="preserve">
+    <value>Entrust CAPI Policy</value>
+  </data>
+  <data name="1.2.840.113533.7.77.39" xml:space="preserve">
+    <value>Entrust Search BaseSearchOrder</value>
+  </data>
+  <data name="1.2.840.113533.7.77.40" xml:space="preserve">
+    <value>entrustCRLGracePercentage</value>
+  </data>
+  <data name="1.2.840.113533.7.77.49" xml:space="preserve">
+    <value>entrustPublicTokenCerts</value>
+  </data>
+  <data name="1.2.840.113533.7.77.50" xml:space="preserve">
+    <value>entrustProtectKeyTransfer</value>
+  </data>
+  <data name="1.2.840.113533.7.77.57" xml:space="preserve">
+    <value>entrustAllowTokenSpilloverFile</value>
+  </data>
+  <data name="1.2.840.113533.7.77.58" xml:space="preserve">
+    <value>entrustMaximumTokenKeyHistory</value>
+  </data>
+  <data name="1.2.840.113533.7.77.59" xml:space="preserve">
+    <value>entrustSelfRevokePolicy</value>
+  </data>
+  <data name="1.2.840.113533.7.77.60" xml:space="preserve">
+    <value>entrustAllowPSSwitch</value>
+  </data>
+  <data name="1.2.840.113533.7.77.61" xml:space="preserve">
+    <value>Entrust Management Client</value>
+  </data>
+  <data name="1.2.840.113533.7.77.62" xml:space="preserve">
+    <value>entrustForceOriginalCDPolicyCompliance</value>
+  </data>
+  <data name="1.2.840.113533.7.77.63" xml:space="preserve">
+    <value>Entrust All Exportable</value>
+  </data>
+  <data name="1.2.840.113533.7.77.64" xml:space="preserve">
+    <value>entrustProtocolSymmetricEncAlgs</value>
+  </data>
+  <data name="1.2.840.113533.7.77.65" xml:space="preserve">
+    <value>entrustProtocolSigningAlgs</value>
+  </data>
+  <data name="1.2.840.113533.7.67.0" xml:space="preserve">
+    <value>Entrust User</value>
+  </data>
+  <data name="1.2.840.113533.7.67.1" xml:space="preserve">
+    <value>Entrust CA</value>
+  </data>
+  <data name="1.2.840.113533.7.68.10" xml:space="preserve">
+    <value>Attribute Certificate</value>
+  </data>
+  <data name="1.2.840.113533.7.65.1" xml:space="preserve">
+    <value>clearance</value>
+  </data>
+  <data name="1.2.840.113533.7.65.2" xml:space="preserve">
+    <value>noCRL</value>
+  </data>
+  <data name="1.2.840.113533.7.66.0" xml:space="preserve">
+    <value>cast40CBC</value>
+  </data>
+  <data name="1.2.840.113533.7.66.1" xml:space="preserve">
+    <value>cast64CBC</value>
+  </data>
+  <data name="1.2.840.113533.7.66.2" xml:space="preserve">
+    <value>cast64MAC</value>
+  </data>
+  <data name="1.3.6.1.5.5.1.1" xml:space="preserve">
+    <value>SPKM1</value>
+  </data>
+  <data name="1.3.6.1.5.5.1.2" xml:space="preserve">
+    <value>SPKM2</value>
+  </data>
+  <data name="2.16.840.1.113730" xml:space="preserve">
+    <value>netscape</value>
+  </data>
+  <data name="1.2.3.4.9999" xml:space="preserve">
+    <value>timeStamp</value>
+  </data>
+  <data name="2.16.840.1.114027.10.4" xml:space="preserve">
+    <value>entrustAdminServicesClients</value>
+  </data>
+  <data name="2.16.840.1.114027.10.5" xml:space="preserve">
+    <value>entrustAdminServicesServer</value>
+  </data>
+  <data name="1.3.133.16.840.63.0.2" xml:space="preserve">
+    <value>dhSinglePass-stdDH-sha1kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.11.0" xml:space="preserve">
+    <value>dhSinglePass-stdDH-sha224kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.11.1" xml:space="preserve">
+    <value>dhSinglePass-stdDH-sha256kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.11.2" xml:space="preserve">
+    <value>dhSinglePass-stdDH-sha384kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.11.3" xml:space="preserve">
+    <value>dhSinglePass-stdDH-sha512kdf-scheme</value>
+  </data>
+  <data name="1.3.133.16.840.63.0.3" xml:space="preserve">
+    <value>dhSinglePass-cofactorDH-sha1kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.14.0" xml:space="preserve">
+    <value>dhSinglePass-cofactorDH-sha224kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.14.1" xml:space="preserve">
+    <value>dhSinglePass-cofactorDH-sha256kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.14.2" xml:space="preserve">
+    <value>dhSinglePass-cofactorDH-sha384kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.14.3" xml:space="preserve">
+    <value>dhSinglePass-cofactorDH-sha512kdf-scheme</value>
+  </data>
+  <data name="1.3.133.16.840.63.0.16" xml:space="preserve">
+    <value>mqvSinglePass-sha1kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.15.0" xml:space="preserve">
+    <value>mqvSinglePass-sha224kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.15.1" xml:space="preserve">
+    <value>mqvSinglePass-sha256kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.15.2" xml:space="preserve">
+    <value>mqvSinglePass-sha384kdf-scheme</value>
+  </data>
+  <data name="1.3.132.1.15.3" xml:space="preserve">
+    <value>mqvSinglePass-sha512kdf-scheme</value>
+  </data>
+  <data name="0.9.2342.19200300.100.1.1" xml:space="preserve">
+    <value>id_userid</value>
+  </data>
+  <data name="0.9.2342.19200300.100.1.3" xml:space="preserve">
+    <value>id_rfc822Mailbox</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.5" xml:space="preserve">
+    <value>id-aes128-wrap</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.8" xml:space="preserve">
+    <value>id-aes128-wrap-pad</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.25" xml:space="preserve">
+    <value>id-aes192-wrap</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.28" xml:space="preserve">
+    <value>id-aes192-wrap-pad</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.45" xml:space="preserve">
+    <value>id-aes256-wrap</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.1.48" xml:space="preserve">
+    <value>id-aes256-wrap-pad</value>
+  </data>
+  <data name="1.2.840.113549.1.9.16.3.6" xml:space="preserve">
+    <value>id-alg-CMS3DESwrap</value>
+  </data>
+  <data name="0.4.0.1862.1.1" xml:space="preserve">
+    <value>European Qualified Certificate</value>
+  </data>
+  <data name="0.4.0.1862.1.4" xml:space="preserve">
+    <value>Secure Signature Creation Device Qualified Certificate</value>
+  </data>
+  <data name="0.9.2342.19200300.100.1.25" xml:space="preserve">
+    <value>DC</value>
+  </data>
+  <data name="1.2.643.100.1" xml:space="preserve">
+    <value>OGRN</value>
+  </data>
+  <data name="1.2.643.100.111" xml:space="preserve">
+    <value>Subject's digital signing tool</value>
+  </data>
+  <data name="1.2.643.100.112" xml:space="preserve">
+    <value>Issuer's digital signing tool</value>
+  </data>
+  <data name="1.2.643.2.2.19" xml:space="preserve">
+    <value>GOST R 34.10-2001</value>
+  </data>
+  <data name="1.2.643.2.2.3" xml:space="preserve">
+    <value>GOST R 34.10/34.11-2001</value>
+  </data>
+  <data name="1.2.643.2.2.30.1" xml:space="preserve">
+    <value>GOST R 3411-94 CryptoProParamSet</value>
+  </data>
+  <data name="1.2.643.2.2.36.0" xml:space="preserve">
+    <value>GOST R 3410-2001 CryptoPro-XchA</value>
+  </data>
+  <data name="1.2.643.3.131.1.1" xml:space="preserve">
+    <value>INN</value>
+  </data>
+  <data name="1.2.840.10040.4.1" xml:space="preserve">
+    <value>DSA</value>
+  </data>
+  <data name="1.2.840.10040.4.3" xml:space="preserve">
+    <value>DSA with SHA1</value>
+  </data>
+  <data name="1.2.840.10045.2.1" xml:space="preserve">
+    <value>ECC</value>
+  </data>
+  <data name="1.2.840.10045.4.1" xml:space="preserve">
+    <value>ECDSA with SHA1</value>
+  </data>
+  <data name="1.2.840.10045.4.3.1" xml:space="preserve">
+    <value>ECDSA with SHA224</value>
+  </data>
+  <data name="1.2.840.10045.4.3.2" xml:space="preserve">
+    <value>ECDSA with SHA256</value>
+  </data>
+  <data name="1.2.840.10045.4.3.3" xml:space="preserve">
+    <value>ECDSA with SHA384</value>
+  </data>
+  <data name="1.2.840.10045.4.3.4" xml:space="preserve">
+    <value>ECDSA with SHA512</value>
+  </data>
+  <data name="1.2.840.10046.2.1" xml:space="preserve">
+    <value>DH</value>
+  </data>
+  <data name="1.2.840.113549.1.1.1" xml:space="preserve">
+    <value>RSA</value>
+  </data>
+  <data name="1.2.840.113549.1.1.10" xml:space="preserve">
+    <value>RSA with Probabilistic Signature Scheme (PSS)</value>
+  </data>
+  <data name="1.2.840.113549.1.1.11" xml:space="preserve">
+    <value>SHA256 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.12" xml:space="preserve">
+    <value>SHA384 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.13" xml:space="preserve">
+    <value>SHA512 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.2" xml:space="preserve">
+    <value>MD2 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.3" xml:space="preserve">
+    <value>MD4 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.4" xml:space="preserve">
+    <value>MD5 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.5" xml:space="preserve">
+    <value>SHA1 with RSA encryption</value>
+  </data>
+  <data name="1.2.840.113549.1.1.6" xml:space="preserve">
+    <value>RSA Optimal Asymmetric Encryption Padding (OAEP) encryption set</value>
+  </data>
+  <data name="1.2.840.113549.1.1.7" xml:space="preserve">
+    <value>Public-key encryption scheme combining Optimal Asymmetric Encryption Padding (OAEP) with RSA</value>
+  </data>
+  <data name="1.2.840.113549.1.1.8" xml:space="preserve">
+    <value>RSA algorithm that uses the Mask Generator Function 1 (MGF1)</value>
+  </data>
+  <data name="1.2.840.113549.1.1.9" xml:space="preserve">
+    <value>RSA algorithm (szOID_RSA_PSPECIFIED)</value>
+  </data>
+  <data name="1.2.840.113549.1.3.1" xml:space="preserve">
+    <value>DH</value>
+  </data>
+  <data name="1.2.840.113549.1.7.1" xml:space="preserve">
+    <value>PKCS 7 Data</value>
+  </data>
+  <data name="1.2.840.113549.1.7.2" xml:space="preserve">
+    <value>PKCS 7 Signed</value>
+  </data>
+  <data name="1.2.840.113549.1.7.3" xml:space="preserve">
+    <value>PKCS 7 Enveloped</value>
+  </data>
+  <data name="1.2.840.113549.1.7.4" xml:space="preserve">
+    <value>PKCS 7 Signed Enveloped</value>
+  </data>
+  <data name="1.2.840.113549.1.7.5" xml:space="preserve">
+    <value>PKCS 7 Digested</value>
+  </data>
+  <data name="1.2.840.113549.1.7.6" xml:space="preserve">
+    <value>PKCS 7 Encrypted</value>
+  </data>
+  <data name="1.2.840.113549.1.9.1" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="1.2.840.113549.1.9.14" xml:space="preserve">
+    <value>Certificate Extensions</value>
+  </data>
+  <data name="1.2.840.113549.1.9.15" xml:space="preserve">
+    <value>SMIME Capabilities</value>
+  </data>
+  <data name="1.2.840.113549.1.9.15.1" xml:space="preserve">
+    <value>Prefer Signed Data</value>
+  </data>
+  <data name="1.2.840.113549.1.9.2" xml:space="preserve">
+    <value>Unstructured Name</value>
+  </data>
+  <data name="1.2.840.113549.1.9.3" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
+  <data name="1.2.840.113549.1.9.4" xml:space="preserve">
+    <value>Message Digest</value>
+  </data>
+  <data name="1.2.840.113549.1.9.5" xml:space="preserve">
+    <value>Signing Time</value>
+  </data>
+  <data name="1.2.840.113549.1.9.6" xml:space="preserve">
+    <value>Counter Sign</value>
+  </data>
+  <data name="1.2.840.113549.1.9.7" xml:space="preserve">
+    <value>Challenge Password</value>
+  </data>
+  <data name="1.2.840.113549.1.9.8" xml:space="preserve">
+    <value>Unstructured Addresss</value>
+  </data>
+  <data name="1.2.840.113549.2.2" xml:space="preserve">
+    <value>MD2</value>
+  </data>
+  <data name="1.2.840.113549.2.4" xml:space="preserve">
+    <value>MD4</value>
+  </data>
+  <data name="1.2.840.113549.2.5" xml:space="preserve">
+    <value>MD5</value>
+  </data>
+  <data name="1.2.840.113549.3.2" xml:space="preserve">
+    <value>RC2</value>
+  </data>
+  <data name="1.2.840.113549.3.4" xml:space="preserve">
+    <value>RC4</value>
+  </data>
+  <data name="1.2.840.113549.3.7" xml:space="preserve">
+    <value>3DES</value>
+  </data>
+  <data name="1.3.14.3.2.12" xml:space="preserve">
+    <value>DSA</value>
+  </data>
+  <data name="1.3.14.3.2.13" xml:space="preserve">
+    <value>DSA with SHA</value>
+  </data>
+  <data name="1.3.14.3.2.15" xml:space="preserve">
+    <value>SHA with RSA signature</value>
+  </data>
+  <data name="1.3.14.3.2.18" xml:space="preserve">
+    <value>SHA</value>
+  </data>
+  <data name="1.3.14.3.2.2" xml:space="preserve">
+    <value>MD4 with RSA</value>
+  </data>
+  <data name="1.3.14.3.2.22" xml:space="preserve">
+    <value>RSA KeyTransport</value>
+  </data>
+  <data name="1.3.14.3.2.26" xml:space="preserve">
+    <value>SHA1</value>
+  </data>
+  <data name="1.3.14.3.2.27" xml:space="preserve">
+    <value>DSA with SHA1</value>
+  </data>
+  <data name="1.3.14.3.2.29" xml:space="preserve">
+    <value>SHA1 with RSA signature</value>
+  </data>
+  <data name="1.3.14.3.2.3" xml:space="preserve">
+    <value>MD5 with RSA</value>
+  </data>
+  <data name="1.3.14.3.2.4" xml:space="preserve">
+    <value>MD4 with RSA encryption</value>
+  </data>
+  <data name="1.3.14.3.2.7" xml:space="preserve">
+    <value>DES</value>
+  </data>
+  <data name="1.3.14.7.2.3.1" xml:space="preserve">
+    <value>MD2 with RSA</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.1" xml:space="preserve">
+    <value>Certifcate Trust List</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.10.1" xml:space="preserve">
+    <value>CMC Attributes</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.12.1" xml:space="preserve">
+    <value>All application policies</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.2" xml:space="preserve">
+    <value>Next Update Location</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.1" xml:space="preserve">
+    <value>Microsoft Trust List Signing</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.10" xml:space="preserve">
+    <value>Qualified Subordination</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.11" xml:space="preserve">
+    <value>Key Recovery</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.12" xml:space="preserve">
+    <value>Document Signing</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.2" xml:space="preserve">
+    <value>Microsoft Time Stamping</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.3.1" xml:space="preserve">
+    <value>Serialized Signature Serial Number</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.4" xml:space="preserve">
+    <value>Encrypting File System</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.4.1" xml:space="preserve">
+    <value>File Recovery</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.5" xml:space="preserve">
+    <value>Windows Hardware Driver Verification</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.6" xml:space="preserve">
+    <value>Windows System Component Verification</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.7" xml:space="preserve">
+    <value>OEM Windows System Component Verification</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.8" xml:space="preserve">
+    <value>Embedded Windows System Component Verification</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.3.9" xml:space="preserve">
+    <value>Root List Signer</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.4.1" xml:space="preserve">
+    <value>Yes or No Trust</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.5.1" xml:space="preserve">
+    <value>Digital Rights</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.6.1" xml:space="preserve">
+    <value>Key Pack Licenses</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.6.2" xml:space="preserve">
+    <value>License Server Verification</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.10.9.1" xml:space="preserve">
+    <value>Cross-Certificate Distribution Points</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.13.2.1" xml:space="preserve">
+    <value>Enrollment Name Value Pair</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.13.2.2" xml:space="preserve">
+    <value>Enrollment CSP</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.13.2.3" xml:space="preserve">
+    <value>OS Version</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.2.1.10" xml:space="preserve">
+    <value>SpcSpAgencyInfo</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.2.1.14" xml:space="preserve">
+    <value>Certificate Extensions</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.2.1.26" xml:space="preserve">
+    <value>SpcMinimalCriteria</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.2.1.27" xml:space="preserve">
+    <value>SpcFinancialCriteria</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.1" xml:space="preserve">
+    <value>CTL Usage</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.2" xml:space="preserve">
+    <value>Certificate Template Name</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.2.1" xml:space="preserve">
+    <value>Certificate Request Agent</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.2.2" xml:space="preserve">
+    <value>Smart Card Logon</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.2.3" xml:space="preserve">
+    <value>Principal Name</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.20.3" xml:space="preserve">
+    <value>Certificate Manifold</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.1" xml:space="preserve">
+    <value>CA Version</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.14" xml:space="preserve">
+    <value>Published CRL Locations</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.20" xml:space="preserve">
+    <value>Client Information</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.4" xml:space="preserve">
+    <value>Next CRL Publish</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.25.1" xml:space="preserve">
+    <value>DS Object Guid</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.31.1" xml:space="preserve">
+    <value>Windows Product Update</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.1.1" xml:space="preserve">
+    <value>Authority Information Access</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.12.2" xml:space="preserve">
+    <value>CMC Data</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.2.1" xml:space="preserve">
+    <value>OID for CPS qualifier</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.2.2" xml:space="preserve">
+    <value>User Notice</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.1" xml:space="preserve">
+    <value>Server Authentication</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.2" xml:space="preserve">
+    <value>Client Authentication</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.3" xml:space="preserve">
+    <value>Code Signing</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.4" xml:space="preserve">
+    <value>Secure Email</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.5" xml:space="preserve">
+    <value>IP security end system</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.6" xml:space="preserve">
+    <value>IP security tunnel termination</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.7" xml:space="preserve">
+    <value>IP security user</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.3.8" xml:space="preserve">
+    <value>Time Stamping</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.48.1" xml:space="preserve">
+    <value>On-line Certificate Status Protocol</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.48.1.5" xml:space="preserve">
+    <value>OCSP No Revocation Checking</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.48.2" xml:space="preserve">
+    <value>Certification Authority Issuer</value>
+  </data>
+  <data name="1.3.6.1.5.5.7.48.5" xml:space="preserve">
+    <value>Certificate Authority (CA) Repository</value>
+  </data>
+  <data name="2.16.840.1.101.2.1.1.19" xml:space="preserve">
+    <value>mosaicUpdatedSig</value>
+  </data>
+  <data name="2.16.840.1.101.2.1.1.20" xml:space="preserve">
+    <value>mosaicKMandUpdSig</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.2.1" xml:space="preserve">
+    <value>SHA256</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.2.3" xml:space="preserve">
+    <value>SHA512</value>
+  </data>
+  <data name="2.16.840.1.113730.1.1" xml:space="preserve">
+    <value>Netscape Cert Type</value>
+  </data>
+  <data name="2.16.840.1.113730.1.12" xml:space="preserve">
+    <value>Netscape SSL ServerName</value>
+  </data>
+  <data name="2.16.840.1.113730.1.13" xml:space="preserve">
+    <value>Netscape Comment</value>
+  </data>
+  <data name="2.16.840.1.113730.1.2" xml:space="preserve">
+    <value>Netscape Base URL</value>
+  </data>
+  <data name="2.16.840.1.113730.1.3" xml:space="preserve">
+    <value>Netscape Revocation URL</value>
+  </data>
+  <data name="2.16.840.1.113730.1.4" xml:space="preserve">
+    <value>Netscape CA Revocation URL</value>
+  </data>
+  <data name="2.16.840.1.113730.1.7" xml:space="preserve">
+    <value>Netscape Cert Renewal URL</value>
+  </data>
+  <data name="2.16.840.1.113730.1.8" xml:space="preserve">
+    <value>Netscape CA Policy URL</value>
+  </data>
+  <data name="2.23.136" xml:space="preserve">
+    <value>ICAO</value>
+  </data>
+  <data name="2.23.136.1" xml:space="preserve">
+    <value>ICAO MRTD</value>
+  </data>
+  <data name="2.23.136.1.1" xml:space="preserve">
+    <value>ICAO MRTD Security</value>
+  </data>
+  <data name="2.23.136.1.1.1" xml:space="preserve">
+    <value>ICAO LDS Security Object</value>
+  </data>
+  <data name="2.23.136.1.1.2" xml:space="preserve">
+    <value>ICAO CSCA Master List</value>
+  </data>
+  <data name="2.23.136.1.1.3" xml:space="preserve">
+    <value>ICAO CSCA Master List Signing Key</value>
+  </data>
+  <data name="2.23.136.1.1.4" xml:space="preserve">
+    <value>ICAO Document Type List</value>
+  </data>
+  <data name="2.23.136.1.1.5" xml:space="preserve">
+    <value>ICAO Active Authentication Protocol</value>
+  </data>
+  <data name="2.23.136.1.1.6" xml:space="preserve">
+    <value>ICAO CSCA name change and key reoll-over</value>
+  </data>
+  <data name="2.23.136.1.1.6.1" xml:space="preserve">
+    <value>ICAO CSCA name change and key reoll-over</value>
+  </data>
+  <data name="2.5.29.1" xml:space="preserve">
+    <value>Authority Key Identifier</value>
+  </data>
+  <data name="2.5.29.10" xml:space="preserve">
+    <value>Basic Constraints</value>
+  </data>
+  <data name="2.5.29.14" xml:space="preserve">
+    <value>Subject Key Identifier</value>
+  </data>
+  <data name="2.5.29.15" xml:space="preserve">
+    <value>Key Usage</value>
+  </data>
+  <data name="2.5.29.16" xml:space="preserve">
+    <value>Private Key Usage Period</value>
+  </data>
+  <data name="2.5.29.17" xml:space="preserve">
+    <value>Subject Alternative Name</value>
+  </data>
+  <data name="2.5.29.18" xml:space="preserve">
+    <value>Issuer Alternative Name</value>
+  </data>
+  <data name="2.5.29.19" xml:space="preserve">
+    <value>Basic Constraints</value>
+  </data>
+  <data name="2.5.29.2" xml:space="preserve">
+    <value>Key Attributes</value>
+  </data>
+  <data name="2.5.29.20" xml:space="preserve">
+    <value>CRL Number</value>
+  </data>
+  <data name="2.5.29.21" xml:space="preserve">
+    <value>CRL Reason Code</value>
+  </data>
+  <data name="2.5.29.27" xml:space="preserve">
+    <value>Delta CRL Indicator</value>
+  </data>
+  <data name="2.5.29.28" xml:space="preserve">
+    <value>Issuing Distribution Point</value>
+  </data>
+  <data name="2.5.29.30" xml:space="preserve">
+    <value>Name Constraints</value>
+  </data>
+  <data name="2.5.29.31" xml:space="preserve">
+    <value>CRL Distribution Points</value>
+  </data>
+  <data name="2.5.29.32" xml:space="preserve">
+    <value>Certificate Policies</value>
+  </data>
+  <data name="2.5.29.32.0" xml:space="preserve">
+    <value>Any Policy</value>
+  </data>
+  <data name="2.5.29.33" xml:space="preserve">
+    <value>Policy Mappings</value>
+  </data>
+  <data name="2.5.29.35" xml:space="preserve">
+    <value>Authority Key Identifier</value>
+  </data>
+  <data name="2.5.29.36" xml:space="preserve">
+    <value>Policy Constraints</value>
+  </data>
+  <data name="2.5.29.37" xml:space="preserve">
+    <value>Enhanced Key Usage</value>
+  </data>
+  <data name="2.5.29.4" xml:space="preserve">
+    <value>Key Usage Restriction</value>
+  </data>
+  <data name="2.5.29.46" xml:space="preserve">
+    <value>Freshest CRL</value>
+  </data>
+  <data name="2.5.29.5" xml:space="preserve">
+    <value>Policy Mappings</value>
+  </data>
+  <data name="2.5.29.7" xml:space="preserve">
+    <value>Subject Alternative Name</value>
+  </data>
+  <data name="2.5.29.8" xml:space="preserve">
+    <value>Issuer Alternative Name</value>
+  </data>
+  <data name="2.5.4.10" xml:space="preserve">
+    <value>Organization Name</value>
+  </data>
+  <data name="2.5.4.11" xml:space="preserve">
+    <value>Organizational Unit Name</value>
+  </data>
+  <data name="2.5.4.12" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="2.5.4.13" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="2.5.4.17" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="2.5.4.18" xml:space="preserve">
+    <value>POBox</value>
+  </data>
+  <data name="2.5.4.20" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="2.5.4.24" xml:space="preserve">
+    <value>X21Address</value>
+  </data>
+  <data name="2.5.4.3" xml:space="preserve">
+    <value>Common Name</value>
+  </data>
+  <data name="2.5.4.4" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="2.5.4.42" xml:space="preserve">
+    <value>Given Name</value>
+  </data>
+  <data name="2.5.4.5" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="2.5.4.6" xml:space="preserve">
+    <value>Country Name</value>
+  </data>
+  <data name="2.5.4.7" xml:space="preserve">
+    <value>Locality Name</value>
+  </data>
+  <data name="2.5.4.8" xml:space="preserve">
+    <value>State or Province Name</value>
+  </data>
+  <data name="2.5.4.9" xml:space="preserve">
+    <value>Street Address</value>
+  </data>
+  <data name="2.5.6.1" xml:space="preserve">
+    <value>alias</value>
+  </data>
+  <data name="2.5.6.10" xml:space="preserve">
+    <value>residentialPerson</value>
+  </data>
+  <data name="2.5.6.11" xml:space="preserve">
+    <value>applicationProcess</value>
+  </data>
+  <data name="2.5.6.12" xml:space="preserve">
+    <value>applicationEntity</value>
+  </data>
+  <data name="2.5.6.13" xml:space="preserve">
+    <value>dSA</value>
+  </data>
+  <data name="2.5.6.14" xml:space="preserve">
+    <value>device</value>
+  </data>
+  <data name="2.5.6.15" xml:space="preserve">
+    <value>strongAuthenticationUser</value>
+  </data>
+  <data name="2.5.6.16" xml:space="preserve">
+    <value>certificateAuthority</value>
+  </data>
+  <data name="2.5.6.17" xml:space="preserve">
+    <value>groupOfUniqueNames</value>
+  </data>
+  <data name="2.5.6.2" xml:space="preserve">
+    <value>country</value>
+  </data>
+  <data name="2.5.6.21" xml:space="preserve">
+    <value>pkiUser</value>
+  </data>
+  <data name="2.5.6.22" xml:space="preserve">
+    <value>pkiCA</value>
+  </data>
+  <data name="2.5.6.3" xml:space="preserve">
+    <value>locality</value>
+  </data>
+  <data name="2.5.6.4" xml:space="preserve">
+    <value>organization</value>
+  </data>
+  <data name="2.5.6.5" xml:space="preserve">
+    <value>organizationalUnit</value>
+  </data>
+  <data name="2.5.6.6" xml:space="preserve">
+    <value>person</value>
+  </data>
+  <data name="2.5.6.7" xml:space="preserve">
+    <value>organizationalPerson</value>
+  </data>
+  <data name="2.5.6.8" xml:space="preserve">
+    <value>organizationalRole</value>
+  </data>
+  <data name="2.5.6.9" xml:space="preserve">
+    <value>groupOfNames</value>
+  </data>
+  <data name="02.05.2008" xml:space="preserve">
+    <value>X.500-Algorithms</value>
+  </data>
+  <data name="2.5.8.1" xml:space="preserve">
+    <value>X.500-Alg-Encryption</value>
+  </data>
+  <data name="2.5.8.1.1" xml:space="preserve">
+    <value>rsa</value>
+  </data>
+  <data name="2.54.1775.2" xml:space="preserve">
+    <value>hashedRootKey</value>
+  </data>
+  <data name="2.54.1775.3" xml:space="preserve">
+    <value>certificateType</value>
+  </data>
+  <data name="2.54.1775.4" xml:space="preserve">
+    <value>merchantData</value>
+  </data>
+  <data name="2.54.1775.5" xml:space="preserve">
+    <value>cardCertRequired</value>
+  </data>
+  <data name="2.54.1775.7" xml:space="preserve">
+    <value>setQualifier</value>
+  </data>
+  <data name="2.54.1775.99" xml:space="preserve">
+    <value>set-data</value>
+  </data>
+  <data name="1.2.840.10045.3.1.7" xml:space="preserve">
+    <value>prime256v1</value>
+  </data>
+  <data name="1.2.840.113533.7.65.0" xml:space="preserve">
+    <value>Entrust Version Info</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.2.4" xml:space="preserve">
+    <value>sha224</value>
+  </data>
+  <data name="2.16.840.1.101.3.4.2.2" xml:space="preserve">
+    <value>sha384</value>
+  </data>
+  <data name="2.5.6.19" xml:space="preserve">
+    <value>cRLDistributionPoint</value>
+  </data>
+  <data name="2.5.8.2.1" xml:space="preserve">
+    <value>sqMod_n</value>
+  </data>
+  <data name="2.5.8.3.1" xml:space="preserve">
+    <value>sqMod_nWithRSA</value>
+  </data>
+  <data name="1.3.14.3.2.6" xml:space="preserve">
+    <value>desECB</value>
+  </data>
+  <data name="1.3.14.3.2.8" xml:space="preserve">
+    <value>desOFB</value>
+  </data>
+  <data name="1.3.14.3.2.9" xml:space="preserve">
+    <value>desCFB</value>
+  </data>
+  <data name="1.3.14.3.2.10" xml:space="preserve">
+    <value>desMAC</value>
+  </data>
+  <data name="1.3.14.7.2.1.1" xml:space="preserve">
+    <value>elGamal</value>
+  </data>
+  <data name="1.3.14.7.2.3.2" xml:space="preserve">
+    <value>md2WithElGamal</value>
+  </data>
+  <data name="1.2.840.10045.2.2" xml:space="preserve">
+    <value>ecPublicKeyRestricted</value>
+  </data>
+  <data name="1.3.132.1.12" xml:space="preserve">
+    <value>ecDH</value>
+  </data>
+  <data name="1.3.132.1.13" xml:space="preserve">
+    <value>ecMQV</value>
+  </data>
+  <data name="1.2.840.10045.3.1.1" xml:space="preserve">
+    <value>P-192</value>
+  </data>
+  <data name="1.3.132.0.33" xml:space="preserve">
+    <value>P-224</value>
+  </data>
+  <data name="1.3.132.0.34" xml:space="preserve">
+    <value>P-384</value>
+  </data>
+  <data name="1.3.132.0.35" xml:space="preserve">
+    <value>P-521</value>
+  </data>
+  <data name="1.3.132.0.1" xml:space="preserve">
+    <value>K-163</value>
+  </data>
+  <data name="1.3.132.0.15" xml:space="preserve">
+    <value>B-163</value>
+  </data>
+  <data name="1.3.132.0.26" xml:space="preserve">
+    <value>K-233</value>
+  </data>
+  <data name="1.3.132.0.27" xml:space="preserve">
+    <value>B-233</value>
+  </data>
+  <data name="1.3.132.0.16" xml:space="preserve">
+    <value>K-283</value>
+  </data>
+  <data name="1.3.132.0.17" xml:space="preserve">
+    <value>B-283</value>
+  </data>
+  <data name="1.3.132.0.36" xml:space="preserve">
+    <value>K-409</value>
+  </data>
+  <data name="1.3.132.0.37" xml:space="preserve">
+    <value>B-409</value>
+  </data>
+  <data name="1.3.132.0.38" xml:space="preserve">
+    <value>K-571</value>
+  </data>
+  <data name="1.3.132.0.39" xml:space="preserve">
+    <value>B-571</value>
+  </data>
+  <data name="1.3.132.0.9" xml:space="preserve">
+    <value>ansix9p160k1</value>
+  </data>
+  <data name="1.3.132.0.8" xml:space="preserve">
+    <value>ansix9p160r1</value>
+  </data>
+  <data name="1.3.132.0.30" xml:space="preserve">
+    <value>ansix9p160r2</value>
+  </data>
+  <data name="1.3.132.0.31" xml:space="preserve">
+    <value>ansix9p192k1</value>
+  </data>
+  <data name="1.3.132.0.32" xml:space="preserve">
+    <value>ansix9p224k1</value>
+  </data>
+  <data name="1.3.132.0.10" xml:space="preserve">
+    <value>ansix9p256k1</value>
+  </data>
+  <data name="1.3.132.0.2" xml:space="preserve">
+    <value>ansix9t163r1</value>
+  </data>
+  <data name="1.3.132.0.24" xml:space="preserve">
+    <value>ansix9t193r1</value>
+  </data>
+  <data name="1.3.132.0.25" xml:space="preserve">
+    <value>ansix9t193r2</value>
+  </data>
+  <data name="1.3.132.0.3" xml:space="preserve">
+    <value>ansix9t239k1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.1" xml:space="preserve">
+    <value>brainpoolP160r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.2" xml:space="preserve">
+    <value>brainpoolP160t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.3" xml:space="preserve">
+    <value>brainpoolP192r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.4" xml:space="preserve">
+    <value>brainpoolP192t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.5" xml:space="preserve">
+    <value>brainpoolP224r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.6" xml:space="preserve">
+    <value>brainpoolP224t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.7" xml:space="preserve">
+    <value>brainpoolP256r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.8" xml:space="preserve">
+    <value>brainpoolP256t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.9" xml:space="preserve">
+    <value>brainpoolP320r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.10" xml:space="preserve">
+    <value>brainpoolP320t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.11" xml:space="preserve">
+    <value>brainpoolP384r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.12" xml:space="preserve">
+    <value>brainpoolP384t1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.13" xml:space="preserve">
+    <value>brainpoolP512r1</value>
+  </data>
+  <data name="1.3.36.3.3.2.8.1.1.14" xml:space="preserve">
+    <value>brainpoolP512t1</value>
+  </data>
+  <data name="2.16.840.1.114027.80.2.1" xml:space="preserve">
+    <value>id-PKIXCMP-stdECDHwithX963SHA1</value>
+  </data>
+  <data name="1.2.840.113549.1.1.14" xml:space="preserve">
+    <value>sha224WithRSAEncryption</value>
+  </data>
+  <data name="1.2.840.10045.4.2" xml:space="preserve">
+    <value>ecdsa-with-Recommended</value>
+  </data>
+  <data name="1.2.840.10045.4.3" xml:space="preserve">
+    <value>ecdsa-with-Specified</value>
+  </data>
+  <data name="1.2.840.113533.7.68.0" xml:space="preserve">
+    <value>Entrust CA Info</value>
+  </data>
+  <data name="1.2.840.113533.7.68.16" xml:space="preserve">
+    <value>Entrust Password Policy</value>
+  </data>
+  <data name="1.2.840.113533.7.68.29" xml:space="preserve">
+    <value>Entrust User Role</value>
+  </data>
+  <data name="1.2.840.113533.7.77.0" xml:space="preserve">
+    <value>Entrust Role Map</value>
+  </data>
+  <data name="1.2.840.113533.7.77.1" xml:space="preserve">
+    <value>Entrust Password Rules</value>
+  </data>
+  <data name="1.2.840.113533.7.77.3" xml:space="preserve">
+    <value>entrustAllowedSymmetricAlgms</value>
+  </data>
+  <data name="1.2.840.113533.7.77.4" xml:space="preserve">
+    <value>entrustAllowedHashAlgms</value>
+  </data>
+  <data name="1.2.840.113533.7.77.5" xml:space="preserve">
+    <value>entrustCSetFlags</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.2" xml:space="preserve">
+    <value>Previous CA Certificate Hash</value>
+  </data>
+  <data name="1.2.840.113549.1.9.21" xml:space="preserve">
+    <value>Local Key ID</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.7" xml:space="preserve">
+    <value>Certificate Template Information</value>
+  </data>
+  <data name="1.2.840.113549.1.9.16.2.47" xml:space="preserve">
+    <value>Signing certificate V2</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.21.10" xml:space="preserve">
+    <value>Certificate Application Policy</value>
+  </data>
+  <data name="2.16.862.2.2" xml:space="preserve">
+    <value>PROCERT(National Register of Fiscal Identification (RIF))</value>
+  </data>
+  <data name="1.2.840.10045.1.1" xml:space="preserve">
+    <value>prime-field</value>
+  </data>
+</root>
