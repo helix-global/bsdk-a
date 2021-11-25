@@ -31,3 +31,5 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Xml/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Xml/obj
+/src/dotnet/assemblies/BinaryStudio.PortableExecutable/bin
+/src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj

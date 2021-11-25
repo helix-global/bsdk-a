@@ -11,9 +11,6 @@
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Properties\OID.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

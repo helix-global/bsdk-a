@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="DebugEngine\IDebugAdvanced2.cs" />
+    <Compile Remove="DebugEngine\IDebugAdvanced3.cs" />
+    <Compile Remove="DebugEngine\IDebugAdvanced4.cs" />
+    <Compile Remove="DebugEngine\IDebugBreakpoint2.cs" />
+    <Compile Remove="DebugEngine\IDebugBreakpoint3.cs" />
+    <Compile Remove="DebugEngine\IDebugClient2.cs" />
+    <Compile Remove="DebugEngine\IDebugClient3.cs" />
+    <Compile Remove="DebugEngine\IDebugClient4.cs" />
+    <Compile Remove="DebugEngine\IDebugControl2.cs" />
+    <Compile Remove="DebugEngine\IDebugControl3.cs" />
+    <Compile Remove="DebugEngine\IDebugControl4.cs" />
+    <Compile Remove="DebugEngine\IDebugControl5.cs" />
+    <Compile Remove="DebugEngine\IDebugControl6.cs" />
+    <Compile Remove="DebugEngine\IDebugControl7.cs" />
+    <Compile Remove="DebugEngine\IDebugDataSpaces2.cs" />
+    <Compile Remove="DebugEngine\IDebugDataSpaces3.cs" />
+    <Compile Remove="DebugEngine\IDebugDataSpaces4.cs" />
+    <Compile Remove="DebugEngine\IDebugRegisters2.cs" />
+    <Compile Remove="DebugEngine\IDebugSymbolGroup2.cs" />
+    <Compile Remove="DebugEngine\IDebugSymbols2.cs" />
+    <Compile Remove="DebugEngine\IDebugSymbols3.cs" />
+    <Compile Remove="DebugEngine\IDebugSymbols4.cs" />
+    <Compile Remove="DebugEngine\IDebugSymbols5.cs" />
+    <Compile Remove="DebugEngine\IDebugSystemObjects2.cs" />
+    <Compile Remove="DebugEngine\IDebugSystemObjects3.cs" />
+    <Compile Remove="DebugEngine\IDebugSystemObjects4.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DebugEngine\IDebugAdvanced2.cs"><DependentUpon>IDebugAdvanced.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugAdvanced3.cs"><DependentUpon>IDebugAdvanced.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugAdvanced4.cs"><DependentUpon>IDebugAdvanced.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugBreakpoint2.cs"><DependentUpon>IDebugBreakpoint.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugBreakpoint3.cs"><DependentUpon>IDebugBreakpoint.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugClient2.cs"><DependentUpon>IDebugClient.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugClient3.cs"><DependentUpon>IDebugClient.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugClient4.cs"><DependentUpon>IDebugClient.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl2.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl3.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl4.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl5.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl6.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugControl7.cs"><DependentUpon>IDebugControl.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugDataSpaces2.cs"><DependentUpon>IDebugDataSpaces.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugDataSpaces3.cs"><DependentUpon>IDebugDataSpaces.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugDataSpaces4.cs"><DependentUpon>IDebugDataSpaces.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugRegisters2.cs"><DependentUpon>IDebugRegisters.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSymbolGroup2.cs"><DependentUpon>IDebugSymbolGroup.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSymbols2.cs"><DependentUpon>IDebugSymbols.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSymbols3.cs"><DependentUpon>IDebugSymbols.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSymbols4.cs"><DependentUpon>IDebugSymbols.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSymbols5.cs"><DependentUpon>IDebugSymbols.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSystemObjects2.cs"><DependentUpon>IDebugSystemObjects.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSystemObjects3.cs"><DependentUpon>IDebugSystemObjects.cs</DependentUpon></Compile>
+    <Compile Include="DebugEngine\IDebugSystemObjects4.cs"><DependentUpon>IDebugSystemObjects.cs</DependentUpon></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+</Project>

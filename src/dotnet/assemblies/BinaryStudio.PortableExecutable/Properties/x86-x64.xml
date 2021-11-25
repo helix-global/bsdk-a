@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Instructions>
+    <Opcode>88 /r</Opcode>
+    <Opcode>REX 88 /r</Opcode>
+    <Opcode>89 /r</Opcode>
+    <Opcode>REX.W 89 /r</Opcode>
+    <Opcode>8A /r</Opcode>
+    <Opcode>REX 8A /r</Opcode>
+    <Opcode>8B /r</Opcode>
+    <Opcode>REX.W 8B /r</Opcode>
+    <Opcode>8C /r</Opcode>
+    <Opcode>REX.W 8C /r</Opcode>
+    <Opcode>8E /r</Opcode>
+    <Opcode>REX.W 8E /r</Opcode>
+    <Opcode>A0</Opcode>
+    <Opcode>REX.W A0</Opcode>
+    <Opcode>A1</Opcode>
+    <Opcode>REX.W A1</Opcode>
+    <Opcode>A2</Opcode>
+    <Opcode>REX.W A2</Opcode>
+    <Opcode>A3</Opcode>
+    <Opcode>REX.W A3</Opcode>
+    <Opcode>B0 rb ib</Opcode>
+    <Opcode>REX B0 rb ib</Opcode>
+    <Opcode>B8 rw iw</Opcode>
+    <Opcode>B8 rd id</Opcode>
+    <Opcode>REX.W B8 rd io</Opcode>
+    <Opcode>C6 /0 ib</Opcode>
+    <Opcode>REX C6 /0 ib</Opcode>
+    <Opcode>C7 /0 iw</Opcode>
+    <Opcode>C7 /0 id</Opcode>
+    <Opcode>REX.W C7 /0 id</Opcode>
+</Instructions>
