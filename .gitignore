@@ -9,3 +9,5 @@
 /src/dotnet/assemblies/BinaryStudio.PlatformUI/obj
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/netcoreapp3.1
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/netcoreapp3.1
