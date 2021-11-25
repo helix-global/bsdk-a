@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\Bottom.png" />
+    <None Remove="Resources\BottomLeft.png" />
+    <None Remove="Resources\BottomRight.png" />
+    <None Remove="Resources\CornerBottomLeft.png" />
+    <None Remove="Resources\CornerBottomRight.png" />
+    <None Remove="Resources\CornerTopLeft.png" />
+    <None Remove="Resources\CornerTopRight.png" />
+    <None Remove="Resources\Left.png" />
+    <None Remove="Resources\LeftBottom.png" />
+    <None Remove="Resources\LeftTop.png" />
+    <None Remove="Resources\Right.png" />
+    <None Remove="Resources\RightBottom.png" />
+    <None Remove="Resources\RightTop.png" />
+    <None Remove="Resources\Top.png" />
+    <None Remove="Resources\TopLeft.png" />
+    <None Remove="Resources\TopRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="PresentationFramework.Classic" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Bottom.png" />
+    <Resource Include="Resources\BottomLeft.png" />
+    <Resource Include="Resources\BottomRight.png" />
+    <Resource Include="Resources\CornerBottomLeft.png" />
+    <Resource Include="Resources\CornerBottomRight.png" />
+    <Resource Include="Resources\CornerTopLeft.png" />
+    <Resource Include="Resources\CornerTopRight.png" />
+    <Resource Include="Resources\Left.png" />
+    <Resource Include="Resources\LeftBottom.png" />
+    <Resource Include="Resources\LeftTop.png" />
+    <Resource Include="Resources\Right.png" />
+    <Resource Include="Resources\RightBottom.png" />
+    <Resource Include="Resources\RightTop.png" />
+    <Resource Include="Resources\Top.png" />
+    <Resource Include="Resources\TopLeft.png" />
+    <Resource Include="Resources\TopRight.png" />
+  </ItemGroup>
+</Project>

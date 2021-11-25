@@ -1,0 +1,64 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  
+  <SolidColorBrush x:Key="Accent3BrushKey"                    Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+  <SolidColorBrush x:Key="ActiveBorderBrushKey"               Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+  <SolidColorBrush x:Key="ActiveCaptionBrushKey"              Color="#FF2d2d30"/>
+  <SolidColorBrush x:Key="ActiveCaptionTextBrushKey"          Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="AppWorkspaceBrushKey"               Color="{DynamicResource {x:Static SystemColors.AppWorkspaceColorKey}}"/>
+  <SolidColorBrush x:Key="ControlBrushKey"                    Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="ControlDarkBrushKey"                Color="#FF656565"/>
+  <SolidColorBrush x:Key="ControlDarkDarkBrushKey"            Color="#FF3F3F46"/>
+  <SolidColorBrush x:Key="ControlLightBrushKey"               Color="#FF1D1D20"/>
+  <SolidColorBrush x:Key="ControlLightLightBrushKey"          Color="#FF0D0D10"/>
+  <SolidColorBrush x:Key="ControlTextBrushKey"                Color="#FFcccccc"/>
+  <SolidColorBrush x:Key="DesktopBrushKey"                    Color="{DynamicResource {x:Static SystemColors.DesktopColorKey}}"/>
+  <SolidColorBrush x:Key="GradientActiveCaptionBrushKey"      Color="{DynamicResource {x:Static SystemColors.GradientActiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="GradientInactiveCaptionBrushKey"    Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="GrayTextBrushKey"                   Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
+  <SolidColorBrush x:Key="HighlightBrushKey"                  Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="HighlightLightBrushKey"             Color="#FF3399FF" Opacity="0.50"/>
+  <SolidColorBrush x:Key="HighlightLightLightBrushKey"        Color="#FF3399FF" Opacity="0.25"/>
+  <SolidColorBrush x:Key="HighlightTextBrushKey"              Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="HotTrackBrushKey"                   Color="#ff007acc"/>
+  <SolidColorBrush x:Key="InactiveBorderBrushKey"             Color="#FF656565"/>
+  <SolidColorBrush x:Key="InactiveCaptionBrushKey"            Color="{DynamicResource {x:Static SystemColors.InactiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="InactiveCaptionTextBrushKey"        Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}"/>
+  <SolidColorBrush x:Key="InfoBrushKey"                       Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
+  <SolidColorBrush x:Key="InfoTextBrushKey"                   Color="{DynamicResource {x:Static SystemColors.InfoTextColorKey}}"/>
+  <SolidColorBrush x:Key="MenuBrushKey"                       Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="MenuBarBrushKey"                    Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="MenuCheckMarkBackgroundBrushKey"    Color="#FF2d2d30"/>
+  <SolidColorBrush x:Key="MenuHighlightBrushKey"              Color="#FF4b4b4d"/>
+  <SolidColorBrush x:Key="MenuTextBrushKey"                   Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="ScrollBarBrushKey"                  Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}"/>
+  <SolidColorBrush x:Key="WindowBrushKey"                     Color="#FF1b1b1c"/>
+  <SolidColorBrush x:Key="WindowFrameBrushKey"                Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
+  <SolidColorBrush x:Key="WindowTextBrushKey"                 Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="SelectionBrush"                     Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="ScrollBarBackgroundBrushKey"                Color="#ff3e3e42"/>
+  <SolidColorBrush x:Key="ScrollBarDisabledBackgroundBrushKey"        Color="#FF656565" Opacity="0.25"/>
+  <SolidColorBrush x:Key="ScrollBarButtonMouseOverBackgroundBrushKey" Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}" Opacity="0.2"/>
+  <SolidColorBrush x:Key="ScrollBarThumbBackgroundBrushKey"           Color="#ff686868"/>
+  <SolidColorBrush x:Key="ScrollBarThumbMouseOverBackgroundBrushKey"  Color="#ff9e9e9e"/>
+  <SolidColorBrush x:Key="ScrollBarThumbDraggingBackgroundBrushKey"   Color="#ffefebef"/>
+  <SolidColorBrush x:Key="TabItemMouseOverBackgroundBrushKey"         Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="TabItemHighlightBackgroundBrushKey"         Color="#ff007acc"/>
+  <SolidColorBrush x:Key="AccentPictureBrushKey"                      Color="#FFc5c5c5"/>
+  <SolidColorBrush x:Key="AccentPictureOutlineBrushKey"               Color="#FF414141"/>
+  <SolidColorBrush x:Key="AccentLightGreenBrushKey"                   Color="#FF75e582"/>
+  <SolidColorBrush x:Key="AccentLightBlueBrushKey"                    Color="#FFc4dafb"/>
+  <SolidColorBrush x:Key="AccentBlueBrushKey"                         Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="GlyphButtonHoverBackgroundBrushKey"         Color="#ff3e3e40"/>
+  <SolidColorBrush x:Key="GlyphButtonBorderBrushKey"                  Color="#ff3e3e40"/>
+  <SolidColorBrush x:Key="GlyphForegroundBrushKey"                    Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="DockSiteAdornerForegroundBrushKey"          Color="#ff007acc"/>
+  <Color x:Key="ControlDarkDarkColorKey">#FF3F3F46</Color>
+  <Color x:Key="ControlLightColorKey">#FF1D1D20</Color>
+  <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrushKey"     Color="#FF4b4b4d"/>
+  <!--<Color x:Key="ControlDarkDarkColorKey">Red</Color>-->
+</ResourceDictionary>
+  

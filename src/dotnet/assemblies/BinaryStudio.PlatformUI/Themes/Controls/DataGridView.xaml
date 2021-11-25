@@ -1,0 +1,177 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Controls">
+  <!--<Style TargetType="{x:Type e:DataGridView}">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DataGridView}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid ShowGridLines="False">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <e:DataGridViewColumnHeaderRowPresenter ItemsSource="{TemplateBinding ColumnCollection}"
+                                                      Visibility="{TemplateBinding HeaderVisibility}"/>
+              <Rectangle Grid.Row="0" Grid.Column="1" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+              <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
+                <VirtualizingStackPanel IsVirtualizing="True"
+                                        CanHorizontallyScroll="False"
+                                        IsItemsHost="True"/>
+              </ScrollViewer>
+              <Border Grid.Column="0" Grid.Row="2" BorderThickness="0,0,0,0"
+                      BorderBrush="{DynamicResource ControlDarkBrushKey}"
+                      Name="Border"/>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger SourceName="ScrollViewer" Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+              <Setter Property="IsVerticalScrollBarVisible" Value="True"/>
+              <Setter Property="BorderThickness" Value="0,1,0,0" TargetName="Border"/>
+            </Trigger>
+            <Trigger SourceName="ScrollViewer" Property="ComputedVerticalScrollBarVisibility" Value="Collapsed">
+              <Setter Property="IsVerticalScrollBarVisible" Value="False"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:DataGridViewColumnHeaderPresenter}">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Grid.Column" Value="{Binding ColumnIndex,Mode=OneWay}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DataGridViewColumnHeaderPresenter}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+              <Border BorderThickness="0,1,1,1"
+                      BorderBrush="{DynamicResource ControlDarkBrushKey}"
+                      Background="{DynamicResource ControlBrushKey}"
+                      SnapsToDevicePixels="True">
+                <ContentPresenter Content="{Binding Header}"
+                                  ContentTemplate="{Binding HeaderTemplate}"/>
+              </Border>
+              <Thumb Name="Splitter" Width="5" Margin="0,0,-3,0" Cursor="SizeWE" HorizontalAlignment="Right">
+                <Thumb.Template>
+                  <ControlTemplate>
+                    <Rectangle Fill="Transparent"/>
+                  </ControlTemplate>
+                </Thumb.Template>
+              </Thumb>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="e:SplitterItemsControl.IsLast" Value="True">
+              <Setter TargetName="Splitter" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:DataGridViewColumnHeaderRowPresenter}">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DataGridViewColumnHeaderRowPresenter}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid IsItemsHost="True"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:DataGridViewRow}">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DataGridViewRow}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Rectangle Fill="Transparent" Grid.Column="0" Grid.ColumnSpan="2"/>
+              <Rectangle Fill="{DynamicResource HotTrackBrushKey}" Opacity="0.2" Visibility="Hidden" Name="Marker" Grid.Column="0"/>
+              <Rectangle Grid.Row="0" Grid.Column="1" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+              <e:DataGridViewRowPresenter Grid.Column="0" Grid.ColumnSpan="2" x:Name="Presenter" MinHeight="20"/>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="Marker" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsSelected" Value="False"/>
+                <Condition Property="IsMouseOver" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="Marker" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="Marker" Property="Opacity" Value="0.1"/>
+            </MultiTrigger>
+            <Trigger Property="IsVerticalScrollBarVisible" Value="False">
+              <Setter TargetName="Presenter" Property="Grid.ColumnSpan" Value="1"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:DataGridViewRowPresenter}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DataGridViewRowPresenter}">
+          <Grid IsItemsHost="True"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemContainerStyle">
+      <Setter.Value>
+        <Style TargetType="{x:Type ContentControl}">
+          <Setter Property="BorderThickness" Value="0,0,1,1"/>
+          <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+          <Setter Property="Focusable" Value="False"/>
+          <Setter Property="IsHitTestVisible" Value="True"/>
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type ContentControl}">
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                  <ContentPresenter/>
+                </Border>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </Setter.Value>
+    </Setter>
+  </Style>-->
+</ResourceDictionary>

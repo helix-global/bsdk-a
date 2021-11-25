@@ -1,0 +1,129 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Shell.Controls"
+                    xmlns:u="clr-namespace:BinaryStudio.PlatformUI.Shell"
+                    xmlns:c="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+  <Style x:Key="{x:Type e:DocumentGroupControl}" TargetType="{x:Type e:DocumentGroupControl}">
+    <Style.Resources>
+      <ResourceDictionary>
+        <DataTemplate DataType="{x:Type u:View}">
+          <e:ViewPresenter Content="{Binding Content}" View="{Binding}" ContainingElement="{Binding}" />
+        </DataTemplate>
+        <e:MenuItemIconConverter x:Key="MenuItemIconConverter" />
+        <e:BooleanToHiddenVisibilityConverter x:Key="BooleanToHiddenVisibilityConverter" />
+      </ResourceDictionary>
+    </Style.Resources>
+    <Setter Property="InputMethod.IsInputMethodSuspended" Value="True" />
+    <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:DocumentGroupControl}">
+          <e:DockTarget x:Name="MainDockTarget" DockSiteType="NonDraggable" DockTargetType="Inside" Background="#00FFFFFF">
+            <DockPanel SnapsToDevicePixels="True">
+              <Grid KeyboardNavigation.TabNavigation="Local">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <e:DockTarget x:Name="InsertTabPreviewDockTarget" DockTargetType="InsertTabPreview" Grid.Column="0" Grid.Row="0"
+                              Background="Transparent"
+                              AdornmentTarget="{Binding ElementName=MainDockTarget}">
+                  <Border BorderThickness="0,0,0,2"
+                          BorderBrush="{DynamicResource ControlDarkBrushKey}"
+                          Name="SelectorPanelBorder">
+                    <e:DocumentTabPanel x:Name="PART_TabPanel" ZIndex="1"
+                                      KeyboardNavigation.TabIndex="1"
+                                      Margin="0,2,2,0" IsItemsHost="True"
+                                      ExpandedTearOffMargin="50"/>
+                  </Border>
+                </e:DockTarget>
+                <DockPanel Margin="0,0,0,3" LastChildFill="False" Grid.Row="0" Grid.Column="1"
+                           d:DataContext="{d:DesignInstance u:ViewGroup}">
+                  <e:DropDownButton x:Name="PART_TabPopupButton" ClickMode="Press" Width="14" Height="14" DockPanel.Dock="Bottom"
+                                    HoverBackground="{DynamicResource ControlDarkBrushKey}"
+                                    HoverBorderBrush="{DynamicResource ControlDarkBrushKey}"
+                                    PressedBackground="{DynamicResource ControlDarkBrushKey}"
+                                    PressedBorderBrush="{DynamicResource ControlDarkDarkBrushKey}"
+                                    HoverBorderThickness="1"
+                                    PressedBorderThickness="1"
+                                    IsChecked="{Binding Path=ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}">
+                    <e:DropDownButton.Resources>
+                      <CollectionViewSource x:Key="ContextMenuItemSource" Source="{Binding Path=VisibleChildren}">
+                        <CollectionViewSource.SortDescriptions>
+                          <c:SortDescription Direction="Ascending" PropertyName="Title" />
+                        </CollectionViewSource.SortDescriptions>
+                      </CollectionViewSource>
+                    </e:DropDownButton.Resources>
+                    <StackPanel Orientation="Vertical" Width="8" Height="8">
+                      <Path Fill="{DynamicResource WindowTextBrushKey}" Width="8" Height="4" Data="M0,0L8,0 8,2 0,2 0,0" SnapsToDevicePixels="True" Visibility="{Binding ElementName=PART_TabPanel, Path=HasOverflowItems, Converter={StaticResource BooleanToHiddenVisibilityConverter}}" Name="DropDownButtonBar"/>
+                      <Path Fill="{DynamicResource WindowTextBrushKey}" Width="8" Height="4" Data="F1M0,0L4,4 8,0 0,0z"  SnapsToDevicePixels="True" />
+                    </StackPanel>
+                    <e:DropDownButton.ContextMenu>
+                      <ContextMenu DataContext="{StaticResource ContextMenuItemSource}" IsTextSearchEnabled="True" TextSearch.TextPath="Title" ItemsSource="{Binding}">
+                        <ContextMenu.ItemContainerStyle>
+                          <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header"  Value="{Binding Path=Title}"/>
+                            <Setter Property="Icon"    Value="{Binding Path=Picture, Converter={StaticResource MenuItemIconConverter}}" />
+                            <Setter Property="Command" Value="{x:Static e:ViewCommands.ActivateDocumentViewCommand}" />
+                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                          </Style>
+                        </ContextMenu.ItemContainerStyle>
+                        <ContextMenu.ItemTemplate>
+                          <DataTemplate DataType="{x:Type u:View}">
+                            <ContentPresenter Content="{Binding}" />
+                          </DataTemplate>
+                        </ContextMenu.ItemTemplate>
+                      </ContextMenu>
+                    </e:DropDownButton.ContextMenu>
+                  </e:DropDownButton>
+                </DockPanel>
+                <Border Name="PART_ContentPanel" Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                  <ContentPresenter Name="PART_SelectedContentHost"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    TextBlock.Foreground="{DynamicResource ControlTextBrushKey}"
+                                    Margin="{TemplateBinding Control.Padding}"
+                                    ContentSource="SelectedContent" />
+                </Border>
+              </Grid>
+            </DockPanel>
+          </e:DockTarget>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsActive}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource TemplatedParent},Path=IsEnabled}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="SelectorPanelBorder" Property="BorderBrush" Value="{DynamicResource HotTrackBrushKey}"/>
+            </MultiDataTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Value="{DynamicResource GrayTextBrushKey}" Property="Foreground" />
+            </Trigger>
+            <DataTrigger Value="True" Binding="{Binding Source={x:Static u:ViewManager.Instance}, Path=Preferences.AllowDocumentTabAutoDocking}">
+              <Setter TargetName="InsertTabPreviewDockTarget" Property="e:DockTarget.DockTargetType" Value="Auto" />
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemTemplate">
+      <Setter.Value>
+        <DataTemplate DataType="{x:Type u:View}">
+          <e:DragUndockHeader ViewElement="{Binding}" ViewFrameworkElement="{Binding Content}">
+            <ContentControl Content="{Binding Title}"
+                            ContentTemplate="{Binding DocumentTabTitleTemplate}"
+                            TextBlock.Foreground="{DynamicResource ControlTextBrushKey}"/>
+          </e:DragUndockHeader>
+        </DataTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

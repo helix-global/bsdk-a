@@ -1,0 +1,123 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Shell.Controls"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/Images.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <LinearGradientBrush x:Key="GlyphButtonBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#C3E6F4" Offset="0" />
+    <GradientStop Color="#C3E6F4" Offset="0.5" />
+    <GradientStop Color="#B6E4F7" Offset="0.5" />
+    <GradientStop Color="#B6E4F7" Offset="1" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="GlyphButtonPressedBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#D2E9F2" Offset="0" />
+    <GradientStop Color="#D2E9F2" Offset="0.5" />
+    <GradientStop Color="#C3E6F4" Offset="0.5" />
+    <GradientStop Color="#C3E6F4" Offset="1" />
+  </LinearGradientBrush>
+  <Style x:Key="{x:Type e:ViewHeader}" TargetType="{x:Type e:ViewHeader}">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:ViewHeader}">
+          <ControlTemplate.Resources>
+            <Style TargetType="{x:Type e:GlyphButton}">
+              <Setter Property="e:Glyph.Stretch" Value="Uniform"/>
+              <Setter Property="e:Glyph.Width" Value="8"/>
+              <Setter Property="e:Glyph.Height" Value="8"/>
+              <Setter Property="Padding" Value="2"/>
+            </Style>
+            <DataTemplate DataType="{x:Type s:String}">
+              <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"/>
+            </DataTemplate>
+          </ControlTemplate.Resources>
+          <e:DragUndockHeader x:Name="DragHeader"
+                              ViewElement="{TemplateBinding e:ViewHeader.ContainingElement}"
+                              ViewFrameworkElement="{TemplateBinding e:ViewHeader.ContainingFrameworkElement}"
+                              IsDragEnabled="{Binding RelativeSource={RelativeSource TemplatedParent},Path=ContainingElement.IsDragEnabled,Mode=OneWay}"
+                              e:MouseCommands.MouseCommandAction="LeftDoubleClick"
+                              e:MouseCommands.MouseCommand="{x:Static e:ViewCommands.ToggleDocked}"
+                              e:MouseCommands.MouseCommandParameter="{TemplateBinding e:ViewHeader.ContainingElement}">
+            <Border Name="Bd" Background="{TemplateBinding Background}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel LastChildFill="True">
+                  <ContentPresenter Margin="5,0,0,0" Content="{Binding View.Title, RelativeSource={RelativeSource TemplatedParent}}" ContentTemplate="{Binding View.TitleTemplate, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Left"/>
+                  <Rectangle Height="6" Margin="8,0,4,0" VerticalAlignment="Center" Opacity="0.5" DockPanel.Dock="Left" UseLayoutRounding="True">
+                    <Rectangle.Fill>
+                      <DrawingBrush TileMode="Tile" Stretch="None" Viewport="1,1,4,4" ViewportUnits="Absolute" Viewbox="0,0,4,5"  ViewboxUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                          <DrawingGroup>
+                            <DrawingGroup.GuidelineSet>
+                              <GuidelineSet GuidelinesX="0.1"/>
+                            </DrawingGroup.GuidelineSet>
+                            <DrawingGroup.Children>
+                              <GeometryDrawing Geometry="M 0 0 L 1 0 M 2 2 L 3 2 M 0 4 L 1 4">
+                                <GeometryDrawing.Pen>
+                                  <Pen Brush="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Foreground}" Thickness="1"/>
+                                </GeometryDrawing.Pen>
+                              </GeometryDrawing>
+                            </DrawingGroup.Children>
+                          </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                      </DrawingBrush>
+                    </Rectangle.Fill>
+                  </Rectangle>
+                </DockPanel>
+                <e:GlyphButton DockPanel.Dock="Right" e:ViewPresenter.CanActivateFromLeftClick="False"
+                               Command="{x:Static e:ViewCommands.HideViewCommand}"
+                               CommandParameter="{TemplateBinding e:ViewHeader.View}"
+                               HoverBackground="{DynamicResource HighlightBrushKey}"
+                               Foreground="{TemplateBinding Foreground}"
+                               Margin="0,2,0,2"
+                               Grid.Column="1">
+                  <Path Fill="{Binding RelativeSource={RelativeSource Self},Path=(TextElement.Foreground)}" Width="8" Height="8" Stretch="Uniform" Data="{StaticResource HideGeometry}"/>
+                </e:GlyphButton>
+                <e:GlyphButton x:Name="AutoHideButton"
+                              e:ViewPresenter.CanActivateFromLeftClick="False"
+                              DockPanel.Dock="Right"
+                               Grid.Column="2"
+                               IsEnabled="False"
+                              Command="{x:Static e:ViewCommands.AutoHideViewCommand}"
+                              CommandParameter="{TemplateBinding e:ViewHeader.ContainingElement}"
+                              e:Glyph.Geometry="F1M4,8L4,5 1,5 1,4 2,4 2,1 2,0 7,0 7,1 7,4 8,4 8,5 5,5 5,8 4,8z M3,1L3,4 5,4 5,1 3,1z"
+                              Margin="0,2,5,2"/>
+              </Grid>
+            </Border>
+          </e:DragUndockHeader>
+          <ControlTemplate.Triggers>
+            <DataTrigger Value="True" Binding="{Binding View.IsActive, RelativeSource={RelativeSource Self}}">
+              <Setter Property="Background" Value="{DynamicResource TabItemHighlightBackgroundBrushKey}"/>
+              <Setter Property="Foreground" Value="{DynamicResource HighlightTextBrushKey}"/>
+            </DataTrigger>
+            <Trigger Property="e:AutoHideWindow.IsAutoHidden" Value="True">
+              <Setter TargetName="AutoHideButton" Property="e:Glyph.Geometry" Value="F1M0,4L3,4 3,1 4,1 4,2 7,2 8,2 8,7 7,7 4,7 4,8 3,8 3,5 0,5 0,4z M7,3L4,3 4,5 7,5 7,3z"/>
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="e:FloatingWindow.IsFloating" Value="True" />
+                <Condition Property="e:FloatingWindow.HasDocumentGroupContainer" Value="False" />
+              </MultiTrigger.Conditions>
+              <Setter TargetName="AutoHideButton" Property="Visibility" Value="Collapsed" />
+            </MultiTrigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="e:FloatingWindow.IsFloating" Value="True" />
+                <Condition Property="e:FloatingWindow.OnScreenViewCardinality" Value="One" />
+              </MultiTrigger.Conditions>
+              <Setter TargetName="DragHeader" Property="e:DragUndockHeader.IsWindowTitleBar" Value="True" />
+            </MultiTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

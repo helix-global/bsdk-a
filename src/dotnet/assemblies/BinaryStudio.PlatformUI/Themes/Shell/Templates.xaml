@@ -1,0 +1,88 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Shell"
+                    xmlns:c="clr-namespace:BinaryStudio.PlatformUI.Shell.Controls"
+                    xmlns:platformUi="clr-namespace:BinaryStudio.PlatformUI">
+  <DataTemplate DataType="{x:Type e:MainSite}">
+    <ContentControl Content="{Binding Child}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:AutoHideRoot}">
+    <c:AutoHideRootControl ItemsSource="{Binding VisibleChildren}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:AutoHideChannel}">
+    <c:AutoHideChannelControl x:Name="Host" ItemsSource="{Binding VisibleChildren}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Dock}" Value="Left">
+        <Setter TargetName="Host" Property="Orientation" Value="Vertical"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Dock}" Value="Right">
+        <Setter TargetName="Host" Property="Orientation" Value="Vertical"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Dock}" Value="Bottom">
+        <Setter TargetName="Host" Property="Orientation" Value="Horizontal"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Dock}" Value="Top">
+        <Setter TargetName="Host" Property="Orientation" Value="Horizontal"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:AutoHideGroup}">
+    <c:AutoHideGroupControl ItemsSource="{Binding VisibleChildren}"
+                            c:AutoHideChannelControl.Orientation="{Binding Path=(c:AutoHideChannelControl.Orientation)}"
+                            e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:DockGroup}">
+    <c:DockGroupControl ItemsSource="{Binding VisibleChildren}"
+                        Orientation="{Binding Orientation}"
+                        e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:DockRoot}}" DataType="{x:Type e:DockRoot}">
+    <c:DockRootControl ItemsSource="{Binding VisibleChildren}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:DocumentGroup}}" DataType="{x:Type e:DocumentGroup}">
+    <c:DocumentGroupControl ItemsSource="{Binding VisibleChildren}" SelectedItem="{Binding SelectedElement}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:FloatSite}}" DataType="{x:Type e:FloatSite}">
+    <ContentControl Focusable="False" Content="{Binding Child}" />
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:TabGroup}}" DataType="{x:Type e:TabGroup}">
+    <DataTemplate.Resources>
+      <DataTemplate x:Key="TabForTabGroup" DataType="{x:Type e:TabGroup}">
+        <c:TabGroupControl ItemsSource="{Binding VisibleChildren}" SelectedItem="{Binding SelectedElement}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="ViewForTabGroup" DataType="{x:Type e:TabGroup}">
+        <c:ViewFrame DataContext="{Binding VisibleChildren[0]}" Content="{Binding Content}" View="{Binding}" ContainingElement="{Binding Parent}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+      </DataTemplate>
+    </DataTemplate.Resources>
+    <ContentControl Name="Content" Focusable="False" ContentTemplate="{StaticResource TabForTabGroup}" Content="{Binding}" />
+    <DataTemplate.Triggers>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding VisibleChildren.Count}" Value="1" />
+          <Condition Binding="{Binding Path=(c:FloatingWindow.IsUndockingTab), RelativeSource={RelativeSource Self}}" Value="False" />
+        </MultiDataTrigger.Conditions>
+        <Setter TargetName="Content" Value="{StaticResource ViewForTabGroup}" Property="ContentControl.ContentTemplate" />
+      </MultiDataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+  <DataTemplate x:Key="DocumentGroupControlItemTemplate" DataType="{x:Type e:View}">
+    <c:DragUndockHeader ViewElement="{Binding}" ViewFrameworkElement="{Binding Content}" e:ViewManager.ViewManager="{Binding ViewManager}">
+      <ContentControl Content="{Binding Title}" ContentTemplate="{Binding DocumentTabTitleTemplate}" />
+    </c:DragUndockHeader>
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:DocumentGroupContainer}}" DataType="{x:Type e:DocumentGroupContainer}">
+    <Border BorderBrush="{x:Null}" BorderThickness="0">
+      <c:DocumentGroupContainerControl ItemsSource="{Binding VisibleChildren}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
+    </Border>
+  </DataTemplate>
+  <DataTemplate x:Key="{DataTemplateKey {x:Type e:View}}" DataType="{x:Type e:View}">
+    <c:ViewFrame Content="{Binding Content}" View="{Binding}" ContainingElement="{Binding}"
+                 e:ViewManager.ViewManager="{Binding ViewManager,Mode=OneWay}"/>
+  </DataTemplate>
+  <HierarchicalDataTemplate DataType="{x:Type platformUi:HierarchicalPresenter}" ItemsSource="{Binding}">
+    <ContentPresenter Content="{Binding Header}" ContentTemplate="{Binding HeaderTemplate}"/>
+  </HierarchicalDataTemplate>
+  <HierarchicalDataTemplate DataType="{x:Type platformUi:DataItem}" ItemsSource="{Binding}">
+    <ContentPresenter Content="{Binding Header}"/>
+  </HierarchicalDataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI"
+                    xmlns:c="clr-namespace:BinaryStudio.PlatformUI.Shell.Controls">
+  <Style TargetType="{x:Type e:MainWindow}">
+    <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowTextBrushKey}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:MainWindow}">
+          <Border BorderThickness="0" Margin="0" Background="{DynamicResource ControlBrushKey}">
+            <Grid Margin="5">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <c:MainWindowTitleBar Grid.Row="0" BorderThickness="0" Background="{DynamicResource ActiveCaptionBrushKey}">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <c:SystemMenu Grid.Column="0" VectorIcon="{TemplateBinding VectorIcon}" VerticalAlignment="Center"/>
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" UseLayoutRounding="True">
+                    <c:WindowTitleBarButton Width="20" Height="20" Command="{x:Static c:CustomChromeWindow.MinimizeCommand}">
+                      <Path Data="F1M0 6L0 9 9 9 9 6 0 6z" Fill="{DynamicResource AccentPictureBrushKey}" Width="10" Height="10"/>
+                    </c:WindowTitleBarButton>
+                    <c:WindowTitleBarButton Width="20" Height="20" Command="{x:Static c:CustomChromeWindow.MaximizeCommand}" x:Name="MaximizeButton" Visibility="Collapsed">
+                      <Path Data="F1M0 0L0 9 9 9 9 0 0 0 0 3 8 3 8 8 1 8 1 3z" Fill="{DynamicResource AccentPictureBrushKey}" Width="10" Height="10"/>
+                    </c:WindowTitleBarButton>
+                    <c:WindowTitleBarButton Width="20" Height="20" Command="{x:Static c:CustomChromeWindow.RestoreCommand}" x:Name="RestoreButton">
+                      <Path Data="F1M0 10L0 3 3 3 3 0 10 0 10 2 4 2 4 3 7 3 7 6 6 6 6 5 1 5 1 10z M1 10L7 10 7 7 10 7 10 2 9 2 9 6 6 6 6 9 1 9z" Fill="{DynamicResource AccentPictureBrushKey}" Width="10" Height="10"/>
+                    </c:WindowTitleBarButton>
+                    <c:WindowTitleBarButton Width="20" Height="20" Command="{x:Static c:CustomChromeWindow.CloseCommand}" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}">
+                      <Path Data="F1M0 0L2 0 5 3 8 0 10 0 6 4 10 8 8 8 5 5 2 8 0 8 4 4 0 0z" Fill="{DynamicResource AccentPictureBrushKey}" Width="10" Height="10"/>
+                    </c:WindowTitleBarButton>
+                  </StackPanel>
+                  <TextBlock Grid.Column="1" Text="{TemplateBinding Title}"  VerticalAlignment="Center" Margin="5,0,5,0" Foreground="{DynamicResource ActiveCaptionTextBrushKey}"/>
+                </Grid>
+              </c:MainWindowTitleBar>
+              <Decorator Grid.Row="1">
+                <ContentPresenter Content="{TemplateBinding Menu}"/>
+              </Decorator>
+              <Border Grid.Row="2" BorderThickness="0" Background="{TemplateBinding Background}">
+                <AdornerDecorator>
+                  <ContentPresenter Content="{TemplateBinding Content}"/>
+                </AdornerDecorator>
+              </Border>
+              <Border Grid.Row="3" BorderThickness="1" BorderBrush="Violet" Visibility="Collapsed">
+
+              </Border>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="WindowState" Value="Maximized">
+              <Setter TargetName="RestoreButton"  Property="Visibility" Value="Visible"/>
+              <Setter TargetName="MaximizeButton" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="WindowState" Value="Normal">
+              <Setter TargetName="RestoreButton"  Property="Visibility" Value="Collapsed"/>
+              <Setter TargetName="MaximizeButton" Property="Visibility" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

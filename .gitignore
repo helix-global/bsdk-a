@@ -3,3 +3,9 @@
 ################################################################################
 
 /src/dotnet/.vs/shell
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/net45
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/obj
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/net45
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/obj
+/src/dotnet/shell/bin
+/src/dotnet/shell/obj
