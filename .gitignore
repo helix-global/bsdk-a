@@ -13,3 +13,9 @@
 /src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/netcoreapp3.1
 /src/dotnet/assemblies/BinaryStudio.DataProcessing/bin/Release/net5.0-windows
 /src/dotnet/assemblies/BinaryStudio.PlatformUI/bin/Release/net5.0-windows
+/src/dotnet/assemblies/BinaryStudio.Diagnostics/bin/Release
+/src/dotnet/assemblies/BinaryStudio.Diagnostics/obj
+/src/dotnet/assemblies/BinaryStudio.DirectoryServices/bin/Release
+/src/dotnet/assemblies/BinaryStudio.DirectoryServices/obj
+/src/dotnet/assemblies/BinaryStudio.IO/bin/Release
+/src/dotnet/assemblies/BinaryStudio.IO/obj
