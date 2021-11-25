@@ -23,3 +23,7 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/bin
 /src/dotnet/assemblies/BinaryStudio.Serialization/bin
 /src/dotnet/assemblies/BinaryStudio.Serialization/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin

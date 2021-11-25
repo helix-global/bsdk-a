@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;FEATURE_MULTI_THREAD_PROCESSING;FEATURE_CRYPT_CERTIFICATE_HANDLE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <DefineConstants>FEATURE_WPF_VALUE_CONVERTER;USE_WINFORMS;USE_WPF</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CryptographyServiceProvider\**" />
+    <EmbeddedResource Remove="CryptographyServiceProvider\**" />
+    <None Remove="CryptographyServiceProvider\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

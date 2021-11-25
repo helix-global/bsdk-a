@@ -1,0 +1,38 @@
+using System;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace Internal.CryptoAPICOM
+    {
+    [ClassInterface(ClassInterfaceType.None), Guid("7C92E131-C1DC-4CA1-B02C-F513A08B41ED")]
+    [ComImport]
+    #if CODE_ANALYSIS
+    [SuppressMessage("Design", "CA1010:Generic interface should also be implemented", Justification = "<Pending>")]
+    #endif
+    public class ExtensionsClass : IExtensions
+        {
+        [DispId(0)]
+        public virtual extern Object this[[MarshalAs(UnmanagedType.Struct)] [In] Object Index]
+            {
+            [DispId(0)]
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            [return: MarshalAs(UnmanagedType.Struct)]
+            get;
+            }
+
+        [DispId(1)]
+        public virtual extern Int32 Count
+            {
+            [DispId(1)]
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            get;
+            }
+
+        [DispId(-4), TypeLibFunc(1)]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler")]
+        public virtual extern IEnumerator GetEnumerator();
+        }
+    }
