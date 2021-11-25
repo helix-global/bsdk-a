@@ -6,6 +6,9 @@
         xmlns:u="http://schemas.helix.global"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="OnLoad">
+  <u:MainWindow.CommandBindings>
+    <!--<CommandBinding Command="Open"/>-->
+  </u:MainWindow.CommandBindings>
   <u:MainWindow.VectorIcon>
     <DrawingBrush>
       <DrawingBrush.Drawing>
@@ -22,6 +25,16 @@
       </DrawingBrush.Drawing>
     </DrawingBrush>
   </u:MainWindow.VectorIcon>
+  <u:MainWindow.Menu>
+    <Menu Grid.Row="0">
+      <MenuItem Header="FILE">
+        <MenuItem Header="Open..." Command="Open"/>
+      </MenuItem>
+      <MenuItem Header="HELP">
+        <MenuItem Header="About..."/>
+      </MenuItem>
+    </Menu>
+  </u:MainWindow.Menu>
   <Grid>
   </Grid>
 </u:MainWindow>

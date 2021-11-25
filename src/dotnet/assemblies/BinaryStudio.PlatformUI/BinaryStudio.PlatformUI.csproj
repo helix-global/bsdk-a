@@ -6,6 +6,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="GrayscaleEffect.ps" />
     <None Remove="Resources\Bottom.png" />
     <None Remove="Resources\BottomLeft.png" />
     <None Remove="Resources\BottomRight.png" />
@@ -37,6 +38,7 @@
     <Reference Include="PresentationFramework.Classic" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="GrayscaleEffect.ps" />
     <Resource Include="Resources\Bottom.png" />
     <Resource Include="Resources\BottomLeft.png" />
     <Resource Include="Resources\BottomRight.png" />

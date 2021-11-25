@@ -33,5 +33,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
   </ItemGroup>
 </Project>
