@@ -340,6 +340,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
         private void Copy(Asn1Object o, String type) {
             if (o == null) { throw new ArgumentNullException(nameof(o)); }
             if (type == "BASE64") {
+                Clipboard.Clear();
                 using (var output = new MemoryStream()) {
                     o.Write(output);
                     output.Seek(0, SeekOrigin.Begin);
@@ -358,6 +359,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
                     o.WriteJson(writer, serializer);
                     writer.Flush();
                     }
+                Clipboard.Clear();
                 Clipboard.SetText(builder.ToString(), TextDataFormat.UnicodeText);
                 }
             }

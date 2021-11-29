@@ -9,5 +9,11 @@
                      DataContext="{Binding Content}"/>
     </Decorator>
   </DataTemplate>
-
+  <DataTemplate DataType="{x:Type e:ECertificate}">
+    <TabControl>
+      <TabItem Header="Details">
+        
+      </TabItem>
+    </TabControl>
+  </DataTemplate>
 </ResourceDictionary>
