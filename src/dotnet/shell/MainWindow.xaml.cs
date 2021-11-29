@@ -53,6 +53,17 @@ namespace shell
                 }
             ViewManager.GetViewManager(dockgroup);
             docmanager = new DocumentManager(dockgroup);
+            Initialize();
+            }
+
+        private void Initialize()
+            {
+            LoadFrom(@"C:\TFS\icao\rfid\unsorted\efsod047.p7b");
+            }
+
+        private void LoadFrom(String filename) {
+            var o = docmanager.LoadView(docmanager.LoadObject(filename));
+            docmanager.Add(o, Path.GetFileNameWithoutExtension(filename));
             }
 
         private void UpdateCommandBindings() {
@@ -64,8 +75,7 @@ namespace shell
             var dialog = new OpenFileDialog();
             if (dialog.ShowDialog(this) == true)
                 {
-                var o = docmanager.LoadView(docmanager.LoadObject(dialog.FileName));
-                docmanager.Add(o, Path.GetFileNameWithoutExtension(dialog.FileName));
+                LoadFrom(dialog.FileName);
                 }
             }
 

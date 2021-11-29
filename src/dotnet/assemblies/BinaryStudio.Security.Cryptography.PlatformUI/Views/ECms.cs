@@ -1,11 +1,11 @@
 ﻿using BinaryStudio.PlatformUI;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 
 namespace BinaryStudio.Security.Cryptography.PlatformUI.Views
     {
-    public class EAsn1 : NotifyPropertyChangedDispatcherObject<Asn1Object>
+    public class ECms : NotifyPropertyChangedDispatcherObject<CmsMessage>
         {
-        public EAsn1(Asn1Object source)
+        public ECms(CmsMessage source)
             : base(source)
             {
             }

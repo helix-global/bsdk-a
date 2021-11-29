@@ -49,13 +49,11 @@ namespace shell
                     }
                 }
             else if (source is Asn1Object o) {
-                var crt = ReadCrt(o);
-                if (crt != null) {
-                    r.Add(new ECertificate(new X509Certificate(crt)));
-                    }
+                var crt = ReadCrt(o); if (crt != null) { r.Add(new View<ECertificate>(new ECertificate(new X509Certificate(crt)))); return r; }
+                var cms = ReadCms(o); if (cms != null) { r.Add(new View<ECms>(new ECms(cms))); return r; }
                 else
                     {
-                    r.Add(new EAsn1(o));
+                    r.Add(new View<EAsn1>(new EAsn1(o)));
                     }
                 }
             return r;

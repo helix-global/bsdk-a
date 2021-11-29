@@ -142,7 +142,9 @@ namespace BinaryStudio.PlatformUI.Shell.Controls {
         /// <summary>Raises the <see cref="E:System.Windows.Window.SourceInitialized" /> event.</summary>
         /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
         protected override void OnSourceInitialized(EventArgs e) {
-            HwndSource.FromHwnd(new WindowInteropHelper(this).Handle).AddHook(HwndSourceHook);
+            var handle = new WindowInteropHelper(this).Handle;
+            NativeMethods.SetWindowTheme(handle, " ", " ");
+            HwndSource.FromHwnd(handle).AddHook(HwndSourceHook);
             CreateGlowWindowHandles();
             base.OnSourceInitialized(e);
             }

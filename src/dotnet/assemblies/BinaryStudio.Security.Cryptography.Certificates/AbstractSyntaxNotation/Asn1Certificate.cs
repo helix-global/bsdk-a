@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
-using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates.Converters;
+using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    [TypeConverter(typeof(Asn1CertificateTypeConverter))]
     public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
         {
         private String _thumbprint;
@@ -121,6 +124,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
 
+        [Browsable(false)]
         public String FriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
             var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
@@ -136,6 +140,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }}
 
+        [Browsable(false)]
         public String AlternativeFriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
             var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");

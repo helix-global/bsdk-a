@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using Newtonsoft.Json;
 
 #pragma warning disable 1591
@@ -15,6 +18,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     /// <see cref="CmsMessage"/> class represents a CMS structure.
     /// For additional information, see <a href="https://tools.ietf.org/html/rfc5652">RFC 5652</a>.
     /// </summary>
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public sealed class CmsMessage : Asn1LinkObject
         {
         /**
@@ -65,6 +69,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * </table>
          * </remarks>
          */
+        [TypeConverter(typeof(OidTypeConverter))]
         public Oid ContentType { get; }
 
         /**

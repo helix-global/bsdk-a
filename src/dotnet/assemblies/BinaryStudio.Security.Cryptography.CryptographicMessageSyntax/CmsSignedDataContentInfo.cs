@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -29,6 +32,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     ///   SignerInfos ::= SET OF SignerInfo
     /// </pre>
     /// </summary>
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public class CmsSignedDataContentInfo : CmsContentInfo
         {
         private const Int32 INDEX_VERSION                   = 0;
@@ -45,22 +49,27 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         /// <summary>
         /// A collection of message digest algorithm identifiers.
         /// </summary>
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
         public ISet<X509AlgorithmIdentifier> DigestAlgorithms { get; }
 
         /// <summary>
         /// A collection of certificates.
         /// </summary>
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
         public ISet<Asn1Certificate> Certificates { get; }
 
         /// <summary>
         /// A collection of certificate revocation lists.
         /// </summary>
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
         public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
 
         /// <summary>
         /// Retrieves the <see cref="ISet{CmsSignerInfo}"/> collection associated with the CMS message.
         /// </summary>
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
         public ISet<CmsSignerInfo> Signers { get; }
+
         public CmsSignedDataContentInfo(Asn1Object source)
             : base(source)
             {

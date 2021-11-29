@@ -45,10 +45,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private readonly List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
         protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
-        public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
-        public virtual Boolean IsExplicitConstructed { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
-        public virtual Boolean IsImplicitConstructed { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
-        public virtual Boolean IsIndefiniteLength    { get { return state.HasFlag(ObjectState.Indefinite); }}
+        [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength    { get { return state.HasFlag(ObjectState.Indefinite); }}
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
 

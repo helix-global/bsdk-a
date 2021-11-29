@@ -1,19 +1,38 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:c="clr-namespace:BinaryStudio.Security.Cryptography.PlatformUI.Controls"
-                    xmlns:e="clr-namespace:BinaryStudio.Security.Cryptography.PlatformUI.Views">
+                    xmlns:e="clr-namespace:BinaryStudio.Security.Cryptography.PlatformUI.Views"
+                    xmlns:u="http://schemas.helix.global"
+                    xmlns:shell="clr-namespace:BinaryStudio.PlatformUI.Shell;assembly=BinaryStudio.PlatformUI">
   <DataTemplate DataType="{x:Type e:EAsn1}">
     <Decorator>
-      <c:Asn1Control Margin="5"
-                     SnapsToDevicePixels="True"
-                     DataContext="{Binding Content}"/>
+      <c:Asn1Control Margin="5" SnapsToDevicePixels="True" DataContext="{Binding Source}"/>
     </Decorator>
   </DataTemplate>
   <DataTemplate DataType="{x:Type e:ECertificate}">
-    <TabControl>
-      <TabItem Header="Details">
-        
-      </TabItem>
-    </TabControl>
+    <Decorator>
+      <TabControl Margin="5">
+        <TabItem Header="Properties">
+          <u:PropertyGridControl SelectedObject="{Binding PageProperties}" Name="Host" IsDescriptionPanelVisible="False"
+                                 ReadOnlyForeground="{DynamicResource ControlTextBrushKey}"/>
+        </TabItem>
+        <TabItem Header="Structure">
+          <c:Asn1Control SnapsToDevicePixels="True" DataContext="{Binding PageStructure,Mode=OneWay}"/>
+        </TabItem>
+      </TabControl>
+    </Decorator>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:ECms}">
+    <Decorator>
+      <TabControl Margin="5">
+        <TabItem Header="Properties">
+          <u:PropertyGridControl SelectedObject="{Binding Source}" Name="Host" IsDescriptionPanelVisible="False"
+                                 ReadOnlyForeground="{DynamicResource ControlTextBrushKey}"/>
+        </TabItem>
+        <TabItem Header="Structure">
+          <c:Asn1Control SnapsToDevicePixels="True" DataContext="{Binding Source,Mode=OneWay}"/>
+        </TabItem>
+      </TabControl>
+    </Decorator>
   </DataTemplate>
 </ResourceDictionary>
