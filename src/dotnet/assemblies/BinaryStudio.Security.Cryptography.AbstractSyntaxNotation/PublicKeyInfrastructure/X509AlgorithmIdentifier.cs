@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure
     {
+    [TypeConverter(typeof(X509AlgorithmIdentifierTypeConverter))]
     public sealed class X509AlgorithmIdentifier: IJsonSerializable
         {
         public Asn1ObjectIdentifier Identifier { get; }

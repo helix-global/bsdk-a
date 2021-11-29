@@ -72,15 +72,13 @@ namespace BinaryStudio.DataProcessing
             return base.ConvertTo(context, culture, value, destinationType);
             }
 
-        #region M:GetProperties(ITypeDescriptorContext,Object,Attribute[]):PropertyDescriptorCollection
         /// <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
         /// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or <see langword="null"/> if there are no properties.</returns>
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
+        protected virtual IEnumerable<PropertyDescriptor> GetPropertiesInternal(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
             if (value != null) {
-                var r = new List<PropertyDescriptor>();
                 var descriptors = TypeDescriptor.GetProperties(value, attributes).OfType<PropertyDescriptor>().ToArray();
                 var services = new SortedDictionary<String, IList<PropertyDescriptor>>();
                 for (var i= 0; i < descriptors.Length; i++) {
@@ -95,12 +93,12 @@ namespace BinaryStudio.DataProcessing
                             }
                         else
                             {
-                            r.Add(descriptors[i]);
+                            yield return descriptors[i];
                             }
                         }
                     else
                         {
-                        r.Add(descriptors[i]);
+                        yield return descriptors[i];
                         }
                     }
                 foreach (var service in services) {
@@ -109,13 +107,31 @@ namespace BinaryStudio.DataProcessing
                         service.Key, new Attribute[] {
                             new TypeConverterAttribute(GetType())
                             }, service.Value);
-                    r.Add(descriptor);
+                    yield return descriptor;
                     }
-                return new PropertyDescriptorCollection(r.ToArray());
                 }
-            return base.GetProperties(context, value, attributes);
+            else
+                {
+                foreach (PropertyDescriptor descriptor in base.GetProperties(context, value, attributes))
+                    {
+                    yield return descriptor;
+                    }
+                }
             }
-        #endregion
+
+        /// <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
+        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+        /// <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
+        /// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
+        /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or <see langword="null"/> if there are no properties.</returns>
+        public sealed override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
+            return new PropertyDescriptorCollection(
+                GetPropertiesInternal(
+                    context,
+                    value,
+                    attributes).ToArray());
+            }
+
         #region M:GetPropertiesSupported(ITypeDescriptorContext):Boolean
         /// <summary>Returns whether this object supports properties, using the specified context.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>

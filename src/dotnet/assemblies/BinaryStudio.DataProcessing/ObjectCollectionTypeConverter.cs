@@ -70,19 +70,16 @@ namespace BinaryStudio.DataProcessing
         /// <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
         /// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or <see langword="null"/> if there are no properties.</returns>
-        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
-            var r = new List<PropertyDescriptor>();
+        protected override IEnumerable<PropertyDescriptor> GetPropertiesInternal(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
             if (value is IEnumerable items) {
                 var source = new List<Object>();
                 var i = 0;
                 foreach (var item in items) {
                     source.Add(item);
-                    r.Add(new ArrayPropertyDescriptor(value.GetType(), source, i, new Attribute[] {
-                        }));
+                    yield return new ArrayPropertyDescriptor(value.GetType(), source, i, new Attribute[] {});
                     i++;
                     }
                 }
-            return new PropertyDescriptorCollection(r.ToArray());
             }
 
         protected override String ToString(Object value, Type type, CultureInfo culture) {
