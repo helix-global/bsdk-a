@@ -1366,10 +1366,10 @@
     <value>Entrust Version Info</value>
   </data>
   <data name="2.16.840.1.101.3.4.2.4" xml:space="preserve">
-    <value>sha224</value>
+    <value>SHA224</value>
   </data>
   <data name="2.16.840.1.101.3.4.2.2" xml:space="preserve">
-    <value>sha384</value>
+    <value>SHA384</value>
   </data>
   <data name="2.5.6.19" xml:space="preserve">
     <value>cRLDistributionPoint</value>

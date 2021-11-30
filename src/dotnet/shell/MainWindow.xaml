@@ -5,6 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:u="http://schemas.helix.global"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        Background="{DynamicResource ControlBrushKey}"
+        Foreground="{DynamicResource ControlTextBrushKey}"
         Title="MainWindow" Height="450" Width="800" Loaded="OnLoad">
   <u:MainWindow.CommandBindings>
     <!--<CommandBinding Command="Open"/>-->

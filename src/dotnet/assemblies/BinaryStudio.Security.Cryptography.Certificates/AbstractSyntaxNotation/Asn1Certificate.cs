@@ -5,16 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.Certificates.Converters;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    [TypeConverter(typeof(Asn1CertificateTypeConverter))]
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
         {
         private String _thumbprint;
@@ -89,7 +89,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                                 if (!key.IsFailed) {
                                     var algid = key.AlgorithmIdentifier?.Identifier;
                                     if ((algid != null) && !String.Equals(SignatureAlgorithm.SignatureAlgorithm.ToString(), algid.ToString())) {
-                                        SignatureAlgorithm = new Asn1SignatureAlgorithm(algid);
+                                        //SignatureAlgorithm = new Asn1SignatureAlgorithm(algid);
                                         }
                                     PublicKey = u[0][j + 5].Body;
                                     }

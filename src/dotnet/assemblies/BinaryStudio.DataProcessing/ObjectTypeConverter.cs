@@ -129,7 +129,9 @@ namespace BinaryStudio.DataProcessing
                 GetPropertiesInternal(
                     context,
                     value,
-                    attributes).ToArray());
+                    attributes).
+                OrderBy(i => i, DefaultComparer).
+                ToArray());
             }
 
         #region M:GetPropertiesSupported(ITypeDescriptorContext):Boolean
@@ -202,6 +204,18 @@ namespace BinaryStudio.DataProcessing
                         }
                     return Enum.Format(type, value, "G");
                     }
+                var descriptor = TypeDescriptor.GetDefaultProperty(value);
+                if (descriptor != null) {
+                    var r = descriptor.GetValue(value);
+                    if (r != null) {
+                        var converter = descriptor.Converter
+                            ?? TypeDescriptor.GetConverter(r)
+                            ?? TypeDescriptor.GetConverter(r.GetType());
+                        return (converter.CanConvertTo(typeof(String)))
+                            ? converter.ConvertToString(r)
+                            : ToString(r, r.GetType(), culture);
+                        }
+                    }
                 }
             return (value != null)
                 ? value.ToString()
@@ -217,5 +231,29 @@ namespace BinaryStudio.DataProcessing
                 : Resources.ObjectTypeConverterFalse;
             }
         #endregion
+
+
+        private static readonly IComparer<PropertyDescriptor> DefaultComparer = new PropertyDescriptorComparer();
+        private class PropertyDescriptorComparer : IComparer<PropertyDescriptor>
+            {
+            /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
+            /// <returns>A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>.</returns>
+            public Int32 Compare(PropertyDescriptor x, PropertyDescriptor y)
+                {
+                if (ReferenceEquals(x, y))    { return 0;  }
+                if (ReferenceEquals(x, null)) { return -1; }
+                if (x is IComparable<PropertyDescriptor> e) { return e.CompareTo(y); }
+                if (y is null) { return +1; }
+                var orderX = (x.Attributes.OfType<OrderAttribute>().FirstOrDefault()?.Order).GetValueOrDefault(0);
+                var orderY = (y.Attributes.OfType<OrderAttribute>().FirstOrDefault()?.Order).GetValueOrDefault(0);
+                var nameX = x.DisplayName;
+                var nameY = y.DisplayName;
+                return (orderX == orderY)
+                    ? nameX.CompareTo(nameY)
+                    : orderX.CompareTo(orderY);
+                }
+            }
         }
     }

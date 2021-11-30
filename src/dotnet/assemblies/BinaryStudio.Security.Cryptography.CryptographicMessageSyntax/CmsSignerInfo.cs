@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
 using BinaryStudio.Serialization;
@@ -40,14 +42,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      * AttributeValue ::= ANY
      * SignatureValue ::= OCTET STRING
      */
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public class CmsSignerInfo : CmsObject
         {
         public Int32 Version { get; }
         public CmsSignerIdentifier SignerIdentifier { get; }
         public X509AlgorithmIdentifier DigestAlgorithm { get; }
         public X509AlgorithmIdentifier SignatureAlgorithm { get; }
-        public ISet<CmsAttribute> SignedAttributes { get; }
-        public ISet<CmsAttribute> UnsignedAttributes { get; }
+        [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> SignedAttributes   { get; }
+        [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> UnsignedAttributes { get; }
         public Asn1OctetString SignatureValue { get; }
 
         public CmsSignerInfo(Asn1Object o)

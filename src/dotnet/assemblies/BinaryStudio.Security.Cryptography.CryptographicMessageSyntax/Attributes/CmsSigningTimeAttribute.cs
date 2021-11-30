@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
@@ -18,9 +19,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      * }
      */
     [CmsSpecific("1.2.840.113549.1.9.5")]
+    [DefaultProperty(nameof(SigningTime))]
     public class CmsSigningTimeAttribute : CmsAttribute
         {
         public DateTime SigningTime { get; }
+        [Browsable(false)] public override Object Value { get { return base.Value; }}
         internal CmsSigningTimeAttribute(CmsAttribute o)
             : base(o)
             {

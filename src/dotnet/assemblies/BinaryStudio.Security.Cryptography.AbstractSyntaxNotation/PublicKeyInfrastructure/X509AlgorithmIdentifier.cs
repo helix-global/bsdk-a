@@ -6,9 +6,12 @@ using Newtonsoft.Json;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure
     {
     [TypeConverter(typeof(X509AlgorithmIdentifierTypeConverter))]
+    [DefaultProperty(nameof(Identifier))]
     public sealed class X509AlgorithmIdentifier: IJsonSerializable
         {
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
         public Asn1ObjectIdentifier Identifier { get; }
+
         public Asn1Object Parameters { get; }
 
         public X509AlgorithmIdentifier(Asn1Sequence source)

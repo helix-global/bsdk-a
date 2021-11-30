@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public abstract class CmsSignerIdentifier : CmsObject
         {
         protected CmsSignerIdentifier(Asn1Object o)

@@ -74,12 +74,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         #region M:IServiceProvider.GetService(Type):Object
-        /**
-         * <summary>Gets the service object of the specified type.</summary>
-         * <param name="service">An object that specifies the type of service object to get.</param>
-         * <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
-         * <filterpriority>2</filterpriority>
-         * */
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="service">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
+        /// <filterpriority>2</filterpriority>
         public virtual Object GetService(Type service)
             {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }

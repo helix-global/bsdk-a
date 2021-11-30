@@ -1,12 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
+    [TypeConverter(typeof(ObjectTypeConverter))]
+    [DefaultProperty(nameof(CertificateSerialNumber))]
     public class CmsIssuerAndSerialNumber : CmsSignerIdentifier, ICmsIssuerAndSerialNumber
         {
         public BigInteger CertificateSerialNumber { get; }

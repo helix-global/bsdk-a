@@ -7,7 +7,6 @@ using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using Newtonsoft.Json;
 
 #pragma warning disable 1591
@@ -69,7 +68,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * </table>
          * </remarks>
          */
-        [TypeConverter(typeof(OidTypeConverter))]
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
         public Oid ContentType { get; }
 
         /**

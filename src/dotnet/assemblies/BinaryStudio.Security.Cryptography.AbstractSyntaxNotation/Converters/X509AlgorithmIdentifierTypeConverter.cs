@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
 
@@ -17,7 +18,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             var flags = true;
             if (value is X509AlgorithmIdentifier identifier) {
                 var parameters = identifier.Parameters;
-                flags = (parameters != null) && (parameters.Count > 0);
+                //flags = (parameters != null) && (parameters.Count > 0);
                 }
             if (flags) {
                 foreach (var descriptor in base.GetPropertiesInternal(context, value, attributes)) {
@@ -36,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     if (type.IsValueType) { return false; }
                     if (type == typeof(String)) { return false; }
                     var value = context.PropertyDescriptor.GetValue(context.Instance);
+                    return GetPropertiesInternal(context, value, new Attribute[0]).Any();
                     }
                 }
             return false;

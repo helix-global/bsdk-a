@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Globalization;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -18,9 +17,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      *
      */
     [CmsSpecific("1.2.840.113549.1.9.3")]
+    [DefaultProperty(nameof(ContentType))]
     public sealed class CmsContentTypeAttribute : CmsAttribute
         {
-        public Oid ContentType { get; }
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public Oid ContentType { get; }
+        [Browsable(false)] public override Object Value { get { return base.Value; }}
+
         internal CmsContentTypeAttribute(CmsAttribute o)
             : base(o)
             {
