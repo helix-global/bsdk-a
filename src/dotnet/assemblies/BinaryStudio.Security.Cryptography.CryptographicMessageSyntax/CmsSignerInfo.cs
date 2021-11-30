@@ -45,13 +45,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [TypeConverter(typeof(ObjectTypeConverter))]
     public class CmsSignerInfo : CmsObject
         {
-        public Int32 Version { get; }
-        public CmsSignerIdentifier SignerIdentifier { get; }
-        public X509AlgorithmIdentifier DigestAlgorithm { get; }
-        public X509AlgorithmIdentifier SignatureAlgorithm { get; }
-        [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> SignedAttributes   { get; }
-        [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> UnsignedAttributes { get; }
-        public Asn1OctetString SignatureValue { get; }
+        [Order(1)] public Int32 Version { get; }
+        [Order(2)] public CmsSignerIdentifier SignerIdentifier { get; }
+        [Order(3)] public X509AlgorithmIdentifier DigestAlgorithm { get; }
+        [Order(4)] public X509AlgorithmIdentifier SignatureAlgorithm { get; }
+        [Order(5)] [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> SignedAttributes   { get; }
+        [Order(6)] [TypeConverter(typeof(CmsAttributeCollectionTypeConverter))] public ISet<CmsAttribute> UnsignedAttributes { get; }
+        [Order(7)] public Asn1OctetString SignatureValue { get; }
 
         public CmsSignerInfo(Asn1Object o)
             :base(o)

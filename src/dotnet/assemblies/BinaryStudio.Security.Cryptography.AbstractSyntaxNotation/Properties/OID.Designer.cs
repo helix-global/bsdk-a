@@ -22,7 +22,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class OID {
+    public class OID {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties.OID", typeof(OID).Assembly);
@@ -51,7 +51,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to extension.
         /// </summary>
-        internal static string _0_2_262_1_10_0 {
+        public static string _0_2_262_1_10_0 {
             get {
                 return ResourceManager.GetString("0.2.262.1.10.0", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to signature.
         /// </summary>
-        internal static string _0_2_262_1_10_1_1 {
+        public static string _0_2_262_1_10_1_1 {
             get {
                 return ResourceManager.GetString("0.2.262.1.10.1.1", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to European Qualified Certificate.
         /// </summary>
-        internal static string _0_4_0_1862_1_1 {
+        public static string _0_4_0_1862_1_1 {
             get {
                 return ResourceManager.GetString("0.4.0.1862.1.1", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Secure Signature Creation Device Qualified Certificate.
         /// </summary>
-        internal static string _0_4_0_1862_1_4 {
+        public static string _0_4_0_1862_1_4 {
             get {
                 return ResourceManager.GetString("0.4.0.1862.1.4", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id_userid.
         /// </summary>
-        internal static string _0_9_2342_19200300_100_1_1 {
+        public static string _0_9_2342_19200300_100_1_1 {
             get {
                 return ResourceManager.GetString("0.9.2342.19200300.100.1.1", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DC.
         /// </summary>
-        internal static string _0_9_2342_19200300_100_1_25 {
+        public static string _0_9_2342_19200300_100_1_25 {
             get {
                 return ResourceManager.GetString("0.9.2342.19200300.100.1.25", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id_rfc822Mailbox.
         /// </summary>
-        internal static string _0_9_2342_19200300_100_1_3 {
+        public static string _0_9_2342_19200300_100_1_3 {
             get {
                 return ResourceManager.GetString("0.9.2342.19200300.100.1.3", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to X.500-Algorithms.
         /// </summary>
-        internal static string _02_05_2008 {
+        public static string _02_05_2008 {
             get {
                 return ResourceManager.GetString("02.05.2008", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to timeStamp.
         /// </summary>
-        internal static string _1_2_3_4_9999 {
+        public static string _1_2_3_4_9999 {
             get {
                 return ResourceManager.GetString("1.2.3.4.9999", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to OGRN.
         /// </summary>
-        internal static string _1_2_643_100_1 {
+        public static string _1_2_643_100_1 {
             get {
                 return ResourceManager.GetString("1.2.643.100.1", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Subject&apos;s digital signing tool.
         /// </summary>
-        internal static string _1_2_643_100_111 {
+        public static string _1_2_643_100_111 {
             get {
                 return ResourceManager.GetString("1.2.643.100.111", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Issuer&apos;s digital signing tool.
         /// </summary>
-        internal static string _1_2_643_100_112 {
+        public static string _1_2_643_100_112 {
             get {
                 return ResourceManager.GetString("1.2.643.100.112", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to GOST R 34.10-2001.
         /// </summary>
-        internal static string _1_2_643_2_2_19 {
+        public static string _1_2_643_2_2_19 {
             get {
                 return ResourceManager.GetString("1.2.643.2.2.19", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to GOST R 34.10/34.11-2001.
         /// </summary>
-        internal static string _1_2_643_2_2_3 {
+        public static string _1_2_643_2_2_3 {
             get {
                 return ResourceManager.GetString("1.2.643.2.2.3", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to GOST R 3411-94 CryptoProParamSet.
         /// </summary>
-        internal static string _1_2_643_2_2_30_1 {
+        public static string _1_2_643_2_2_30_1 {
             get {
                 return ResourceManager.GetString("1.2.643.2.2.30.1", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to GOST R 3410-2001 CryptoPro-XchA.
         /// </summary>
-        internal static string _1_2_643_2_2_36_0 {
+        public static string _1_2_643_2_2_36_0 {
             get {
                 return ResourceManager.GetString("1.2.643.2.2.36.0", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to INN.
         /// </summary>
-        internal static string _1_2_643_3_131_1_1 {
+        public static string _1_2_643_3_131_1_1 {
             get {
                 return ResourceManager.GetString("1.2.643.3.131.1.1", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DSA.
         /// </summary>
-        internal static string _1_2_840_10040_4_1 {
+        public static string _1_2_840_10040_4_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10040.4.1", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DSA with SHA1.
         /// </summary>
-        internal static string _1_2_840_10040_4_3 {
+        public static string _1_2_840_10040_4_3 {
             get {
                 return ResourceManager.GetString("1.2.840.10040.4.3", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to prime-field.
         /// </summary>
-        internal static string _1_2_840_10045_1_1 {
+        public static string _1_2_840_10045_1_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.1.1", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECC.
         /// </summary>
-        internal static string _1_2_840_10045_2_1 {
+        public static string _1_2_840_10045_2_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.2.1", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ecPublicKeyRestricted.
         /// </summary>
-        internal static string _1_2_840_10045_2_2 {
+        public static string _1_2_840_10045_2_2 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.2.2", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to P-192.
         /// </summary>
-        internal static string _1_2_840_10045_3_1_1 {
+        public static string _1_2_840_10045_3_1_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.3.1.1", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to prime256v1.
         /// </summary>
-        internal static string _1_2_840_10045_3_1_7 {
+        public static string _1_2_840_10045_3_1_7 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.3.1.7", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECDSA with SHA1.
         /// </summary>
-        internal static string _1_2_840_10045_4_1 {
+        public static string _1_2_840_10045_4_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.1", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ecdsa-with-Recommended.
         /// </summary>
-        internal static string _1_2_840_10045_4_2 {
+        public static string _1_2_840_10045_4_2 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.2", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ecdsa-with-Specified.
         /// </summary>
-        internal static string _1_2_840_10045_4_3 {
+        public static string _1_2_840_10045_4_3 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.3", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECDSA with SHA224.
         /// </summary>
-        internal static string _1_2_840_10045_4_3_1 {
+        public static string _1_2_840_10045_4_3_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.3.1", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECDSA with SHA256.
         /// </summary>
-        internal static string _1_2_840_10045_4_3_2 {
+        public static string _1_2_840_10045_4_3_2 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.3.2", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECDSA with SHA384.
         /// </summary>
-        internal static string _1_2_840_10045_4_3_3 {
+        public static string _1_2_840_10045_4_3_3 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.3.3", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ECDSA with SHA512.
         /// </summary>
-        internal static string _1_2_840_10045_4_3_4 {
+        public static string _1_2_840_10045_4_3_4 {
             get {
                 return ResourceManager.GetString("1.2.840.10045.4.3.4", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DH.
         /// </summary>
-        internal static string _1_2_840_10046_2_1 {
+        public static string _1_2_840_10046_2_1 {
             get {
                 return ResourceManager.GetString("1.2.840.10046.2.1", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Version Info.
         /// </summary>
-        internal static string _1_2_840_113533_7_65_0 {
+        public static string _1_2_840_113533_7_65_0 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.65.0", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to clearance.
         /// </summary>
-        internal static string _1_2_840_113533_7_65_1 {
+        public static string _1_2_840_113533_7_65_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.65.1", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to noCRL.
         /// </summary>
-        internal static string _1_2_840_113533_7_65_2 {
+        public static string _1_2_840_113533_7_65_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.65.2", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cast40CBC.
         /// </summary>
-        internal static string _1_2_840_113533_7_66_0 {
+        public static string _1_2_840_113533_7_66_0 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.66.0", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cast64CBC.
         /// </summary>
-        internal static string _1_2_840_113533_7_66_1 {
+        public static string _1_2_840_113533_7_66_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.66.1", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cast64MAC.
         /// </summary>
-        internal static string _1_2_840_113533_7_66_2 {
+        public static string _1_2_840_113533_7_66_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.66.2", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust User.
         /// </summary>
-        internal static string _1_2_840_113533_7_67_0 {
+        public static string _1_2_840_113533_7_67_0 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.67.0", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust CA.
         /// </summary>
-        internal static string _1_2_840_113533_7_67_1 {
+        public static string _1_2_840_113533_7_67_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.67.1", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust CA Info.
         /// </summary>
-        internal static string _1_2_840_113533_7_68_0 {
+        public static string _1_2_840_113533_7_68_0 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.68.0", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Attribute Certificate.
         /// </summary>
-        internal static string _1_2_840_113533_7_68_10 {
+        public static string _1_2_840_113533_7_68_10 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.68.10", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Password Policy.
         /// </summary>
-        internal static string _1_2_840_113533_7_68_16 {
+        public static string _1_2_840_113533_7_68_16 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.68.16", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust User Role.
         /// </summary>
-        internal static string _1_2_840_113533_7_68_29 {
+        public static string _1_2_840_113533_7_68_29 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.68.29", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Role Map.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_0 {
+        public static string _1_2_840_113533_7_77_0 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.0", resourceCulture);
             }
@@ -468,7 +468,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Password Rules.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_1 {
+        public static string _1_2_840_113533_7_77_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.1", resourceCulture);
             }
@@ -477,7 +477,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Enc Key Type.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_10 {
+        public static string _1_2_840_113533_7_77_10 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.10", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Bus Ctrl Pol Oids.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_11 {
+        public static string _1_2_840_113533_7_77_11 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.11", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustBusCtrlFlags.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_12 {
+        public static string _1_2_840_113533_7_77_12 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.12", resourceCulture);
             }
@@ -504,7 +504,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPCertLifetime.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_13 {
+        public static string _1_2_840_113533_7_77_13 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.13", resourceCulture);
             }
@@ -513,7 +513,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustDNEncoding.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_14 {
+        public static string _1_2_840_113533_7_77_14 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.14", resourceCulture);
             }
@@ -522,7 +522,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustCertConsistencyChecking.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_15 {
+        public static string _1_2_840_113533_7_77_15 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.15", resourceCulture);
             }
@@ -531,7 +531,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustUserEncAlgm.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_16 {
+        public static string _1_2_840_113533_7_77_16 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.16", resourceCulture);
             }
@@ -540,7 +540,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustCRLGracePeriod.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_17 {
+        public static string _1_2_840_113533_7_77_17 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.17", resourceCulture);
             }
@@ -549,7 +549,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustSkipRLChecks.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_18 {
+        public static string _1_2_840_113533_7_77_18 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.18", resourceCulture);
             }
@@ -558,7 +558,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustHTTPProxySetting.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_19 {
+        public static string _1_2_840_113533_7_77_19 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.19", resourceCulture);
             }
@@ -567,7 +567,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Offline Profile Use.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_20 {
+        public static string _1_2_840_113533_7_77_20 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.20", resourceCulture);
             }
@@ -576,7 +576,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Allow Server Login.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_21 {
+        public static string _1_2_840_113533_7_77_21 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.21", resourceCulture);
             }
@@ -585,7 +585,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Enforce Identity Use.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_22 {
+        public static string _1_2_840_113533_7_77_22 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.22", resourceCulture);
             }
@@ -594,7 +594,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowPKCS12Export.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_23 {
+        public static string _1_2_840_113533_7_77_23 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.23", resourceCulture);
             }
@@ -603,7 +603,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPKCS12ExportMinimumHashCount.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_24 {
+        public static string _1_2_840_113533_7_77_24 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.24", resourceCulture);
             }
@@ -612,7 +612,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustClientNKeyType.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_25 {
+        public static string _1_2_840_113533_7_77_25 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.25", resourceCulture);
             }
@@ -621,7 +621,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowed3rdPartySymmetricAlgms.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_26 {
+        public static string _1_2_840_113533_7_77_26 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.26", resourceCulture);
             }
@@ -630,7 +630,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPreventManualAppRegistration.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_27 {
+        public static string _1_2_840_113533_7_77_27 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.27", resourceCulture);
             }
@@ -639,7 +639,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPasswordMaxAttempts.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_28 {
+        public static string _1_2_840_113533_7_77_28 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.28", resourceCulture);
             }
@@ -648,7 +648,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPasswordMinTime.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_29 {
+        public static string _1_2_840_113533_7_77_29 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.29", resourceCulture);
             }
@@ -657,7 +657,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowedSymmetricAlgms.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_3 {
+        public static string _1_2_840_113533_7_77_3 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.3", resourceCulture);
             }
@@ -666,7 +666,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPasswordMinSuspend.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_30 {
+        public static string _1_2_840_113533_7_77_30 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.30", resourceCulture);
             }
@@ -675,7 +675,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowCAPIExport.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_31 {
+        public static string _1_2_840_113533_7_77_31 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.31", resourceCulture);
             }
@@ -684,7 +684,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust ICE Admin Policy.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_32 {
+        public static string _1_2_840_113533_7_77_32 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.32", resourceCulture);
             }
@@ -693,7 +693,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Enable Cache Usage.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_33 {
+        public static string _1_2_840_113533_7_77_33 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.33", resourceCulture);
             }
@@ -702,7 +702,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustUserEncAlgm2.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_34 {
+        public static string _1_2_840_113533_7_77_34 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.34", resourceCulture);
             }
@@ -711,7 +711,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustSecureDeliveryServiceSMTP.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_35 {
+        public static string _1_2_840_113533_7_77_35 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.35", resourceCulture);
             }
@@ -720,7 +720,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustContentScannerServiceSMTP.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_36 {
+        public static string _1_2_840_113533_7_77_36 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.36", resourceCulture);
             }
@@ -729,7 +729,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustExpressSearchSourceOrder.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_37 {
+        public static string _1_2_840_113533_7_77_37 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.37", resourceCulture);
             }
@@ -738,7 +738,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust CAPI Policy.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_38 {
+        public static string _1_2_840_113533_7_77_38 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.38", resourceCulture);
             }
@@ -747,7 +747,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Search BaseSearchOrder.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_39 {
+        public static string _1_2_840_113533_7_77_39 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.39", resourceCulture);
             }
@@ -756,7 +756,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowedHashAlgms.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_4 {
+        public static string _1_2_840_113533_7_77_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.4", resourceCulture);
             }
@@ -765,7 +765,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustCRLGracePercentage.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_40 {
+        public static string _1_2_840_113533_7_77_40 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.40", resourceCulture);
             }
@@ -774,7 +774,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustPublicTokenCerts.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_49 {
+        public static string _1_2_840_113533_7_77_49 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.49", resourceCulture);
             }
@@ -783,7 +783,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustCSetFlags.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_5 {
+        public static string _1_2_840_113533_7_77_5 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.5", resourceCulture);
             }
@@ -792,7 +792,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustProtectKeyTransfer.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_50 {
+        public static string _1_2_840_113533_7_77_50 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.50", resourceCulture);
             }
@@ -801,7 +801,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowTokenSpilloverFile.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_57 {
+        public static string _1_2_840_113533_7_77_57 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.57", resourceCulture);
             }
@@ -810,7 +810,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustMaximumTokenKeyHistory.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_58 {
+        public static string _1_2_840_113533_7_77_58 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.58", resourceCulture);
             }
@@ -819,7 +819,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustSelfRevokePolicy.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_59 {
+        public static string _1_2_840_113533_7_77_59 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.59", resourceCulture);
             }
@@ -828,7 +828,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustMessageOfTheDay.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_6 {
+        public static string _1_2_840_113533_7_77_6 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.6", resourceCulture);
             }
@@ -837,7 +837,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAllowPSSwitch.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_60 {
+        public static string _1_2_840_113533_7_77_60 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.60", resourceCulture);
             }
@@ -846,7 +846,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Management Client.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_61 {
+        public static string _1_2_840_113533_7_77_61 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.61", resourceCulture);
             }
@@ -855,7 +855,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustForceOriginalCDPolicyCompliance.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_62 {
+        public static string _1_2_840_113533_7_77_62 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.62", resourceCulture);
             }
@@ -864,7 +864,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust All Exportable.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_63 {
+        public static string _1_2_840_113533_7_77_63 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.63", resourceCulture);
             }
@@ -873,7 +873,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustProtocolSymmetricEncAlgs.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_64 {
+        public static string _1_2_840_113533_7_77_64 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.64", resourceCulture);
             }
@@ -882,7 +882,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustProtocolSigningAlgs.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_65 {
+        public static string _1_2_840_113533_7_77_65 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.65", resourceCulture);
             }
@@ -891,7 +891,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAttrName.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_7 {
+        public static string _1_2_840_113533_7_77_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.7", resourceCulture);
             }
@@ -900,7 +900,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entrust Application Flags.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_8 {
+        public static string _1_2_840_113533_7_77_8 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.8", resourceCulture);
             }
@@ -909,7 +909,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustSignKeyType.
         /// </summary>
-        internal static string _1_2_840_113533_7_77_9 {
+        public static string _1_2_840_113533_7_77_9 {
             get {
                 return ResourceManager.GetString("1.2.840.113533.7.77.9", resourceCulture);
             }
@@ -918,7 +918,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to pkcs-1.
         /// </summary>
-        internal static string _1_2_840_113549_1_1 {
+        public static string _1_2_840_113549_1_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1", resourceCulture);
             }
@@ -927,7 +927,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_1 {
+        public static string _1_2_840_113549_1_1_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.1", resourceCulture);
             }
@@ -936,7 +936,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA with Probabilistic Signature Scheme (PSS).
         /// </summary>
-        internal static string _1_2_840_113549_1_1_10 {
+        public static string _1_2_840_113549_1_1_10 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.10", resourceCulture);
             }
@@ -945,7 +945,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA256 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_11 {
+        public static string _1_2_840_113549_1_1_11 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.11", resourceCulture);
             }
@@ -954,7 +954,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA384 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_12 {
+        public static string _1_2_840_113549_1_1_12 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.12", resourceCulture);
             }
@@ -963,7 +963,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA512 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_13 {
+        public static string _1_2_840_113549_1_1_13 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.13", resourceCulture);
             }
@@ -972,7 +972,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to sha224WithRSAEncryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_14 {
+        public static string _1_2_840_113549_1_1_14 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.14", resourceCulture);
             }
@@ -981,7 +981,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD2 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_2 {
+        public static string _1_2_840_113549_1_1_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.2", resourceCulture);
             }
@@ -990,7 +990,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD4 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_3 {
+        public static string _1_2_840_113549_1_1_3 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.3", resourceCulture);
             }
@@ -999,7 +999,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD5 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_4 {
+        public static string _1_2_840_113549_1_1_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.4", resourceCulture);
             }
@@ -1008,7 +1008,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA1 with RSA encryption.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_5 {
+        public static string _1_2_840_113549_1_1_5 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.5", resourceCulture);
             }
@@ -1017,7 +1017,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA Optimal Asymmetric Encryption Padding (OAEP) encryption set.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_6 {
+        public static string _1_2_840_113549_1_1_6 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.6", resourceCulture);
             }
@@ -1026,7 +1026,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Public-key encryption scheme combining Optimal Asymmetric Encryption Padding (OAEP) with RSA.
         /// </summary>
-        internal static string _1_2_840_113549_1_1_7 {
+        public static string _1_2_840_113549_1_1_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.7", resourceCulture);
             }
@@ -1035,7 +1035,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA algorithm that uses the Mask Generator Function 1 (MGF1).
         /// </summary>
-        internal static string _1_2_840_113549_1_1_8 {
+        public static string _1_2_840_113549_1_1_8 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.8", resourceCulture);
             }
@@ -1044,7 +1044,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA algorithm (szOID_RSA_PSPECIFIED).
         /// </summary>
-        internal static string _1_2_840_113549_1_1_9 {
+        public static string _1_2_840_113549_1_1_9 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.9", resourceCulture);
             }
@@ -1053,7 +1053,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DH.
         /// </summary>
-        internal static string _1_2_840_113549_1_3_1 {
+        public static string _1_2_840_113549_1_3_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.3.1", resourceCulture);
             }
@@ -1062,7 +1062,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to pkcs-7.
         /// </summary>
-        internal static string _1_2_840_113549_1_7 {
+        public static string _1_2_840_113549_1_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7", resourceCulture);
             }
@@ -1071,7 +1071,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Data.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_1 {
+        public static string _1_2_840_113549_1_7_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.1", resourceCulture);
             }
@@ -1080,7 +1080,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Signed.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_2 {
+        public static string _1_2_840_113549_1_7_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.2", resourceCulture);
             }
@@ -1089,7 +1089,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Enveloped.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_3 {
+        public static string _1_2_840_113549_1_7_3 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.3", resourceCulture);
             }
@@ -1098,7 +1098,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Signed Enveloped.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_4 {
+        public static string _1_2_840_113549_1_7_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.4", resourceCulture);
             }
@@ -1107,7 +1107,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Digested.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_5 {
+        public static string _1_2_840_113549_1_7_5 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.5", resourceCulture);
             }
@@ -1116,7 +1116,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PKCS 7 Encrypted.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_6 {
+        public static string _1_2_840_113549_1_7_6 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.6", resourceCulture);
             }
@@ -1125,7 +1125,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dataWithAttributes.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_7 {
+        public static string _1_2_840_113549_1_7_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.7", resourceCulture);
             }
@@ -1134,7 +1134,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to encryptedPrivateKeyInfo.
         /// </summary>
-        internal static string _1_2_840_113549_1_7_8 {
+        public static string _1_2_840_113549_1_7_8 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.7.8", resourceCulture);
             }
@@ -1143,7 +1143,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Email Address.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_1 {
+        public static string _1_2_840_113549_1_9_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.1", resourceCulture);
             }
@@ -1152,7 +1152,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Extensions.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_14 {
+        public static string _1_2_840_113549_1_9_14 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.14", resourceCulture);
             }
@@ -1161,7 +1161,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SMIME Capabilities.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_15 {
+        public static string _1_2_840_113549_1_9_15 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.15", resourceCulture);
             }
@@ -1170,7 +1170,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Prefer Signed Data.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_15_1 {
+        public static string _1_2_840_113549_1_9_15_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.15.1", resourceCulture);
             }
@@ -1179,7 +1179,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Signing certificate V2.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_16_2_47 {
+        public static string _1_2_840_113549_1_9_16_2_47 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.16.2.47", resourceCulture);
             }
@@ -1188,7 +1188,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-alg-CMS3DESwrap.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_16_3_6 {
+        public static string _1_2_840_113549_1_9_16_3_6 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.16.3.6", resourceCulture);
             }
@@ -1197,7 +1197,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unstructured Name.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_2 {
+        public static string _1_2_840_113549_1_9_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.2", resourceCulture);
             }
@@ -1206,7 +1206,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Local Key ID.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_21 {
+        public static string _1_2_840_113549_1_9_21 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.21", resourceCulture);
             }
@@ -1215,7 +1215,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to x509Certificate(for.PKCS.#12).
         /// </summary>
-        internal static string _1_2_840_113549_1_9_22_1 {
+        public static string _1_2_840_113549_1_9_22_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.22.1", resourceCulture);
             }
@@ -1224,7 +1224,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to x509Crl(for.PKCS.#12).
         /// </summary>
-        internal static string _1_2_840_113549_1_9_23_1 {
+        public static string _1_2_840_113549_1_9_23_1 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.23.1", resourceCulture);
             }
@@ -1233,7 +1233,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Content Type.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_3 {
+        public static string _1_2_840_113549_1_9_3 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.3", resourceCulture);
             }
@@ -1242,7 +1242,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Message Digest.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_4 {
+        public static string _1_2_840_113549_1_9_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.4", resourceCulture);
             }
@@ -1251,7 +1251,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Signing Time.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_5 {
+        public static string _1_2_840_113549_1_9_5 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.5", resourceCulture);
             }
@@ -1260,7 +1260,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Counter Sign.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_6 {
+        public static string _1_2_840_113549_1_9_6 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.6", resourceCulture);
             }
@@ -1269,7 +1269,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Challenge Password.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_7 {
+        public static string _1_2_840_113549_1_9_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.7", resourceCulture);
             }
@@ -1278,7 +1278,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unstructured Addresss.
         /// </summary>
-        internal static string _1_2_840_113549_1_9_8 {
+        public static string _1_2_840_113549_1_9_8 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.8", resourceCulture);
             }
@@ -1287,7 +1287,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD2.
         /// </summary>
-        internal static string _1_2_840_113549_2_2 {
+        public static string _1_2_840_113549_2_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.2.2", resourceCulture);
             }
@@ -1296,7 +1296,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD4.
         /// </summary>
-        internal static string _1_2_840_113549_2_4 {
+        public static string _1_2_840_113549_2_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.2.4", resourceCulture);
             }
@@ -1305,7 +1305,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD5.
         /// </summary>
-        internal static string _1_2_840_113549_2_5 {
+        public static string _1_2_840_113549_2_5 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.2.5", resourceCulture);
             }
@@ -1314,7 +1314,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RC2.
         /// </summary>
-        internal static string _1_2_840_113549_3_2 {
+        public static string _1_2_840_113549_3_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.3.2", resourceCulture);
             }
@@ -1323,7 +1323,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RC4.
         /// </summary>
-        internal static string _1_2_840_113549_3_4 {
+        public static string _1_2_840_113549_3_4 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.3.4", resourceCulture);
             }
@@ -1332,7 +1332,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 3DES.
         /// </summary>
-        internal static string _1_2_840_113549_3_7 {
+        public static string _1_2_840_113549_3_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.3.7", resourceCulture);
             }
@@ -1341,7 +1341,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K-163.
         /// </summary>
-        internal static string _1_3_132_0_1 {
+        public static string _1_3_132_0_1 {
             get {
                 return ResourceManager.GetString("1.3.132.0.1", resourceCulture);
             }
@@ -1350,7 +1350,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p256k1.
         /// </summary>
-        internal static string _1_3_132_0_10 {
+        public static string _1_3_132_0_10 {
             get {
                 return ResourceManager.GetString("1.3.132.0.10", resourceCulture);
             }
@@ -1359,7 +1359,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to B-163.
         /// </summary>
-        internal static string _1_3_132_0_15 {
+        public static string _1_3_132_0_15 {
             get {
                 return ResourceManager.GetString("1.3.132.0.15", resourceCulture);
             }
@@ -1368,7 +1368,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K-283.
         /// </summary>
-        internal static string _1_3_132_0_16 {
+        public static string _1_3_132_0_16 {
             get {
                 return ResourceManager.GetString("1.3.132.0.16", resourceCulture);
             }
@@ -1377,7 +1377,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to B-283.
         /// </summary>
-        internal static string _1_3_132_0_17 {
+        public static string _1_3_132_0_17 {
             get {
                 return ResourceManager.GetString("1.3.132.0.17", resourceCulture);
             }
@@ -1386,7 +1386,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9t163r1.
         /// </summary>
-        internal static string _1_3_132_0_2 {
+        public static string _1_3_132_0_2 {
             get {
                 return ResourceManager.GetString("1.3.132.0.2", resourceCulture);
             }
@@ -1395,7 +1395,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9t193r1.
         /// </summary>
-        internal static string _1_3_132_0_24 {
+        public static string _1_3_132_0_24 {
             get {
                 return ResourceManager.GetString("1.3.132.0.24", resourceCulture);
             }
@@ -1404,7 +1404,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9t193r2.
         /// </summary>
-        internal static string _1_3_132_0_25 {
+        public static string _1_3_132_0_25 {
             get {
                 return ResourceManager.GetString("1.3.132.0.25", resourceCulture);
             }
@@ -1413,7 +1413,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K-233.
         /// </summary>
-        internal static string _1_3_132_0_26 {
+        public static string _1_3_132_0_26 {
             get {
                 return ResourceManager.GetString("1.3.132.0.26", resourceCulture);
             }
@@ -1422,7 +1422,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to B-233.
         /// </summary>
-        internal static string _1_3_132_0_27 {
+        public static string _1_3_132_0_27 {
             get {
                 return ResourceManager.GetString("1.3.132.0.27", resourceCulture);
             }
@@ -1431,7 +1431,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9t239k1.
         /// </summary>
-        internal static string _1_3_132_0_3 {
+        public static string _1_3_132_0_3 {
             get {
                 return ResourceManager.GetString("1.3.132.0.3", resourceCulture);
             }
@@ -1440,7 +1440,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p160r2.
         /// </summary>
-        internal static string _1_3_132_0_30 {
+        public static string _1_3_132_0_30 {
             get {
                 return ResourceManager.GetString("1.3.132.0.30", resourceCulture);
             }
@@ -1449,7 +1449,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p192k1.
         /// </summary>
-        internal static string _1_3_132_0_31 {
+        public static string _1_3_132_0_31 {
             get {
                 return ResourceManager.GetString("1.3.132.0.31", resourceCulture);
             }
@@ -1458,7 +1458,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p224k1.
         /// </summary>
-        internal static string _1_3_132_0_32 {
+        public static string _1_3_132_0_32 {
             get {
                 return ResourceManager.GetString("1.3.132.0.32", resourceCulture);
             }
@@ -1467,7 +1467,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to P-224.
         /// </summary>
-        internal static string _1_3_132_0_33 {
+        public static string _1_3_132_0_33 {
             get {
                 return ResourceManager.GetString("1.3.132.0.33", resourceCulture);
             }
@@ -1476,7 +1476,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to P-384.
         /// </summary>
-        internal static string _1_3_132_0_34 {
+        public static string _1_3_132_0_34 {
             get {
                 return ResourceManager.GetString("1.3.132.0.34", resourceCulture);
             }
@@ -1485,7 +1485,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to P-521.
         /// </summary>
-        internal static string _1_3_132_0_35 {
+        public static string _1_3_132_0_35 {
             get {
                 return ResourceManager.GetString("1.3.132.0.35", resourceCulture);
             }
@@ -1494,7 +1494,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K-409.
         /// </summary>
-        internal static string _1_3_132_0_36 {
+        public static string _1_3_132_0_36 {
             get {
                 return ResourceManager.GetString("1.3.132.0.36", resourceCulture);
             }
@@ -1503,7 +1503,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to B-409.
         /// </summary>
-        internal static string _1_3_132_0_37 {
+        public static string _1_3_132_0_37 {
             get {
                 return ResourceManager.GetString("1.3.132.0.37", resourceCulture);
             }
@@ -1512,7 +1512,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to K-571.
         /// </summary>
-        internal static string _1_3_132_0_38 {
+        public static string _1_3_132_0_38 {
             get {
                 return ResourceManager.GetString("1.3.132.0.38", resourceCulture);
             }
@@ -1521,7 +1521,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to B-571.
         /// </summary>
-        internal static string _1_3_132_0_39 {
+        public static string _1_3_132_0_39 {
             get {
                 return ResourceManager.GetString("1.3.132.0.39", resourceCulture);
             }
@@ -1530,7 +1530,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p160r1.
         /// </summary>
-        internal static string _1_3_132_0_8 {
+        public static string _1_3_132_0_8 {
             get {
                 return ResourceManager.GetString("1.3.132.0.8", resourceCulture);
             }
@@ -1539,7 +1539,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ansix9p160k1.
         /// </summary>
-        internal static string _1_3_132_0_9 {
+        public static string _1_3_132_0_9 {
             get {
                 return ResourceManager.GetString("1.3.132.0.9", resourceCulture);
             }
@@ -1548,7 +1548,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-stdDH-sha224kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_11_0 {
+        public static string _1_3_132_1_11_0 {
             get {
                 return ResourceManager.GetString("1.3.132.1.11.0", resourceCulture);
             }
@@ -1557,7 +1557,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-stdDH-sha256kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_11_1 {
+        public static string _1_3_132_1_11_1 {
             get {
                 return ResourceManager.GetString("1.3.132.1.11.1", resourceCulture);
             }
@@ -1566,7 +1566,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-stdDH-sha384kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_11_2 {
+        public static string _1_3_132_1_11_2 {
             get {
                 return ResourceManager.GetString("1.3.132.1.11.2", resourceCulture);
             }
@@ -1575,7 +1575,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-stdDH-sha512kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_11_3 {
+        public static string _1_3_132_1_11_3 {
             get {
                 return ResourceManager.GetString("1.3.132.1.11.3", resourceCulture);
             }
@@ -1584,7 +1584,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ecDH.
         /// </summary>
-        internal static string _1_3_132_1_12 {
+        public static string _1_3_132_1_12 {
             get {
                 return ResourceManager.GetString("1.3.132.1.12", resourceCulture);
             }
@@ -1593,7 +1593,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ecMQV.
         /// </summary>
-        internal static string _1_3_132_1_13 {
+        public static string _1_3_132_1_13 {
             get {
                 return ResourceManager.GetString("1.3.132.1.13", resourceCulture);
             }
@@ -1602,7 +1602,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-cofactorDH-sha224kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_14_0 {
+        public static string _1_3_132_1_14_0 {
             get {
                 return ResourceManager.GetString("1.3.132.1.14.0", resourceCulture);
             }
@@ -1611,7 +1611,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-cofactorDH-sha256kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_14_1 {
+        public static string _1_3_132_1_14_1 {
             get {
                 return ResourceManager.GetString("1.3.132.1.14.1", resourceCulture);
             }
@@ -1620,7 +1620,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-cofactorDH-sha384kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_14_2 {
+        public static string _1_3_132_1_14_2 {
             get {
                 return ResourceManager.GetString("1.3.132.1.14.2", resourceCulture);
             }
@@ -1629,7 +1629,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-cofactorDH-sha512kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_14_3 {
+        public static string _1_3_132_1_14_3 {
             get {
                 return ResourceManager.GetString("1.3.132.1.14.3", resourceCulture);
             }
@@ -1638,7 +1638,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mqvSinglePass-sha224kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_15_0 {
+        public static string _1_3_132_1_15_0 {
             get {
                 return ResourceManager.GetString("1.3.132.1.15.0", resourceCulture);
             }
@@ -1647,7 +1647,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mqvSinglePass-sha256kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_15_1 {
+        public static string _1_3_132_1_15_1 {
             get {
                 return ResourceManager.GetString("1.3.132.1.15.1", resourceCulture);
             }
@@ -1656,7 +1656,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mqvSinglePass-sha384kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_15_2 {
+        public static string _1_3_132_1_15_2 {
             get {
                 return ResourceManager.GetString("1.3.132.1.15.2", resourceCulture);
             }
@@ -1665,7 +1665,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mqvSinglePass-sha512kdf-scheme.
         /// </summary>
-        internal static string _1_3_132_1_15_3 {
+        public static string _1_3_132_1_15_3 {
             get {
                 return ResourceManager.GetString("1.3.132.1.15.3", resourceCulture);
             }
@@ -1674,7 +1674,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mqvSinglePass-sha1kdf-scheme.
         /// </summary>
-        internal static string _1_3_133_16_840_63_0_16 {
+        public static string _1_3_133_16_840_63_0_16 {
             get {
                 return ResourceManager.GetString("1.3.133.16.840.63.0.16", resourceCulture);
             }
@@ -1683,7 +1683,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-stdDH-sha1kdf-scheme.
         /// </summary>
-        internal static string _1_3_133_16_840_63_0_2 {
+        public static string _1_3_133_16_840_63_0_2 {
             get {
                 return ResourceManager.GetString("1.3.133.16.840.63.0.2", resourceCulture);
             }
@@ -1692,7 +1692,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dhSinglePass-cofactorDH-sha1kdf-scheme.
         /// </summary>
-        internal static string _1_3_133_16_840_63_0_3 {
+        public static string _1_3_133_16_840_63_0_3 {
             get {
                 return ResourceManager.GetString("1.3.133.16.840.63.0.3", resourceCulture);
             }
@@ -1701,7 +1701,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to desMAC.
         /// </summary>
-        internal static string _1_3_14_3_2_10 {
+        public static string _1_3_14_3_2_10 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.10", resourceCulture);
             }
@@ -1710,7 +1710,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DSA.
         /// </summary>
-        internal static string _1_3_14_3_2_12 {
+        public static string _1_3_14_3_2_12 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.12", resourceCulture);
             }
@@ -1719,7 +1719,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DSA with SHA.
         /// </summary>
-        internal static string _1_3_14_3_2_13 {
+        public static string _1_3_14_3_2_13 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.13", resourceCulture);
             }
@@ -1728,7 +1728,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA with RSA signature.
         /// </summary>
-        internal static string _1_3_14_3_2_15 {
+        public static string _1_3_14_3_2_15 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.15", resourceCulture);
             }
@@ -1737,7 +1737,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA.
         /// </summary>
-        internal static string _1_3_14_3_2_18 {
+        public static string _1_3_14_3_2_18 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.18", resourceCulture);
             }
@@ -1746,7 +1746,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD4 with RSA.
         /// </summary>
-        internal static string _1_3_14_3_2_2 {
+        public static string _1_3_14_3_2_2 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.2", resourceCulture);
             }
@@ -1755,7 +1755,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to RSA KeyTransport.
         /// </summary>
-        internal static string _1_3_14_3_2_22 {
+        public static string _1_3_14_3_2_22 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.22", resourceCulture);
             }
@@ -1764,7 +1764,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA1.
         /// </summary>
-        internal static string _1_3_14_3_2_26 {
+        public static string _1_3_14_3_2_26 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.26", resourceCulture);
             }
@@ -1773,7 +1773,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DSA with SHA1.
         /// </summary>
-        internal static string _1_3_14_3_2_27 {
+        public static string _1_3_14_3_2_27 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.27", resourceCulture);
             }
@@ -1782,7 +1782,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA1 with RSA signature.
         /// </summary>
-        internal static string _1_3_14_3_2_29 {
+        public static string _1_3_14_3_2_29 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.29", resourceCulture);
             }
@@ -1791,7 +1791,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD5 with RSA.
         /// </summary>
-        internal static string _1_3_14_3_2_3 {
+        public static string _1_3_14_3_2_3 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.3", resourceCulture);
             }
@@ -1800,7 +1800,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD4 with RSA encryption.
         /// </summary>
-        internal static string _1_3_14_3_2_4 {
+        public static string _1_3_14_3_2_4 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.4", resourceCulture);
             }
@@ -1809,7 +1809,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to desECB.
         /// </summary>
-        internal static string _1_3_14_3_2_6 {
+        public static string _1_3_14_3_2_6 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.6", resourceCulture);
             }
@@ -1818,7 +1818,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DES.
         /// </summary>
-        internal static string _1_3_14_3_2_7 {
+        public static string _1_3_14_3_2_7 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.7", resourceCulture);
             }
@@ -1827,7 +1827,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to desOFB.
         /// </summary>
-        internal static string _1_3_14_3_2_8 {
+        public static string _1_3_14_3_2_8 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.8", resourceCulture);
             }
@@ -1836,7 +1836,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to desCFB.
         /// </summary>
-        internal static string _1_3_14_3_2_9 {
+        public static string _1_3_14_3_2_9 {
             get {
                 return ResourceManager.GetString("1.3.14.3.2.9", resourceCulture);
             }
@@ -1845,7 +1845,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to elGamal.
         /// </summary>
-        internal static string _1_3_14_7_2_1_1 {
+        public static string _1_3_14_7_2_1_1 {
             get {
                 return ResourceManager.GetString("1.3.14.7.2.1.1", resourceCulture);
             }
@@ -1854,7 +1854,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MD2 with RSA.
         /// </summary>
-        internal static string _1_3_14_7_2_3_1 {
+        public static string _1_3_14_7_2_3_1 {
             get {
                 return ResourceManager.GetString("1.3.14.7.2.3.1", resourceCulture);
             }
@@ -1863,7 +1863,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to md2WithElGamal.
         /// </summary>
-        internal static string _1_3_14_7_2_3_2 {
+        public static string _1_3_14_7_2_3_2 {
             get {
                 return ResourceManager.GetString("1.3.14.7.2.3.2", resourceCulture);
             }
@@ -1872,7 +1872,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP160r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_1 {
+        public static string _1_3_36_3_3_2_8_1_1_1 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.1", resourceCulture);
             }
@@ -1881,7 +1881,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP320t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_10 {
+        public static string _1_3_36_3_3_2_8_1_1_10 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.10", resourceCulture);
             }
@@ -1890,7 +1890,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP384r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_11 {
+        public static string _1_3_36_3_3_2_8_1_1_11 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.11", resourceCulture);
             }
@@ -1899,7 +1899,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP384t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_12 {
+        public static string _1_3_36_3_3_2_8_1_1_12 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.12", resourceCulture);
             }
@@ -1908,7 +1908,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP512r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_13 {
+        public static string _1_3_36_3_3_2_8_1_1_13 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.13", resourceCulture);
             }
@@ -1917,7 +1917,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP512t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_14 {
+        public static string _1_3_36_3_3_2_8_1_1_14 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.14", resourceCulture);
             }
@@ -1926,7 +1926,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP160t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_2 {
+        public static string _1_3_36_3_3_2_8_1_1_2 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.2", resourceCulture);
             }
@@ -1935,7 +1935,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP192r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_3 {
+        public static string _1_3_36_3_3_2_8_1_1_3 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.3", resourceCulture);
             }
@@ -1944,7 +1944,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP192t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_4 {
+        public static string _1_3_36_3_3_2_8_1_1_4 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.4", resourceCulture);
             }
@@ -1953,7 +1953,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP224r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_5 {
+        public static string _1_3_36_3_3_2_8_1_1_5 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.5", resourceCulture);
             }
@@ -1962,7 +1962,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP224t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_6 {
+        public static string _1_3_36_3_3_2_8_1_1_6 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.6", resourceCulture);
             }
@@ -1971,7 +1971,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP256r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_7 {
+        public static string _1_3_36_3_3_2_8_1_1_7 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.7", resourceCulture);
             }
@@ -1980,7 +1980,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP256t1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_8 {
+        public static string _1_3_36_3_3_2_8_1_1_8 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.8", resourceCulture);
             }
@@ -1989,7 +1989,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brainpoolP320r1.
         /// </summary>
-        internal static string _1_3_36_3_3_2_8_1_1_9 {
+        public static string _1_3_36_3_3_2_8_1_1_9 {
             get {
                 return ResourceManager.GetString("1.3.36.3.3.2.8.1.1.9", resourceCulture);
             }
@@ -1998,7 +1998,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certifcate Trust List.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_1 {
+        public static string _1_3_6_1_4_1_311_10_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.1", resourceCulture);
             }
@@ -2007,7 +2007,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CMC Attributes.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_10_1 {
+        public static string _1_3_6_1_4_1_311_10_10_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.10.1", resourceCulture);
             }
@@ -2016,7 +2016,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to All application policies.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_12_1 {
+        public static string _1_3_6_1_4_1_311_10_12_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.12.1", resourceCulture);
             }
@@ -2025,7 +2025,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Next Update Location.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_2 {
+        public static string _1_3_6_1_4_1_311_10_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.2", resourceCulture);
             }
@@ -2034,7 +2034,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Microsoft Trust List Signing.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_1 {
+        public static string _1_3_6_1_4_1_311_10_3_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.1", resourceCulture);
             }
@@ -2043,7 +2043,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Qualified Subordination.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_10 {
+        public static string _1_3_6_1_4_1_311_10_3_10 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.10", resourceCulture);
             }
@@ -2052,7 +2052,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Key Recovery.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_11 {
+        public static string _1_3_6_1_4_1_311_10_3_11 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.11", resourceCulture);
             }
@@ -2061,7 +2061,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Document Signing.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_12 {
+        public static string _1_3_6_1_4_1_311_10_3_12 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.12", resourceCulture);
             }
@@ -2070,7 +2070,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Microsoft Time Stamping.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_2 {
+        public static string _1_3_6_1_4_1_311_10_3_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.2", resourceCulture);
             }
@@ -2079,7 +2079,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Serialized Signature Serial Number.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_3_1 {
+        public static string _1_3_6_1_4_1_311_10_3_3_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.3.1", resourceCulture);
             }
@@ -2088,7 +2088,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Encrypting File System.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_4 {
+        public static string _1_3_6_1_4_1_311_10_3_4 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.4", resourceCulture);
             }
@@ -2097,7 +2097,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to File Recovery.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_4_1 {
+        public static string _1_3_6_1_4_1_311_10_3_4_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.4.1", resourceCulture);
             }
@@ -2106,7 +2106,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Windows Hardware Driver Verification.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_5 {
+        public static string _1_3_6_1_4_1_311_10_3_5 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.5", resourceCulture);
             }
@@ -2115,7 +2115,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Windows System Component Verification.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_6 {
+        public static string _1_3_6_1_4_1_311_10_3_6 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.6", resourceCulture);
             }
@@ -2124,7 +2124,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to OEM Windows System Component Verification.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_7 {
+        public static string _1_3_6_1_4_1_311_10_3_7 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.7", resourceCulture);
             }
@@ -2133,7 +2133,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Embedded Windows System Component Verification.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_8 {
+        public static string _1_3_6_1_4_1_311_10_3_8 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.8", resourceCulture);
             }
@@ -2142,7 +2142,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Root List Signer.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_3_9 {
+        public static string _1_3_6_1_4_1_311_10_3_9 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.3.9", resourceCulture);
             }
@@ -2151,7 +2151,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yes or No Trust.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_4_1 {
+        public static string _1_3_6_1_4_1_311_10_4_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.4.1", resourceCulture);
             }
@@ -2160,7 +2160,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Digital Rights.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_5_1 {
+        public static string _1_3_6_1_4_1_311_10_5_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.5.1", resourceCulture);
             }
@@ -2169,7 +2169,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Key Pack Licenses.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_6_1 {
+        public static string _1_3_6_1_4_1_311_10_6_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.6.1", resourceCulture);
             }
@@ -2178,7 +2178,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to License Server Verification.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_6_2 {
+        public static string _1_3_6_1_4_1_311_10_6_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.6.2", resourceCulture);
             }
@@ -2187,7 +2187,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cross-Certificate Distribution Points.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_10_9_1 {
+        public static string _1_3_6_1_4_1_311_10_9_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.10.9.1", resourceCulture);
             }
@@ -2196,7 +2196,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Enrollment Name Value Pair.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_13_2_1 {
+        public static string _1_3_6_1_4_1_311_13_2_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.13.2.1", resourceCulture);
             }
@@ -2205,7 +2205,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Enrollment CSP.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_13_2_2 {
+        public static string _1_3_6_1_4_1_311_13_2_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.13.2.2", resourceCulture);
             }
@@ -2214,7 +2214,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to OS Version.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_13_2_3 {
+        public static string _1_3_6_1_4_1_311_13_2_3 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.13.2.3", resourceCulture);
             }
@@ -2223,7 +2223,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SpcSpAgencyInfo.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_2_1_10 {
+        public static string _1_3_6_1_4_1_311_2_1_10 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.2.1.10", resourceCulture);
             }
@@ -2232,7 +2232,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Extensions.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_2_1_14 {
+        public static string _1_3_6_1_4_1_311_2_1_14 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.2.1.14", resourceCulture);
             }
@@ -2241,7 +2241,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SpcMinimalCriteria.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_2_1_26 {
+        public static string _1_3_6_1_4_1_311_2_1_26 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.2.1.26", resourceCulture);
             }
@@ -2250,7 +2250,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SpcFinancialCriteria.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_2_1_27 {
+        public static string _1_3_6_1_4_1_311_2_1_27 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.2.1.27", resourceCulture);
             }
@@ -2259,7 +2259,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CTL Usage.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_1 {
+        public static string _1_3_6_1_4_1_311_20_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.1", resourceCulture);
             }
@@ -2268,7 +2268,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Template Name.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_2 {
+        public static string _1_3_6_1_4_1_311_20_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.2", resourceCulture);
             }
@@ -2277,7 +2277,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Request Agent.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_2_1 {
+        public static string _1_3_6_1_4_1_311_20_2_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.2.1", resourceCulture);
             }
@@ -2286,7 +2286,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Smart Card Logon.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_2_2 {
+        public static string _1_3_6_1_4_1_311_20_2_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.2.2", resourceCulture);
             }
@@ -2295,7 +2295,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Principal Name.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_2_3 {
+        public static string _1_3_6_1_4_1_311_20_2_3 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.2.3", resourceCulture);
             }
@@ -2304,7 +2304,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Manifold.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_20_3 {
+        public static string _1_3_6_1_4_1_311_20_3 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.20.3", resourceCulture);
             }
@@ -2313,7 +2313,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CA Version.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_1 {
+        public static string _1_3_6_1_4_1_311_21_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.1", resourceCulture);
             }
@@ -2322,7 +2322,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Application Policy.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_10 {
+        public static string _1_3_6_1_4_1_311_21_10 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.10", resourceCulture);
             }
@@ -2331,7 +2331,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Published CRL Locations.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_14 {
+        public static string _1_3_6_1_4_1_311_21_14 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.14", resourceCulture);
             }
@@ -2340,7 +2340,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Previous CA Certificate Hash.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_2 {
+        public static string _1_3_6_1_4_1_311_21_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.2", resourceCulture);
             }
@@ -2349,7 +2349,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Client Information.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_20 {
+        public static string _1_3_6_1_4_1_311_21_20 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.20", resourceCulture);
             }
@@ -2358,7 +2358,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Next CRL Publish.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_4 {
+        public static string _1_3_6_1_4_1_311_21_4 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.4", resourceCulture);
             }
@@ -2367,7 +2367,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Template Information.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_21_7 {
+        public static string _1_3_6_1_4_1_311_21_7 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.21.7", resourceCulture);
             }
@@ -2376,7 +2376,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DS Object Guid.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_25_1 {
+        public static string _1_3_6_1_4_1_311_25_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.25.1", resourceCulture);
             }
@@ -2385,7 +2385,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Windows Product Update.
         /// </summary>
-        internal static string _1_3_6_1_4_1_311_31_1 {
+        public static string _1_3_6_1_4_1_311_31_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.31.1", resourceCulture);
             }
@@ -2394,7 +2394,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SPKM1.
         /// </summary>
-        internal static string _1_3_6_1_5_5_1_1 {
+        public static string _1_3_6_1_5_5_1_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.1.1", resourceCulture);
             }
@@ -2403,7 +2403,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SPKM2.
         /// </summary>
-        internal static string _1_3_6_1_5_5_1_2 {
+        public static string _1_3_6_1_5_5_1_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.1.2", resourceCulture);
             }
@@ -2412,7 +2412,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Authority Information Access.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_1_1 {
+        public static string _1_3_6_1_5_5_7_1_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.1.1", resourceCulture);
             }
@@ -2421,7 +2421,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CMC Data.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_12_2 {
+        public static string _1_3_6_1_5_5_7_12_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.12.2", resourceCulture);
             }
@@ -2430,7 +2430,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to OID for CPS qualifier.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_2_1 {
+        public static string _1_3_6_1_5_5_7_2_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.2.1", resourceCulture);
             }
@@ -2439,7 +2439,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to User Notice.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_2_2 {
+        public static string _1_3_6_1_5_5_7_2_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.2.2", resourceCulture);
             }
@@ -2448,7 +2448,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Server Authentication.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_1 {
+        public static string _1_3_6_1_5_5_7_3_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.1", resourceCulture);
             }
@@ -2457,7 +2457,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Client Authentication.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_2 {
+        public static string _1_3_6_1_5_5_7_3_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.2", resourceCulture);
             }
@@ -2466,7 +2466,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Code Signing.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_3 {
+        public static string _1_3_6_1_5_5_7_3_3 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.3", resourceCulture);
             }
@@ -2475,7 +2475,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Secure Email.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_4 {
+        public static string _1_3_6_1_5_5_7_3_4 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.4", resourceCulture);
             }
@@ -2484,7 +2484,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to IP security end system.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_5 {
+        public static string _1_3_6_1_5_5_7_3_5 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.5", resourceCulture);
             }
@@ -2493,7 +2493,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to IP security tunnel termination.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_6 {
+        public static string _1_3_6_1_5_5_7_3_6 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.6", resourceCulture);
             }
@@ -2502,7 +2502,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to IP security user.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_7 {
+        public static string _1_3_6_1_5_5_7_3_7 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.7", resourceCulture);
             }
@@ -2511,7 +2511,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Time Stamping.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_3_8 {
+        public static string _1_3_6_1_5_5_7_3_8 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.3.8", resourceCulture);
             }
@@ -2520,7 +2520,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to On-line Certificate Status Protocol.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_48_1 {
+        public static string _1_3_6_1_5_5_7_48_1 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.48.1", resourceCulture);
             }
@@ -2529,7 +2529,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to OCSP No Revocation Checking.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_48_1_5 {
+        public static string _1_3_6_1_5_5_7_48_1_5 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.48.1.5", resourceCulture);
             }
@@ -2538,7 +2538,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certification Authority Issuer.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_48_2 {
+        public static string _1_3_6_1_5_5_7_48_2 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.48.2", resourceCulture);
             }
@@ -2547,7 +2547,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Authority (CA) Repository.
         /// </summary>
-        internal static string _1_3_6_1_5_5_7_48_5 {
+        public static string _1_3_6_1_5_5_7_48_5 {
             get {
                 return ResourceManager.GetString("1.3.6.1.5.5.7.48.5", resourceCulture);
             }
@@ -2556,7 +2556,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mosaicUpdatedSig.
         /// </summary>
-        internal static string _2_16_840_1_101_2_1_1_19 {
+        public static string _2_16_840_1_101_2_1_1_19 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.2.1.1.19", resourceCulture);
             }
@@ -2565,7 +2565,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to mosaicKMandUpdSig.
         /// </summary>
-        internal static string _2_16_840_1_101_2_1_1_20 {
+        public static string _2_16_840_1_101_2_1_1_20 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.2.1.1.20", resourceCulture);
             }
@@ -2574,7 +2574,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes192-wrap.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_25 {
+        public static string _2_16_840_1_101_3_4_1_25 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.25", resourceCulture);
             }
@@ -2583,7 +2583,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes192-wrap-pad.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_28 {
+        public static string _2_16_840_1_101_3_4_1_28 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.28", resourceCulture);
             }
@@ -2592,7 +2592,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes256-wrap.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_45 {
+        public static string _2_16_840_1_101_3_4_1_45 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.45", resourceCulture);
             }
@@ -2601,7 +2601,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes256-wrap-pad.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_48 {
+        public static string _2_16_840_1_101_3_4_1_48 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.48", resourceCulture);
             }
@@ -2610,7 +2610,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes128-wrap.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_5 {
+        public static string _2_16_840_1_101_3_4_1_5 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.5", resourceCulture);
             }
@@ -2619,7 +2619,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-aes128-wrap-pad.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_1_8 {
+        public static string _2_16_840_1_101_3_4_1_8 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.1.8", resourceCulture);
             }
@@ -2628,16 +2628,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA256.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_2_1 {
+        public static string _2_16_840_1_101_3_4_2_1 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.2.1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sha384.
+        ///   Looks up a localized string similar to SHA384.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_2_2 {
+        public static string _2_16_840_1_101_3_4_2_2 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.2.2", resourceCulture);
             }
@@ -2646,16 +2646,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to SHA512.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_2_3 {
+        public static string _2_16_840_1_101_3_4_2_3 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.2.3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sha224.
+        ///   Looks up a localized string similar to SHA224.
         /// </summary>
-        internal static string _2_16_840_1_101_3_4_2_4 {
+        public static string _2_16_840_1_101_3_4_2_4 {
             get {
                 return ResourceManager.GetString("2.16.840.1.101.3.4.2.4", resourceCulture);
             }
@@ -2664,7 +2664,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to netscape.
         /// </summary>
-        internal static string _2_16_840_1_113730 {
+        public static string _2_16_840_1_113730 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730", resourceCulture);
             }
@@ -2673,7 +2673,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cert-extension.
         /// </summary>
-        internal static string _2_16_840_1_113730_1 {
+        public static string _2_16_840_1_113730_1 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1", resourceCulture);
             }
@@ -2682,7 +2682,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape Cert Type.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_1 {
+        public static string _2_16_840_1_113730_1_1 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.1", resourceCulture);
             }
@@ -2691,7 +2691,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape SSL ServerName.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_12 {
+        public static string _2_16_840_1_113730_1_12 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.12", resourceCulture);
             }
@@ -2700,7 +2700,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape Comment.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_13 {
+        public static string _2_16_840_1_113730_1_13 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.13", resourceCulture);
             }
@@ -2709,7 +2709,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape Base URL.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_2 {
+        public static string _2_16_840_1_113730_1_2 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.2", resourceCulture);
             }
@@ -2718,7 +2718,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape Revocation URL.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_3 {
+        public static string _2_16_840_1_113730_1_3 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.3", resourceCulture);
             }
@@ -2727,7 +2727,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape CA Revocation URL.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_4 {
+        public static string _2_16_840_1_113730_1_4 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.4", resourceCulture);
             }
@@ -2736,7 +2736,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape Cert Renewal URL.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_7 {
+        public static string _2_16_840_1_113730_1_7 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.7", resourceCulture);
             }
@@ -2745,7 +2745,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Netscape CA Policy URL.
         /// </summary>
-        internal static string _2_16_840_1_113730_1_8 {
+        public static string _2_16_840_1_113730_1_8 {
             get {
                 return ResourceManager.GetString("2.16.840.1.113730.1.8", resourceCulture);
             }
@@ -2754,7 +2754,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAdminServicesClients.
         /// </summary>
-        internal static string _2_16_840_1_114027_10_4 {
+        public static string _2_16_840_1_114027_10_4 {
             get {
                 return ResourceManager.GetString("2.16.840.1.114027.10.4", resourceCulture);
             }
@@ -2763,7 +2763,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to entrustAdminServicesServer.
         /// </summary>
-        internal static string _2_16_840_1_114027_10_5 {
+        public static string _2_16_840_1_114027_10_5 {
             get {
                 return ResourceManager.GetString("2.16.840.1.114027.10.5", resourceCulture);
             }
@@ -2772,7 +2772,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to id-PKIXCMP-stdECDHwithX963SHA1.
         /// </summary>
-        internal static string _2_16_840_1_114027_80_2_1 {
+        public static string _2_16_840_1_114027_80_2_1 {
             get {
                 return ResourceManager.GetString("2.16.840.1.114027.80.2.1", resourceCulture);
             }
@@ -2781,7 +2781,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PROCERT(National Register of Fiscal Identification (RIF)).
         /// </summary>
-        internal static string _2_16_862_2_2 {
+        public static string _2_16_862_2_2 {
             get {
                 return ResourceManager.GetString("2.16.862.2.2", resourceCulture);
             }
@@ -2790,7 +2790,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO.
         /// </summary>
-        internal static string _2_23_136 {
+        public static string _2_23_136 {
             get {
                 return ResourceManager.GetString("2.23.136", resourceCulture);
             }
@@ -2799,7 +2799,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO MRTD.
         /// </summary>
-        internal static string _2_23_136_1 {
+        public static string _2_23_136_1 {
             get {
                 return ResourceManager.GetString("2.23.136.1", resourceCulture);
             }
@@ -2808,7 +2808,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO MRTD Security.
         /// </summary>
-        internal static string _2_23_136_1_1 {
+        public static string _2_23_136_1_1 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1", resourceCulture);
             }
@@ -2817,7 +2817,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO LDS Security Object.
         /// </summary>
-        internal static string _2_23_136_1_1_1 {
+        public static string _2_23_136_1_1_1 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.1", resourceCulture);
             }
@@ -2826,7 +2826,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO CSCA Master List.
         /// </summary>
-        internal static string _2_23_136_1_1_2 {
+        public static string _2_23_136_1_1_2 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.2", resourceCulture);
             }
@@ -2835,7 +2835,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO CSCA Master List Signing Key.
         /// </summary>
-        internal static string _2_23_136_1_1_3 {
+        public static string _2_23_136_1_1_3 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.3", resourceCulture);
             }
@@ -2844,7 +2844,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO Document Type List.
         /// </summary>
-        internal static string _2_23_136_1_1_4 {
+        public static string _2_23_136_1_1_4 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.4", resourceCulture);
             }
@@ -2853,7 +2853,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO Active Authentication Protocol.
         /// </summary>
-        internal static string _2_23_136_1_1_5 {
+        public static string _2_23_136_1_1_5 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.5", resourceCulture);
             }
@@ -2862,7 +2862,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO CSCA name change and key reoll-over.
         /// </summary>
-        internal static string _2_23_136_1_1_6 {
+        public static string _2_23_136_1_1_6 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.6", resourceCulture);
             }
@@ -2871,7 +2871,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ICAO CSCA name change and key reoll-over.
         /// </summary>
-        internal static string _2_23_136_1_1_6_1 {
+        public static string _2_23_136_1_1_6_1 {
             get {
                 return ResourceManager.GetString("2.23.136.1.1.6.1", resourceCulture);
             }
@@ -2880,7 +2880,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to contentType.
         /// </summary>
-        internal static string _2_23_42_0 {
+        public static string _2_23_42_0 {
             get {
                 return ResourceManager.GetString("2.23.42.0", resourceCulture);
             }
@@ -2889,7 +2889,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to msgExt.
         /// </summary>
-        internal static string _2_23_42_1 {
+        public static string _2_23_42_1 {
             get {
                 return ResourceManager.GetString("2.23.42.1", resourceCulture);
             }
@@ -2898,7 +2898,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to national.
         /// </summary>
-        internal static string _2_23_42_10 {
+        public static string _2_23_42_10 {
             get {
                 return ResourceManager.GetString("2.23.42.10", resourceCulture);
             }
@@ -2907,7 +2907,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to field.
         /// </summary>
-        internal static string _2_23_42_2 {
+        public static string _2_23_42_2 {
             get {
                 return ResourceManager.GetString("2.23.42.2", resourceCulture);
             }
@@ -2916,7 +2916,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to fullName.
         /// </summary>
-        internal static string _2_23_42_2_0 {
+        public static string _2_23_42_2_0 {
             get {
                 return ResourceManager.GetString("2.23.42.2.0", resourceCulture);
             }
@@ -2925,7 +2925,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to givenName.
         /// </summary>
-        internal static string _2_23_42_2_1 {
+        public static string _2_23_42_2_1 {
             get {
                 return ResourceManager.GetString("2.23.42.2.1", resourceCulture);
             }
@@ -2934,7 +2934,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to amount.
         /// </summary>
-        internal static string _2_23_42_2_10 {
+        public static string _2_23_42_2_10 {
             get {
                 return ResourceManager.GetString("2.23.42.2.10", resourceCulture);
             }
@@ -2943,7 +2943,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to familyName.
         /// </summary>
-        internal static string _2_23_42_2_2 {
+        public static string _2_23_42_2_2 {
             get {
                 return ResourceManager.GetString("2.23.42.2.2", resourceCulture);
             }
@@ -2952,7 +2952,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to birthFamilyName.
         /// </summary>
-        internal static string _2_23_42_2_3 {
+        public static string _2_23_42_2_3 {
             get {
                 return ResourceManager.GetString("2.23.42.2.3", resourceCulture);
             }
@@ -2961,7 +2961,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to placeName.
         /// </summary>
-        internal static string _2_23_42_2_4 {
+        public static string _2_23_42_2_4 {
             get {
                 return ResourceManager.GetString("2.23.42.2.4", resourceCulture);
             }
@@ -2970,7 +2970,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to identificationNumber.
         /// </summary>
-        internal static string _2_23_42_2_5 {
+        public static string _2_23_42_2_5 {
             get {
                 return ResourceManager.GetString("2.23.42.2.5", resourceCulture);
             }
@@ -2979,7 +2979,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to month.
         /// </summary>
-        internal static string _2_23_42_2_6 {
+        public static string _2_23_42_2_6 {
             get {
                 return ResourceManager.GetString("2.23.42.2.6", resourceCulture);
             }
@@ -2988,7 +2988,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to date.
         /// </summary>
-        internal static string _2_23_42_2_7 {
+        public static string _2_23_42_2_7 {
             get {
                 return ResourceManager.GetString("2.23.42.2.7", resourceCulture);
             }
@@ -2997,7 +2997,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to accountNumber.
         /// </summary>
-        internal static string _2_23_42_2_7_11 {
+        public static string _2_23_42_2_7_11 {
             get {
                 return ResourceManager.GetString("2.23.42.2.7.11", resourceCulture);
             }
@@ -3006,7 +3006,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to passPhrase.
         /// </summary>
-        internal static string _2_23_42_2_7_12 {
+        public static string _2_23_42_2_7_12 {
             get {
                 return ResourceManager.GetString("2.23.42.2.7.12", resourceCulture);
             }
@@ -3015,7 +3015,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to address.
         /// </summary>
-        internal static string _2_23_42_2_8 {
+        public static string _2_23_42_2_8 {
             get {
                 return ResourceManager.GetString("2.23.42.2.8", resourceCulture);
             }
@@ -3024,7 +3024,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to attribute.
         /// </summary>
-        internal static string _2_23_42_3 {
+        public static string _2_23_42_3 {
             get {
                 return ResourceManager.GetString("2.23.42.3", resourceCulture);
             }
@@ -3033,7 +3033,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cert.
         /// </summary>
-        internal static string _2_23_42_3_0 {
+        public static string _2_23_42_3_0 {
             get {
                 return ResourceManager.GetString("2.23.42.3.0", resourceCulture);
             }
@@ -3042,7 +3042,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to rootKeyThumb.
         /// </summary>
-        internal static string _2_23_42_3_0_0 {
+        public static string _2_23_42_3_0_0 {
             get {
                 return ResourceManager.GetString("2.23.42.3.0.0", resourceCulture);
             }
@@ -3051,7 +3051,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to additionalPolicy.
         /// </summary>
-        internal static string _2_23_42_3_0_1 {
+        public static string _2_23_42_3_0_1 {
             get {
                 return ResourceManager.GetString("2.23.42.3.0.1", resourceCulture);
             }
@@ -3060,7 +3060,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to algorithm.
         /// </summary>
-        internal static string _2_23_42_4 {
+        public static string _2_23_42_4 {
             get {
                 return ResourceManager.GetString("2.23.42.4", resourceCulture);
             }
@@ -3069,7 +3069,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to policy.
         /// </summary>
-        internal static string _2_23_42_5 {
+        public static string _2_23_42_5 {
             get {
                 return ResourceManager.GetString("2.23.42.5", resourceCulture);
             }
@@ -3078,7 +3078,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to root.
         /// </summary>
-        internal static string _2_23_42_5_0 {
+        public static string _2_23_42_5_0 {
             get {
                 return ResourceManager.GetString("2.23.42.5.0", resourceCulture);
             }
@@ -3087,7 +3087,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to module.
         /// </summary>
-        internal static string _2_23_42_6 {
+        public static string _2_23_42_6 {
             get {
                 return ResourceManager.GetString("2.23.42.6", resourceCulture);
             }
@@ -3096,7 +3096,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to certExt.
         /// </summary>
-        internal static string _2_23_42_7 {
+        public static string _2_23_42_7 {
             get {
                 return ResourceManager.GetString("2.23.42.7", resourceCulture);
             }
@@ -3105,7 +3105,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to hashedRootKey.
         /// </summary>
-        internal static string _2_23_42_7_0 {
+        public static string _2_23_42_7_0 {
             get {
                 return ResourceManager.GetString("2.23.42.7.0", resourceCulture);
             }
@@ -3114,7 +3114,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to certificateType.
         /// </summary>
-        internal static string _2_23_42_7_1 {
+        public static string _2_23_42_7_1 {
             get {
                 return ResourceManager.GetString("2.23.42.7.1", resourceCulture);
             }
@@ -3123,7 +3123,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to merchantData.
         /// </summary>
-        internal static string _2_23_42_7_2 {
+        public static string _2_23_42_7_2 {
             get {
                 return ResourceManager.GetString("2.23.42.7.2", resourceCulture);
             }
@@ -3132,7 +3132,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cardCertRequired.
         /// </summary>
-        internal static string _2_23_42_7_3 {
+        public static string _2_23_42_7_3 {
             get {
                 return ResourceManager.GetString("2.23.42.7.3", resourceCulture);
             }
@@ -3141,7 +3141,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to setExtensions.
         /// </summary>
-        internal static string _2_23_42_7_5 {
+        public static string _2_23_42_7_5 {
             get {
                 return ResourceManager.GetString("2.23.42.7.5", resourceCulture);
             }
@@ -3150,7 +3150,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to setQualifier.
         /// </summary>
-        internal static string _2_23_42_7_6 {
+        public static string _2_23_42_7_6 {
             get {
                 return ResourceManager.GetString("2.23.42.7.6", resourceCulture);
             }
@@ -3159,7 +3159,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to brand.
         /// </summary>
-        internal static string _2_23_42_8 {
+        public static string _2_23_42_8 {
             get {
                 return ResourceManager.GetString("2.23.42.8", resourceCulture);
             }
@@ -3168,7 +3168,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to vendor.
         /// </summary>
-        internal static string _2_23_42_9 {
+        public static string _2_23_42_9 {
             get {
                 return ResourceManager.GetString("2.23.42.9", resourceCulture);
             }
@@ -3177,7 +3177,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to eLab.
         /// </summary>
-        internal static string _2_23_42_9_22 {
+        public static string _2_23_42_9_22 {
             get {
                 return ResourceManager.GetString("2.23.42.9.22", resourceCulture);
             }
@@ -3186,7 +3186,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to espace-net.
         /// </summary>
-        internal static string _2_23_42_9_31 {
+        public static string _2_23_42_9_31 {
             get {
                 return ResourceManager.GetString("2.23.42.9.31", resourceCulture);
             }
@@ -3195,7 +3195,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to e-COMM.
         /// </summary>
-        internal static string _2_23_42_9_37 {
+        public static string _2_23_42_9_37 {
             get {
                 return ResourceManager.GetString("2.23.42.9.37", resourceCulture);
             }
@@ -3204,7 +3204,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Authority Key Identifier.
         /// </summary>
-        internal static string _2_5_29_1 {
+        public static string _2_5_29_1 {
             get {
                 return ResourceManager.GetString("2.5.29.1", resourceCulture);
             }
@@ -3213,7 +3213,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Basic Constraints.
         /// </summary>
-        internal static string _2_5_29_10 {
+        public static string _2_5_29_10 {
             get {
                 return ResourceManager.GetString("2.5.29.10", resourceCulture);
             }
@@ -3222,7 +3222,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to nameConstraints.
         /// </summary>
-        internal static string _2_5_29_11 {
+        public static string _2_5_29_11 {
             get {
                 return ResourceManager.GetString("2.5.29.11", resourceCulture);
             }
@@ -3231,7 +3231,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to policyConstraints.
         /// </summary>
-        internal static string _2_5_29_12 {
+        public static string _2_5_29_12 {
             get {
                 return ResourceManager.GetString("2.5.29.12", resourceCulture);
             }
@@ -3240,7 +3240,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to basicConstraints.
         /// </summary>
-        internal static string _2_5_29_13 {
+        public static string _2_5_29_13 {
             get {
                 return ResourceManager.GetString("2.5.29.13", resourceCulture);
             }
@@ -3249,7 +3249,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Subject Key Identifier.
         /// </summary>
-        internal static string _2_5_29_14 {
+        public static string _2_5_29_14 {
             get {
                 return ResourceManager.GetString("2.5.29.14", resourceCulture);
             }
@@ -3258,7 +3258,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Key Usage.
         /// </summary>
-        internal static string _2_5_29_15 {
+        public static string _2_5_29_15 {
             get {
                 return ResourceManager.GetString("2.5.29.15", resourceCulture);
             }
@@ -3267,7 +3267,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Private Key Usage Period.
         /// </summary>
-        internal static string _2_5_29_16 {
+        public static string _2_5_29_16 {
             get {
                 return ResourceManager.GetString("2.5.29.16", resourceCulture);
             }
@@ -3276,7 +3276,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Subject Alternative Name.
         /// </summary>
-        internal static string _2_5_29_17 {
+        public static string _2_5_29_17 {
             get {
                 return ResourceManager.GetString("2.5.29.17", resourceCulture);
             }
@@ -3285,7 +3285,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Issuer Alternative Name.
         /// </summary>
-        internal static string _2_5_29_18 {
+        public static string _2_5_29_18 {
             get {
                 return ResourceManager.GetString("2.5.29.18", resourceCulture);
             }
@@ -3294,7 +3294,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Basic Constraints.
         /// </summary>
-        internal static string _2_5_29_19 {
+        public static string _2_5_29_19 {
             get {
                 return ResourceManager.GetString("2.5.29.19", resourceCulture);
             }
@@ -3303,7 +3303,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Key Attributes.
         /// </summary>
-        internal static string _2_5_29_2 {
+        public static string _2_5_29_2 {
             get {
                 return ResourceManager.GetString("2.5.29.2", resourceCulture);
             }
@@ -3312,7 +3312,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CRL Number.
         /// </summary>
-        internal static string _2_5_29_20 {
+        public static string _2_5_29_20 {
             get {
                 return ResourceManager.GetString("2.5.29.20", resourceCulture);
             }
@@ -3321,7 +3321,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CRL Reason Code.
         /// </summary>
-        internal static string _2_5_29_21 {
+        public static string _2_5_29_21 {
             get {
                 return ResourceManager.GetString("2.5.29.21", resourceCulture);
             }
@@ -3330,7 +3330,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to expirationDate.
         /// </summary>
-        internal static string _2_5_29_22 {
+        public static string _2_5_29_22 {
             get {
                 return ResourceManager.GetString("2.5.29.22", resourceCulture);
             }
@@ -3339,7 +3339,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hold Instruction Code.
         /// </summary>
-        internal static string _2_5_29_23 {
+        public static string _2_5_29_23 {
             get {
                 return ResourceManager.GetString("2.5.29.23", resourceCulture);
             }
@@ -3348,7 +3348,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Invalidity Date.
         /// </summary>
-        internal static string _2_5_29_24 {
+        public static string _2_5_29_24 {
             get {
                 return ResourceManager.GetString("2.5.29.24", resourceCulture);
             }
@@ -3357,7 +3357,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cRLDistributionPoints.
         /// </summary>
-        internal static string _2_5_29_25 {
+        public static string _2_5_29_25 {
             get {
                 return ResourceManager.GetString("2.5.29.25", resourceCulture);
             }
@@ -3366,7 +3366,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to issuingDistributionPoint.
         /// </summary>
-        internal static string _2_5_29_26 {
+        public static string _2_5_29_26 {
             get {
                 return ResourceManager.GetString("2.5.29.26", resourceCulture);
             }
@@ -3375,7 +3375,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Delta CRL Indicator.
         /// </summary>
-        internal static string _2_5_29_27 {
+        public static string _2_5_29_27 {
             get {
                 return ResourceManager.GetString("2.5.29.27", resourceCulture);
             }
@@ -3384,7 +3384,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Issuing Distribution Point.
         /// </summary>
-        internal static string _2_5_29_28 {
+        public static string _2_5_29_28 {
             get {
                 return ResourceManager.GetString("2.5.29.28", resourceCulture);
             }
@@ -3393,7 +3393,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Issuer.
         /// </summary>
-        internal static string _2_5_29_29 {
+        public static string _2_5_29_29 {
             get {
                 return ResourceManager.GetString("2.5.29.29", resourceCulture);
             }
@@ -3402,7 +3402,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Policies.
         /// </summary>
-        internal static string _2_5_29_3 {
+        public static string _2_5_29_3 {
             get {
                 return ResourceManager.GetString("2.5.29.3", resourceCulture);
             }
@@ -3411,7 +3411,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Name Constraints.
         /// </summary>
-        internal static string _2_5_29_30 {
+        public static string _2_5_29_30 {
             get {
                 return ResourceManager.GetString("2.5.29.30", resourceCulture);
             }
@@ -3420,7 +3420,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CRL Distribution Points.
         /// </summary>
-        internal static string _2_5_29_31 {
+        public static string _2_5_29_31 {
             get {
                 return ResourceManager.GetString("2.5.29.31", resourceCulture);
             }
@@ -3429,7 +3429,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Certificate Policies.
         /// </summary>
-        internal static string _2_5_29_32 {
+        public static string _2_5_29_32 {
             get {
                 return ResourceManager.GetString("2.5.29.32", resourceCulture);
             }
@@ -3438,7 +3438,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Any Policy.
         /// </summary>
-        internal static string _2_5_29_32_0 {
+        public static string _2_5_29_32_0 {
             get {
                 return ResourceManager.GetString("2.5.29.32.0", resourceCulture);
             }
@@ -3447,7 +3447,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Policy Mappings.
         /// </summary>
-        internal static string _2_5_29_33 {
+        public static string _2_5_29_33 {
             get {
                 return ResourceManager.GetString("2.5.29.33", resourceCulture);
             }
@@ -3456,7 +3456,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Policy Constraints.
         /// </summary>
-        internal static string _2_5_29_34 {
+        public static string _2_5_29_34 {
             get {
                 return ResourceManager.GetString("2.5.29.34", resourceCulture);
             }
@@ -3465,7 +3465,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Authority Key Identifier.
         /// </summary>
-        internal static string _2_5_29_35 {
+        public static string _2_5_29_35 {
             get {
                 return ResourceManager.GetString("2.5.29.35", resourceCulture);
             }
@@ -3474,7 +3474,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Policy Constraints.
         /// </summary>
-        internal static string _2_5_29_36 {
+        public static string _2_5_29_36 {
             get {
                 return ResourceManager.GetString("2.5.29.36", resourceCulture);
             }
@@ -3483,7 +3483,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Enhanced Key Usage.
         /// </summary>
-        internal static string _2_5_29_37 {
+        public static string _2_5_29_37 {
             get {
                 return ResourceManager.GetString("2.5.29.37", resourceCulture);
             }
@@ -3492,7 +3492,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Key Usage Restriction.
         /// </summary>
-        internal static string _2_5_29_4 {
+        public static string _2_5_29_4 {
             get {
                 return ResourceManager.GetString("2.5.29.4", resourceCulture);
             }
@@ -3501,7 +3501,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Freshest CRL.
         /// </summary>
-        internal static string _2_5_29_46 {
+        public static string _2_5_29_46 {
             get {
                 return ResourceManager.GetString("2.5.29.46", resourceCulture);
             }
@@ -3510,7 +3510,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Policy Mappings.
         /// </summary>
-        internal static string _2_5_29_5 {
+        public static string _2_5_29_5 {
             get {
                 return ResourceManager.GetString("2.5.29.5", resourceCulture);
             }
@@ -3519,7 +3519,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to subtreesConstraint.
         /// </summary>
-        internal static string _2_5_29_6 {
+        public static string _2_5_29_6 {
             get {
                 return ResourceManager.GetString("2.5.29.6", resourceCulture);
             }
@@ -3528,7 +3528,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Subject Alternative Name.
         /// </summary>
-        internal static string _2_5_29_7 {
+        public static string _2_5_29_7 {
             get {
                 return ResourceManager.GetString("2.5.29.7", resourceCulture);
             }
@@ -3537,7 +3537,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Issuer Alternative Name.
         /// </summary>
-        internal static string _2_5_29_8 {
+        public static string _2_5_29_8 {
             get {
                 return ResourceManager.GetString("2.5.29.8", resourceCulture);
             }
@@ -3546,7 +3546,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Subject Directory Attributes.
         /// </summary>
-        internal static string _2_5_29_9 {
+        public static string _2_5_29_9 {
             get {
                 return ResourceManager.GetString("2.5.29.9", resourceCulture);
             }
@@ -3555,7 +3555,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Object Class.
         /// </summary>
-        internal static string _2_5_4_0 {
+        public static string _2_5_4_0 {
             get {
                 return ResourceManager.GetString("2.5.4.0", resourceCulture);
             }
@@ -3564,7 +3564,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to aliasedEntryName.
         /// </summary>
-        internal static string _2_5_4_1 {
+        public static string _2_5_4_1 {
             get {
                 return ResourceManager.GetString("2.5.4.1", resourceCulture);
             }
@@ -3573,7 +3573,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Organization Name.
         /// </summary>
-        internal static string _2_5_4_10 {
+        public static string _2_5_4_10 {
             get {
                 return ResourceManager.GetString("2.5.4.10", resourceCulture);
             }
@@ -3582,7 +3582,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Collective Organization Name.
         /// </summary>
-        internal static string _2_5_4_10_1 {
+        public static string _2_5_4_10_1 {
             get {
                 return ResourceManager.GetString("2.5.4.10.1", resourceCulture);
             }
@@ -3591,7 +3591,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Organizational Unit Name.
         /// </summary>
-        internal static string _2_5_4_11 {
+        public static string _2_5_4_11 {
             get {
                 return ResourceManager.GetString("2.5.4.11", resourceCulture);
             }
@@ -3600,7 +3600,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Collective Organizational Unit Name.
         /// </summary>
-        internal static string _2_5_4_11_1 {
+        public static string _2_5_4_11_1 {
             get {
                 return ResourceManager.GetString("2.5.4.11.1", resourceCulture);
             }
@@ -3609,7 +3609,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
-        internal static string _2_5_4_12 {
+        public static string _2_5_4_12 {
             get {
                 return ResourceManager.GetString("2.5.4.12", resourceCulture);
             }
@@ -3618,7 +3618,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string _2_5_4_13 {
+        public static string _2_5_4_13 {
             get {
                 return ResourceManager.GetString("2.5.4.13", resourceCulture);
             }
@@ -3627,7 +3627,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Search Guide.
         /// </summary>
-        internal static string _2_5_4_14 {
+        public static string _2_5_4_14 {
             get {
                 return ResourceManager.GetString("2.5.4.14", resourceCulture);
             }
@@ -3636,7 +3636,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Business Category.
         /// </summary>
-        internal static string _2_5_4_15 {
+        public static string _2_5_4_15 {
             get {
                 return ResourceManager.GetString("2.5.4.15", resourceCulture);
             }
@@ -3645,7 +3645,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Postal Address.
         /// </summary>
-        internal static string _2_5_4_16 {
+        public static string _2_5_4_16 {
             get {
                 return ResourceManager.GetString("2.5.4.16", resourceCulture);
             }
@@ -3654,7 +3654,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Collective Postal Address.
         /// </summary>
-        internal static string _2_5_4_16_1 {
+        public static string _2_5_4_16_1 {
             get {
                 return ResourceManager.GetString("2.5.4.16.1", resourceCulture);
             }
@@ -3663,7 +3663,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Postal Code.
         /// </summary>
-        internal static string _2_5_4_17 {
+        public static string _2_5_4_17 {
             get {
                 return ResourceManager.GetString("2.5.4.17", resourceCulture);
             }
@@ -3672,7 +3672,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Collective Postal Code.
         /// </summary>
-        internal static string _2_5_4_17_1 {
+        public static string _2_5_4_17_1 {
             get {
                 return ResourceManager.GetString("2.5.4.17.1", resourceCulture);
             }
@@ -3681,7 +3681,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to POBox.
         /// </summary>
-        internal static string _2_5_4_18 {
+        public static string _2_5_4_18 {
             get {
                 return ResourceManager.GetString("2.5.4.18", resourceCulture);
             }
@@ -3690,7 +3690,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectivePostOfficeBox.
         /// </summary>
-        internal static string _2_5_4_18_1 {
+        public static string _2_5_4_18_1 {
             get {
                 return ResourceManager.GetString("2.5.4.18.1", resourceCulture);
             }
@@ -3699,7 +3699,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to physicalDeliveryOfficeName.
         /// </summary>
-        internal static string _2_5_4_19 {
+        public static string _2_5_4_19 {
             get {
                 return ResourceManager.GetString("2.5.4.19", resourceCulture);
             }
@@ -3708,7 +3708,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectivePhysicalDeliveryOfficeName.
         /// </summary>
-        internal static string _2_5_4_19_1 {
+        public static string _2_5_4_19_1 {
             get {
                 return ResourceManager.GetString("2.5.4.19.1", resourceCulture);
             }
@@ -3717,7 +3717,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to knowledgeInformation.
         /// </summary>
-        internal static string _2_5_4_2 {
+        public static string _2_5_4_2 {
             get {
                 return ResourceManager.GetString("2.5.4.2", resourceCulture);
             }
@@ -3726,7 +3726,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Phone.
         /// </summary>
-        internal static string _2_5_4_20 {
+        public static string _2_5_4_20 {
             get {
                 return ResourceManager.GetString("2.5.4.20", resourceCulture);
             }
@@ -3735,7 +3735,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveTelephoneNumber.
         /// </summary>
-        internal static string _2_5_4_20_1 {
+        public static string _2_5_4_20_1 {
             get {
                 return ResourceManager.GetString("2.5.4.20.1", resourceCulture);
             }
@@ -3744,7 +3744,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to telexNumber.
         /// </summary>
-        internal static string _2_5_4_21 {
+        public static string _2_5_4_21 {
             get {
                 return ResourceManager.GetString("2.5.4.21", resourceCulture);
             }
@@ -3753,7 +3753,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveTelexNumber.
         /// </summary>
-        internal static string _2_5_4_21_1 {
+        public static string _2_5_4_21_1 {
             get {
                 return ResourceManager.GetString("2.5.4.21.1", resourceCulture);
             }
@@ -3762,7 +3762,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveTeletexTerminalIdentifier.
         /// </summary>
-        internal static string _2_5_4_22_1 {
+        public static string _2_5_4_22_1 {
             get {
                 return ResourceManager.GetString("2.5.4.22.1", resourceCulture);
             }
@@ -3771,7 +3771,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to facsimileTelephoneNumber.
         /// </summary>
-        internal static string _2_5_4_23 {
+        public static string _2_5_4_23 {
             get {
                 return ResourceManager.GetString("2.5.4.23", resourceCulture);
             }
@@ -3780,7 +3780,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveFacsimileTelephoneNumber.
         /// </summary>
-        internal static string _2_5_4_23_1 {
+        public static string _2_5_4_23_1 {
             get {
                 return ResourceManager.GetString("2.5.4.23.1", resourceCulture);
             }
@@ -3789,7 +3789,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to X21Address.
         /// </summary>
-        internal static string _2_5_4_24 {
+        public static string _2_5_4_24 {
             get {
                 return ResourceManager.GetString("2.5.4.24", resourceCulture);
             }
@@ -3798,7 +3798,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to internationalISDNNumber.
         /// </summary>
-        internal static string _2_5_4_25 {
+        public static string _2_5_4_25 {
             get {
                 return ResourceManager.GetString("2.5.4.25", resourceCulture);
             }
@@ -3807,7 +3807,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveInternationalISDNNumber.
         /// </summary>
-        internal static string _2_5_4_25_1 {
+        public static string _2_5_4_25_1 {
             get {
                 return ResourceManager.GetString("2.5.4.25.1", resourceCulture);
             }
@@ -3816,7 +3816,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to registeredAddress.
         /// </summary>
-        internal static string _2_5_4_26 {
+        public static string _2_5_4_26 {
             get {
                 return ResourceManager.GetString("2.5.4.26", resourceCulture);
             }
@@ -3825,7 +3825,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to destinationIndicator.
         /// </summary>
-        internal static string _2_5_4_27 {
+        public static string _2_5_4_27 {
             get {
                 return ResourceManager.GetString("2.5.4.27", resourceCulture);
             }
@@ -3834,7 +3834,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to preferredDeliveryMehtod.
         /// </summary>
-        internal static string _2_5_4_28 {
+        public static string _2_5_4_28 {
             get {
                 return ResourceManager.GetString("2.5.4.28", resourceCulture);
             }
@@ -3843,7 +3843,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to presentationAddress.
         /// </summary>
-        internal static string _2_5_4_29 {
+        public static string _2_5_4_29 {
             get {
                 return ResourceManager.GetString("2.5.4.29", resourceCulture);
             }
@@ -3852,7 +3852,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Common Name.
         /// </summary>
-        internal static string _2_5_4_3 {
+        public static string _2_5_4_3 {
             get {
                 return ResourceManager.GetString("2.5.4.3", resourceCulture);
             }
@@ -3861,7 +3861,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to member.
         /// </summary>
-        internal static string _2_5_4_31 {
+        public static string _2_5_4_31 {
             get {
                 return ResourceManager.GetString("2.5.4.31", resourceCulture);
             }
@@ -3870,7 +3870,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to owner.
         /// </summary>
-        internal static string _2_5_4_32 {
+        public static string _2_5_4_32 {
             get {
                 return ResourceManager.GetString("2.5.4.32", resourceCulture);
             }
@@ -3879,7 +3879,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to roleOccupant.
         /// </summary>
-        internal static string _2_5_4_33 {
+        public static string _2_5_4_33 {
             get {
                 return ResourceManager.GetString("2.5.4.33", resourceCulture);
             }
@@ -3888,7 +3888,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to seeAlso.
         /// </summary>
-        internal static string _2_5_4_34 {
+        public static string _2_5_4_34 {
             get {
                 return ResourceManager.GetString("2.5.4.34", resourceCulture);
             }
@@ -3897,7 +3897,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to userPassword.
         /// </summary>
-        internal static string _2_5_4_35 {
+        public static string _2_5_4_35 {
             get {
                 return ResourceManager.GetString("2.5.4.35", resourceCulture);
             }
@@ -3906,7 +3906,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to userCertificate.
         /// </summary>
-        internal static string _2_5_4_36 {
+        public static string _2_5_4_36 {
             get {
                 return ResourceManager.GetString("2.5.4.36", resourceCulture);
             }
@@ -3915,7 +3915,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to caCertificate.
         /// </summary>
-        internal static string _2_5_4_37 {
+        public static string _2_5_4_37 {
             get {
                 return ResourceManager.GetString("2.5.4.37", resourceCulture);
             }
@@ -3924,7 +3924,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to authorityRevocationList.
         /// </summary>
-        internal static string _2_5_4_38 {
+        public static string _2_5_4_38 {
             get {
                 return ResourceManager.GetString("2.5.4.38", resourceCulture);
             }
@@ -3933,7 +3933,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to certificateRevocationList.
         /// </summary>
-        internal static string _2_5_4_39 {
+        public static string _2_5_4_39 {
             get {
                 return ResourceManager.GetString("2.5.4.39", resourceCulture);
             }
@@ -3942,7 +3942,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Surname.
         /// </summary>
-        internal static string _2_5_4_4 {
+        public static string _2_5_4_4 {
             get {
                 return ResourceManager.GetString("2.5.4.4", resourceCulture);
             }
@@ -3951,7 +3951,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to crossCertificatePair.
         /// </summary>
-        internal static string _2_5_4_40 {
+        public static string _2_5_4_40 {
             get {
                 return ResourceManager.GetString("2.5.4.40", resourceCulture);
             }
@@ -3960,7 +3960,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to name.
         /// </summary>
-        internal static string _2_5_4_41 {
+        public static string _2_5_4_41 {
             get {
                 return ResourceManager.GetString("2.5.4.41", resourceCulture);
             }
@@ -3969,7 +3969,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Given Name.
         /// </summary>
-        internal static string _2_5_4_42 {
+        public static string _2_5_4_42 {
             get {
                 return ResourceManager.GetString("2.5.4.42", resourceCulture);
             }
@@ -3978,7 +3978,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to initials.
         /// </summary>
-        internal static string _2_5_4_43 {
+        public static string _2_5_4_43 {
             get {
                 return ResourceManager.GetString("2.5.4.43", resourceCulture);
             }
@@ -3987,7 +3987,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to generationQualifier.
         /// </summary>
-        internal static string _2_5_4_44 {
+        public static string _2_5_4_44 {
             get {
                 return ResourceManager.GetString("2.5.4.44", resourceCulture);
             }
@@ -3996,7 +3996,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to uniqueIdentifier.
         /// </summary>
-        internal static string _2_5_4_45 {
+        public static string _2_5_4_45 {
             get {
                 return ResourceManager.GetString("2.5.4.45", resourceCulture);
             }
@@ -4005,7 +4005,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dnQualifier.
         /// </summary>
-        internal static string _2_5_4_46 {
+        public static string _2_5_4_46 {
             get {
                 return ResourceManager.GetString("2.5.4.46", resourceCulture);
             }
@@ -4014,7 +4014,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to enhancedSearchGuide.
         /// </summary>
-        internal static string _2_5_4_47 {
+        public static string _2_5_4_47 {
             get {
                 return ResourceManager.GetString("2.5.4.47", resourceCulture);
             }
@@ -4023,7 +4023,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to protocolInformation.
         /// </summary>
-        internal static string _2_5_4_48 {
+        public static string _2_5_4_48 {
             get {
                 return ResourceManager.GetString("2.5.4.48", resourceCulture);
             }
@@ -4032,7 +4032,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to distinguishedName.
         /// </summary>
-        internal static string _2_5_4_49 {
+        public static string _2_5_4_49 {
             get {
                 return ResourceManager.GetString("2.5.4.49", resourceCulture);
             }
@@ -4041,7 +4041,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Serial Number.
         /// </summary>
-        internal static string _2_5_4_5 {
+        public static string _2_5_4_5 {
             get {
                 return ResourceManager.GetString("2.5.4.5", resourceCulture);
             }
@@ -4050,7 +4050,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to uniqueMember.
         /// </summary>
-        internal static string _2_5_4_50 {
+        public static string _2_5_4_50 {
             get {
                 return ResourceManager.GetString("2.5.4.50", resourceCulture);
             }
@@ -4059,7 +4059,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to houseIdentifier.
         /// </summary>
-        internal static string _2_5_4_51 {
+        public static string _2_5_4_51 {
             get {
                 return ResourceManager.GetString("2.5.4.51", resourceCulture);
             }
@@ -4068,7 +4068,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to supportedAlgorithms.
         /// </summary>
-        internal static string _2_5_4_52 {
+        public static string _2_5_4_52 {
             get {
                 return ResourceManager.GetString("2.5.4.52", resourceCulture);
             }
@@ -4077,7 +4077,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to deltaRevocationList.
         /// </summary>
-        internal static string _2_5_4_53 {
+        public static string _2_5_4_53 {
             get {
                 return ResourceManager.GetString("2.5.4.53", resourceCulture);
             }
@@ -4086,7 +4086,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to clearance.
         /// </summary>
-        internal static string _2_5_4_55 {
+        public static string _2_5_4_55 {
             get {
                 return ResourceManager.GetString("2.5.4.55", resourceCulture);
             }
@@ -4095,7 +4095,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to crossCertificatePair.
         /// </summary>
-        internal static string _2_5_4_58 {
+        public static string _2_5_4_58 {
             get {
                 return ResourceManager.GetString("2.5.4.58", resourceCulture);
             }
@@ -4104,7 +4104,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Country Name.
         /// </summary>
-        internal static string _2_5_4_6 {
+        public static string _2_5_4_6 {
             get {
                 return ResourceManager.GetString("2.5.4.6", resourceCulture);
             }
@@ -4113,7 +4113,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Locality Name.
         /// </summary>
-        internal static string _2_5_4_7 {
+        public static string _2_5_4_7 {
             get {
                 return ResourceManager.GetString("2.5.4.7", resourceCulture);
             }
@@ -4122,7 +4122,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveLocalityName.
         /// </summary>
-        internal static string _2_5_4_7_1 {
+        public static string _2_5_4_7_1 {
             get {
                 return ResourceManager.GetString("2.5.4.7.1", resourceCulture);
             }
@@ -4131,7 +4131,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to State or Province Name.
         /// </summary>
-        internal static string _2_5_4_8 {
+        public static string _2_5_4_8 {
             get {
                 return ResourceManager.GetString("2.5.4.8", resourceCulture);
             }
@@ -4140,7 +4140,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveStateOrProvinceName.
         /// </summary>
-        internal static string _2_5_4_8_1 {
+        public static string _2_5_4_8_1 {
             get {
                 return ResourceManager.GetString("2.5.4.8.1", resourceCulture);
             }
@@ -4149,7 +4149,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Street Address.
         /// </summary>
-        internal static string _2_5_4_9 {
+        public static string _2_5_4_9 {
             get {
                 return ResourceManager.GetString("2.5.4.9", resourceCulture);
             }
@@ -4158,7 +4158,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to collectiveStreetAddress.
         /// </summary>
-        internal static string _2_5_4_9_1 {
+        public static string _2_5_4_9_1 {
             get {
                 return ResourceManager.GetString("2.5.4.9.1", resourceCulture);
             }
@@ -4167,7 +4167,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to top.
         /// </summary>
-        internal static string _2_5_6_0 {
+        public static string _2_5_6_0 {
             get {
                 return ResourceManager.GetString("2.5.6.0", resourceCulture);
             }
@@ -4176,7 +4176,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to alias.
         /// </summary>
-        internal static string _2_5_6_1 {
+        public static string _2_5_6_1 {
             get {
                 return ResourceManager.GetString("2.5.6.1", resourceCulture);
             }
@@ -4185,7 +4185,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to residentialPerson.
         /// </summary>
-        internal static string _2_5_6_10 {
+        public static string _2_5_6_10 {
             get {
                 return ResourceManager.GetString("2.5.6.10", resourceCulture);
             }
@@ -4194,7 +4194,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to applicationProcess.
         /// </summary>
-        internal static string _2_5_6_11 {
+        public static string _2_5_6_11 {
             get {
                 return ResourceManager.GetString("2.5.6.11", resourceCulture);
             }
@@ -4203,7 +4203,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to applicationEntity.
         /// </summary>
-        internal static string _2_5_6_12 {
+        public static string _2_5_6_12 {
             get {
                 return ResourceManager.GetString("2.5.6.12", resourceCulture);
             }
@@ -4212,7 +4212,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to dSA.
         /// </summary>
-        internal static string _2_5_6_13 {
+        public static string _2_5_6_13 {
             get {
                 return ResourceManager.GetString("2.5.6.13", resourceCulture);
             }
@@ -4221,7 +4221,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to device.
         /// </summary>
-        internal static string _2_5_6_14 {
+        public static string _2_5_6_14 {
             get {
                 return ResourceManager.GetString("2.5.6.14", resourceCulture);
             }
@@ -4230,7 +4230,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to strongAuthenticationUser.
         /// </summary>
-        internal static string _2_5_6_15 {
+        public static string _2_5_6_15 {
             get {
                 return ResourceManager.GetString("2.5.6.15", resourceCulture);
             }
@@ -4239,7 +4239,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to certificateAuthority.
         /// </summary>
-        internal static string _2_5_6_16 {
+        public static string _2_5_6_16 {
             get {
                 return ResourceManager.GetString("2.5.6.16", resourceCulture);
             }
@@ -4248,7 +4248,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to groupOfUniqueNames.
         /// </summary>
-        internal static string _2_5_6_17 {
+        public static string _2_5_6_17 {
             get {
                 return ResourceManager.GetString("2.5.6.17", resourceCulture);
             }
@@ -4257,7 +4257,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cRLDistributionPoint.
         /// </summary>
-        internal static string _2_5_6_19 {
+        public static string _2_5_6_19 {
             get {
                 return ResourceManager.GetString("2.5.6.19", resourceCulture);
             }
@@ -4266,7 +4266,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to country.
         /// </summary>
-        internal static string _2_5_6_2 {
+        public static string _2_5_6_2 {
             get {
                 return ResourceManager.GetString("2.5.6.2", resourceCulture);
             }
@@ -4275,7 +4275,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to pkiUser.
         /// </summary>
-        internal static string _2_5_6_21 {
+        public static string _2_5_6_21 {
             get {
                 return ResourceManager.GetString("2.5.6.21", resourceCulture);
             }
@@ -4284,7 +4284,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to pkiCA.
         /// </summary>
-        internal static string _2_5_6_22 {
+        public static string _2_5_6_22 {
             get {
                 return ResourceManager.GetString("2.5.6.22", resourceCulture);
             }
@@ -4293,7 +4293,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to locality.
         /// </summary>
-        internal static string _2_5_6_3 {
+        public static string _2_5_6_3 {
             get {
                 return ResourceManager.GetString("2.5.6.3", resourceCulture);
             }
@@ -4302,7 +4302,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to organization.
         /// </summary>
-        internal static string _2_5_6_4 {
+        public static string _2_5_6_4 {
             get {
                 return ResourceManager.GetString("2.5.6.4", resourceCulture);
             }
@@ -4311,7 +4311,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to organizationalUnit.
         /// </summary>
-        internal static string _2_5_6_5 {
+        public static string _2_5_6_5 {
             get {
                 return ResourceManager.GetString("2.5.6.5", resourceCulture);
             }
@@ -4320,7 +4320,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to person.
         /// </summary>
-        internal static string _2_5_6_6 {
+        public static string _2_5_6_6 {
             get {
                 return ResourceManager.GetString("2.5.6.6", resourceCulture);
             }
@@ -4329,7 +4329,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to organizationalPerson.
         /// </summary>
-        internal static string _2_5_6_7 {
+        public static string _2_5_6_7 {
             get {
                 return ResourceManager.GetString("2.5.6.7", resourceCulture);
             }
@@ -4338,7 +4338,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to organizationalRole.
         /// </summary>
-        internal static string _2_5_6_8 {
+        public static string _2_5_6_8 {
             get {
                 return ResourceManager.GetString("2.5.6.8", resourceCulture);
             }
@@ -4347,7 +4347,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to groupOfNames.
         /// </summary>
-        internal static string _2_5_6_9 {
+        public static string _2_5_6_9 {
             get {
                 return ResourceManager.GetString("2.5.6.9", resourceCulture);
             }
@@ -4356,7 +4356,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to X.500-Alg-Encryption.
         /// </summary>
-        internal static string _2_5_8_1 {
+        public static string _2_5_8_1 {
             get {
                 return ResourceManager.GetString("2.5.8.1", resourceCulture);
             }
@@ -4365,7 +4365,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to rsa.
         /// </summary>
-        internal static string _2_5_8_1_1 {
+        public static string _2_5_8_1_1 {
             get {
                 return ResourceManager.GetString("2.5.8.1.1", resourceCulture);
             }
@@ -4374,7 +4374,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to sqMod_n.
         /// </summary>
-        internal static string _2_5_8_2_1 {
+        public static string _2_5_8_2_1 {
             get {
                 return ResourceManager.GetString("2.5.8.2.1", resourceCulture);
             }
@@ -4383,7 +4383,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to sqMod_nWithRSA.
         /// </summary>
-        internal static string _2_5_8_3_1 {
+        public static string _2_5_8_3_1 {
             get {
                 return ResourceManager.GetString("2.5.8.3.1", resourceCulture);
             }
@@ -4392,7 +4392,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to hashedRootKey.
         /// </summary>
-        internal static string _2_54_1775_2 {
+        public static string _2_54_1775_2 {
             get {
                 return ResourceManager.GetString("2.54.1775.2", resourceCulture);
             }
@@ -4401,7 +4401,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to certificateType.
         /// </summary>
-        internal static string _2_54_1775_3 {
+        public static string _2_54_1775_3 {
             get {
                 return ResourceManager.GetString("2.54.1775.3", resourceCulture);
             }
@@ -4410,7 +4410,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to merchantData.
         /// </summary>
-        internal static string _2_54_1775_4 {
+        public static string _2_54_1775_4 {
             get {
                 return ResourceManager.GetString("2.54.1775.4", resourceCulture);
             }
@@ -4419,7 +4419,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to cardCertRequired.
         /// </summary>
-        internal static string _2_54_1775_5 {
+        public static string _2_54_1775_5 {
             get {
                 return ResourceManager.GetString("2.54.1775.5", resourceCulture);
             }
@@ -4428,7 +4428,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to setQualifier.
         /// </summary>
-        internal static string _2_54_1775_7 {
+        public static string _2_54_1775_7 {
             get {
                 return ResourceManager.GetString("2.54.1775.7", resourceCulture);
             }
@@ -4437,7 +4437,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to set-data.
         /// </summary>
-        internal static string _2_54_1775_99 {
+        public static string _2_54_1775_99 {
             get {
                 return ResourceManager.GetString("2.54.1775.99", resourceCulture);
             }

@@ -125,13 +125,13 @@ namespace BinaryStudio.DataProcessing
         /// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or <see langword="null"/> if there are no properties.</returns>
         public sealed override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, Object value, Attribute[] attributes) {
-            return new PropertyDescriptorCollection(
-                GetPropertiesInternal(
+            var r = GetPropertiesInternal(
                     context,
                     value,
                     attributes).
                 OrderBy(i => i, DefaultComparer).
-                ToArray());
+                ToArray();
+            return new PropertyDescriptorCollection(r);
             }
 
         #region M:GetPropertiesSupported(ITypeDescriptorContext):Boolean

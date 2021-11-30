@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public abstract class CmsObject : Asn1LinkObject
         {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Length { get { return base.Length; }}

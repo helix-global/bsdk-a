@@ -30,7 +30,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [DefaultProperty(nameof(Value))]
     public class CmsAttribute : CmsObject
         {
-        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))][Order(-1)] public Asn1ObjectIdentifier Type { get; }
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))][Order(-1)]
+        [DisplayName("{Type}")]
+        public Asn1ObjectIdentifier Type { get; }
         [TypeConverter(typeof(ObjectCollectionTypeConverter))][NotNull] public virtual Object Value { get { return Values; }}
         [NotNull] protected ISet<Asn1Object> Values { get; }
 

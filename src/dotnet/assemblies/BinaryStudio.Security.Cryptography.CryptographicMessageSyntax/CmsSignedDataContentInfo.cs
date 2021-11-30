@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -43,32 +42,32 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         /// Gives a syntax version number, for compatibility
         /// with future revisions of this specification.
         /// </summary>
-        public Int32 Version { get; }
-        public new CmsContentSpecificObject Content { get; }
+        [Order(1)] public Int32 Version { get; }
+        [Order(3)] public new CmsContentSpecificObject Content { get; }
 
         /// <summary>
         /// A collection of message digest algorithm identifiers.
         /// </summary>
         [TypeConverter(typeof(ObjectCollectionTypeConverter))]
-        public ISet<X509AlgorithmIdentifier> DigestAlgorithms { get; }
+        [Order(2)] public ISet<X509AlgorithmIdentifier> DigestAlgorithms { get; }
 
         /// <summary>
         /// A collection of certificates.
         /// </summary>
         [TypeConverter(typeof(ObjectCollectionTypeConverter))]
-        public ISet<Asn1Certificate> Certificates { get; }
+        [Order(4)] public ISet<Asn1Certificate> Certificates { get; }
 
         /// <summary>
         /// A collection of certificate revocation lists.
         /// </summary>
         [TypeConverter(typeof(ObjectCollectionTypeConverter))]
-        public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
+        [Order(5)] public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
 
         /// <summary>
         /// Retrieves the <see cref="ISet{CmsSignerInfo}"/> collection associated with the CMS message.
         /// </summary>
         [TypeConverter(typeof(ObjectCollectionTypeConverter))]
-        public ISet<CmsSignerInfo> Signers { get; }
+        [Order(6)] public ISet<CmsSignerInfo> Signers { get; }
 
         public CmsSignedDataContentInfo(Asn1Object source)
             : base(source)

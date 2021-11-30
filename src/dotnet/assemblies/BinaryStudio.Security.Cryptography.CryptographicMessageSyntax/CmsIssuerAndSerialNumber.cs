@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [DefaultProperty(nameof(CertificateSerialNumber))]
     public class CmsIssuerAndSerialNumber : CmsSignerIdentifier, ICmsIssuerAndSerialNumber
         {
-        public BigInteger CertificateSerialNumber { get; }
+        [TypeConverter(typeof(CmsSerialNumberTypeConverter))] public BigInteger CertificateSerialNumber { get; }
         public Asn1RelativeDistinguishedNameSequence CertificateIssuer { get; }
         IX509GeneralName ICmsIssuerAndSerialNumber.CertificateIssuer { get { return CertificateIssuer; }}
 

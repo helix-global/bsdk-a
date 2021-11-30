@@ -11,6 +11,11 @@
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\OID.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OID.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -19,7 +24,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\OID.resx">
-      <Generator></Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OID.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

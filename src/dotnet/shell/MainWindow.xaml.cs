@@ -34,7 +34,7 @@ namespace shell
 
         private void OnLoad(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[1]);
+            Theme.Apply(Theme.Themes[0]);
             UpdateCommandBindings();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {

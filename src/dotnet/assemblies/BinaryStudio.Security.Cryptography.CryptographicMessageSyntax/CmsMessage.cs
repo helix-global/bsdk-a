@@ -17,15 +17,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     /// <see cref="CmsMessage"/> class represents a CMS structure.
     /// For additional information, see <a href="https://tools.ietf.org/html/rfc5652">RFC 5652</a>.
     /// </summary>
-    [TypeConverter(typeof(ObjectTypeConverter))]
-    public sealed class CmsMessage : Asn1LinkObject
+    [TypeConverter(typeof(CmsMessageTypeConverter))]
+    public sealed class CmsMessage : CmsObject
         {
         /**
          * <summary>
          * This is the associated content. The type of content can be determined uniquely by <see cref="ContentType"/>.
          * </summary>
          */
-        public CmsContentInfo ContentInfo { get; }
+        [Order(1)] public CmsContentInfo ContentInfo { get; }
 
         /**
          * <summary>
@@ -69,6 +69,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * </remarks>
          */
         [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
+        [Order(-1)]
         public Oid ContentType { get; }
 
         /**
@@ -140,5 +141,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             {
             return base.GetService(service);
             }
+
+        [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
         }
     }

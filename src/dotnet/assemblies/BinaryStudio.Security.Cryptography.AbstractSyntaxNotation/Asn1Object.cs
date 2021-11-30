@@ -291,7 +291,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * */
         TypeConverter ICustomTypeDescriptor.GetConverter()
             {
-            return TypeDescriptor.GetConverter(GetType());
+            var r = TypeDescriptor.GetConverter(GetType());
+            return r;
             }
         #endregion
         #region M:ICustomTypeDescriptor.GetDefaultEvent:EventDescriptor
@@ -347,7 +348,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:ICustomTypeDescriptor.GetProperties:PropertyDescriptorCollection
-        protected virtual IEnumerable<PropertyDescriptor> GetProperties() { return TypeDescriptor.GetProperties(GetType()).OfType<PropertyDescriptor>(); }
+        protected virtual IEnumerable<PropertyDescriptor> GetProperties()
+            {
+            return TypeDescriptor.GetProperties(GetType()).OfType<PropertyDescriptor>();
+            }
         /**
          * <summary>Returns the properties for this instance of a component.</summary>
          * <returns>A <see cref="PropertyDescriptorCollection"/> that represents the properties for this component instance.</returns>
@@ -358,7 +362,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:ICustomTypeDescriptor.GetProperties(Attribute[]):PropertyDescriptorCollection
-        protected virtual IEnumerable<PropertyDescriptor> GetProperties(Attribute[] attributes) { return TypeDescriptor.GetProperties(GetType(), attributes).OfType<PropertyDescriptor>(); }
+        protected virtual IEnumerable<PropertyDescriptor> GetProperties(Attribute[] attributes)
+            {
+            return TypeDescriptor.GetProperties(GetType()).OfType<PropertyDescriptor>();
+            }
         /**
          * <summary>Returns the properties for this instance of a component using the attribute array as a filter.</summary>
          * <param name="attributes">An array of type <see cref="Attribute"/> that is used as a filter. </param>

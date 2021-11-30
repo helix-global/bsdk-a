@@ -638,9 +638,14 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                 var converter = ((context != null) && (context.PropertyDescriptor != null))
                     ? GetConverter(context.PropertyDescriptor, source)
                     : TypeDescriptor.GetConverter(source);
-                var descriptors = (converter != null) && (context != null)
+                //var descriptors = (converter != null) && (context != null)
+                //    ? converter.GetPropertiesSupported(context)
+                //        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray()
+                //        : new PropertyDescriptor[0]
+                //    : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
+                var descriptors = (converter != null)
                     ? converter.GetPropertiesSupported(context)
-                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray()
+                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[] { new BrowsableAttribute(true) })).ToArray()
                         : new PropertyDescriptor[0]
                     : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
                 foreach (var e in descriptors.Select(i => new GridEntry(i, source, level, owner))) {
