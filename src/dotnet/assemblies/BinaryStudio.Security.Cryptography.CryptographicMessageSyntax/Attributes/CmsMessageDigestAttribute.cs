@@ -18,7 +18,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [DefaultProperty(nameof(MessageDigest))]
     public class CmsMessageDigestAttribute : CmsAttribute
         {
-        public Byte[] MessageDigest { get; }
+        [TypeConverter(typeof(CmsMessageDigestTypeConverter))] public Byte[] MessageDigest { get; }
         [Browsable(false)] public override Object Value { get { return base.Value; }}
 
         protected CmsMessageDigestAttribute(CmsAttribute o)
