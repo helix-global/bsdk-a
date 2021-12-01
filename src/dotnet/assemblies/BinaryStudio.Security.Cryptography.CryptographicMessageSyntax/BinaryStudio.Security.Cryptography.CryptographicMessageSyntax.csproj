@@ -3,7 +3,13 @@
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
+    <DocumentationFile>BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml lang:ru-RU&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml lang:ru-RU&#xD;&#xA;" />
+  </Target>
 </Project>

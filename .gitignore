@@ -36,3 +36,7 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/obj
 *.log
+/src/dotnet/xdoc/bin
+/src/dotnet/xdoc/obj
+/src/dotnet/xslt/bin
+/src/dotnet/xslt/obj

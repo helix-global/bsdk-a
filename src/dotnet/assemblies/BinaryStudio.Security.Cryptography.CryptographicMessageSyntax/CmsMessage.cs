@@ -9,7 +9,7 @@ using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Newtonsoft.Json;
 
-#pragma warning disable 1591
+#pragma warning disable 1591,1571
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
@@ -77,6 +77,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * Constructs new instance of <see cref="CmsMessage"/> class by using an array of byte values as the content data.
          * </summary>
          * <param name="content">An array of byte values that represents the data from which to create the <see cref="CmsMessage"/> object.</param>
+         * <x:block xmlns:x="http://xmldoc.schemas.helix.global" x:lang="ru-RU">
+         *   <summary>
+         *   Constructs new instance of <see cref="CmsMessage"/> class by using an array of byte values as the content data.
+         *   </summary>
+         *   <param name="content">Массив байт из которых будет сформировано содержимое объекта <see cref="CmsMessage"/>.</param>
+         * </x:block>
          */
         public CmsMessage(Byte[] content)
             :this(Load(new ReadOnlyMemoryMappingStream(content)).FirstOrDefault())

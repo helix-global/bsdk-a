@@ -3,6 +3,14 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents a <see langword="BOOLEAN"/> type.
+    /// </summary>
+    /// <x:block xmlns:x="http://xmldoc.schemas.helix.global" x:lang="ru-RU">
+    ///   <summary>
+    ///   Передставляет собой описание типа <see langword="BOOLEAN"/>.
+    ///   </summary>
+    /// </x:block>
     public sealed class Asn1Boolean : Asn1UniversalObject
         {
         public Boolean Value { get;private set; }

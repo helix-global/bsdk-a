@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "xdoc": {
+      "commandName": "Project",
+      "commandLineArgs": "input:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml output:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.en.US.xml "
+    }
+  }
+}

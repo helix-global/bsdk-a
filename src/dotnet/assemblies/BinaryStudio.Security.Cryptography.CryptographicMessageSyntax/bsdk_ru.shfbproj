@@ -15,14 +15,14 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\..\..\..\..\help\</OutputPath>
-    <HtmlHelpName>bsdk_en</HtmlHelpName>
-    <Language>en-US</Language>
+    <HtmlHelpName>bsdk_ru</HtmlHelpName>
+    <Language>ru-RU</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.en-US.xml" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.ru-RU.xml" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.en-US.xml" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.ru-RU.xml" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" /></DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
