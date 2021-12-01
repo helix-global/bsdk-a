@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    class Asn1EndOfContent : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="EOC"/> type.
+    /// </summary>
+    public sealed class Asn1EndOfContent : Asn1UniversalObject
         {
-        public Asn1EndOfContent(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1EndOfContent(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

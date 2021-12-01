@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents a <see langword="OBJECT IDENTIFIER"/> type.
+    /// </summary>
     public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>
         {
         public override Asn1ObjectType Type { get { return Asn1ObjectType.ObjectIdentifier; }}
@@ -23,7 +26,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     : (new Oid(value)).FriendlyName;
             }}
 
-        public Asn1ObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1ObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

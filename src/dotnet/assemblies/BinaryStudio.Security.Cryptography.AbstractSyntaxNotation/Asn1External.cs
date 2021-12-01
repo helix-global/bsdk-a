@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    class Asn1External : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="EXTERNAL"/> type.
+    /// </summary>
+    public sealed class Asn1External : Asn1UniversalObject
         {
-        public Asn1External(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1External(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

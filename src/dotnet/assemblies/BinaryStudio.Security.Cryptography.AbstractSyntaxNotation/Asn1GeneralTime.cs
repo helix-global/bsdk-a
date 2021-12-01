@@ -7,12 +7,15 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1GeneralTime : Asn1Time
+    /// <summary>
+    /// Represents a <see langword="GENERALIZEDTIME"/> type.
+    /// </summary>
+    public sealed class Asn1GeneralTime : Asn1Time
         {
         public override Asn1ObjectType Type { get { return Asn1ObjectType.GeneralTime; }}
         public override DateTimeKind Kind { get { return DateTimeKind.Local; }}
 
-        public Asn1GeneralTime(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1GeneralTime(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

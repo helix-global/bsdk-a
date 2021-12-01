@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents a <see langword="BIT STRING"/> type.
+    /// </summary>
     public sealed class Asn1BitString : Asn1UniversalObject
         {
         internal Asn1BitString(ReadOnlyMappingStream source, long forceoffset)

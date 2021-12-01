@@ -6,12 +6,15 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1Integer : Asn1UniversalObject, IConvertible
+    /// <summary>
+    /// Represents a <see langword="INTEGER"/> type.
+    /// </summary>
+    public sealed class Asn1Integer : Asn1UniversalObject, IConvertible
         {
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Integer; }}
         public BigInteger Value { get;private set; }
 
-        public Asn1Integer(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Integer(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

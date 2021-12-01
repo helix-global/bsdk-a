@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    class Asn1Enum : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="ENUMERATED"/> type.
+    /// </summary>
+    public sealed class Asn1Enum : Asn1UniversalObject
         {
-        public Asn1Enum(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Enum(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

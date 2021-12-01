@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1Sequence : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="SEQUENCE"/> type.
+    /// </summary>
+    public sealed class Asn1Sequence : Asn1UniversalObject
         {
-        public Asn1Sequence(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Sequence(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

@@ -4,9 +4,12 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1OctetString : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="OCTET STRING"/> type.
+    /// </summary>
+    public sealed class Asn1OctetString : Asn1UniversalObject
         {
-        public Asn1OctetString(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1OctetString(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

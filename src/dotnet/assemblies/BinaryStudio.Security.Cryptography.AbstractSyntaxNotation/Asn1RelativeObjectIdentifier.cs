@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1RelativeObjectIdentifier : Asn1ObjectIdentifier
+    /// <summary>
+    /// Represents a <see langword="RELATIVE-OID"/> type.
+    /// </summary>
+    public sealed class Asn1RelativeObjectIdentifier : Asn1ObjectIdentifier
         {
-        public Asn1RelativeObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1RelativeObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

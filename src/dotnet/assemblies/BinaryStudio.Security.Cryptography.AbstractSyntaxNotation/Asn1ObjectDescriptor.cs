@@ -3,9 +3,12 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents a <see langword="OBJECT DESCRIPTOR"/> type.
+    /// </summary>
     public class Asn1ObjectDescriptor : Asn1UniversalObject
         {
-        public Asn1ObjectDescriptor(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1ObjectDescriptor(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }
