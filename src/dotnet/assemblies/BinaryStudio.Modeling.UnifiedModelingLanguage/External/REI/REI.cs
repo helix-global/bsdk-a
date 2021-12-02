@@ -37,22 +37,6 @@ namespace RationalRose
         RoseClass GetTypeClass();
         }
 
-    [Guid("7D8474B2-2C33-11D0-BBDA-00A024C67143")]
-    [TypeLibType(4096)]
-    [InterfaceType(2)]
-    [ComImport]
-    public interface IRoseObject
-        {
-        [DispId(12668)]
-        [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        [return: MarshalAs(UnmanagedType.BStr)]
-        String IdentifyClass();
-
-        [DispId(12669)]
-        [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean IsClass([MarshalAs(UnmanagedType.BStr)] String theClassName);
-        }
-
     [TypeLibType(4096)]
     [InterfaceType(2)]
     [Guid("D067F15F-6987-11D0-BBF0-00A024C67143")]
