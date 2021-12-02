@@ -180,6 +180,10 @@ namespace RationalRose
     [return: MarshalAs(UnmanagedType.BStr)]
     public virtual extern String IdentifyClass();
 
+    [DispId(12669)]
+    [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+    public virtual extern Boolean IsClass([MarshalAs(UnmanagedType.BStr)] String theClassName);
+
     [DispId(12712)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]

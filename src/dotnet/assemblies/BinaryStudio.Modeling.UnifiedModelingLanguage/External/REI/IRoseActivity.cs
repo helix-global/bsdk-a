@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#pragma warning disable 1591
+
 namespace RationalRose
     {
     [Guid("BEAED5E7-578D-11D2-92AA-004005141253")]

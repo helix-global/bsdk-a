@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#pragma warning disable 1591
+
 namespace RationalRose
     {
     [TypeLibType(4096)]
