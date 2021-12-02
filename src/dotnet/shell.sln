@@ -60,6 +60,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xdoc", "xdoc\xdoc.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{E368B305-009D-4865-A918-192BD36F8E7E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "help", "help", "{5B516DF8-E90D-4B78-BD57-E3F326B26703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xhlp", "xhlp\xhlp.csproj", "{1353C39D-904A-47DD-9465-B6DE324310B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +146,10 @@ Global
 		{E368B305-009D-4865-A918-192BD36F8E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E368B305-009D-4865-A918-192BD36F8E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E368B305-009D-4865-A918-192BD36F8E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1353C39D-904A-47DD-9465-B6DE324310B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1353C39D-904A-47DD-9465-B6DE324310B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1353C39D-904A-47DD-9465-B6DE324310B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1353C39D-904A-47DD-9465-B6DE324310B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +171,7 @@ Global
 		{4C25F746-9B9C-4F23-A145-80DDFC58FABF} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{71AE850B-0833-4690-AD9C-09B6C8F479AE} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{E368B305-009D-4865-A918-192BD36F8E7E} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{1353C39D-904A-47DD-9465-B6DE324310B1} = {5B516DF8-E90D-4B78-BD57-E3F326B26703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}

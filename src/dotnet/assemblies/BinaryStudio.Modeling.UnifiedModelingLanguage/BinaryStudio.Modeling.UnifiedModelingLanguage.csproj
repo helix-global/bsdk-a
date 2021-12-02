@@ -5,6 +5,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
+    <DocumentationFile>C:\TFS\bsdk\src\dotnet\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />

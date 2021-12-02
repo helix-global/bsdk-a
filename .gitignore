@@ -45,3 +45,6 @@
 /help/Working
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
+/src/dotnet/xhlp/bin
+/src/dotnet/xhlp/obj
+/src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/BinaryStudio.Modeling.UnifiedModelingLanguage.xml
