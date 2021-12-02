@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:u="http://schemas.helix.global"
+        xmlns:shell="clr-namespace:shell"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
@@ -33,6 +34,7 @@
     <Menu Grid.Row="0">
       <MenuItem Header="FILE">
         <MenuItem Header="Open..." Command="Open"/>
+        <MenuItem Header="Convert to BASE64..." Command="{x:Static shell:DocumentCommands.ConvertToBase64}"/>
       </MenuItem>
       <MenuItem Header="HELP">
         <MenuItem Header="About..."/>

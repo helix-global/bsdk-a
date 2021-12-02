@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,23 @@ namespace shell
             }
 
         private void UpdateCommandBindings() {
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));;
+            }
+
+        private void ConvertToBase64Executed(Object sender, ExecutedRoutedEventArgs e)
+            {
+            var dialog = new OpenFileDialog();
+            if (dialog.ShowDialog(this) == true)
+                {
+                var r = File.ReadAllBytes(dialog.FileName);
+                docmanager.Add(
+                    new[] {
+                        new View<EBase64Edit>(new EBase64Edit {
+                        Text = Convert.ToBase64String(r)
+                        }) },
+                    Path.GetFileNameWithoutExtension(dialog.FileName));
+                }
             }
 
         private void OpenExecuted(Object sender, ExecutedRoutedEventArgs e)

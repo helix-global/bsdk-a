@@ -51,11 +51,13 @@ namespace xdoc
 
         private static void CopyAttributes(XmlWriter writer, XmlElement source) {
             foreach (XmlAttribute attribute in source.Attributes) {
-                writer.WriteAttributeString(
-                    attribute.Prefix,
-                    attribute.LocalName,
-                    attribute.NamespaceURI,
-                    attribute.Value);
+                if (attribute.LocalName != "xmlns") {
+                    writer.WriteAttributeString(
+                        attribute.Prefix,
+                        attribute.LocalName,
+                        attribute.NamespaceURI,
+                        attribute.Value);
+                    }
                 }
             }
 
