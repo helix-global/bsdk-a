@@ -5,6 +5,7 @@ using BinaryStudio.IO;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     /// <summary>
+    /// Represents a base class for basic ASN.1 types.
     /// </summary>
     /// <remarks>
     /// Represents a base class for types:
@@ -152,8 +153,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </remarks>
     public abstract class Asn1UniversalObject : Asn1Object, IAsn1Object
         {
+        /// <inheritdoc/>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1ObjectClass Class { get { return Asn1ObjectClass.Universal; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return (SByte)Type; }}
+        /// <summary>
+        /// ASN.1 universal type.
+        /// </summary>
         public abstract Asn1ObjectType Type { get; }
 
         internal Asn1UniversalObject(ReadOnlyMappingStream source, Int64 forceoffset)

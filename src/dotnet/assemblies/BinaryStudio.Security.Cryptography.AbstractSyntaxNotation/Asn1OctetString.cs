@@ -14,6 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.OctetString; }}
 
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer)

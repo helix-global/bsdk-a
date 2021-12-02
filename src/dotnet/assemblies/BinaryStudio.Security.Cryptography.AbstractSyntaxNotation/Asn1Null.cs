@@ -14,6 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Null; }}
 
         protected override void WriteJsonOverride(JsonWriter writer, JsonSerializer serializer)

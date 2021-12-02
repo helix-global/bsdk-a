@@ -461,6 +461,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
 
+        /// <summary>
+        /// ASN.1 object class.
+        /// </summary>
         public abstract Asn1ObjectClass Class { get; }
         public virtual Int64 Length { get {
             if (state.HasFlag(ObjectState.SealedLength)) { return length; }

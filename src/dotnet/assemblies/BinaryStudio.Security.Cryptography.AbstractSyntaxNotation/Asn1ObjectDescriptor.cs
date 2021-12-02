@@ -13,6 +13,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.ObjectDescriptor; }}
         }
     }

@@ -8,6 +8,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     internal sealed class Asn1GraphicString : Asn1String
         {
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.GraphicString; }}
         public override Encoding Encoding { get { return Encoding.ASCII; }}
 

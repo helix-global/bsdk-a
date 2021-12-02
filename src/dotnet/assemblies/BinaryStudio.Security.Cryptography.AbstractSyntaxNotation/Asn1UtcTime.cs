@@ -12,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     internal class Asn1UtcTime : Asn1Time
         {
         public override DateTimeKind Kind { get { return DateTimeKind.Utc; }}
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.UtcTime; }}
 
         internal Asn1UtcTime(ReadOnlyMappingStream source, Int64 forceoffset)

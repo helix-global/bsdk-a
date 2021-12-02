@@ -30,7 +30,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public abstract DateTimeKind Kind { get; }
         public DateTime Value { get;protected set; }
 
-        protected Asn1Time(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Time(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }

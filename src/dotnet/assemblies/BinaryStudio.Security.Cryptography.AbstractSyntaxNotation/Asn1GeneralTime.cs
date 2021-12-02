@@ -12,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     public sealed class Asn1GeneralTime : Asn1Time
         {
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.GeneralTime; }}
         public override DateTimeKind Kind { get { return DateTimeKind.Local; }}
 

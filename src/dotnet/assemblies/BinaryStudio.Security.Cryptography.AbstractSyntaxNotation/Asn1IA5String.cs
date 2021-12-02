@@ -8,6 +8,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     internal sealed class Asn1IA5String : Asn1String
         {
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.IA5String; }}
         public override Encoding Encoding { get { return Encoding.ASCII; }}
 

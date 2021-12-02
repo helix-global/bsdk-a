@@ -40,3 +40,4 @@
 /src/dotnet/xdoc/obj
 /src/dotnet/xslt/bin
 /src/dotnet/xslt/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml

@@ -19,6 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
+        /// <inheritdoc/>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Boolean; }}
         public static implicit operator Boolean(Asn1Boolean source) {
             return source.Value;
