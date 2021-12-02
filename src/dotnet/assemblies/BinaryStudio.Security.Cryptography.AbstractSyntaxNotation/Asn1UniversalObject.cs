@@ -153,7 +153,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </remarks>
     public abstract class Asn1UniversalObject : Asn1Object, IAsn1Object
         {
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 object class. Always returns <see cref="Asn1ObjectClass.Universal"/>.
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1ObjectClass Class { get { return Asn1ObjectClass.Universal; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return (SByte)Type; }}
         /// <summary>
@@ -170,6 +172,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Asn1Object other)
             {
             return base.Equals(other) && (((Asn1UniversalObject)other).Type == Type);

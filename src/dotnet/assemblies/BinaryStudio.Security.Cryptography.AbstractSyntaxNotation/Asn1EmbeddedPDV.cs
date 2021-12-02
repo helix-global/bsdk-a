@@ -13,7 +13,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.EmbeddedPDV"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.EmbeddedPDV; }}
         }
     }

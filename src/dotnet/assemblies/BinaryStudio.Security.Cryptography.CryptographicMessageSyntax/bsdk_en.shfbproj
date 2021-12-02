@@ -19,13 +19,16 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.en-US.xml" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.en-US.xml" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.en-US.xml" />
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.dll" />
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.en-US.xml" />
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" />
+    </DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
+    <CleanIntermediates>False</CleanIntermediates>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, Protected, SealedProtected</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

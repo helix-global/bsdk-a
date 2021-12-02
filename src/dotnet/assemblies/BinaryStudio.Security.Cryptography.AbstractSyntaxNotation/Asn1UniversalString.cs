@@ -8,7 +8,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     internal sealed class Asn1UniversalString : Asn1String
         {
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.UniversalString"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.UniversalString; }}
         public override Encoding Encoding { get { return Encoding.ASCII; }}
 

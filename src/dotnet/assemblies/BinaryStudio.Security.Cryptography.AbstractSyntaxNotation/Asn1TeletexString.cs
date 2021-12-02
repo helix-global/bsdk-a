@@ -9,7 +9,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     internal sealed class Asn1TeletexString : Asn1String
         {
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.TeletexString"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.TeletexString; }}
         public override Encoding Encoding { get { return new T61Encoding(); }}
 

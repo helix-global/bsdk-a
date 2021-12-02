@@ -14,7 +14,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.OctetString"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.OctetString; }}
 
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer)

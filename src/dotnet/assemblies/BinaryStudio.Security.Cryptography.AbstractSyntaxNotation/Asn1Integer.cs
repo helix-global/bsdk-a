@@ -11,7 +11,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     public sealed class Asn1Integer : Asn1UniversalObject, IConvertible
         {
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.Integer"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Integer; }}
         public BigInteger Value { get;private set; }
 

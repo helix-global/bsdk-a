@@ -15,7 +15,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </summary>
     public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>
         {
-        /// <inheritdoc/>
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.ObjectIdentifier"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.ObjectIdentifier; }}
         public Int64[] Sequence { get;private set; }
 
