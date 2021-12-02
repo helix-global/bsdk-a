@@ -2,6 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+*.user
+*.log
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
 /src/dotnet/.vs/shell
@@ -35,10 +37,11 @@
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/obj
-*.log
 /src/dotnet/xdoc/bin
 /src/dotnet/xdoc/obj
 /src/dotnet/xslt/bin
 /src/dotnet/xslt/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml
 /help/Working
+/src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
+/src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin

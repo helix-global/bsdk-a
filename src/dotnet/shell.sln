@@ -54,9 +54,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{EE38
 		..\..\scripts\xmldoc-ru.xslt = ..\..\scripts\xmldoc-ru.xslt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "xslt\xslt.csproj", "{880E028F-C3F7-44A2-9B9C-2DB3E593A1E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xslt", "xslt\xslt.csproj", "{880E028F-C3F7-44A2-9B9C-2DB3E593A1E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xdoc", "xdoc\xdoc.csproj", "{D3F023C2-86DC-4A3C-9F2F-5E1BC69B13E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xdoc", "xdoc\xdoc.csproj", "{D3F023C2-86DC-4A3C-9F2F-5E1BC69B13E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{E368B305-009D-4865-A918-192BD36F8E7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +138,10 @@ Global
 		{D3F023C2-86DC-4A3C-9F2F-5E1BC69B13E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3F023C2-86DC-4A3C-9F2F-5E1BC69B13E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3F023C2-86DC-4A3C-9F2F-5E1BC69B13E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E368B305-009D-4865-A918-192BD36F8E7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E368B305-009D-4865-A918-192BD36F8E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E368B305-009D-4865-A918-192BD36F8E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E368B305-009D-4865-A918-192BD36F8E7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +162,7 @@ Global
 		{AEF9DC89-5367-4ECA-BC9F-E56B79C477F9} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{4C25F746-9B9C-4F23-A145-80DDFC58FABF} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{71AE850B-0833-4690-AD9C-09B6C8F479AE} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{E368B305-009D-4865-A918-192BD36F8E7E} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}
