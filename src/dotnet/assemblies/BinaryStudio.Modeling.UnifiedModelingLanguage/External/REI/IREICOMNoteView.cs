@@ -20,7 +20,7 @@ namespace RationalRose
         [DispId(12821)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseDiagram GetDiagramLink();
+        REICOMDiagram GetDiagramLink();
 
         [DispId(12822)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -29,6 +29,6 @@ namespace RationalRose
 
         [DispId(12855)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void LinkDiagram([MarshalAs(UnmanagedType.Interface)] RoseDiagram theDiagram);
+        void LinkDiagram([MarshalAs(UnmanagedType.Interface)] REICOMDiagram theDiagram);
         }
     }

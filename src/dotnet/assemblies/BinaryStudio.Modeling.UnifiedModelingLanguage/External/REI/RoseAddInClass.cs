@@ -99,12 +99,12 @@ namespace RationalRose
     [DispId(12684)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseContextMenuItem AddContextMenuItem(Int16 itemType, [MarshalAs(UnmanagedType.BStr)] String fullCaption, [MarshalAs(UnmanagedType.BStr)] String InternalName);
+    public virtual extern REICOMContextMenuItem AddContextMenuItem(Int16 itemType, [MarshalAs(UnmanagedType.BStr)] String fullCaption, [MarshalAs(UnmanagedType.BStr)] String InternalName);
 
     [DispId(12685)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseContextMenuItemCollection GetContextMenuItems(Int16 itemType);
+    public virtual extern REICOMContextMenuItemCollection GetContextMenuItems(Int16 itemType);
 
     [DispId(12689)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -39,7 +39,7 @@ namespace RationalRose
 
         [DispId(420)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AssignAssociation([MarshalAs(UnmanagedType.Interface)] RoseAssociation TheAssoc);
+        Boolean AssignAssociation([MarshalAs(UnmanagedType.Interface)] REICOMAssociation TheAssoc);
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,6 +53,6 @@ namespace RationalRose
         [DispId(12776)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseAssociation GetAssociation();
+        REICOMAssociation GetAssociation();
         }
     }

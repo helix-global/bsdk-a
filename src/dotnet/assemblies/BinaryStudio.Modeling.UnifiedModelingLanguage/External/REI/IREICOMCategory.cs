@@ -20,13 +20,13 @@ namespace RationalRose
         IREICOMCategoryCollection Categories { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(415)]
-        RoseCategory ParentCategory { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMCategory ParentCategory { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(416)]
-        RoseClassDiagramCollection ClassDiagrams { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMClassDiagramCollection ClassDiagrams { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(417)]
-        RoseAssociationCollection Associations { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMAssociationCollection Associations { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(418)]
         RoseScenarioDiagramCollection ScenarioDiagrams { [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -37,51 +37,51 @@ namespace RationalRose
         [DispId(419)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassCollection GetAllClasses();
+        REICOMClassCollection GetAllClasses();
 
         [DispId(420)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategoryCollection GetAllCategories();
+        REICOMCategoryCollection GetAllCategories();
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClass AddClass([MarshalAs(UnmanagedType.BStr)] String theName);
+        REICOMClass AddClass([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(422)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassDiagram AddClassDiagram([MarshalAs(UnmanagedType.BStr)] String Name);
+        REICOMClassDiagram AddClassDiagram([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(423)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategory AddCategory([MarshalAs(UnmanagedType.BStr)] String theName);
+        REICOMCategory AddCategory([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(424)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RelocateClass([MarshalAs(UnmanagedType.Interface)] RoseClass theClass);
+        void RelocateClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
 
         [DispId(425)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RelocateCategory([MarshalAs(UnmanagedType.Interface)] RoseCategory theCategory);
+        void RelocateCategory([MarshalAs(UnmanagedType.Interface)] REICOMCategory theCategory);
 
         [DispId(426)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RelocateClassDiagram([MarshalAs(UnmanagedType.Interface)] RoseClassDiagram theClsDiagram);
+        void RelocateClassDiagram([MarshalAs(UnmanagedType.Interface)] REICOMClassDiagram theClsDiagram);
 
         [DispId(427)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteCategory([MarshalAs(UnmanagedType.Interface)] RoseCategory theCategory);
+        Boolean DeleteCategory([MarshalAs(UnmanagedType.Interface)] REICOMCategory theCategory);
 
         [DispId(428)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteClass([MarshalAs(UnmanagedType.Interface)] RoseClass theClass);
+        Boolean DeleteClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
 
         [DispId(429)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteClassDiagram([MarshalAs(UnmanagedType.Interface)] RoseClassDiagram theClassDiagram);
+        Boolean DeleteClassDiagram([MarshalAs(UnmanagedType.Interface)] REICOMClassDiagram theClassDiagram);
 
         [DispId(430)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -130,34 +130,34 @@ namespace RationalRose
         [DispId(12659)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategoryDependency AddCategoryDependency([MarshalAs(UnmanagedType.BStr)] String theName, [MarshalAs(UnmanagedType.BStr)] String theSupplierCategoryName);
+        REICOMCategoryDependency AddCategoryDependency([MarshalAs(UnmanagedType.BStr)] String theName, [MarshalAs(UnmanagedType.BStr)] String theSupplierCategoryName);
 
         [DispId(12660)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategoryDependencyCollection GetCategoryDependencies();
+        REICOMCategoryDependencyCollection GetCategoryDependencies();
 
         [DispId(12661)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteCategoryDependency([MarshalAs(UnmanagedType.Interface)] RoseCategoryDependency theDependency);
+        Boolean DeleteCategoryDependency([MarshalAs(UnmanagedType.Interface)] REICOMCategoryDependency theDependency);
 
         [DispId(12677)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RelocateAssociation([MarshalAs(UnmanagedType.Interface)] RoseAssociation theAssociation);
+        void RelocateAssociation([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theAssociation);
 
         [DispId(12833)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassDiagram AddDataModelDiagram([MarshalAs(UnmanagedType.BStr)] String Name);
+        REICOMClassDiagram AddDataModelDiagram([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(12857)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassCollection GetAllClassesEx(Boolean Recursive, Boolean Nested);
+        REICOMClassCollection GetAllClassesEx(Boolean Recursive, Boolean Nested);
 
         [DispId(12869)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassDiagram AddUseCaseDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
+        REICOMClassDiagram AddUseCaseDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
         }
     }

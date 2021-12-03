@@ -16,11 +16,11 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    RoseInstantiateRelation GetAt(Int16 Index);
+    REICOMInstantiateRelation GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseInstantiateRelation pObject);
+    Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelation pObject);
 
     [DispId(205)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -32,11 +32,11 @@ namespace RationalRose
 
     [DispId(207)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseInstantiateRelation theObject);
+    Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelation theObject);
 
     [DispId(208)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    void Add([MarshalAs(UnmanagedType.Interface)] RoseInstantiateRelation theObject);
+    void Add([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelation theObject);
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -44,7 +44,7 @@ namespace RationalRose
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    void Remove([MarshalAs(UnmanagedType.Interface)] RoseInstantiateRelation theObject);
+    void Remove([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelation theObject);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -58,6 +58,6 @@ namespace RationalRose
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    RoseInstantiateRelation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+    REICOMInstantiateRelation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
   }
 }

@@ -14,13 +14,13 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("D5352FC3-346C-11D1-883B-3C8B00C10000")]
   [ComImport]
-  public class RoseAddInManagerClass : IREICOMAddInManager, RoseAddInManager
+  public class RoseAddInManagerClass : IREICOMAddInManager, REICOMAddInManager
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAddInManagerClass();
 
     [DispId(12529)]
-    public virtual extern RoseAddInCollection AddIns { [DispId(12529), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12529), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+    public virtual extern REICOMAddInCollection AddIns { [DispId(12529), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12529), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(12668)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

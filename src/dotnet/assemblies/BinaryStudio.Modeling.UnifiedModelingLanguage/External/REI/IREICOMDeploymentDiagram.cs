@@ -18,7 +18,7 @@ namespace RationalRose
         [DispId(412)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseDeviceCollection GetDevices();
+        REICOMDeviceCollection GetDevices();
 
         [DispId(413)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -28,7 +28,7 @@ namespace RationalRose
         [DispId(414)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseItemView AddDevice([MarshalAs(UnmanagedType.Interface)] RoseDevice theDevice, Int16 x, Int16 y);
+        RoseItemView AddDevice([MarshalAs(UnmanagedType.Interface)] REICOMDevice theDevice, Int16 x, Int16 y);
 
         [DispId(415)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -36,6 +36,6 @@ namespace RationalRose
 
         [DispId(416)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveDevice([MarshalAs(UnmanagedType.Interface)] RoseDevice theDevice);
+        Boolean RemoveDevice([MarshalAs(UnmanagedType.Interface)] REICOMDevice theDevice);
         }
     }

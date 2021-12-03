@@ -12,6 +12,6 @@ namespace RationalRose
         [DispId(12742)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseDecision GetDecision();
+        REICOMDecision GetDecision();
         }
     }

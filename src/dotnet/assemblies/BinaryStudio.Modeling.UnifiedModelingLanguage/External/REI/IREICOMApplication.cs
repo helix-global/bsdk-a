@@ -41,7 +41,7 @@ namespace RationalRose
         String ApplicationPath { [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12544)]
-        RoseAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12586)]
         String CommandLine { [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -99,7 +99,7 @@ namespace RationalRose
         [DispId(235)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
+        REICOMApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
 
         [DispId(236)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -124,11 +124,11 @@ namespace RationalRose
 
         [DispId(12679)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] RoseItem theItem);
+        Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
 
         [DispId(12688)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] RoseExternalDocument theDocument);
+        Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMExternalDocument theDocument);
 
         [DispId(12697)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -146,11 +146,11 @@ namespace RationalRose
 
         [DispId(12859)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] RoseItem theItem);
+        Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
 
         [DispId(12860)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] RoseDiagram theDiagram);
+        Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] REICOMDiagram theDiagram);
 
         [DispId(12861)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

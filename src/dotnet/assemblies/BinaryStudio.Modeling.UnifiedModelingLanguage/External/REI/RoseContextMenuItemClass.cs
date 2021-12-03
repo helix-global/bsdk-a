@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseContextMenuItemClass : IREICOMContextMenuItem, RoseContextMenuItem
+  public class RoseContextMenuItemClass : IREICOMContextMenuItem, REICOMContextMenuItem
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseContextMenuItemClass();

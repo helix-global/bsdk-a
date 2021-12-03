@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("86652276-EBF7-11D0-BC10-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseEventClass : IREICOMEvent, RoseEvent
+  public class RoseEventClass : IREICOMEvent, REICOMEvent
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseEventClass();

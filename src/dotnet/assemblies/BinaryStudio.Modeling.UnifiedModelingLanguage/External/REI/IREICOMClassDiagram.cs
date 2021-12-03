@@ -11,56 +11,56 @@ namespace RationalRose
     public interface IREICOMClassDiagram : IREICOMDiagram
         {
         [DispId(411)]
-        RoseCategory ParentCategory { [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMCategory ParentCategory { [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(412)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AddClass([MarshalAs(UnmanagedType.Interface)] RoseClass theClass);
+        Boolean AddClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
 
         [DispId(413)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AddCategory([MarshalAs(UnmanagedType.Interface)] RoseCategory theCat);
+        Boolean AddCategory([MarshalAs(UnmanagedType.Interface)] REICOMCategory theCat);
 
         [DispId(414)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategoryCollection GetSelectedCategories();
+        REICOMCategoryCollection GetSelectedCategories();
 
         [DispId(415)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassCollection GetSelectedClasses();
+        REICOMClassCollection GetSelectedClasses();
 
         [DispId(416)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassCollection GetClasses();
+        REICOMClassCollection GetClasses();
 
         [DispId(417)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseCategoryCollection GetCategories();
+        REICOMCategoryCollection GetCategories();
 
         [DispId(418)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AddAssociation([MarshalAs(UnmanagedType.Interface)] RoseAssociation theAssociation);
+        Boolean AddAssociation([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theAssociation);
 
         [DispId(419)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveClass([MarshalAs(UnmanagedType.Interface)] RoseClass theClass);
+        Boolean RemoveClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
 
         [DispId(420)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveCategory([MarshalAs(UnmanagedType.Interface)] RoseCategory theCategory);
+        Boolean RemoveCategory([MarshalAs(UnmanagedType.Interface)] REICOMCategory theCategory);
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveAssociation([MarshalAs(UnmanagedType.Interface)] RoseAssociation theAssociation);
+        Boolean RemoveAssociation([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theAssociation);
 
         [DispId(422)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseAssociationCollection GetAssociations();
+        REICOMAssociationCollection GetAssociations();
 
         [DispId(423)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -82,7 +82,7 @@ namespace RationalRose
         [DispId(427)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseClassView GetClassView([MarshalAs(UnmanagedType.Interface)] RoseClass theClass);
+        REICOMClassView GetClassView([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
 
         [DispId(12834)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseApplicationClass : IREICOMApplication, RoseApplication
+  public class RoseApplicationClass : IREICOMApplication, REICOMApplication
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseApplicationClass();
@@ -50,7 +50,7 @@ namespace RationalRose
     public virtual extern String ApplicationPath { [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(12544)]
-    public virtual extern RoseAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+    public virtual extern REICOMAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(12586)]
     public virtual extern String CommandLine { [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -108,7 +108,7 @@ namespace RationalRose
     [DispId(235)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
+    public virtual extern REICOMApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
 
     [DispId(236)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -133,11 +133,11 @@ namespace RationalRose
 
     [DispId(12679)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] RoseItem theItem);
+    public virtual extern Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
 
     [DispId(12688)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] RoseExternalDocument theDocument);
+    public virtual extern Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMExternalDocument theDocument);
 
     [DispId(12697)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -155,11 +155,11 @@ namespace RationalRose
 
     [DispId(12859)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] RoseItem theItem);
+    public virtual extern Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
 
     [DispId(12860)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] RoseDiagram theDiagram);
+    public virtual extern Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] REICOMDiagram theDiagram);
 
     [DispId(12861)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
