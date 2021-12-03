@@ -14,13 +14,13 @@ namespace RationalRose
         IREICOMCategory RootCategory { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(418)]
-        RoseSubsystem RootSubsystem { [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMSubsystem RootSubsystem { [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(420)]
         REICOMDeploymentDiagram DeploymentDiagram { [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(421)]
-        RoseUseCaseCollection UseCases { [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMUseCaseCollection UseCases { [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(422)]
         IREICOMCategory RootUseCaseCategory { [DispId(422), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(422), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -81,7 +81,7 @@ namespace RationalRose
         [DispId(431)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemCollection GetSelectedSubsystems();
+        REICOMSubsystemCollection GetSelectedSubsystems();
 
         [DispId(432)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -101,7 +101,7 @@ namespace RationalRose
         [DispId(435)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemCollection GetAllSubsystems();
+        REICOMSubsystemCollection GetAllSubsystems();
 
         [DispId(436)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -116,12 +116,12 @@ namespace RationalRose
         [DispId(438)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseUseCaseCollection GetSelectedUseCases();
+        REICOMUseCaseCollection GetSelectedUseCases();
 
         [DispId(439)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseUseCaseCollection GetAllUseCases();
+        REICOMUseCaseCollection GetAllUseCases();
 
         [DispId(12472)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

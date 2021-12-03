@@ -103,7 +103,7 @@ namespace RationalRose
 
         [DispId(12787)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AddRelationView([MarshalAs(UnmanagedType.Interface)] RoseRelation theRelation);
+        Boolean AddRelationView([MarshalAs(UnmanagedType.Interface)] REICOMRelation theRelation);
 
         [DispId(12823)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ClassInterface(ClassInterfaceType.None)]
     [ComImport]
-    public class REICoClassStateViewCollection : IREICOMStateViewCollection, RoseStateViewCollection
+    public class REICoClassStateViewCollection : IREICOMStateViewCollection, REICOMStateViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateViewCollectionClass();
@@ -19,11 +19,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateView GetAt(Int16 Index);
+        public virtual extern REICOMStateView GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseStateView pObject);
+        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMStateView pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -35,19 +35,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseStateView theObject);
+        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMStateView theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseStateView theObject);
+        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMStateView theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseStateViewCollection theCollection);
+        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMStateViewCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseStateView theObject);
+        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMStateView theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -56,11 +56,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        public virtual extern REICOMStateView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        public virtual extern REICOMStateView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

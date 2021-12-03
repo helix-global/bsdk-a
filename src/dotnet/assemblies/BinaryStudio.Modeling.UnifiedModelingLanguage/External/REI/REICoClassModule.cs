@@ -29,13 +29,13 @@ namespace RationalRose
         public virtual extern String Path { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(413)]
-        public virtual extern RoseSubsystem ParentSubsystem { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMSubsystem ParentSubsystem { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(414)]
-        public virtual extern RoseRichType Type { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMRichType Type { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(415)]
-        public virtual extern RoseRichType Part { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMRichType Part { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(416)]
         public virtual extern String Declarations { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -56,7 +56,7 @@ namespace RationalRose
         public virtual extern String AssignedLanguage { [DispId(12566), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12566), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12790)]
-        public virtual extern RoseStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(102)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -126,12 +126,12 @@ namespace RationalRose
         [DispId(129)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
+        public virtual extern REICOMStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
 
         [DispId(130)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetToolNames();
+        public virtual extern REICOMStringCollection GetToolNames();
 
         [DispId(131)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -182,12 +182,12 @@ namespace RationalRose
         [DispId(423)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        public virtual extern REICOMModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theSubsystem);
 
         [DispId(428)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMModuleVisibilityRelationship AddSubsystemVisibilityRelation([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        public virtual extern REICOMModuleVisibilityRelationship AddSubsystemVisibilityRelation([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theSubsystem);
 
         [DispId(12555)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -206,7 +206,7 @@ namespace RationalRose
         [DispId(12615)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseRealizeRelationCollection GetRealizeRelations();
+        public virtual extern REICOMRealizeRelationCollection GetRealizeRelations();
 
         [DispId(12668)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

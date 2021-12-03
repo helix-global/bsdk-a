@@ -34,12 +34,12 @@ namespace RationalRose
         [DispId(416)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetCorrespondingRole([MarshalAs(UnmanagedType.Interface)] REICOMClass Class);
+        REICOMRole GetCorrespondingRole([MarshalAs(UnmanagedType.Interface)] REICOMClass Class);
 
         [DispId(417)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetOtherRole([MarshalAs(UnmanagedType.Interface)] REICOMClass Class);
+        REICOMRole GetOtherRole([MarshalAs(UnmanagedType.Interface)] REICOMClass Class);
 
         [DispId(418)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -52,11 +52,11 @@ namespace RationalRose
         [DispId(12647)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetRoleForNameDirection();
+        REICOMRole GetRoleForNameDirection();
 
         [DispId(12648)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetRoleForNameDirection([MarshalAs(UnmanagedType.Interface)] RoseRole theRole);
+        void SetRoleForNameDirection([MarshalAs(UnmanagedType.Interface)] REICOMRole theRole);
 
         [DispId(12649)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -108,12 +108,12 @@ namespace RationalRose
         [DispId(129)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
+        public virtual extern REICOMStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
 
         [DispId(130)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetToolNames();
+        public virtual extern REICOMStringCollection GetToolNames();
 
         [DispId(131)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -208,7 +208,7 @@ namespace RationalRose
 
         [DispId(12787)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean AddRelationView([MarshalAs(UnmanagedType.Interface)] RoseRelation theRelation);
+        public virtual extern Boolean AddRelationView([MarshalAs(UnmanagedType.Interface)] REICOMRelation theRelation);
 
         [DispId(12820)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

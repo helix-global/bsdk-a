@@ -44,10 +44,10 @@ namespace RationalRose
         public virtual extern REICOMAssociationCollection Associations { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(418)]
-        public virtual extern RoseScenarioDiagramCollection ScenarioDiagrams { [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMScenarioDiagramCollection ScenarioDiagrams { [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(418), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(446)]
-        public virtual extern RoseUseCaseCollection UseCases { [DispId(446), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(446), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMUseCaseCollection UseCases { [DispId(446), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(446), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12523)]
         public virtual extern Object Application { [DispId(12523), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12523), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -59,7 +59,7 @@ namespace RationalRose
         public virtual extern String LocalizedStereotype { [DispId(12554), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12554), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12790)]
-        public virtual extern RoseStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12881)]
         public virtual extern Int32 PetalVersion { [DispId(12881), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12881), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -132,12 +132,12 @@ namespace RationalRose
         [DispId(129)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
+        public virtual extern REICOMStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
 
         [DispId(130)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetToolNames();
+        public virtual extern REICOMStringCollection GetToolNames();
 
         [DispId(131)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -213,24 +213,24 @@ namespace RationalRose
         [DispId(430)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseScenarioDiagram AddScenarioDiagram([MarshalAs(UnmanagedType.BStr)] String Name, Int16 Type);
+        public virtual extern REICOMScenarioDiagram AddScenarioDiagram([MarshalAs(UnmanagedType.BStr)] String Name, Int16 Type);
 
         [DispId(431)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteScenarioDiagram([MarshalAs(UnmanagedType.Interface)] RoseScenarioDiagram theScenarioDiagram);
+        public virtual extern Boolean DeleteScenarioDiagram([MarshalAs(UnmanagedType.Interface)] REICOMScenarioDiagram theScenarioDiagram);
 
         [DispId(432)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void RelocateScenarioDiagram([MarshalAs(UnmanagedType.Interface)] RoseScenarioDiagram theScenarioDiagram);
+        public virtual extern void RelocateScenarioDiagram([MarshalAs(UnmanagedType.Interface)] REICOMScenarioDiagram theScenarioDiagram);
 
         [DispId(433)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSubsystem GetAssignedSubsystem();
+        public virtual extern REICOMSubsystem GetAssignedSubsystem();
 
         [DispId(434)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void SetAssignedSubsystem([MarshalAs(UnmanagedType.Interface)] RoseSubsystem newValue);
+        public virtual extern void SetAssignedSubsystem([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem newValue);
 
         [DispId(435)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -238,7 +238,7 @@ namespace RationalRose
 
         [DispId(436)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteUseCase([MarshalAs(UnmanagedType.Interface)] RoseUseCase theUseCase);
+        public virtual extern Boolean DeleteUseCase([MarshalAs(UnmanagedType.Interface)] REICOMUseCase theUseCase);
 
         [DispId(437)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -247,12 +247,12 @@ namespace RationalRose
         [DispId(447)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseUseCaseCollection GetAllUseCases();
+        public virtual extern REICOMUseCaseCollection GetAllUseCases();
 
         [DispId(448)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseUseCase AddUseCase([MarshalAs(UnmanagedType.BStr)] String szName);
+        public virtual extern REICOMUseCase AddUseCase([MarshalAs(UnmanagedType.BStr)] String szName);
 
         [DispId(621)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

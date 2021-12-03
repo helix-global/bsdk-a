@@ -11,17 +11,17 @@ namespace RationalRose
     public interface IREICOMStateMachineOwner : IREICOMElement
         {
         [DispId(12744)]
-        RoseStateMachineCollection StateMachines { [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMStateMachineCollection StateMachines { [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
 
         [DispId(12745)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseStateMachine CreateStateMachine([MarshalAs(UnmanagedType.BStr)] String theStateMachineName);
+        REICOMStateMachine CreateStateMachine([MarshalAs(UnmanagedType.BStr)] String theStateMachineName);
 
         [DispId(12746)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] RoseStateMachine theStateMachine);
+        Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] REICOMStateMachine theStateMachine);
 
 
         [DispId(12830)]

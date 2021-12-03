@@ -64,16 +64,16 @@ namespace RationalRose
 
         [DispId(423)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean AddUseCase([MarshalAs(UnmanagedType.Interface)] RoseUseCase theUseCase);
+        Boolean AddUseCase([MarshalAs(UnmanagedType.Interface)] REICOMUseCase theUseCase);
 
         [DispId(424)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveUseCase([MarshalAs(UnmanagedType.Interface)] RoseUseCase theUseCase);
+        Boolean RemoveUseCase([MarshalAs(UnmanagedType.Interface)] REICOMUseCase theUseCase);
 
         [DispId(425)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseUseCaseCollection GetUseCases();
+        REICOMUseCaseCollection GetUseCases();
 
         [DispId(426)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -167,7 +167,7 @@ namespace RationalRose
         [DispId(12863)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection EditorGetOpenFiles();
+        public virtual extern REICOMStringCollection EditorGetOpenFiles();
 
         [DispId(12864)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

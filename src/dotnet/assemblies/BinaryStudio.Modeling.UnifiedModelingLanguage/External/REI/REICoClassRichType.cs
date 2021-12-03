@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassRichType : IREICOMRichType, RoseRichType
+    public class REICoClassRichType : IREICOMRichType, REICOMRichType
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseRichTypeClass();
@@ -20,7 +20,7 @@ namespace RationalRose
         public virtual extern String Name { [DispId(203), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(203), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(204)]
-        public virtual extern RoseRichTypeValuesCollection Types { [DispId(204), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(204), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMRichTypeValuesCollection Types { [DispId(204), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(204), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12668)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

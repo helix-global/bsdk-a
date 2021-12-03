@@ -43,7 +43,7 @@ namespace RationalRose
         [DispId(12712)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseStateVertexCollection GetStateVertices();
+        REICOMStateVertexCollection GetStateVertices();
 
         [DispId(12843)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -14,10 +14,10 @@ namespace RationalRose
         REICOMModuleCollection Modules { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(413)]
-        RoseSubsystemCollection Subsystems { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMSubsystemCollection Subsystems { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(414)]
-        RoseSubsystem ParentSubsystem { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMSubsystem ParentSubsystem { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(415)]
         REICOMModuleDiagramCollection ModuleDiagrams { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -35,7 +35,7 @@ namespace RationalRose
         [DispId(419)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystem AddSubsystem([MarshalAs(UnmanagedType.BStr)] String theName);
+        REICOMSubsystem AddSubsystem([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(420)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -43,7 +43,7 @@ namespace RationalRose
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RelocateSubsystem([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        void RelocateSubsystem([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theSubsystem);
 
         [DispId(422)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -57,7 +57,7 @@ namespace RationalRose
         [DispId(424)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemCollection GetAllSubsystems();
+        REICOMSubsystemCollection GetAllSubsystems();
 
         [DispId(425)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -72,12 +72,12 @@ namespace RationalRose
         [DispId(427)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemCollection GetVisibleSubsystems();
+        REICOMSubsystemCollection GetVisibleSubsystems();
 
         [DispId(428)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        REICOMModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theSubsystem);
 
         [DispId(429)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -103,7 +103,7 @@ namespace RationalRose
 
         [DispId(450)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteSubSystem([MarshalAs(UnmanagedType.Interface)] RoseSubsystem pIDispatch);
+        Boolean DeleteSubSystem([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem pIDispatch);
 
         [DispId(12705)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

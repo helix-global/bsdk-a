@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("4782FBB2-ECD5-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassStateMachine : IREICOMStateMachine, RoseStateMachine
+    public class REICoClassStateMachine : IREICOMStateMachine, REICOMStateMachine
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateMachineClass();
@@ -29,7 +29,7 @@ namespace RationalRose
         public virtual extern REICOMClass ParentClass { [DispId(215), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(215), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(222)]
-        public virtual extern RoseStateCollection States { [DispId(222), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(222), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateCollection States { [DispId(222), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(222), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12523)]
         public virtual extern Object Application { [DispId(12523), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12523), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -41,7 +41,7 @@ namespace RationalRose
         public virtual extern String LocalizedStereotype { [DispId(12554), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12554), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12729)]
-        public virtual extern RoseSwimLaneCollection SwimLanes { [DispId(12729), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12729), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMSwimLaneCollection SwimLanes { [DispId(12729), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12729), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12730)]
         public virtual extern REICOMActivityCollection Activities { [DispId(12730), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12730), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -53,16 +53,16 @@ namespace RationalRose
         public virtual extern REICOMDecisionCollection Decisions { [DispId(12732), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12732), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12733)]
-        public virtual extern RoseStateVertexCollection StateVertices { [DispId(12733), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12733), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateVertexCollection StateVertices { [DispId(12733), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12733), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12734)]
-        public virtual extern RoseStateDiagramCollection Diagrams { [DispId(12734), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12734), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateDiagramCollection Diagrams { [DispId(12734), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12734), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12778)]
-        public virtual extern RoseSyncItemCollection Synchronizations { [DispId(12778), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12778), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMSyncItemCollection Synchronizations { [DispId(12778), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12778), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12790)]
-        public virtual extern RoseStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12849)]
         public virtual extern REICOMObjectInstanceCollection ObjectInstances { [DispId(12849), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12849), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -135,12 +135,12 @@ namespace RationalRose
         [DispId(129)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
+        public virtual extern REICOMStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
 
         [DispId(130)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetToolNames();
+        public virtual extern REICOMStringCollection GetToolNames();
 
         [DispId(131)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -158,25 +158,25 @@ namespace RationalRose
         [DispId(217)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseState AddState([MarshalAs(UnmanagedType.BStr)] String Name);
+        public virtual extern REICOMState AddState([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(218)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteState([MarshalAs(UnmanagedType.Interface)] RoseState State);
+        public virtual extern Boolean DeleteState([MarshalAs(UnmanagedType.Interface)] REICOMState State);
 
         [DispId(219)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean RelocateState([MarshalAs(UnmanagedType.Interface)] RoseState State);
+        public virtual extern Boolean RelocateState([MarshalAs(UnmanagedType.Interface)] REICOMState State);
 
         [DispId(220)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateCollection GetAllStates();
+        public virtual extern REICOMStateCollection GetAllStates();
 
         [DispId(221)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseTransitionCollection GetAllTransitions();
+        public virtual extern REICOMTransitionCollection GetAllTransitions();
 
         [DispId(12555)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -186,7 +186,7 @@ namespace RationalRose
         [DispId(12665)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseTransitionCollection GetTransitions();
+        public virtual extern REICOMTransitionCollection GetTransitions();
 
         [DispId(12668)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -219,7 +219,7 @@ namespace RationalRose
         [DispId(12737)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateVertexCollection GetAllStateVertices();
+        public virtual extern REICOMStateVertexCollection GetAllStateVertices();
 
         [DispId(12738)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -234,30 +234,30 @@ namespace RationalRose
         [DispId(12740)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateDiagramCollection GetAllDiagrams();
+        public virtual extern REICOMStateDiagramCollection GetAllDiagrams();
 
         [DispId(12779)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSwimLane AddSwimLane([MarshalAs(UnmanagedType.BStr)] String theName);
+        public virtual extern REICOMSwimLane AddSwimLane([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(12780)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteSwimLane([MarshalAs(UnmanagedType.Interface)] RoseSwimLane aSwimLane);
+        public virtual extern Boolean DeleteSwimLane([MarshalAs(UnmanagedType.Interface)] REICOMSwimLane aSwimLane);
 
         [DispId(12781)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteStateVertex([MarshalAs(UnmanagedType.Interface)] RoseStateVertex aStateVertex);
+        public virtual extern Boolean DeleteStateVertex([MarshalAs(UnmanagedType.Interface)] REICOMStateVertex aStateVertex);
 
         [DispId(12782)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSyncItemCollection GetAllSynchronizations();
+        public virtual extern REICOMSyncItemCollection GetAllSynchronizations();
 
         [DispId(12784)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSyncItem AddSynchronization([MarshalAs(UnmanagedType.BStr)] String aName);
+        public virtual extern REICOMSyncItem AddSynchronization([MarshalAs(UnmanagedType.BStr)] String aName);
 
         [DispId(12797)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -266,12 +266,12 @@ namespace RationalRose
         [DispId(12800)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateDiagram AddStateChartDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
+        public virtual extern REICOMStateDiagram AddStateChartDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(12801)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateDiagram AddActivityDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
+        public virtual extern REICOMStateDiagram AddActivityDiagram([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(12820)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -297,7 +297,7 @@ namespace RationalRose
 
         [DispId(12867)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteStateDiagram([MarshalAs(UnmanagedType.Interface)] RoseStateDiagram theDiagram);
+        public virtual extern Boolean DeleteStateDiagram([MarshalAs(UnmanagedType.Interface)] REICOMStateDiagram theDiagram);
 
         [DispId(12886)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

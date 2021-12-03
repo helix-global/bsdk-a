@@ -16,11 +16,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemView GetAt(Int16 Index);
+        REICOMSubsystemView GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseSubsystemView pObject);
+        Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemView pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -32,19 +32,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseSubsystemView theObject);
+        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemView theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Add([MarshalAs(UnmanagedType.Interface)] RoseSubsystemView theObject);
+        void Add([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemView theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseSubsystemViewCollection theCollection);
+        void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemViewCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Remove([MarshalAs(UnmanagedType.Interface)] RoseSubsystemView theObject);
+        void Remove([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemView theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,11 +53,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        REICOMSubsystemView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystemView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        REICOMSubsystemView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

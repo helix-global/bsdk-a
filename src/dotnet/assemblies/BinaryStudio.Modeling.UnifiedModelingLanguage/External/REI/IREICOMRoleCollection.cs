@@ -16,11 +16,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetAt(Int16 Index);
+        REICOMRole GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseRole pObject);
+        Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMRole pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -32,19 +32,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseRole theObject);
+        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMRole theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Add([MarshalAs(UnmanagedType.Interface)] RoseRole theObject);
+        void Add([MarshalAs(UnmanagedType.Interface)] REICOMRole theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseRoleCollection theCollection);
+        void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMRoleCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Remove([MarshalAs(UnmanagedType.Interface)] RoseRole theObject);
+        void Remove([MarshalAs(UnmanagedType.Interface)] REICOMRole theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,11 +53,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        REICOMRole GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRole GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        REICOMRole GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("94CA1883-5D13-11D2-92AA-004005141253")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassStateMachineOwner : IREICOMStateMachineOwner, RoseStateMachineOwner
+    public class REICoClassStateMachineOwner : IREICOMStateMachineOwner, REICOMStateMachineOwner
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateMachineOwnerClass();
@@ -23,7 +23,7 @@ namespace RationalRose
         public virtual extern REICOMModel Model { [DispId(12524), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12524), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12744)]
-        public virtual extern RoseStateMachineCollection StateMachines { [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern REICOMStateMachineCollection StateMachines { [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(102)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -93,12 +93,12 @@ namespace RationalRose
         [DispId(129)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
+        public virtual extern REICOMStringCollection GetDefaultSetNames([MarshalAs(UnmanagedType.BStr)] String ToolName);
 
         [DispId(130)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStringCollection GetToolNames();
+        public virtual extern REICOMStringCollection GetToolNames();
 
         [DispId(131)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -121,11 +121,11 @@ namespace RationalRose
         [DispId(12745)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseStateMachine CreateStateMachine([MarshalAs(UnmanagedType.BStr)] String theStateMachineName);
+        public virtual extern REICOMStateMachine CreateStateMachine([MarshalAs(UnmanagedType.BStr)] String theStateMachineName);
 
         [DispId(12746)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] RoseStateMachine theStateMachine);
+        public virtual extern Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] REICOMStateMachine theStateMachine);
 
         [DispId(12820)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

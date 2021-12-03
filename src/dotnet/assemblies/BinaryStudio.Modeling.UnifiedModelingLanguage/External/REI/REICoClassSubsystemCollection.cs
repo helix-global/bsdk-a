@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BA376ED4-A44E-11D0-BC02-00A024C67143")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassSubsystemCollection : IREICOMSubsystemCollection, RoseSubsystemCollection
+    public class REICoClassSubsystemCollection : IREICOMSubsystemCollection, REICOMSubsystemCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSubsystemCollectionClass();
@@ -19,11 +19,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSubsystem GetAt(Int16 Index);
+        public virtual extern REICOMSubsystem GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseSubsystem pObject);
+        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -35,19 +35,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theObject);
+        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theObject);
+        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseSubsystemCollection theCollection);
+        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMSubsystemCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theObject);
+        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMSubsystem theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -56,11 +56,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSubsystem GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        public virtual extern REICOMSubsystem GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSubsystem GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        public virtual extern REICOMSubsystem GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

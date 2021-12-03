@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("4782FBB8-ECD5-11D0-BFF0-00AA003DEF5B")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassStringCollection : IREICOMStringCollection, RoseStringCollection
+    public class REICoClassStringCollection : IREICOMStringCollection, REICOMStringCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStringCollectionClass();

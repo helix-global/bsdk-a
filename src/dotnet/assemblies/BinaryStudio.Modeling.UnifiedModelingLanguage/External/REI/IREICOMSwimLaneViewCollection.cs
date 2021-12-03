@@ -16,11 +16,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSwimLaneView GetAt(Int16 Index);
+        REICOMSwimLaneView GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView pObject);
+        Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -32,19 +32,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Add([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        void Add([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneViewCollection theCollection);
+        void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneViewCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Remove([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        void Remove([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,11 +53,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSwimLaneView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        REICOMSwimLaneView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSwimLaneView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        REICOMSwimLaneView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

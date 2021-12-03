@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("7FFC5F48-C0C2-11D2-92AA-004005141253")]
     [ComImport]
-    public class REICoClassSwimLaneViewCollection : IREICOMSwimLaneViewCollection, RoseSwimLaneViewCollection
+    public class REICoClassSwimLaneViewCollection : IREICOMSwimLaneViewCollection, REICOMSwimLaneViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSwimLaneViewCollectionClass();
@@ -19,11 +19,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSwimLaneView GetAt(Int16 Index);
+        public virtual extern REICOMSwimLaneView GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView pObject);
+        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -35,19 +35,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneViewCollection theCollection);
+        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneViewCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseSwimLaneView theObject);
+        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMSwimLaneView theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -56,11 +56,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSwimLaneView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        public virtual extern REICOMSwimLaneView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern RoseSwimLaneView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        public virtual extern REICOMSwimLaneView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("97B38390-A4E3-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassRichTypeValuesCollection : IREICOMRichTypeValuesCollection, RoseRichTypeValuesCollection
+    public class REICoClassRichTypeValuesCollection : IREICOMRichTypeValuesCollection, REICOMRichTypeValuesCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseRichTypeValuesCollectionClass();

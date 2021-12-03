@@ -12,6 +12,6 @@ namespace RationalRose
         [DispId(12592)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseSubsystem GetSubsystem();
+        REICOMSubsystem GetSubsystem();
         }
     }
