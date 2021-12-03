@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("882D2F8B-BD12-11D3-92AA-004005141253")]
     [ComImport]
-    public class REICoClassDependencyRelationCollection : IREICOMDependencyRelationCollection, REICOMDependencyRelationCollection
+    internal class REICoClassDependencyRelationCollection : REICOMDependencyRelationCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDependencyRelationCollectionClass();

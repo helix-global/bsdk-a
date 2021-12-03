@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BA376EDC-A44E-11D0-BC02-00A024C67143")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComImport]
-    public class REICoClassInheritRelationCollection : IREICOMInheritRelationCollection, REICOMInheritRelationCollection
+    internal class REICoClassInheritRelationCollection : REICOMInheritRelationCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseInheritRelationCollectionClass();

@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("7FFC5F44-C0C2-11D2-92AA-004005141253")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassSwimLaneCollection : IREICOMSwimLaneCollection, REICOMSwimLaneCollection
+    internal class REICoClassSwimLaneCollection : REICOMSwimLaneCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSwimLaneCollectionClass();

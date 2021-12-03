@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassControllableUnit : IREICOMControllableUnit, REICOMControllableUnit
+    internal class REICoClassControllableUnit : REICOMControllableUnit
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseControllableUnitClass();

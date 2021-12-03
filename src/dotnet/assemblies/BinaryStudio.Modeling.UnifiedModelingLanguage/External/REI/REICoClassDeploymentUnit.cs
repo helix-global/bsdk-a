@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassDeploymentUnit : IREICOMDeploymentUnit, REICOMDeploymentUnit
+    internal class REICoClassDeploymentUnit : REICOMDeploymentUnit
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDeploymentUnitClass();

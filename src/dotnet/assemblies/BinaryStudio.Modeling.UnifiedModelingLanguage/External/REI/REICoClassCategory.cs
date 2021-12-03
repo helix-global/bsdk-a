@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("4782FBA9-ECD5-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassCategory : IREICOMCategory, REICOMCategory
+    internal class REICoClassCategory : REICOMCategory
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseCategoryClass();

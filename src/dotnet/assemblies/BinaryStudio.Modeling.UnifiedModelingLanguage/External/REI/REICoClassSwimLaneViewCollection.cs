@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("7FFC5F48-C0C2-11D2-92AA-004005141253")]
     [ComImport]
-    public class REICoClassSwimLaneViewCollection : IREICOMSwimLaneViewCollection, REICOMSwimLaneViewCollection
+    internal class REICoClassSwimLaneViewCollection : REICOMSwimLaneViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSwimLaneViewCollectionClass();

@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ClassInterface(ClassInterfaceType.None)]
     [ComImport]
-    public class REICoClassStateVertexCollection : IREICOMStateVertexCollection, REICOMStateVertexCollection
+    internal class REICoClassStateVertexCollection : REICOMStateVertexCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateVertexCollectionClass();

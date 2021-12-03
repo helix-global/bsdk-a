@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("86652270-EBF7-11D0-BC10-00A024C67143")]
     [ComImport]
-    public class REICoClassAction : IRoseAction, REICOMAction
+    internal class REICoClassAction : REICOMAction
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseActionClass();

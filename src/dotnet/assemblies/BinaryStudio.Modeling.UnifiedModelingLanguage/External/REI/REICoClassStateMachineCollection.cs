@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BA376EEB-A44E-11D0-BC02-00A024C67143")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassStateMachineCollection : IREICOMStateMachineCollection, REICOMStateMachineCollection
+    internal class REICoClassStateMachineCollection : REICOMStateMachineCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateMachineCollectionClass();

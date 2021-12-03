@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("97B3838E-A4E3-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassDiagram : IREICOMDiagram, REICOMDiagram
+    internal class REICoClassDiagram : REICOMDiagram
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDiagramClass();

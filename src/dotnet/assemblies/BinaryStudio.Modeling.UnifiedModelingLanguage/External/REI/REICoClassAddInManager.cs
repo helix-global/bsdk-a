@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("D5352FC3-346C-11D1-883B-3C8B00C10000")]
     [ComImport]
-    public class REICoClassAddInManager : IREICOMAddInManager, REICOMAddInManager
+    internal class REICoClassAddInManager : REICOMAddInManager
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseAddInManagerClass();

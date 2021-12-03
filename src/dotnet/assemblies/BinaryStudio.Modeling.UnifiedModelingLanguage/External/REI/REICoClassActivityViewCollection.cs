@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("BEAED5FF-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public class REICoClassActivityViewCollection : IREICOMActivityViewCollection, REICOMActivityViewCollection
+    internal class REICoClassActivityViewCollection : REICOMActivityViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseActivityViewCollectionClass();

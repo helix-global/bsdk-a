@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("4782FBAD-ECD5-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassProcessor : IREICOMProcessor, REICOMProcessor
+    internal class REICoClassProcessor : REICOMProcessor
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseProcessorClass();

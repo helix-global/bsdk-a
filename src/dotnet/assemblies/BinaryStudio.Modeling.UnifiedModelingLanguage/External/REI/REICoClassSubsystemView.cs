@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("4782FBB4-ECD5-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassSubsystemView : IREICOMSubsystemView, REICOMSubsystemView
+    internal class REICoClassSubsystemView : REICOMSubsystemView
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSubsystemViewClass();

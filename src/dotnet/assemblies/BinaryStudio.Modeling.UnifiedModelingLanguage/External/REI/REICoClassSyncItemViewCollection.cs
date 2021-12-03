@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("94CA1892-5D13-11D2-92AA-004005141253")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassSyncItemViewCollection : IREICOMSyncItemViewCollection, REICOMSyncItemViewCollection
+    internal class REICoClassSyncItemViewCollection : REICOMSyncItemViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseSyncItemViewCollectionClass();

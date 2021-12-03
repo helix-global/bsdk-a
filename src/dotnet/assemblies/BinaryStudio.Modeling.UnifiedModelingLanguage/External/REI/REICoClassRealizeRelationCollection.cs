@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassRealizeRelationCollection : IREICOMRealizeRelationCollection, REICOMRealizeRelationCollection
+    internal class REICoClassRealizeRelationCollection : REICOMRealizeRelationCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseRealizeRelationCollectionClass();

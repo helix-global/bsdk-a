@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("9DE9A9C2-F2D0-11D0-883A-3C8B00C10000")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassLinkCollection : IREICOMLinkCollection, REICOMLinkCollection
+    internal class REICoClassLinkCollection : REICOMLinkCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseLinkCollectionClass();

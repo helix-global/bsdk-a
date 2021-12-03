@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("BEAED5F4-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public class REICoClassDecisionCollection : IREICOMDecisionCollection, REICOMDecisionCollection
+    internal class REICoClassDecisionCollection : REICOMDecisionCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDecisionCollectionClass();

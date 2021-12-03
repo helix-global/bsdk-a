@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ClassInterface(ClassInterfaceType.None)]
     [ComImport]
-    public class REICoClassDefaultModelProperties : IREICOMDefaultModelProperties, REICOMDefaultModelProperties
+    internal class REICoClassDefaultModelProperties : REICOMDefaultModelProperties
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDefaultModelPropertiesClass();

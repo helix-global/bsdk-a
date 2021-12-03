@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("86652277-EBF7-11D0-BC10-00A024C67143")]
     [ComImport]
-    public class REICoClassExternalDocument : IREICOMExternalDocument, REICOMExternalDocument
+    internal class REICoClassExternalDocument : REICOMExternalDocument
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseExternalDocumentClass();

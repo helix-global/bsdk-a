@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [Guid("882D2F83-BD12-11D3-92AA-004005141253")]
     [ComImport]
-    public class REICoClassObjectFlow : IREICOMObjectFlow, REICOMObjectFlow
+    internal class REICoClassObjectFlow : REICOMObjectFlow
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseObjectFlowClass();

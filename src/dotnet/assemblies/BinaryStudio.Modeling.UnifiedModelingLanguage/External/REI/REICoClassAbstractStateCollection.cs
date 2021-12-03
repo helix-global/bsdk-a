@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BB792023-57AA-11D2-92AA-004005141253")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassAbstractStateCollection : IRoseAbstractStateCollection, REICOMAbstractStateCollection
+    internal class REICoClassAbstractStateCollection : REICOMAbstractStateCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseAbstractStateCollectionClass();

@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("86652275-EBF7-11D0-BC10-00A024C67143")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassDevice : IREICOMDevice, REICOMDevice
+    internal class REICoClassDevice : REICOMDevice
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseDeviceClass();

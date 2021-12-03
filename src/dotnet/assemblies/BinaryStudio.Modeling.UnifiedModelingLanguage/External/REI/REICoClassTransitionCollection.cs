@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
     [ComImport]
-    public class REICoClassTransitionCollection : IREICOMTransitionCollection, REICOMTransitionCollection
+    internal class REICoClassTransitionCollection : REICOMTransitionCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseTransitionCollectionClass();

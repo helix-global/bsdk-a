@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("BEAED5E8-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public class REICoClassActivity : IRoseActivity, REICOMActivity
+    internal class REICoClassActivity : REICOMActivity
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseActivityClass();

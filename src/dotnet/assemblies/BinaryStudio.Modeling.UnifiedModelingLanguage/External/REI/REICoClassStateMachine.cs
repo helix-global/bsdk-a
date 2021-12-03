@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("4782FBB2-ECD5-11D0-BFF0-00AA003DEF5B")]
     [ComImport]
-    public class REICoClassStateMachine : IREICOMStateMachine, REICOMStateMachine
+    internal class REICoClassStateMachine : REICOMStateMachine
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseStateMachineClass();

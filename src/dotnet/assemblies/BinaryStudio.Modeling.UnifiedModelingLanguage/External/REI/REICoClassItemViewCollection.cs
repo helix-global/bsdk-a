@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("BA376EE1-A44E-11D0-BC02-00A024C67143")]
     [ComImport]
-    public class REICoClassItemViewCollection : IREICOMItemViewCollection, REICOMItemViewCollection
+    internal class REICoClassItemViewCollection : REICOMItemViewCollection
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseItemViewCollectionClass();

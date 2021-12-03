@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("B91D8F04-DDBB-11D1-9FAD-0060975306FE")]
     [ComImport]
-    public class REICoClassInstantiateRelation : IREICOMInstantiateRelation, REICOMInstantiateRelation
+    internal class REICoClassInstantiateRelation : REICOMInstantiateRelation
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseInstantiateRelationClass();

@@ -8,7 +8,7 @@ namespace RationalRose
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("8665227A-EBF7-11D0-BC10-00A024C67143")]
     [ComImport]
-    public class REICoClassLink : IREICOMLink, REICOMLink
+    internal class REICoClassLink : REICOMLink
         {
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         //public extern RoseLinkClass();
