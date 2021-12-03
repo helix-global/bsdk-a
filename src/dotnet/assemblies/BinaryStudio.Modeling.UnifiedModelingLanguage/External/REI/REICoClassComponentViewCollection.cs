@@ -19,11 +19,11 @@ namespace RationalRose
         [DispId(203)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMComponentView GetAt(Int16 Index);
+        public virtual extern IREICOMComponentView GetAt(Int16 Index);
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMComponentView pObject);
+        public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] IREICOMComponentView pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -35,19 +35,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMComponentView theObject);
+        public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] IREICOMComponentView theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMComponentView theObject);
+        public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] IREICOMComponentView theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMComponentViewCollection theCollection);
+        public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] IREICOMComponentViewCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMComponentView theObject);
+        public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] IREICOMComponentView theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -56,11 +56,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMComponentView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        public virtual extern IREICOMComponentView GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMComponentView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        public virtual extern IREICOMComponentView GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

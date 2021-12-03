@@ -38,10 +38,10 @@ namespace RationalRose
         public virtual extern String RootRegistryPath { [DispId(12536), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12536), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12537)]
-        public virtual extern REICOMStringCollection FundamentalTypes { [DispId(12537), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12537), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern IREICOMStringCollection FundamentalTypes { [DispId(12537), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12537), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12538)]
-        public virtual extern REICOMStringCollection ToolNames { [DispId(12538), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12538), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        public virtual extern IREICOMStringCollection ToolNames { [DispId(12538), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12538), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12539)]
         public virtual extern String ServerName { [DispId(12539), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12539), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -93,12 +93,12 @@ namespace RationalRose
         [DispId(12684)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMContextMenuItem AddContextMenuItem(Int16 itemType, [MarshalAs(UnmanagedType.BStr)] String fullCaption, [MarshalAs(UnmanagedType.BStr)] String InternalName);
+        public virtual extern IREICOMContextMenuItem AddContextMenuItem(Int16 itemType, [MarshalAs(UnmanagedType.BStr)] String fullCaption, [MarshalAs(UnmanagedType.BStr)] String InternalName);
 
         [DispId(12685)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        public virtual extern REICOMContextMenuItemCollection GetContextMenuItems(Int16 itemType);
+        public virtual extern IREICOMContextMenuItemCollection GetContextMenuItems(Int16 itemType);
 
         [DispId(12689)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
