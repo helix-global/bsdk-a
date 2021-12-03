@@ -25,11 +25,11 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseRealizeRelation GetAt(Int16 Index);
+    public virtual extern REICOMRealizeRelation GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseRealizeRelation pObject);
+    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation pObject);
 
     [DispId(205)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -41,11 +41,11 @@ namespace RationalRose
 
     [DispId(207)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseRealizeRelation theObject);
+    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation theObject);
 
     [DispId(208)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseRealizeRelation theObject);
+    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation theObject);
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,7 +53,7 @@ namespace RationalRose
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseRealizeRelation theObject);
+    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation theObject);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -62,11 +62,11 @@ namespace RationalRose
     [DispId(212)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseRealizeRelation GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+    public virtual extern REICOMRealizeRelation GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseRealizeRelation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+    public virtual extern REICOMRealizeRelation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
   }
 }

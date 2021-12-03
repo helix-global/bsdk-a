@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("EE0B16E0-FF91-11D1-9FAD-0060975306FE")]
-    [CoClass(typeof(RoseContextMenuItemClass))]
+    [CoClass(typeof(REICoClassContextMenuItem))]
     [ComImport]
     public interface REICOMContextMenuItem : IREICOMContextMenuItem
         {

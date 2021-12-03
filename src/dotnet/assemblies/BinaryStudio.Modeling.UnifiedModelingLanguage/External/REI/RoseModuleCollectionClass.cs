@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376ED5-A44E-11D0-BC02-00A024C67143")]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseModuleCollectionClass : IREICOMModuleCollection, RoseModuleCollection
+  public class RoseModuleCollectionClass : IREICOMModuleCollection, REICOMModuleCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseModuleCollectionClass();
@@ -25,11 +25,11 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModule GetAt(Int16 Index);
+    public virtual extern REICOMModule GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseModule pObject);
+    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMModule pObject);
 
     [DispId(205)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -41,19 +41,19 @@ namespace RationalRose
 
     [DispId(207)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseModule theObject);
+    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMModule theObject);
 
     [DispId(208)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseModule theObject);
+    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMModule theObject);
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseModuleCollection theCollection);
+    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMModuleCollection theCollection);
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseModule theObject);
+    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMModule theObject);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -62,11 +62,11 @@ namespace RationalRose
     [DispId(212)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModule GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+    public virtual extern REICOMModule GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModule GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+    public virtual extern REICOMModule GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
   }
 }

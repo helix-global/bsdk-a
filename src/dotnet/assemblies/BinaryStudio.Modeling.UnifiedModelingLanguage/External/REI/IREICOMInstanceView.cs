@@ -12,6 +12,6 @@ namespace RationalRose
         [DispId(409)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseObjectInstance GetInstance();
+        REICOMObjectInstance GetInstance();
         }
     }

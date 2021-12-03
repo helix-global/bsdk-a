@@ -25,7 +25,7 @@ namespace RationalRose
         [DispId(12822)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseItemView AddAttachmentToView([MarshalAs(UnmanagedType.Interface)] RoseItemView theItemView, [MarshalAs(UnmanagedType.BStr)] String theLabelText);
+        REICOMItemView AddAttachmentToView([MarshalAs(UnmanagedType.Interface)] REICOMItemView theItemView, [MarshalAs(UnmanagedType.BStr)] String theLabelText);
 
         [DispId(12855)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

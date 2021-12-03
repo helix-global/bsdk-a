@@ -26,7 +26,7 @@ namespace RationalRose
         String Declarations { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(417)]
-        RoseModule OtherPart { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMModule OtherPart { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12566)]
         String AssignedLanguage { [DispId(12566), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12566), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -39,40 +39,40 @@ namespace RationalRose
         [DispId(419)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleVisibilityRelationship AddVisibilityRelationship([MarshalAs(UnmanagedType.Interface)] RoseModule theModule);
+        REICOMModuleVisibilityRelationship AddVisibilityRelationship([MarshalAs(UnmanagedType.Interface)] REICOMModule theModule);
 
         [DispId(420)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteVisibilityRelationship([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationship theVisibilityRelationship);
+        Boolean DeleteVisibilityRelationship([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationship theVisibilityRelationship);
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleVisibilityRelationshipCollection GetDependencies();
+        REICOMModuleVisibilityRelationshipCollection GetDependencies();
 
         [DispId(422)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleVisibilityRelationshipCollection GetAllDependencies();
+        REICOMModuleVisibilityRelationshipCollection GetAllDependencies();
 
         [DispId(423)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        REICOMModuleVisibilityRelationshipCollection GetSubsystemDependencies([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
 
         [DispId(428)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleVisibilityRelationship AddSubsystemVisibilityRelation([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
+        REICOMModuleVisibilityRelationship AddSubsystemVisibilityRelation([MarshalAs(UnmanagedType.Interface)] RoseSubsystem theSubsystem);
 
         [DispId(12613)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseRealizeRelation AddRealizeRel([MarshalAs(UnmanagedType.BStr)] String theRelationName, [MarshalAs(UnmanagedType.BStr)] String theInterfaceName);
+        REICOMRealizeRelation AddRealizeRel([MarshalAs(UnmanagedType.BStr)] String theRelationName, [MarshalAs(UnmanagedType.BStr)] String theInterfaceName);
 
         [DispId(12614)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteRealizeRel([MarshalAs(UnmanagedType.Interface)] RoseRealizeRelation theRealizeRel);
+        Boolean DeleteRealizeRel([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation theRealizeRel);
 
         [DispId(12615)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

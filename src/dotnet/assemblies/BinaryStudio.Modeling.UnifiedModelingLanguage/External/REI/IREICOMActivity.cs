@@ -114,15 +114,15 @@ namespace RationalRose
         [DispId(12839)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] RoseObjectInstance theObjectInstance);
+        REICOMObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMObjectInstance theObjectInstance);
 
         [DispId(12840)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteObjectFlow([MarshalAs(UnmanagedType.Interface)] RoseObjectFlow theObjectFlow);
+        Boolean DeleteObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMObjectFlow theObjectFlow);
 
         [DispId(12853)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseObjectFlowCollection GetObjectFlows();
+        REICOMObjectFlowCollection GetObjectFlows();
         }
     }

@@ -48,11 +48,11 @@ namespace RationalRose
         [DispId(424)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseProcessor AddProcessor([MarshalAs(UnmanagedType.BStr)] String pName);
+        REICOMProcessor AddProcessor([MarshalAs(UnmanagedType.BStr)] String pName);
 
         [DispId(425)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteProcessor([MarshalAs(UnmanagedType.Interface)] RoseProcessor pProcessor);
+        Boolean DeleteProcessor([MarshalAs(UnmanagedType.Interface)] REICOMProcessor pProcessor);
 
         [DispId(426)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -76,7 +76,7 @@ namespace RationalRose
         [DispId(430)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleCollection GetSelectedModules();
+        REICOMModuleCollection GetSelectedModules();
 
         [DispId(431)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -96,7 +96,7 @@ namespace RationalRose
         [DispId(434)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModuleCollection GetAllModules();
+        REICOMModuleCollection GetAllModules();
 
         [DispId(435)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -106,7 +106,7 @@ namespace RationalRose
         [DispId(436)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseProcessorCollection GetAllProcessors();
+        REICOMProcessorCollection GetAllProcessors();
 
         [DispId(437)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -126,7 +126,7 @@ namespace RationalRose
         [DispId(12472)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseItemCollection FindItems([MarshalAs(UnmanagedType.BStr)] String ItemName);
+        REICOMItemCollection FindItems([MarshalAs(UnmanagedType.BStr)] String ItemName);
 
         [DispId(12473)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -161,7 +161,7 @@ namespace RationalRose
         [DispId(12681)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseItemCollection GetSelectedItems();
+        REICOMItemCollection GetSelectedItems();
 
         [DispId(12710)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376EE2-A44E-11D0-BC02-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseModuleVisibilityRelationshipCollectionClass : IREICOMModuleVisibilityRelationshipCollection, RoseModuleVisibilityRelationshipCollection
+  public class RoseModuleVisibilityRelationshipCollectionClass : IREICOMModuleVisibilityRelationshipCollection, REICOMModuleVisibilityRelationshipCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseModuleVisibilityRelationshipCollectionClass();
@@ -25,11 +25,11 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModuleVisibilityRelationship GetAt(Int16 Index);
+    public virtual extern REICOMModuleVisibilityRelationship GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationship pObject);
+    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationship pObject);
 
     [DispId(205)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -41,19 +41,19 @@ namespace RationalRose
 
     [DispId(207)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationship theObject);
+    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationship theObject);
 
     [DispId(208)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationship theObject);
+    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationship theObject);
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationshipCollection theCollection);
+    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationshipCollection theCollection);
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseModuleVisibilityRelationship theObject);
+    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMModuleVisibilityRelationship theObject);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -62,11 +62,11 @@ namespace RationalRose
     [DispId(212)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModuleVisibilityRelationship GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+    public virtual extern REICOMModuleVisibilityRelationship GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseModuleVisibilityRelationship GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+    public virtual extern REICOMModuleVisibilityRelationship GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
   }
 }

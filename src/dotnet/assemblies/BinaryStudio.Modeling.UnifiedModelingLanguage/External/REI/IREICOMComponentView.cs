@@ -12,6 +12,6 @@ namespace RationalRose
         [DispId(12585)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseModule GetComponent();
+        REICOMModule GetComponent();
         }
     }

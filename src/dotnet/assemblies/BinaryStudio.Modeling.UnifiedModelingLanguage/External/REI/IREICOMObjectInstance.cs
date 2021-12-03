@@ -17,7 +17,7 @@ namespace RationalRose
         Boolean MultipleInstances { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(416)]
-        RoseLinkCollection Links { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMLinkCollection Links { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12651)]
         Int16 Persistence { [DispId(12651), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12651), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -34,24 +34,24 @@ namespace RationalRose
         [DispId(417)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseLink AddLink([MarshalAs(UnmanagedType.BStr)] String Name, [MarshalAs(UnmanagedType.Interface)] RoseObjectInstance ToInstance);
+        REICOMLink AddLink([MarshalAs(UnmanagedType.BStr)] String Name, [MarshalAs(UnmanagedType.Interface)] REICOMObjectInstance ToInstance);
 
         [DispId(418)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteLink([MarshalAs(UnmanagedType.Interface)] RoseLink aLink);
+        Boolean DeleteLink([MarshalAs(UnmanagedType.Interface)] REICOMLink aLink);
 
         [DispId(12843)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMActivity theActivity);
+        REICOMObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMActivity theActivity);
 
         [DispId(12844)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteObjectFlow([MarshalAs(UnmanagedType.Interface)] RoseObjectFlow theObjectFlow);
+        Boolean DeleteObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMObjectFlow theObjectFlow);
 
         [DispId(12854)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseObjectFlowCollection GetObjectFlows();
+        REICOMObjectFlowCollection GetObjectFlows();
         }
     }

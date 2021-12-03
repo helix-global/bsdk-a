@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("97B38389-A4E3-11D0-BFF0-00AA003DEF5B")]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseObjectClass : IREICOMObject, RoseObject
+  public class RoseObjectClass : IREICOMObject, REICOMObject
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseObjectClass();

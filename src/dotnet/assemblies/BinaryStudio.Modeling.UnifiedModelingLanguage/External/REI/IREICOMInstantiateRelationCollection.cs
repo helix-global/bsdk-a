@@ -40,7 +40,7 @@ namespace RationalRose
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseInstantiateRelationCollection theCollection);
+    void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelationCollection theCollection);
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,7 +53,7 @@ namespace RationalRose
     [DispId(212)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    RoseInstantiateRelationCollection GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+    REICOMInstantiateRelationCollection GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
