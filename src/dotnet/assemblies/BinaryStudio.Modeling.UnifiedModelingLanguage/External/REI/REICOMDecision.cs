@@ -5,7 +5,7 @@ namespace RationalRose
     [CoClass(typeof(REICoClassDecision))]
     [Guid("BEAED5E3-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public interface REICOMDecision : IREICOMDecision
+    internal interface REICOMDecision : IREICOMDecision
         {
         }
     }

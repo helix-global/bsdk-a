@@ -26,10 +26,10 @@ namespace RationalRose
         Int16 Width { [DispId(208), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(208), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(209)]
-        REICOMModel CurrentModel { [DispId(209), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(209), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMModel CurrentModel { [DispId(209), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(209), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(224)]
-        REICOMPathMap PathMap { [DispId(224), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(224), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMPathMap PathMap { [DispId(224), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(224), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(231)]
         String Version { [DispId(231), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(231), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -41,7 +41,7 @@ namespace RationalRose
         String ApplicationPath { [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(233), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12544)]
-        REICOMAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMAddInManager AddInManager { [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12544), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12586)]
         String CommandLine { [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12586), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -57,7 +57,7 @@ namespace RationalRose
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMModel NewModel();
+        IREICOMModel NewModel();
 
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -81,12 +81,12 @@ namespace RationalRose
 
         [DispId(221)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SelectObjectInBrowser([MarshalAs(UnmanagedType.Interface)] REICOMObject theRoseObject);
+        void SelectObjectInBrowser([MarshalAs(UnmanagedType.Interface)] IREICOMObject theRoseObject);
 
         [DispId(223)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMModel OpenModelAsTemplate([MarshalAs(UnmanagedType.BStr)] String szFileName);
+        IREICOMModel OpenModelAsTemplate([MarshalAs(UnmanagedType.BStr)] String szFileName);
 
         [DispId(225)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -99,7 +99,7 @@ namespace RationalRose
         [DispId(235)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
+        IREICOMApplication GetLicensedApplication([MarshalAs(UnmanagedType.BStr)] String theKey);
 
         [DispId(236)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -124,16 +124,16 @@ namespace RationalRose
 
         [DispId(12679)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
+        Boolean UpdateBrowserOverlayImage([MarshalAs(UnmanagedType.Interface)] IREICOMItem theItem);
 
         [DispId(12688)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] REICOMExternalDocument theDocument);
+        Boolean UpdateBrowserDocOverlayImage([MarshalAs(UnmanagedType.Interface)] IREICOMExternalDocument theDocument);
 
         [DispId(12697)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMModel OpenRoseModel([MarshalAs(UnmanagedType.BStr)] String theModel, Boolean promptSubUnits);
+        IREICOMModel OpenRoseModel([MarshalAs(UnmanagedType.BStr)] String theModel, Boolean promptSubUnits);
 
         [DispId(12698)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -146,11 +146,11 @@ namespace RationalRose
 
         [DispId(12859)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] REICOMItem theItem);
+        Boolean EnableUserEditOfItem([MarshalAs(UnmanagedType.Interface)] IREICOMItem theItem);
 
         [DispId(12860)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] REICOMDiagram theDiagram);
+        Boolean EnableUserEditOfDiagram([MarshalAs(UnmanagedType.Interface)] IREICOMDiagram theDiagram);
 
         [DispId(12861)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -164,7 +164,7 @@ namespace RationalRose
         [DispId(12863)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMStringCollection EditorGetOpenFiles();
+        IREICOMStringCollection EditorGetOpenFiles();
 
         [DispId(12864)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

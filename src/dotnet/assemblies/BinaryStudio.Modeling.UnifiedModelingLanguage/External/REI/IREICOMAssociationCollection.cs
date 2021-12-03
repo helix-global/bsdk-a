@@ -20,7 +20,7 @@ namespace RationalRose
 
         [DispId(204)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMAssociation pObject);
+        Boolean Exists([MarshalAs(UnmanagedType.Interface)] IREICOMAssociation pObject);
 
         [DispId(205)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -32,19 +32,19 @@ namespace RationalRose
 
         [DispId(207)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theObject);
+        Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] IREICOMAssociation theObject);
 
         [DispId(208)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Add([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theObject);
+        void Add([MarshalAs(UnmanagedType.Interface)] IREICOMAssociation theObject);
 
         [DispId(209)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMAssociationCollection theCollection);
+        void AddCollection([MarshalAs(UnmanagedType.Interface)] IREICOMAssociationCollection theCollection);
 
         [DispId(210)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void Remove([MarshalAs(UnmanagedType.Interface)] REICOMAssociation theObject);
+        void Remove([MarshalAs(UnmanagedType.Interface)] IREICOMAssociation theObject);
 
         [DispId(211)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,11 +53,11 @@ namespace RationalRose
         [DispId(212)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAssociation GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+        IREICOMAssociation GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
         [DispId(213)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAssociation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+        IREICOMAssociation GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
         }
     }

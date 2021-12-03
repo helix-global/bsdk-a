@@ -11,102 +11,102 @@ namespace RationalRose
     public interface IREICOMAbstractState : IREICOMStateVertex
         {
         [DispId(444)]
-        REICOMStateCollection SubStates { [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMStateCollection SubStates { [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12802)]
-        REICOMActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12803)]
-        REICOMDecisionCollection SubDecisions { [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMDecisionCollection SubDecisions { [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12804)]
-        REICOMSyncItemCollection SubSynchronizations { [DispId(12804), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12804), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMSyncItemCollection SubSynchronizations { [DispId(12804), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12804), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(425)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMStateCollection GetAllSubStates();
+        IREICOMStateCollection GetAllSubStates();
 
         [DispId(446)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] REICOMAction theAction);
+        Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] IREICOMAction theAction);
 
         [DispId(12623)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMEventCollection GetUserDefinedEvents();
+        IREICOMEventCollection GetUserDefinedEvents();
 
         [DispId(12625)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActionCollection GetEntryActions();
+        IREICOMActionCollection GetEntryActions();
 
         [DispId(12626)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActionCollection GetExitActions();
+        IREICOMActionCollection GetExitActions();
 
         [DispId(12627)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActionCollection GetDoActions();
+        IREICOMActionCollection GetDoActions();
 
         [DispId(12635)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMEvent AddUserDefinedEvent([MarshalAs(UnmanagedType.BStr)] String EventName, [MarshalAs(UnmanagedType.BStr)] String ActionName);
+        IREICOMEvent AddUserDefinedEvent([MarshalAs(UnmanagedType.BStr)] String EventName, [MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12636)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteUserDefinedEvent([MarshalAs(UnmanagedType.Interface)] REICOMEvent theEvent);
+        Boolean DeleteUserDefinedEvent([MarshalAs(UnmanagedType.Interface)] IREICOMEvent theEvent);
 
         [DispId(12637)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        IREICOMAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12638)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        IREICOMAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12639)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        IREICOMAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12767)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActionCollection GetActions();
+        IREICOMActionCollection GetActions();
 
         [DispId(12768)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMStateMachineCollection GetStateMachines();
+        IREICOMStateMachineCollection GetStateMachines();
 
         [DispId(12774)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMStateMachine AddStateMachine([MarshalAs(UnmanagedType.BStr)] String theName);
+        IREICOMStateMachine AddStateMachine([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(12775)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] REICOMStateMachine theStateMachine);
+        Boolean DeleteStateMachine([MarshalAs(UnmanagedType.Interface)] IREICOMStateMachine theStateMachine);
 
         [DispId(12805)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActivityCollection GetAllSubActivities();
+        IREICOMActivityCollection GetAllSubActivities();
 
         [DispId(12806)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMDecisionCollection GetAllSubDecisions();
+        IREICOMDecisionCollection GetAllSubDecisions();
 
         [DispId(12807)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMSyncItemCollection GetAllSubSynchronizations();
+        IREICOMSyncItemCollection GetAllSubSynchronizations();
         }
     }

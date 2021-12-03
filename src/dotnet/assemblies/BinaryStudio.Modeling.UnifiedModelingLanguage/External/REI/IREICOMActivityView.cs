@@ -12,6 +12,6 @@ namespace RationalRose
         [DispId(12741)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMActivity GetActivity();
+        IREICOMActivity GetActivity();
         }
     }

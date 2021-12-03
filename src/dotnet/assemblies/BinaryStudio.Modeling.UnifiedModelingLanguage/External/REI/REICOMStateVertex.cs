@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("BEAED5E2-578D-11D2-92AA-004005141253")]
     [CoClass(typeof(REICoClassStateVertex))]
     [ComImport]
-    public interface REICOMStateVertex : IREICOMStateVertex
+    internal interface REICOMStateVertex : IREICOMStateVertex
         {
         }
     }

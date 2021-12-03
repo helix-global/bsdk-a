@@ -5,7 +5,7 @@ namespace RationalRose
     [CoClass(typeof(REICoClassNoteView))]
     [Guid("015655CA-72DF-11D0-95EB-0000F803584A")]
     [ComImport]
-    public interface REICOMNoteView : IREICOMNoteView
+    internal interface REICOMNoteView : IREICOMNoteView
         {
         }
     }

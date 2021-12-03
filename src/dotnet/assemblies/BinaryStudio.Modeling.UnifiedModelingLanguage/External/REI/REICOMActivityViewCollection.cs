@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("BEAED5FE-578D-11D2-92AA-004005141253")]
     [CoClass(typeof(REICoClassActivityViewCollection))]
     [ComImport]
-    public interface REICOMActivityViewCollection : IREICOMActivityViewCollection
+    internal interface REICOMActivityViewCollection : IREICOMActivityViewCollection
         {
         }
     }

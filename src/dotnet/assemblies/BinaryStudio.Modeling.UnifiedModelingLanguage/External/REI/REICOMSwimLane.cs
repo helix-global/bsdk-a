@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("BEAED5EA-578D-11D2-92AA-004005141253")]
     [CoClass(typeof(REICoClassSwimLane))]
     [ComImport]
-    public interface REICOMSwimLane : IREICOMSwimLane
+    internal interface REICOMSwimLane : IREICOMSwimLane
         {
         }
     }

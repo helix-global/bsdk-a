@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("94CA1888-5D13-11D2-92AA-004005141253")]
     [CoClass(typeof(REICoClassSyncItemView))]
     [ComImport]
-    public interface REICOMSyncItemView : IREICOMSyncItemView
+    internal interface REICOMSyncItemView : IREICOMSyncItemView
         {
         }
     }

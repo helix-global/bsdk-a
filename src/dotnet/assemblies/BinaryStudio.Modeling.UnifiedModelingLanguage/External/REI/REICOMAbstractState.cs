@@ -5,7 +5,7 @@ namespace RationalRose
     [CoClass(typeof(REICoClassAbstractState))]
     [Guid("BEAED5EC-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public interface REICOMAbstractState : IREICOMAbstractState
+    internal interface REICOMAbstractState : IREICOMAbstractState
         {
         }
     }

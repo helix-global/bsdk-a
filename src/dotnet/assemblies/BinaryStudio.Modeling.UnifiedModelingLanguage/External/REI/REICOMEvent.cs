@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("A69CAB22-9179-11D0-A214-00A024FFFE40")]
     [CoClass(typeof(REICoClassEvent))]
     [ComImport]
-    public interface REICOMEvent : IREICOMEvent
+    internal interface REICOMEvent : IREICOMEvent
         {
         }
     }

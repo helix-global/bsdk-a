@@ -5,7 +5,7 @@ namespace RationalRose
     [Guid("97B38353-A4E3-11D0-BFF0-00AA003DEF5B")]
     [CoClass(typeof(REICoClassRoleCollection))]
     [ComImport]
-    public interface REICOMRoleCollection : IREICOMRoleCollection
+    internal interface REICOMRoleCollection : IREICOMRoleCollection
         {
         }
     }

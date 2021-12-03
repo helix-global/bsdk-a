@@ -12,11 +12,11 @@ namespace RationalRose
         [DispId(12657)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMCategory GetContextCategory();
+        IREICOMCategory GetContextCategory();
 
         [DispId(12658)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMCategory GetSupplierCategory();
+        IREICOMCategory GetSupplierCategory();
         }
     }
