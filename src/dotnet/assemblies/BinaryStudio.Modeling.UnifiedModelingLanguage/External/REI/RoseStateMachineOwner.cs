@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace RationalRose
 {
-  [CoClass(typeof (RoseStateMachineOwnerClass))]
+  [CoClass(typeof (REICoClassStateMachineOwner))]
   [Guid("94CA1882-5D13-11D2-92AA-004005141253")]
   [ComImport]
   public interface RoseStateMachineOwner : IREICOMStateMachineOwner

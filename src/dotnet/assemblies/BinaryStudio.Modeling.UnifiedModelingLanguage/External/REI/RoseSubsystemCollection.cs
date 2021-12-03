@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("97B3834A-A4E3-11D0-BFF0-00AA003DEF5B")]
-  [CoClass(typeof (RoseSubsystemCollectionClass))]
+  [CoClass(typeof (REICoClassSubsystemCollection))]
   [ComImport]
   public interface RoseSubsystemCollection : IREICOMSubsystemCollection
   {

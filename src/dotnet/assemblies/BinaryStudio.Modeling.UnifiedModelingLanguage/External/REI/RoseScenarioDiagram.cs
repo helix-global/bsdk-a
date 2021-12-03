@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace RationalRose
 {
-  [CoClass(typeof (RoseScenarioDiagramClass))]
+  [CoClass(typeof (REICoClassScenarioDiagram))]
   [Guid("F819833A-FC55-11CF-BBD3-00A024C67143")]
   [ComImport]
   public interface RoseScenarioDiagram : IREICOMScenarioDiagram
