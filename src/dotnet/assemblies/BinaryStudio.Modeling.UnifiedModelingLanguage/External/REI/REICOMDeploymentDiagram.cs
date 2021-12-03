@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("C2C15EC4-E028-11CF-B091-00A0241E3F73")]
-    [CoClass(typeof(RoseDeploymentDiagramClass))]
+    [CoClass(typeof(REICoClassDeploymentDiagram))]
     [ComImport]
     public interface REICOMDeploymentDiagram : IREICOMDeploymentDiagram
         {

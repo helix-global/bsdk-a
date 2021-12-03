@@ -2,7 +2,7 @@
 
 namespace RationalRose
     {
-    [CoClass(typeof(RoseInstantiateRelationClass))]
+    [CoClass(typeof(REICoClassInstantiateRelation))]
     [Guid("B91D8F03-DDBB-11D1-9FAD-0060975306FE")]
     [ComImport]
     public interface REICOMInstantiateRelation : IREICOMInstantiateRelation

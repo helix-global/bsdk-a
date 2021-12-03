@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("97B3835A-A4E3-11D0-BFF0-00AA003DEF5B")]
-    [CoClass(typeof(RoseObjectInstanceCollectionClass))]
+    [CoClass(typeof(REICoClassObjectInstanceCollection))]
     [ComImport]
     public interface REICOMObjectInstanceCollection : IREICOMObjectInstanceCollection
         {

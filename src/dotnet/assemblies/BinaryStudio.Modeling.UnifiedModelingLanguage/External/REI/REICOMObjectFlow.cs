@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("882D2F81-BD12-11D3-92AA-004005141253")]
-    [CoClass(typeof(RoseObjectFlowClass))]
+    [CoClass(typeof(REICoClassObjectFlow))]
     [ComImport]
     public interface REICOMObjectFlow : IREICOMObjectFlow
         {

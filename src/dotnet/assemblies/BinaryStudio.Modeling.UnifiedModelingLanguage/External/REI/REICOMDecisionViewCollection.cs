@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("BEAED601-578D-11D2-92AA-004005141253")]
-    [CoClass(typeof(RoseDecisionViewCollectionClass))]
+    [CoClass(typeof(REICoClassDecisionViewCollection))]
     [ComImport]
     public interface REICOMDecisionViewCollection : IREICOMDecisionViewCollection
         {

@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("C78E7020-86E4-11CF-B3D4-00A0241DB1D0")]
-    [CoClass(typeof(RoseOperationClass))]
+    [CoClass(typeof(REICoClassOperation))]
     [ComImport]
     public interface REICOMOperation : IREICOMOperation
         {

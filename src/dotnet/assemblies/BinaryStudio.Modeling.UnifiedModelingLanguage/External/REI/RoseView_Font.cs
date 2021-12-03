@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace RationalRose
 {
-  [CoClass(typeof (RoseView_FontClass))]
+  [CoClass(typeof (REICoClassView_Font))]
   [Guid("CE5BE567-0380-11D1-BC11-00A024C67143")]
   [ComImport]
   public interface RoseView_Font : IREICOMView_Font

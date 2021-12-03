@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [Guid("97B3835C-A4E3-11D0-BFF0-00AA003DEF5B")]
-    [CoClass(typeof(RoseProcessorCollectionClass))]
+    [CoClass(typeof(REICoClassProcessorCollection))]
     [ComImport]
     public interface REICOMProcessorCollection : IREICOMProcessorCollection
         {
