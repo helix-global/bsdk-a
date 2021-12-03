@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
     {
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [Guid("4C9E2241-84C5-11D0-A214-444553540000")]
     [ComImport]
     public interface IRosePathMap

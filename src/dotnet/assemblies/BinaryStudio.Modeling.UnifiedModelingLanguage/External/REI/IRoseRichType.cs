@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [Guid("EB7AAB60-939C-11CF-B091-00A0241E3F73")]
-  [TypeLibType(4096)]
+  [TypeLibType(TypeLibTypeFlags.FDispatchable)]
   [ComImport]
   public interface IRoseRichType
   {

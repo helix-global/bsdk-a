@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("11A235B4-3095-11D2-8153-00104B97EBD5")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
   public class RoseLineVertexCollectionClass : IRoseLineVertexCollection, RoseLineVertexCollection

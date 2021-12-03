@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace RationalRose
 {
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("CE5BE566-0380-11D1-BC11-00A024C67143")]
   [ComImport]

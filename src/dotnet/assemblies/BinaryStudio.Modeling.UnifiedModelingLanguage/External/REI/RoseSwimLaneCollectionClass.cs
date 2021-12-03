@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("7FFC5F44-C0C2-11D2-92AA-004005141253")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseSwimLaneCollectionClass : IRoseSwimLaneCollection, RoseSwimLaneCollection
   {

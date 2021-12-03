@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("97B3835F-A4E3-11D0-BFF0-00AA003DEF5B")]
-  [TypeLibType(4096)]
+  [TypeLibType(TypeLibTypeFlags.FDispatchable)]
   [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [ComImport]
   public interface IRoseActionCollection

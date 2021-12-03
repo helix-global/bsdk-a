@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("62C43884-DB5A-11CF-B091-00A0241E3F73")]
   [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-  [TypeLibType(4096)]
+  [TypeLibType(TypeLibTypeFlags.FDispatchable)]
   [ComImport]
   public interface IRoseProcess
   {

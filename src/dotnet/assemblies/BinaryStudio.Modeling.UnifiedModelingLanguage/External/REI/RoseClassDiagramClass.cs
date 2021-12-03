@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("86652272-EBF7-11D0-BC10-00A024C67143")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
   public class RoseClassDiagramClass : IRoseClassDiagram, RoseClassDiagram

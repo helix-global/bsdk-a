@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("67448182-4553-11D1-883B-3C8B00C10000")]
   [ClassInterface(ClassInterfaceType.None)]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseRealizeRelationCollectionClass : IRoseRealizeRelationCollection, RoseRealizeRelationCollection
   {

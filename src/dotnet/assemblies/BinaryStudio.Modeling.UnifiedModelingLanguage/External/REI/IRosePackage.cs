@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace RationalRose
     {
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("47D975C1-8A8D-11D0-A214-444553540000")]
     [ComImport]

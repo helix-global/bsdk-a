@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BA376EE0-A44E-11D0-BC02-00A024C67143")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseNoteViewCollectionClass : IRoseNoteViewCollection, RoseNoteViewCollection
   {

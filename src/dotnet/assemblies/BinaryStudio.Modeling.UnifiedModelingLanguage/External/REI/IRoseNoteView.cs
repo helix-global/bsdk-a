@@ -6,7 +6,7 @@ namespace RationalRose
     {
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("015655CA-72DF-11D0-95EB-0000F803584A")]
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
     public interface IRoseNoteView : IRoseItemView
         {

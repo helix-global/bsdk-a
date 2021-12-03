@@ -6,7 +6,7 @@ namespace RationalRose
     {
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("906FF583-276B-11D0-8980-00A024774419")]
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
     public interface IRoseExternalDocument : IRoseObject
         {

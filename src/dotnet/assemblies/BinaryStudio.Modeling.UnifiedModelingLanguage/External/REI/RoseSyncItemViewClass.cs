@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("94CA1889-5D13-11D2-92AA-004005141253")]
   [ComImport]
   public class RoseSyncItemViewClass : IRoseSyncItemView, RoseSyncItemView

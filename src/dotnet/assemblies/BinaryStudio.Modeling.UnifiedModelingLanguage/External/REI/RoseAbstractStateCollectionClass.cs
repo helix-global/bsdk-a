@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BB792023-57AA-11D2-92AA-004005141253")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseAbstractStateCollectionClass : IRoseAbstractStateCollection, RoseAbstractStateCollection
   {

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("BEAED602-578D-11D2-92AA-004005141253")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
   public class RoseDecisionViewCollectionClass : IRoseDecisionViewCollection, RoseDecisionViewCollection

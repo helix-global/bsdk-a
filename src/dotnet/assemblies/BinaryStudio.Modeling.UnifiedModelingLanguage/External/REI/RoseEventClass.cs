@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("86652276-EBF7-11D0-BC10-00A024C67143")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseEventClass : IRoseEvent, RoseEvent
   {

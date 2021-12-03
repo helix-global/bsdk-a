@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("4335FBE2-F0A0-11D1-9FAD-0060975306FE")]
   [ClassInterface(ClassInterfaceType.None)]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseDeploymentUnitClass : IRoseDeploymentUnit, RoseDeploymentUnit
   {

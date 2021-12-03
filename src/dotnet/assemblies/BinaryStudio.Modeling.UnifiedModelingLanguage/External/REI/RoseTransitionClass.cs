@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("4782FBB5-ECD5-11D0-BFF0-00AA003DEF5B")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseTransitionClass : IRoseTransition, RoseTransition
   {

@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("B53888D1-3094-11D2-8153-00104B97EBD5")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseLineVertexClass : IRoseLineVertex, RoseLineVertex
   {

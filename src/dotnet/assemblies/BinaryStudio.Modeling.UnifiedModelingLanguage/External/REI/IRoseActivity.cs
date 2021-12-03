@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
     {
     [Guid("BEAED5E7-578D-11D2-92AA-004005141253")]
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
     public interface IRoseActivity : IRoseStateVertex

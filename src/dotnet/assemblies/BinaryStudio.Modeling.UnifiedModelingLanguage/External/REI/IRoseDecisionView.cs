@@ -5,7 +5,7 @@ namespace RationalRose
     {
     [Guid("BEAED5F9-578D-11D2-92AA-004005141253")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-    [TypeLibType(4096)]
+    [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
     public interface IRoseDecisionView : IRoseItemView
         {

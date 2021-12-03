@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("7ADDA701-9B06-11D0-A214-00A024FFFE40")]
   [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
-  [TypeLibType(4096)]
+  [TypeLibType(TypeLibTypeFlags.FDispatchable)]
   [ComImport]
   public interface IRoseStateDiagram
   {

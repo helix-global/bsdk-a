@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("97B38380-A4E3-11D0-BFF0-00AA003DEF5B")]
   [ClassInterface(ClassInterfaceType.None)]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
   public class RoseRichTypeClass : IRoseRichType, RoseRichType
   {

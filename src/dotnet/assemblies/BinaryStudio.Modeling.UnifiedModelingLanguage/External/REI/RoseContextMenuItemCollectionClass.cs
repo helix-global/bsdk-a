@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("EE0B16E4-FF91-11D1-9FAD-0060975306FE")]
-  [TypeLibType(2)]
+  [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
   public class RoseContextMenuItemCollectionClass : IRoseContextMenuItemCollection, RoseContextMenuItemCollection
