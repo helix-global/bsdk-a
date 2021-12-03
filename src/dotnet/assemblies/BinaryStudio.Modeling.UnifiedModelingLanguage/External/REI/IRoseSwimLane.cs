@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BEAED5EA-578D-11D2-92AA-004005141253")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseSwimLane : IRoseItem
+    public interface IRoseSwimLane : IREICOMItem
         {
         [DispId(412)]
         String ClassName { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

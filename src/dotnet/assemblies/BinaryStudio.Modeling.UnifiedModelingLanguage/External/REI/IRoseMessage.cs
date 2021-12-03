@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("F819833C-FC55-11CF-BBD3-00A024C67143")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseMessage : IRoseItem
+    public interface IRoseMessage : IREICOMItem
         {
         [DispId(12652)]
         Int16 Synchronization { [DispId(12652), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12652), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("4782FBA3-ECD5-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RoseAttributeClass : IRoseAttribute, RoseAttribute
+  public class RoseAttributeClass : IREICOMAttribute, RoseAttribute
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAttributeClass();

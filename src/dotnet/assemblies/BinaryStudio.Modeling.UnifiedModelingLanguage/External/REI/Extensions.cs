@@ -10,7 +10,7 @@ namespace RationalRose
             public static readonly T[] Value = new T[0];
             }
 
-        public static IEnumerable<IRoseCategory> AsEnumerable(this IRoseCategoryCollection source) {
+        public static IEnumerable<IREICOMCategory> AsEnumerable(this IREICOMCategoryCollection source) {
             if (source != null) {
                 var c = source.Count;
                 for (Int16 i = 1; i <= c; i++) {
@@ -20,55 +20,55 @@ namespace RationalRose
             }
 
         #region M:ToArray(IRoseCategoryCollection):IRoseCategory[]
-        public static IRoseCategory[] ToArray(this IRoseCategoryCollection source) {
+        public static IREICOMCategory[] ToArray(this IREICOMCategoryCollection source) {
             if (source != null) {
                 var c = source.Count;
-                var r = new IRoseCategory[c];
+                var r = new IREICOMCategory[c];
                 for (Int16 i = 1; i <= c; i++) {
                     r[i - 1] = source.GetAt(i);
                     }
                 return r;
                 }
-            return EmptyArray<IRoseCategory>.Value;
+            return EmptyArray<IREICOMCategory>.Value;
             }
         #endregion
         #region M:ToArray(IRoseClassCollection):IRoseClass[]
-        public static IRoseClass[] ToArray(this IRoseClassCollection source) {
+        public static IREICOMClass[] ToArray(this IREICOMClassCollection source) {
             if (source != null) {
                 var c = source.Count;
-                var r = new IRoseClass[c];
+                var r = new IREICOMClass[c];
                 for (Int16 i = 1; i <= c; i++) {
                     r[i - 1] = source.GetAt(i);
                     }
                 return r;
                 }
-            return EmptyArray<IRoseClass>.Value;
+            return EmptyArray<IREICOMClass>.Value;
             }
         #endregion
         #region M:ToArray(IRoseAttributeCollection):IRoseAttribute[]
-        public static IRoseAttribute[] ToArray(this IRoseAttributeCollection source) {
+        public static IREICOMAttribute[] ToArray(this IREICOMAttributeCollection source) {
             if (source != null) {
                 var c = source.Count;
-                var r = new IRoseAttribute[c];
+                var r = new IREICOMAttribute[c];
                 for (Int16 i = 1; i <= c; i++) {
                     r[i - 1] = source.GetAt(i);
                     }
                 return r;
                 }
-            return EmptyArray<IRoseAttribute>.Value;
+            return EmptyArray<IREICOMAttribute>.Value;
             }
         #endregion
         #region M:ToArray(IRoseAssociationCollection):IRoseAssociation[]
-        public static IRoseAssociation[] ToArray(this IRoseAssociationCollection source) {
+        public static IREICOMAssociation[] ToArray(this IREICOMAssociationCollection source) {
             if (source != null) {
                 var c = source.Count;
-                var r = new IRoseAssociation[c];
+                var r = new IREICOMAssociation[c];
                 for (Int16 i = 1; i <= c; i++) {
                     r[i - 1] = source.GetAt(i);
                     }
                 return r;
                 }
-            return EmptyArray<IRoseAssociation>.Value;
+            return EmptyArray<IREICOMAssociation>.Value;
             }
         #endregion
         }

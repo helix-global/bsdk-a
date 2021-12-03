@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseStateVertex : IRoseItem
+    public interface IREICOMStateVertex : IREICOMItem
         {
         [DispId(413)]
         RoseStateMachine ParentStateMachine { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

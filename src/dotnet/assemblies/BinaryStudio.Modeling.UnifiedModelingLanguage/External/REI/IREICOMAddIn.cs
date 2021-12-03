@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("D5352FC0-346C-11D1-883B-3C8B00C10000")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseAddIn : IRoseObject
+    public interface IREICOMAddIn : IREICOMObject
         {
         [DispId(12528)]
         Object EventHandler { [DispId(12528), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12528), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

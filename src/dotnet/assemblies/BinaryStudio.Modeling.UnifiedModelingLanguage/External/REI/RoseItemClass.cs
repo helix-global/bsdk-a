@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseItemClass : IRoseItem, RoseItem
+  public class RoseItemClass : IREICOMItem, RoseItem
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseItemClass();

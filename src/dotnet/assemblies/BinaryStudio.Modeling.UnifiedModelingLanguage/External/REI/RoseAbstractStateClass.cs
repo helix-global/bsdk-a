@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BB792027-57AA-11D2-92AA-004005141253")]
   [ComImport]
-  public class RoseAbstractStateClass : IRoseAbstractState, RoseAbstractState
+  public class RoseAbstractStateClass : IREICOMAbstractState, REICOMAbstractState
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAbstractStateClass();

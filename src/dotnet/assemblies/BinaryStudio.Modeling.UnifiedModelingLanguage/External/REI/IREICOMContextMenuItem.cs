@@ -8,7 +8,7 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseContextMenuItem : IRoseObject
+    public interface IRoseContextMenuItem : IREICOMObject
         {
         [DispId(12682)]
         String Caption { [DispId(12682), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12682), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

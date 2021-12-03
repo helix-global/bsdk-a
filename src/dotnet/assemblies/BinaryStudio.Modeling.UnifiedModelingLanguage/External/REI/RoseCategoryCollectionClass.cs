@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("BA376EE3-A44E-11D0-BC02-00A024C67143")]
   [ComImport]
-  public class RoseCategoryCollectionClass : IRoseCategoryCollection, RoseCategoryCollection
+  public class RoseCategoryCollectionClass : IREICOMCategoryCollection, RoseCategoryCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseCategoryCollectionClass();
@@ -25,7 +25,7 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern IRoseCategory GetAt(Int16 Index);
+    public virtual extern IREICOMCategory GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

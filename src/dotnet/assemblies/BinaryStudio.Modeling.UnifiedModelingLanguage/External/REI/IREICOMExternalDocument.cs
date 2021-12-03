@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("906FF583-276B-11D0-8980-00A024774419")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseExternalDocument : IRoseObject
+    public interface IRoseExternalDocument : IREICOMObject
         {
         [DispId(1)]
         String Path { [DispId(1), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(1), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

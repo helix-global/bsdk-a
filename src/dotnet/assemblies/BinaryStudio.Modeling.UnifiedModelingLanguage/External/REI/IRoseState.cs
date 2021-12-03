@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("A69CAB23-9179-11D0-A214-00A024FFFE40")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseState : IRoseStateVertex
+    public interface IRoseState : IREICOMStateVertex
         {
         [DispId(421)]
         Boolean History { [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(421), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

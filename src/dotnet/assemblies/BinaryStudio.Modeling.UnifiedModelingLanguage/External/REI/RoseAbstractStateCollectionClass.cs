@@ -25,11 +25,11 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAbstractState GetAt(Int16 Index);
+    public virtual extern REICOMAbstractState GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] RoseAbstractState pObject);
+    public virtual extern Boolean Exists([MarshalAs(UnmanagedType.Interface)] REICOMAbstractState pObject);
 
     [DispId(205)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -41,11 +41,11 @@ namespace RationalRose
 
     [DispId(207)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] RoseAbstractState theObject);
+    public virtual extern Int16 IndexOf([MarshalAs(UnmanagedType.Interface)] REICOMAbstractState theObject);
 
     [DispId(208)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] RoseAbstractState theObject);
+    public virtual extern void Add([MarshalAs(UnmanagedType.Interface)] REICOMAbstractState theObject);
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -53,7 +53,7 @@ namespace RationalRose
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] RoseAbstractState theObject);
+    public virtual extern void Remove([MarshalAs(UnmanagedType.Interface)] REICOMAbstractState theObject);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -62,11 +62,11 @@ namespace RationalRose
     [DispId(212)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAbstractState GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
+    public virtual extern REICOMAbstractState GetFirst([MarshalAs(UnmanagedType.BStr)] String Name);
 
     [DispId(213)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAbstractState GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
+    public virtual extern REICOMAbstractState GetWithUniqueID([MarshalAs(UnmanagedType.BStr)] String UniqueID);
   }
 }

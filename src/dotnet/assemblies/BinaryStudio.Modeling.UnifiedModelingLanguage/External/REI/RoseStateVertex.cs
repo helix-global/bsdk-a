@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("BEAED5E2-578D-11D2-92AA-004005141253")]
   [CoClass(typeof (RoseStateVertexClass))]
   [ComImport]
-  public interface RoseStateVertex : IRoseStateVertex
+  public interface RoseStateVertex : IREICOMStateVertex
   {
   }
 }

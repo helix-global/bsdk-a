@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("8665226F-EBF7-11D0-BC10-00A024C67143")]
   [ComImport]
-  public class RoseClassClass : IRoseClass, RoseClass
+  public class RoseClassClass : IREICOMClass, RoseClass
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseClassClass();
@@ -44,7 +44,7 @@ namespace RationalRose
     public virtual extern RoseCategory ParentCategory { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(416)]
-    public virtual extern IRoseAttributeCollection Attributes { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+    public virtual extern IREICOMAttributeCollection Attributes { [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(416), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(417)]
     public virtual extern RoseOperationCollection Operations { [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(417), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -195,12 +195,12 @@ namespace RationalRose
     [DispId(424)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern IRoseClassCollection GetSuperclasses();
+    public virtual extern IREICOMClassCollection GetSuperclasses();
 
     [DispId(425)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern IRoseAssociationCollection GetAssociations();
+    public virtual extern IREICOMAssociationCollection GetAssociations();
 
     [DispId(427)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

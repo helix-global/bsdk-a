@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("BA242E02-8961-11CF-B3D4-00A0241DB1D0")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseRelation : IRoseItem
+    public interface IRoseRelation : IREICOMItem
         {
         [DispId(412)]
         String SupplierName { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

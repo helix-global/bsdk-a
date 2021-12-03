@@ -8,7 +8,7 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("BEAED5EC-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public interface IRoseAbstractState : IRoseStateVertex
+    public interface IREICOMAbstractState : IREICOMStateVertex
         {
         [DispId(444)]
         RoseStateCollection SubStates { [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

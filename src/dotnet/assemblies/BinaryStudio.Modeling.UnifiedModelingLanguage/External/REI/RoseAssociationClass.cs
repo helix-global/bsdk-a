@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseAssociationClass : IRoseAssociation, RoseAssociation
+  public class RoseAssociationClass : IREICOMAssociation, RoseAssociation
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAssociationClass();

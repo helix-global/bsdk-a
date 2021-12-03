@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BA376ED6-A44E-11D0-BC02-00A024C67143")]
   [ComImport]
-  public class RoseAttributeCollectionClass : IRoseAttributeCollection, RoseAttributeCollection
+  public class RoseAttributeCollectionClass : IREICOMAttributeCollection, RoseAttributeCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAttributeCollectionClass();
@@ -25,7 +25,7 @@ namespace RationalRose
     [DispId(203)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern IRoseAttribute GetAt(Int16 Index);
+    public virtual extern IREICOMAttribute GetAt(Int16 Index);
 
     [DispId(204)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

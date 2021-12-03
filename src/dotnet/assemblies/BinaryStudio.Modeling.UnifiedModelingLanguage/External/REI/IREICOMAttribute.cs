@@ -8,7 +8,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseAttribute : IRoseItem
+    public interface IREICOMAttribute : IREICOMItem
         {
         [DispId(412)]
         String InitValue { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

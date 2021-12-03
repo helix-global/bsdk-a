@@ -14,7 +14,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseObject
+    public interface IREICOMObject
     {
         [DispId(12668)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

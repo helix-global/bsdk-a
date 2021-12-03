@@ -36,25 +36,25 @@ namespace RationalRose.Serialization
                 }
             }
 
-        private void Write(JsonWriter writer, IRoseObject source, Boolean decorate)
+        private void Write(JsonWriter writer, IREICOMObject source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
             //Write(writer, "IdentifyClass", source.IdentifyClass());
             if (decorate) { writer.WriteEndObject(); }
             }
 
-        private void Write(JsonWriter writer, IRoseElement source, Boolean decorate)
+        private void Write(JsonWriter writer, IREICOMElement source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            Write(writer, (IRoseObject)source, false);
+            Write(writer, (IREICOMObject)source, false);
             Write(writer, "Name", source.Name);
             if (decorate) { writer.WriteEndObject(); }
             }
 
-        private void Write(JsonWriter writer, IRoseItem source, Boolean decorate)
+        private void Write(JsonWriter writer, IREICOMItem source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            Write(writer, (IRoseElement)source, false);
+            Write(writer, (IREICOMElement)source, false);
             Write(writer, "Stereotype", source.Stereotype, String.Empty);
             if (decorate) { writer.WriteEndObject(); }
             }
@@ -62,7 +62,7 @@ namespace RationalRose.Serialization
         private void Write(JsonWriter writer, IRoseRelation source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            Write(writer, (IRoseItem)source, false);
+            Write(writer, (IREICOMItem)source, false);
             Write(writer, "SupplierName", source.SupplierName);
             Write(writer, "HasClient", source.HasClient());
             Write(writer, "HasSupplier", source.HasSupplier());
@@ -83,7 +83,7 @@ namespace RationalRose.Serialization
         private void Write(JsonWriter writer, IRoseControllableUnit source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            Write(writer, (IRoseItem)source, false);
+            Write(writer, (IREICOMItem)source, false);
             Write(writer, "IsControlled", source.IsControlled(), false);
             if (decorate) { writer.WriteEndObject(); }
             }
@@ -107,7 +107,7 @@ namespace RationalRose.Serialization
         private void Write(JsonWriter writer, IRoseAttribute source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            //Write(writer, (IRoseItem)source, false);
+            //Write(writer, (IREICOMItem)source, false);
             //Write(writer, "Type", source.Type);
             Write(writer, "Attribute", $"{source.Type} {source.Name}" + " { get;set; }");
             //Write(writer, "Containment", source.Containment);
@@ -118,7 +118,7 @@ namespace RationalRose.Serialization
         private void Write(JsonWriter writer, IRoseAssociation source, Boolean decorate, String classname)
             {
             if (decorate) { writer.WriteStartObject(); }
-            //Write(writer, (IRoseItem)source, false);
+            //Write(writer, (IREICOMItem)source, false);
             var role1 = source.Role1;
             var role2 = source.Role2;
             //Write(writer, "Role1", source.Role1);
@@ -145,7 +145,7 @@ namespace RationalRose.Serialization
         private void Write(JsonWriter writer, IRoseClass source, Boolean decorate)
             {
             if (decorate) { writer.WriteStartObject(); }
-            Write(writer, (IRoseItem)source, false);
+            Write(writer, (IREICOMItem)source, false);
             //Write(writer, "IsAbstract", source.Abstract, false);
             var basetypes = source.GetSuperclasses().ToArray();
             if (basetypes.Length > 0) {

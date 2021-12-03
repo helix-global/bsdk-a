@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseStateVertexClass : IRoseStateVertex, RoseStateVertex
+  public class RoseStateVertexClass : IREICOMStateVertex, RoseStateVertex
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateVertexClass();

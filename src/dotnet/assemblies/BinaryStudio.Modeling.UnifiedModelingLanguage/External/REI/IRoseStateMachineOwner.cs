@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("94CA1882-5D13-11D2-92AA-004005141253")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseStateMachineOwner : IRoseElement
+    public interface IRoseStateMachineOwner : IREICOMElement
     {
         [DispId(12744)]
         RoseStateMachineCollection StateMachines { [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12744), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

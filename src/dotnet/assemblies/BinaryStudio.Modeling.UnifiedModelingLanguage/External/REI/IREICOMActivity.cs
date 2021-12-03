@@ -10,7 +10,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
-    public interface IRoseActivity : IRoseStateVertex
+    public interface IRoseActivity : IREICOMStateVertex
         {
         [DispId(444)]
         RoseStateCollection SubStates { [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

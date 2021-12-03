@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseClassDiagramCollectionClass : IRoseClassDiagramCollection, RoseClassDiagramCollection
+  public class RoseClassDiagramCollectionClass : IREICOMClassDiagramCollection, RoseClassDiagramCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseClassDiagramCollectionClass();

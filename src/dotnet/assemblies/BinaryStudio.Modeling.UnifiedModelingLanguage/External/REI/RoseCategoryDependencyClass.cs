@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("4ACE189C-6CD3-11D1-BC1E-00A024C67143")]
   [ComImport]
-  public class RoseCategoryDependencyClass : IRoseCategoryDependency, RoseCategoryDependency
+  public class RoseCategoryDependencyClass : IREICOMCategoryDependency, RoseCategoryDependency
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseCategoryDependencyClass();

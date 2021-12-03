@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("BEAED5FC-578D-11D2-92AA-004005141253")]
   [CoClass(typeof (RoseActivityViewClass))]
   [ComImport]
-  public interface RoseActivityView : IRoseActivityView
+  public interface RoseActivityView : IREICOMActivityView
   {
   }
 }

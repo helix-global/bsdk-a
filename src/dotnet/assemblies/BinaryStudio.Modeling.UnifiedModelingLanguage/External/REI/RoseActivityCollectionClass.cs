@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseActivityCollectionClass : IRoseActivityCollection, RoseActivityCollection
+  public class RoseActivityCollectionClass : IREICOMActivityCollection, RoseActivityCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseActivityCollectionClass();

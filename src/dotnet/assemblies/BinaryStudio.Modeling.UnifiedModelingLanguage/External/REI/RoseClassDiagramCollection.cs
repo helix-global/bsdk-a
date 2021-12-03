@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("97B38343-A4E3-11D0-BFF0-00AA003DEF5B")]
   [CoClass(typeof (RoseClassDiagramCollectionClass))]
   [ComImport]
-  public interface RoseClassDiagramCollection : IRoseClassDiagramCollection
+  public interface RoseClassDiagramCollection : IREICOMClassDiagramCollection
   {
   }
 }
