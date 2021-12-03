@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseLineVertexCollectionClass : IRoseLineVertexCollection, RoseLineVertexCollection
+  public class RoseLineVertexCollectionClass : IREICOMLineVertexCollection, RoseLineVertexCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseLineVertexCollectionClass();

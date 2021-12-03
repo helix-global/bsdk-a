@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376ED9-A44E-11D0-BC02-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseHasRelationshipCollectionClass : IRoseHasRelationshipCollection, RoseHasRelationshipCollection
+  public class RoseHasRelationshipCollectionClass : IREICOMHasRelationshipCollection, RoseHasRelationshipCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseHasRelationshipCollectionClass();

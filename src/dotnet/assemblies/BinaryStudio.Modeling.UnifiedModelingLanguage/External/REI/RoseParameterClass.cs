@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("4782FBAA-ECD5-11D0-BFF0-00AA003DEF5B")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseParameterClass : IRoseParameter, RoseParameter
+  public class RoseParameterClass : IREICOMParameter, RoseParameter
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseParameterClass();

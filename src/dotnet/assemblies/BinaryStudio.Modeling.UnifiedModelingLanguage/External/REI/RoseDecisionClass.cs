@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BEAED5E5-578D-11D2-92AA-004005141253")]
   [ComImport]
-  public class RoseDecisionClass : IRoseDecision, RoseDecision
+  public class RoseDecisionClass : IREICOMDecision, RoseDecision
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDecisionClass();

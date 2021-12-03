@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("14028C92-C06C-11D0-89F5-0020AFD6C181")]
   [CoClass(typeof (RoseSubsystemViewClass))]
   [ComImport]
-  public interface RoseSubsystemView : IRoseSubsystemView
+  public interface RoseSubsystemView : IREICOMSubsystemView
   {
   }
 }

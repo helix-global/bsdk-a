@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseStateClass))]
   [Guid("A69CAB23-9179-11D0-A214-00A024FFFE40")]
   [ComImport]
-  public interface RoseState : IRoseState
+  public interface RoseState : IREICOMState
   {
   }
 }

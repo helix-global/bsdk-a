@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("97B3838E-A4E3-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RoseDiagramClass : IRoseDiagram, RoseDiagram
+  public class RoseDiagramClass : IREICOMDiagram, RoseDiagram
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDiagramClass();

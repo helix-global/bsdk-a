@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("4782FBB0-ECD5-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RoseStateClass : IRoseState, RoseState
+  public class RoseStateClass : IREICOMState, RoseState
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateClass();
@@ -62,7 +62,7 @@ namespace RationalRose
     public virtual extern RoseStateMachineOwner StateMachineOwner { [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12790), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(12802)]
-    public virtual extern RoseActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+    public virtual extern REICOMActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
     [DispId(12803)]
     public virtual extern RoseDecisionCollection SubDecisions { [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -196,7 +196,7 @@ namespace RationalRose
 
     [DispId(446)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] RoseAction theAction);
+    public virtual extern Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] REICOMAction theAction);
 
     [DispId(12555)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -211,22 +211,22 @@ namespace RationalRose
     [DispId(12624)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction GetAction([MarshalAs(UnmanagedType.Interface)] RoseEvent theEvent);
+    public virtual extern REICOMAction GetAction([MarshalAs(UnmanagedType.Interface)] RoseEvent theEvent);
 
     [DispId(12625)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActionCollection GetEntryActions();
+    public virtual extern REICOMActionCollection GetEntryActions();
 
     [DispId(12626)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActionCollection GetExitActions();
+    public virtual extern REICOMActionCollection GetExitActions();
 
     [DispId(12627)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActionCollection GetDoActions();
+    public virtual extern REICOMActionCollection GetDoActions();
 
     [DispId(12635)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -240,17 +240,17 @@ namespace RationalRose
     [DispId(12637)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+    public virtual extern REICOMAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
     [DispId(12638)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+    public virtual extern REICOMAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
     [DispId(12639)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+    public virtual extern REICOMAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
     [DispId(12668)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -273,7 +273,7 @@ namespace RationalRose
     [DispId(12767)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActionCollection GetActions();
+    public virtual extern REICOMActionCollection GetActions();
 
     [DispId(12768)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -292,7 +292,7 @@ namespace RationalRose
     [DispId(12805)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActivityCollection GetAllSubActivities();
+    public virtual extern REICOMActivityCollection GetAllSubActivities();
 
     [DispId(12806)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

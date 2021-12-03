@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseSubsystemClass : IRoseSubsystem, RoseSubsystem
+  public class RoseSubsystemClass : IREICOMSubsystem, RoseSubsystem
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseSubsystemClass();

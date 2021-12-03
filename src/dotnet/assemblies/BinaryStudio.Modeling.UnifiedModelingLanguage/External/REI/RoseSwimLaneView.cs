@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("68F63C21-B047-11D2-92AA-004005141253")]
   [CoClass(typeof (RoseSwimLaneViewClass))]
   [ComImport]
-  public interface RoseSwimLaneView : IRoseSwimLaneView
+  public interface RoseSwimLaneView : IREICOMSwimLaneView
   {
   }
 }

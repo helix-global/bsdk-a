@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseActivityViewClass : IREICOMActivityView, RoseActivityView
+  public class RoseActivityViewClass : IREICOMActivityView, REICOMActivityView
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseActivityViewClass();
@@ -211,7 +211,7 @@ namespace RationalRose
     [DispId(12741)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActivity GetActivity();
+    public virtual extern REICOMActivity GetActivity();
 
     [DispId(12820)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

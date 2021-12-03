@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("4782FBB1-ECD5-11D0-BFF0-00AA003DEF5B")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseStateDiagramClass : IRoseStateDiagram, RoseStateDiagram
+  public class RoseStateDiagramClass : IREICOMStateDiagram, RoseStateDiagram
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateDiagramClass();
@@ -255,7 +255,7 @@ namespace RationalRose
     [DispId(12714)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActivityView AddActivityView([MarshalAs(UnmanagedType.Interface)] RoseActivity theActivity);
+    public virtual extern REICOMActivityView AddActivityView([MarshalAs(UnmanagedType.Interface)] REICOMActivity theActivity);
 
     [DispId(12715)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -265,7 +265,7 @@ namespace RationalRose
     [DispId(12717)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseActivityCollection GetSelectedActivities();
+    public virtual extern REICOMActivityCollection GetSelectedActivities();
 
     [DispId(12718)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -284,7 +284,7 @@ namespace RationalRose
 
     [DispId(12724)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern Boolean RemoveActivityView([MarshalAs(UnmanagedType.Interface)] RoseActivityView theActivityView);
+    public virtual extern Boolean RemoveActivityView([MarshalAs(UnmanagedType.Interface)] REICOMActivityView theActivityView);
 
     [DispId(12725)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

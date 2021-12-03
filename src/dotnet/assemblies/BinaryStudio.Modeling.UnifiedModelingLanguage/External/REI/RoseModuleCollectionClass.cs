@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376ED5-A44E-11D0-BC02-00A024C67143")]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseModuleCollectionClass : IRoseModuleCollection, RoseModuleCollection
+  public class RoseModuleCollectionClass : IREICOMModuleCollection, RoseModuleCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseModuleCollectionClass();

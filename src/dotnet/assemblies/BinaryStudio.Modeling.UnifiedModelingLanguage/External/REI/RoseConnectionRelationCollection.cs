@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseConnectionRelationCollectionClass))]
   [Guid("4467F446-F24E-11D2-92AA-004005141253")]
   [ComImport]
-  public interface RoseConnectionRelationCollection : IRoseConnectionRelationCollection
+  public interface RoseConnectionRelationCollection : IREICOMConnectionRelationCollection
   {
   }
 }

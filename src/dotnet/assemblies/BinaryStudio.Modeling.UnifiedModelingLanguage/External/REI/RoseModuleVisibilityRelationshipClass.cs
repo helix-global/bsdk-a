@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseModuleVisibilityRelationshipClass : IRoseModuleVisibilityRelationship, RoseModuleVisibilityRelationship
+  public class RoseModuleVisibilityRelationshipClass : IREICOMModuleVisibilityRelationship, RoseModuleVisibilityRelationship
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseModuleVisibilityRelationshipClass();

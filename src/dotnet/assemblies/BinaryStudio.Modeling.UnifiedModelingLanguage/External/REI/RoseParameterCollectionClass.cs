@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseParameterCollectionClass : IRoseParameterCollection, RoseParameterCollection
+  public class RoseParameterCollectionClass : IREICOMParameterCollection, RoseParameterCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseParameterCollectionClass();

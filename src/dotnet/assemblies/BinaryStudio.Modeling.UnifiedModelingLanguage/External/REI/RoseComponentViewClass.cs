@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseComponentViewClass : IRoseComponentView, RoseComponentView
+  public class RoseComponentViewClass : IREICOMComponentView, RoseComponentView
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseComponentViewClass();

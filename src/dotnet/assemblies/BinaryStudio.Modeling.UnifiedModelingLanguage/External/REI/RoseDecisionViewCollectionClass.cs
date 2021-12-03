@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseDecisionViewCollectionClass : IRoseDecisionViewCollection, RoseDecisionViewCollection
+  public class RoseDecisionViewCollectionClass : IREICOMDecisionViewCollection, RoseDecisionViewCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDecisionViewCollectionClass();

@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("BA242E04-8961-11CF-B3D4-00A0241DB1D0")]
   [CoClass(typeof (RoseHasRelationshipClass))]
   [ComImport]
-  public interface RoseHasRelationship : IRoseHasRelationship
+  public interface RoseHasRelationship : IREICOMHasRelationship
   {
   }
 }

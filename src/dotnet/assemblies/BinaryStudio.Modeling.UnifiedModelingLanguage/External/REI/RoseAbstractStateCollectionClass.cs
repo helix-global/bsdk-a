@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BB792023-57AA-11D2-92AA-004005141253")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseAbstractStateCollectionClass : IRoseAbstractStateCollection, RoseAbstractStateCollection
+  public class RoseAbstractStateCollectionClass : IRoseAbstractStateCollection, REICOMAbstractStateCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseAbstractStateCollectionClass();
@@ -49,7 +49,7 @@ namespace RationalRose
 
     [DispId(209)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] RoseAbstractStateCollection theCollection);
+    public virtual extern void AddCollection([MarshalAs(UnmanagedType.Interface)] REICOMAbstractStateCollection theCollection);
 
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

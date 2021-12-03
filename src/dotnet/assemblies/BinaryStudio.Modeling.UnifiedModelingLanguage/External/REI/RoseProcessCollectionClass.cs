@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376EE6-A44E-11D0-BC02-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseProcessCollectionClass : IRoseProcessCollection, RoseProcessCollection
+  public class RoseProcessCollectionClass : IREICOMProcessCollection, RoseProcessCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseProcessCollectionClass();

@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("CE5BE568-0380-11D1-BC11-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseView_FontClass : IRoseView_Font, RoseView_Font
+  public class RoseView_FontClass : IREICOMView_Font, RoseView_Font
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseView_FontClass();

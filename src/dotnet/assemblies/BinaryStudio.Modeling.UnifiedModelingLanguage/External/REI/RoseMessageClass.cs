@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("8665227C-EBF7-11D0-BC10-00A024C67143")]
   [ComImport]
-  public class RoseMessageClass : IRoseMessage, RoseMessage
+  public class RoseMessageClass : IREICOMMessage, RoseMessage
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseMessageClass();

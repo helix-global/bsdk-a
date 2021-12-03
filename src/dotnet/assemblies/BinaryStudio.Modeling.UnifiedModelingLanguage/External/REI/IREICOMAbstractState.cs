@@ -14,7 +14,7 @@ namespace RationalRose
         RoseStateCollection SubStates { [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(444), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12802)]
-        RoseActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        REICOMActivityCollection SubActivities { [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12802), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(12803)]
         RoseDecisionCollection SubDecisions { [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(12803), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -29,7 +29,7 @@ namespace RationalRose
 
         [DispId(446)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] RoseAction theAction);
+        Boolean DeleteAction([MarshalAs(UnmanagedType.Interface)] REICOMAction theAction);
 
         [DispId(12623)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -39,17 +39,17 @@ namespace RationalRose
         [DispId(12625)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActionCollection GetEntryActions();
+        REICOMActionCollection GetEntryActions();
 
         [DispId(12626)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActionCollection GetExitActions();
+        REICOMActionCollection GetExitActions();
 
         [DispId(12627)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActionCollection GetDoActions();
+        REICOMActionCollection GetDoActions();
 
         [DispId(12635)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -63,22 +63,22 @@ namespace RationalRose
         [DispId(12637)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        REICOMAction AddEntryAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12638)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        REICOMAction AddExitAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12639)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
+        REICOMAction AddDoAction([MarshalAs(UnmanagedType.BStr)] String ActionName);
 
         [DispId(12767)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActionCollection GetActions();
+        REICOMActionCollection GetActions();
 
         [DispId(12768)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -97,7 +97,7 @@ namespace RationalRose
         [DispId(12805)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActivityCollection GetAllSubActivities();
+        REICOMActivityCollection GetAllSubActivities();
 
         [DispId(12806)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

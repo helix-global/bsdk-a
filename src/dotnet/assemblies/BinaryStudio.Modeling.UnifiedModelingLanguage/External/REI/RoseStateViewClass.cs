@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("4782FBB3-ECD5-11D0-BFF0-00AA003DEF5B")]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseStateViewClass : IRoseStateView, RoseStateView
+  public class RoseStateViewClass : IREICOMStateView, RoseStateView
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateViewClass();

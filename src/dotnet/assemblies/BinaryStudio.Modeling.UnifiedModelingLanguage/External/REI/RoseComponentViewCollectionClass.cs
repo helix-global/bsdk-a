@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("9DE9A9C3-F2D0-11D0-883A-3C8B00C10000")]
   [ComImport]
-  public class RoseComponentViewCollectionClass : IRoseComponentViewCollection, RoseComponentViewCollection
+  public class RoseComponentViewCollectionClass : IREICOMComponentViewCollection, RoseComponentViewCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseComponentViewCollectionClass();

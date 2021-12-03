@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("6AC2BA82-454D-11D1-883B-3C8B00C10000")]
   [ComImport]
-  public class RoseRealizeRelationClass : IRoseRealizeRelation, RoseRealizeRelation
+  public class RoseRealizeRelationClass : IREICOMRealizeRelation, RoseRealizeRelation
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseRealizeRelationClass();

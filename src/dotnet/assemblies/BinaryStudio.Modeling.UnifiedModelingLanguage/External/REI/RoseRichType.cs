@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseRichTypeClass))]
   [Guid("EB7AAB60-939C-11CF-B091-00A0241E3F73")]
   [ComImport]
-  public interface RoseRichType : IRoseRichType
+  public interface RoseRichType : IREICOMRichType
   {
   }
 }

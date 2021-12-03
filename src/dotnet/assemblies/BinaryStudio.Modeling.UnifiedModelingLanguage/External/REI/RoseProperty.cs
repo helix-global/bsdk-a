@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RosePropertyClass))]
   [Guid("93461A23-8811-11CF-B1B0-D227D5210B2C")]
   [ComImport]
-  public interface RoseProperty : IRoseProperty
+  public interface RoseProperty : IREICOMProperty
   {
   }
 }

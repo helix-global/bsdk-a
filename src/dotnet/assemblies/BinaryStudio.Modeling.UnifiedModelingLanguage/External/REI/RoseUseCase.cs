@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("7E7F6EE0-16DE-11D0-8976-00A024774419")]
   [CoClass(typeof (RoseUseCaseClass))]
   [ComImport]
-  public interface RoseUseCase : IRoseUseCase
+  public interface RoseUseCase : IREICOMUseCase
   {
   }
 }

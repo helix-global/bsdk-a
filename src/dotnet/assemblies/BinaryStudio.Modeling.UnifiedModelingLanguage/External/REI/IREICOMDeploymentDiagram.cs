@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("C2C15EC4-E028-11CF-B091-00A0241E3F73")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IRoseDeploymentDiagram : IRoseDiagram
+    public interface IREICOMDeploymentDiagram : IREICOMDiagram
         {
         [DispId(411)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

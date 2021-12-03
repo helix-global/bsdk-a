@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseSyncItemViewCollectionClass))]
   [Guid("94CA1891-5D13-11D2-92AA-004005141253")]
   [ComImport]
-  public interface RoseSyncItemViewCollection : IRoseSyncItemViewCollection
+  public interface RoseSyncItemViewCollection : IREICOMSyncItemViewCollection
   {
   }
 }

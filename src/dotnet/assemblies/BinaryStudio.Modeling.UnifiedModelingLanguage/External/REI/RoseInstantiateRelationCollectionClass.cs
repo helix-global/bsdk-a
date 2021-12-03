@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseInstantiateRelationCollectionClass : IRoseInstantiateRelationCollection, RoseInstantiateRelationCollection
+  public class RoseInstantiateRelationCollectionClass : IREICOMInstantiateRelationCollection, RoseInstantiateRelationCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseInstantiateRelationCollectionClass();

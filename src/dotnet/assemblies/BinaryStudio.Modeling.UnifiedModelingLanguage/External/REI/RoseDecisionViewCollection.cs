@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("BEAED601-578D-11D2-92AA-004005141253")]
   [CoClass(typeof (RoseDecisionViewCollectionClass))]
   [ComImport]
-  public interface RoseDecisionViewCollection : IRoseDecisionViewCollection
+  public interface RoseDecisionViewCollection : IREICOMDecisionViewCollection
   {
   }
 }

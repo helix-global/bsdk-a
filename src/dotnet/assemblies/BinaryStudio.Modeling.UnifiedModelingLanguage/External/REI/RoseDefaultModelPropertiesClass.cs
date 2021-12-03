@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseDefaultModelPropertiesClass : IRoseDefaultModelProperties, RoseDefaultModelProperties
+  public class RoseDefaultModelPropertiesClass : IREICOMDefaultModelProperties, RoseDefaultModelProperties
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDefaultModelPropertiesClass();

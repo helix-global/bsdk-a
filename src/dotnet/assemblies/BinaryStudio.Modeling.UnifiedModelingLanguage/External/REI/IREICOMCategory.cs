@@ -8,7 +8,7 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("D7BC1B45-8618-11CF-B3D4-00A0241DB1D0")]
     [ComImport]
-    public interface IREICOMCategory : IRosePackage
+    public interface IREICOMCategory : IREICOMPackage
         {
         [DispId(412)]
         Boolean Global { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

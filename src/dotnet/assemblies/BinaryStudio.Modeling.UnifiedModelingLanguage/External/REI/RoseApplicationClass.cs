@@ -61,7 +61,7 @@ namespace RationalRose
     [DispId(210)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern IRoseModel OpenModel([MarshalAs(UnmanagedType.BStr)] String theModel);
+    public virtual extern IREICOMModel OpenModel([MarshalAs(UnmanagedType.BStr)] String theModel);
 
     [DispId(211)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

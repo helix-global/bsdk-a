@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: RationalRose.IRoseInstantiateRelationCollection
-// Assembly: Interop.RationalRose, Version=4.2.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: E0CF27B3-8D49-4F96-A07A-EC194F467799
-// Assembly location: C:\Users\maistrenko\Documents\Visual Studio 2017\Projects\BinaryStudio\BinaryStudio.Modeling.UnifiedModelingLanguage\obj\Debug\Interop.RationalRose.dll
-
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -14,7 +8,7 @@ namespace RationalRose
   [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [TypeLibType(TypeLibTypeFlags.FDispatchable)]
   [ComImport]
-  public interface IRoseInstantiateRelationCollection
+  public interface IREICOMInstantiateRelationCollection
   {
     [DispId(202)]
     Int16 Count { [DispId(202), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(202), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

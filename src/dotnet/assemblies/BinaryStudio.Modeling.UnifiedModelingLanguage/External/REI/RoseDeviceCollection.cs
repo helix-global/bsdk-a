@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("97B38342-A4E3-11D0-BFF0-00AA003DEF5B")]
   [CoClass(typeof (RoseDeviceCollectionClass))]
   [ComImport]
-  public interface RoseDeviceCollection : IRoseDeviceCollection
+  public interface RoseDeviceCollection : IREICOMDeviceCollection
   {
   }
 }

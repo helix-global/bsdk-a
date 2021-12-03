@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("4782FBAB-ECD5-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RosePropertyClass : IRoseProperty, RoseProperty
+  public class RosePropertyClass : IREICOMProperty, RoseProperty
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RosePropertyClass();

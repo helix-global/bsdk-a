@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("C640C864-F2D3-11D0-883A-3C8B00C10000")]
   [CoClass(typeof (RoseInstanceViewCollectionClass))]
   [ComImport]
-  public interface RoseInstanceViewCollection : IRoseInstanceViewCollection
+  public interface RoseInstanceViewCollection : IREICOMInstanceViewCollection
   {
   }
 }

@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376EEA-A44E-11D0-BC02-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseStateDiagramCollectionClass : IRoseStateDiagramCollection, RoseStateDiagramCollection
+  public class RoseStateDiagramCollectionClass : IREICOMStateDiagramCollection, RoseStateDiagramCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateDiagramCollectionClass();

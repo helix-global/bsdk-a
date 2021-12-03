@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("4782FBAF-ECD5-11D0-BFF0-00AA003DEF5B")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseScenarioDiagramClass : IRoseScenarioDiagram, RoseScenarioDiagram
+  public class RoseScenarioDiagramClass : IREICOMScenarioDiagram, RoseScenarioDiagram
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseScenarioDiagramClass();

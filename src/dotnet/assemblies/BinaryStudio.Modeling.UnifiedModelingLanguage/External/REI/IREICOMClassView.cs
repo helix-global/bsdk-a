@@ -8,7 +8,7 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("5F735F36-F9EA-11CF-BBD3-00A024C67143")]
     [ComImport]
-    public interface IRoseClassView : IRoseItemView
+    public interface IREICOMClassView : IREICOMItemView
         {
         [DispId(409)]
         Boolean AutomaticResize { [DispId(409), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(409), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

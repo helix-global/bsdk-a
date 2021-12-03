@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("C640C862-F2D3-11D0-883A-3C8B00C10000")]
   [ComImport]
-  public class RoseInstanceViewCollectionClass : IRoseInstanceViewCollection, RoseInstanceViewCollection
+  public class RoseInstanceViewCollectionClass : IREICOMInstanceViewCollection, RoseInstanceViewCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseInstanceViewCollectionClass();

@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseStateMachineOwnerClass))]
   [Guid("94CA1882-5D13-11D2-92AA-004005141253")]
   [ComImport]
-  public interface RoseStateMachineOwner : IRoseStateMachineOwner
+  public interface RoseStateMachineOwner : IREICOMStateMachineOwner
   {
   }
 }

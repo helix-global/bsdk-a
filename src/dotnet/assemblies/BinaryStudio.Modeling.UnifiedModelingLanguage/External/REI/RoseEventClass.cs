@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("86652276-EBF7-11D0-BC10-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseEventClass : IRoseEvent, RoseEvent
+  public class RoseEventClass : IREICOMEvent, RoseEvent
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseEventClass();
@@ -121,7 +121,7 @@ namespace RationalRose
     [DispId(12634)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction GetAction();
+    public virtual extern REICOMAction GetAction();
 
     [DispId(12668)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

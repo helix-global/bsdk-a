@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseRichTypeValuesCollectionClass))]
   [Guid("BF8C1040-96DD-11CF-B091-00A0241E3F73")]
   [ComImport]
-  public interface RoseRichTypeValuesCollection : IRoseRichTypeValuesCollection
+  public interface RoseRichTypeValuesCollection : IREICOMRichTypeValuesCollection
   {
   }
 }

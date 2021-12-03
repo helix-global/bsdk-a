@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("CE5BE566-0380-11D1-BC11-00A024C67143")]
   [ComImport]
-  public class RoseView_LineColorClass : IRoseView_LineColor, RoseView_LineColor
+  public class RoseView_LineColorClass : IREICOMView_LineColor, RoseView_LineColor
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseView_LineColorClass();

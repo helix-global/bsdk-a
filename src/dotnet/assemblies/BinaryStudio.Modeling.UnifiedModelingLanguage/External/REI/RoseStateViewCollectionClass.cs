@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseStateViewCollectionClass : IRoseStateViewCollection, RoseStateViewCollection
+  public class RoseStateViewCollectionClass : IREICOMStateViewCollection, RoseStateViewCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateViewCollectionClass();

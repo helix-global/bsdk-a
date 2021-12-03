@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseDeploymentUnitClass : IRoseDeploymentUnit, RoseDeploymentUnit
+  public class RoseDeploymentUnitClass : IREICOMDeploymentUnit, RoseDeploymentUnit
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDeploymentUnitClass();

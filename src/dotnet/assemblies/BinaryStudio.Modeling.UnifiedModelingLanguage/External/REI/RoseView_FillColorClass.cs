@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseView_FillColorClass : IRoseView_FillColor, RoseView_FillColor
+  public class RoseView_FillColorClass : IREICOMView_FillColor, RoseView_FillColor
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseView_FillColorClass();

@@ -7,11 +7,11 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("BEAED5FC-578D-11D2-92AA-004005141253")]
     [ComImport]
-    public interface IREICOMActivityView : IRoseItemView
+    public interface IREICOMActivityView : IREICOMItemView
         {
         [DispId(12741)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        RoseActivity GetActivity();
+        REICOMActivity GetActivity();
         }
     }

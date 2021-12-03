@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseRelationClass))]
   [Guid("BA242E02-8961-11CF-B3D4-00A0241DB1D0")]
   [ComImport]
-  public interface RoseRelation : IRoseRelation
+  public interface RoseRelation : IREICOMRelation
   {
   }
 }

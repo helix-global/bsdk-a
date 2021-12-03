@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace RationalRose
@@ -8,7 +7,7 @@ namespace RationalRose
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [Guid("14028C94-C06C-11D0-89F5-0020AFD6C181")]
     [ComImport]
-    public interface IRoseComponentView : IRoseItemView
+    public interface IREICOMComponentView : IREICOMItemView
         {
         [DispId(12585)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

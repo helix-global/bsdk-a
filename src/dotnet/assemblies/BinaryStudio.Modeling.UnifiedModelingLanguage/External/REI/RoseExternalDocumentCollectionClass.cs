@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("BA376EDF-A44E-11D0-BC02-00A024C67143")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseExternalDocumentCollectionClass : IRoseExternalDocumentCollection, RoseExternalDocumentCollection
+  public class RoseExternalDocumentCollectionClass : IREICOMExternalDocumentCollection, RoseExternalDocumentCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseExternalDocumentCollectionClass();

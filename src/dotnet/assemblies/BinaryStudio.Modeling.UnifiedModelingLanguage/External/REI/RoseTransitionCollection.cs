@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("97B3836B-A4E3-11D0-BFF0-00AA003DEF5B")]
   [CoClass(typeof (RoseTransitionCollectionClass))]
   [ComImport]
-  public interface RoseTransitionCollection : IRoseTransitionCollection
+  public interface RoseTransitionCollection : IREICOMTransitionCollection
   {
   }
 }

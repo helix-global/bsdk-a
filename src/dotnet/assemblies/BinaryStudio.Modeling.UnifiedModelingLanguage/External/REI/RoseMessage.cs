@@ -11,7 +11,7 @@ namespace RationalRose
   [CoClass(typeof (RoseMessageClass))]
   [Guid("F819833C-FC55-11CF-BBD3-00A024C67143")]
   [ComImport]
-  public interface RoseMessage : IRoseMessage
+  public interface RoseMessage : IREICOMMessage
   {
   }
 }

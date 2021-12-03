@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("94CA1889-5D13-11D2-92AA-004005141253")]
   [ComImport]
-  public class RoseSyncItemViewClass : IRoseSyncItemView, RoseSyncItemView
+  public class RoseSyncItemViewClass : IREICOMSyncItemView, RoseSyncItemView
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseSyncItemViewClass();

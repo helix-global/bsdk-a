@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("4782FBB5-ECD5-11D0-BFF0-00AA003DEF5B")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseTransitionClass : IRoseTransition, RoseTransition
+  public class RoseTransitionClass : IREICOMTransition, RoseTransition
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseTransitionClass();
@@ -173,12 +173,12 @@ namespace RationalRose
     [DispId(12629)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction GetTriggerAction();
+    public virtual extern REICOMAction GetTriggerAction();
 
     [DispId(12630)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseAction GetSendAction();
+    public virtual extern REICOMAction GetSendAction();
 
     [DispId(12631)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

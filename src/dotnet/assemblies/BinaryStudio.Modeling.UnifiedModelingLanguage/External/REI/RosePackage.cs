@@ -11,7 +11,7 @@ namespace RationalRose
   [Guid("47D975C1-8A8D-11D0-A214-444553540000")]
   [CoClass(typeof (RosePackageClass))]
   [ComImport]
-  public interface RosePackage : IRosePackage
+  public interface RosePackage : IREICOMPackage
   {
   }
 }

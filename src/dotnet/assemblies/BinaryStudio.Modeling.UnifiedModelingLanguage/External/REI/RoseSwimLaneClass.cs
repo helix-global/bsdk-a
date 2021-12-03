@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseSwimLaneClass : IRoseSwimLane, RoseSwimLane
+  public class RoseSwimLaneClass : IREICOMSwimLane, RoseSwimLane
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseSwimLaneClass();
@@ -204,7 +204,7 @@ namespace RationalRose
     [DispId(12843)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     [return: MarshalAs(UnmanagedType.Interface)]
-    public virtual extern RoseObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] RoseActivity theActivity);
+    public virtual extern RoseObjectFlow AddObjectFlow([MarshalAs(UnmanagedType.Interface)] REICOMActivity theActivity);
 
     [DispId(12844)]
     [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

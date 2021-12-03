@@ -14,7 +14,7 @@ namespace RationalRose
   [Guid("94CA1883-5D13-11D2-92AA-004005141253")]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseStateMachineOwnerClass : IRoseStateMachineOwner, RoseStateMachineOwner
+  public class RoseStateMachineOwnerClass : IREICOMStateMachineOwner, RoseStateMachineOwner
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseStateMachineOwnerClass();

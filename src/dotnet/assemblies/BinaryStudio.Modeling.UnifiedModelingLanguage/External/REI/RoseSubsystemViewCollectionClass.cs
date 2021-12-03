@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("0CEEA5A1-C6F8-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RoseSubsystemViewCollectionClass : IRoseSubsystemViewCollection, RoseSubsystemViewCollection
+  public class RoseSubsystemViewCollectionClass : IREICOMSubsystemViewCollection, RoseSubsystemViewCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseSubsystemViewCollectionClass();

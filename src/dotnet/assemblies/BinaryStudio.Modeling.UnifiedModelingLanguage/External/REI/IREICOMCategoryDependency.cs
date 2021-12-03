@@ -7,7 +7,7 @@ namespace RationalRose
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IREICOMCategoryDependency : IRoseRelation
+    public interface IREICOMCategoryDependency : IREICOMRelation
         {
         [DispId(12657)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]

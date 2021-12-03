@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("BA376EE8-A44E-11D0-BC02-00A024C67143")]
   [ComImport]
-  public class RoseEventCollectionClass : IRoseEventCollection, RoseEventCollection
+  public class RoseEventCollectionClass : IREICOMEventCollection, RoseEventCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseEventCollectionClass();

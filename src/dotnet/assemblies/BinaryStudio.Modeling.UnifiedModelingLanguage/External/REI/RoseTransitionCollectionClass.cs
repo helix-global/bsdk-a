@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ComImport]
-  public class RoseTransitionCollectionClass : IRoseTransitionCollection, RoseTransitionCollection
+  public class RoseTransitionCollectionClass : IREICOMTransitionCollection, RoseTransitionCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseTransitionCollectionClass();

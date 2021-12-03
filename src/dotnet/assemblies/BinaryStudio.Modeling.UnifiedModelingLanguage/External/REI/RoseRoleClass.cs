@@ -14,7 +14,7 @@ namespace RationalRose
   [ClassInterface(ClassInterfaceType.None)]
   [Guid("97B38378-A4E3-11D0-BFF0-00AA003DEF5B")]
   [ComImport]
-  public class RoseRoleClass : IRoseRole, RoseRole
+  public class RoseRoleClass : IREICOMRole, RoseRole
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseRoleClass();

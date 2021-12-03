@@ -8,7 +8,7 @@ namespace RationalRose
     [Guid("3FD9D002-93B0-11CF-B3D4-00A0241DB1D0")]
     [TypeLibType(TypeLibTypeFlags.FDispatchable)]
     [ComImport]
-    public interface IREICOMClassDiagram : IRoseDiagram
+    public interface IREICOMClassDiagram : IREICOMDiagram
         {
         [DispId(411)]
         RoseCategory ParentCategory { [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(411), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }

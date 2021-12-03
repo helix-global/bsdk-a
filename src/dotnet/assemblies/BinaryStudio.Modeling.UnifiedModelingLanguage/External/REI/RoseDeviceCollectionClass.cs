@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("BA376ECA-A44E-11D0-BC02-00A024C67143")]
   [ComImport]
-  public class RoseDeviceCollectionClass : IRoseDeviceCollection, RoseDeviceCollection
+  public class RoseDeviceCollectionClass : IREICOMDeviceCollection, RoseDeviceCollection
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseDeviceCollectionClass();

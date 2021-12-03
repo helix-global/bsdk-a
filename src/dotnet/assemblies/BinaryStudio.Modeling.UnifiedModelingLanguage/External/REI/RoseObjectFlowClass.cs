@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [Guid("882D2F83-BD12-11D3-92AA-004005141253")]
   [ComImport]
-  public class RoseObjectFlowClass : IRoseObjectFlow, RoseObjectFlow
+  public class RoseObjectFlowClass : IREICOMObjectFlow, RoseObjectFlow
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseObjectFlowClass();

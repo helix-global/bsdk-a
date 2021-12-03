@@ -14,7 +14,7 @@ namespace RationalRose
   [TypeLibType(TypeLibTypeFlags.FCanCreate)]
   [ClassInterface(ClassInterfaceType.None)]
   [ComImport]
-  public class RoseSwimLaneViewClass : IRoseSwimLaneView, RoseSwimLaneView
+  public class RoseSwimLaneViewClass : IREICOMSwimLaneView, RoseSwimLaneView
   {
     //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
     //public extern RoseSwimLaneViewClass();
