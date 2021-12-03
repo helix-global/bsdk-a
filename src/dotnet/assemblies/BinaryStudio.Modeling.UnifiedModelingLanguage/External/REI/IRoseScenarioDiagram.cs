@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [Guid("F819833A-FC55-11CF-BBD3-00A024C67143")]
   [TypeLibType(4096)]
-  [InterfaceType(2)]
+  [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [ComImport]
   public interface IRoseScenarioDiagram
   {

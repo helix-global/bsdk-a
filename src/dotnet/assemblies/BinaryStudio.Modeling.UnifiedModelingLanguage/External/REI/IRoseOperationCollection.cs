@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [TypeLibType(4096)]
   [Guid("97B3834D-A4E3-11D0-BFF0-00AA003DEF5B")]
-  [InterfaceType(2)]
+  [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [ComImport]
   public interface IRoseOperationCollection
   {

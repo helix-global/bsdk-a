@@ -3,7 +3,7 @@
 namespace RationalRose
     {
     [TypeLibType(4096)]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("BEAED5E3-578D-11D2-92AA-004005141253")]
     [ComImport]
     public interface IRoseDecision : IRoseStateVertex

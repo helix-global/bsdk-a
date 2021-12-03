@@ -8,7 +8,7 @@ namespace RationalRose
     {
     [Guid("BEAED5E7-578D-11D2-92AA-004005141253")]
     [TypeLibType(4096)]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
     public interface IRoseActivity : IRoseStateVertex
         {

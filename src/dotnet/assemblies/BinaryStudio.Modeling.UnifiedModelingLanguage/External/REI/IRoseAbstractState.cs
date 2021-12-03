@@ -2,12 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-#pragma warning disable 1591
-
 namespace RationalRose
     {
     [TypeLibType(4096)]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("BEAED5EC-578D-11D2-92AA-004005141253")]
     [ComImport]
     public interface IRoseAbstractState : IRoseStateVertex

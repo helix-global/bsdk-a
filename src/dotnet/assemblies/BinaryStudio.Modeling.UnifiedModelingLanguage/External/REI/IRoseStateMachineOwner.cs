@@ -6,7 +6,7 @@ namespace RationalRose
 {
     [TypeLibType(4096)]
     [Guid("94CA1882-5D13-11D2-92AA-004005141253")]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
     public interface IRoseStateMachineOwner : IRoseElement
     {

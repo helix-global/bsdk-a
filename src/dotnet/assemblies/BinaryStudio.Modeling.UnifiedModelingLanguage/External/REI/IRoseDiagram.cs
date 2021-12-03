@@ -6,7 +6,7 @@ namespace RationalRose
     {
     [Guid("3FD9D000-93B0-11CF-B3D4-00A0241DB1D0")]
     [TypeLibType(4096)]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [ComImport]
     public interface IRoseDiagram : IRoseElement
         {

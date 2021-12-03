@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
 {
   [Guid("BA242E04-8961-11CF-B3D4-00A0241DB1D0")]
-  [InterfaceType(2)]
+  [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [TypeLibType(4096)]
   [ComImport]
   public interface IRoseHasRelationship

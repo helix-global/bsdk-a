@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [TypeLibType(4096)]
   [Guid("CE5BE565-0380-11D1-BC11-00A024C67143")]
-  [InterfaceType(2)]
+  [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [ComImport]
   public interface IRoseView_LineColor
   {

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace RationalRose
     {
     [TypeLibType(4096)]
-    [InterfaceType(2)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     [Guid("C78E702A-86E4-11CF-B3D4-00A0241DB1D0")]
     [ComImport]
     public interface IRoseModule : IRoseItem

@@ -12,7 +12,7 @@ namespace RationalRose
 {
   [TypeLibType(4096)]
   [Guid("BEAED5F7-578D-11D2-92AA-004005141253")]
-  [InterfaceType(2)]
+  [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
   [ComImport]
   public interface IRoseStateVertexCollection
   {
