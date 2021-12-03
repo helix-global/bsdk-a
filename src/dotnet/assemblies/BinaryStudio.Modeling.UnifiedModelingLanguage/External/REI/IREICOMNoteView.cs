@@ -20,15 +20,15 @@ namespace RationalRose
         [DispId(12821)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMDiagram GetDiagramLink();
+        IREICOMDiagram GetDiagramLink();
 
         [DispId(12822)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMItemView AddAttachmentToView([MarshalAs(UnmanagedType.Interface)] REICOMItemView theItemView, [MarshalAs(UnmanagedType.BStr)] String theLabelText);
+        IREICOMItemView AddAttachmentToView([MarshalAs(UnmanagedType.Interface)] IREICOMItemView theItemView, [MarshalAs(UnmanagedType.BStr)] String theLabelText);
 
         [DispId(12855)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void LinkDiagram([MarshalAs(UnmanagedType.Interface)] REICOMDiagram theDiagram);
+        void LinkDiagram([MarshalAs(UnmanagedType.Interface)] IREICOMDiagram theDiagram);
         }
     }

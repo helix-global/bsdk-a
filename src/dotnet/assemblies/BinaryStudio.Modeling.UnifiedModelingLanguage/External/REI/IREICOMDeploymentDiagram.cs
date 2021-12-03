@@ -13,29 +13,29 @@ namespace RationalRose
         [DispId(411)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMProcessorCollection GetProcessors();
+        IREICOMProcessorCollection GetProcessors();
 
         [DispId(412)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMDeviceCollection GetDevices();
+        IREICOMDeviceCollection GetDevices();
 
         [DispId(413)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMItemView AddProcessor([MarshalAs(UnmanagedType.Interface)] REICOMProcessor theProcessor, Int16 x, Int16 y);
+        IREICOMItemView AddProcessor([MarshalAs(UnmanagedType.Interface)] IREICOMProcessor theProcessor, Int16 x, Int16 y);
 
         [DispId(414)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMItemView AddDevice([MarshalAs(UnmanagedType.Interface)] REICOMDevice theDevice, Int16 x, Int16 y);
+        IREICOMItemView AddDevice([MarshalAs(UnmanagedType.Interface)] IREICOMDevice theDevice, Int16 x, Int16 y);
 
         [DispId(415)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveProcessor([MarshalAs(UnmanagedType.Interface)] REICOMProcessor theProcessor);
+        Boolean RemoveProcessor([MarshalAs(UnmanagedType.Interface)] IREICOMProcessor theProcessor);
 
         [DispId(416)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RemoveDevice([MarshalAs(UnmanagedType.Interface)] REICOMDevice theDevice);
+        Boolean RemoveDevice([MarshalAs(UnmanagedType.Interface)] IREICOMDevice theDevice);
         }
     }

@@ -14,16 +14,16 @@ namespace RationalRose
         Boolean Abstract { [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(412), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(413)]
-        REICOMCategory ParentCategory { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMCategory ParentCategory { [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(413), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(414)]
-        REICOMClassDiagramCollection ClassDiagrams { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMClassDiagramCollection ClassDiagrams { [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(414), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(415)]
-        REICOMScenarioDiagramCollection ScenarioDiagrams { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMScenarioDiagramCollection ScenarioDiagrams { [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(415), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(420)]
-        REICOMStateMachine StateMachine { [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
+        IREICOMStateMachine StateMachine { [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(420), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
 
         [DispId(427)]
         String Rank { [DispId(427), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] get; [DispId(427), MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)] [param: In] set; }
@@ -31,63 +31,63 @@ namespace RationalRose
         [DispId(416)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassDiagram AddClassDiagram([MarshalAs(UnmanagedType.BStr)] String szName);
+        IREICOMClassDiagram AddClassDiagram([MarshalAs(UnmanagedType.BStr)] String szName);
 
         [DispId(417)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteClassDiagram([MarshalAs(UnmanagedType.Interface)] REICOMClassDiagram pIDispatch);
+        Boolean DeleteClassDiagram([MarshalAs(UnmanagedType.Interface)] IREICOMClassDiagram pIDispatch);
 
         [DispId(418)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteScenarioDiagram([MarshalAs(UnmanagedType.Interface)] REICOMScenarioDiagram pIDispatch);
+        Boolean DeleteScenarioDiagram([MarshalAs(UnmanagedType.Interface)] IREICOMScenarioDiagram pIDispatch);
 
         [DispId(419)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMScenarioDiagram AddScenarioDiagram([MarshalAs(UnmanagedType.BStr)] String szName, Int16 iType);
+        IREICOMScenarioDiagram AddScenarioDiagram([MarshalAs(UnmanagedType.BStr)] String szName, Int16 iType);
 
         [DispId(421)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMInheritRelation AddInheritRel([MarshalAs(UnmanagedType.BStr)] String szName, [MarshalAs(UnmanagedType.BStr)] String szParentName);
+        IREICOMInheritRelation AddInheritRel([MarshalAs(UnmanagedType.BStr)] String szName, [MarshalAs(UnmanagedType.BStr)] String szParentName);
 
         [DispId(422)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteInheritRel([MarshalAs(UnmanagedType.Interface)] REICOMInheritRelation pIDispatchRelation);
+        Boolean DeleteInheritRel([MarshalAs(UnmanagedType.Interface)] IREICOMInheritRelation pIDispatchRelation);
 
         [DispId(426)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAssociationCollection GetAssociations();
+        IREICOMAssociationCollection GetAssociations();
 
         [DispId(430)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMAssociation AddAssociation([MarshalAs(UnmanagedType.BStr)] String szSupplierRoleName, [MarshalAs(UnmanagedType.BStr)] String szSupplierRoleType);
+        IREICOMAssociation AddAssociation([MarshalAs(UnmanagedType.BStr)] String szSupplierRoleName, [MarshalAs(UnmanagedType.BStr)] String szSupplierRoleType);
 
         [DispId(431)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteAssociation([MarshalAs(UnmanagedType.Interface)] REICOMAssociation pDispatchAssociation);
+        Boolean DeleteAssociation([MarshalAs(UnmanagedType.Interface)] IREICOMAssociation pDispatchAssociation);
 
         [DispId(432)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMUseCaseCollection GetSuperUseCases();
+        IREICOMUseCaseCollection GetSuperUseCases();
 
         [DispId(433)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMInheritRelationCollection GetInheritRelations();
+        IREICOMInheritRelationCollection GetInheritRelations();
 
         [DispId(434)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMRoleCollection GetRoles();
+        IREICOMRoleCollection GetRoles();
 
         [DispId(12699)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassDiagram AddUseCaseDiagram([MarshalAs(UnmanagedType.BStr)] String szName);
+        IREICOMClassDiagram AddUseCaseDiagram([MarshalAs(UnmanagedType.BStr)] String szName);
 
         [DispId(12700)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -96,6 +96,6 @@ namespace RationalRose
         [DispId(21000)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMRealizeRelationCollection GetRealizeRelations();
+        IREICOMRealizeRelationCollection GetRealizeRelations();
         }
     }

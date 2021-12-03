@@ -16,6 +16,6 @@ namespace RationalRose
         [DispId(12758)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMSyncItem GetSynchronization();
+        IREICOMSyncItem GetSynchronization();
         }
     }

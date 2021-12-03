@@ -24,11 +24,11 @@ namespace RationalRose
         [DispId(12608)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMItem GetClient();
+        IREICOMItem GetClient();
 
         [DispId(12609)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMItem GetSupplier();
+        IREICOMItem GetSupplier();
         }
     }

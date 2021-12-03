@@ -144,24 +144,24 @@ namespace RationalRose
         [DispId(447)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClass AddNestedClass([MarshalAs(UnmanagedType.BStr)] String theName);
+        IREICOMClass AddNestedClass([MarshalAs(UnmanagedType.BStr)] String theName);
 
         [DispId(448)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteNestedClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
+        Boolean DeleteNestedClass([MarshalAs(UnmanagedType.Interface)] IREICOMClass theClass);
 
         [DispId(12491)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMModuleCollection GetAssignedModules();
+        IREICOMModuleCollection GetAssignedModules();
 
         [DispId(12522)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void AddAssignedModule([MarshalAs(UnmanagedType.Interface)] REICOMModule theModule);
+        void AddAssignedModule([MarshalAs(UnmanagedType.Interface)] IREICOMModule theModule);
 
         [DispId(12526)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void RemoveAssignedModule([MarshalAs(UnmanagedType.Interface)] REICOMModule theModule);
+        void RemoveAssignedModule([MarshalAs(UnmanagedType.Interface)] IREICOMModule theModule);
 
         [DispId(12598)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -174,16 +174,16 @@ namespace RationalRose
         [DispId(12610)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMRealizeRelation AddRealizeRel([MarshalAs(UnmanagedType.BStr)] String theRelationName, [MarshalAs(UnmanagedType.BStr)] String theInterfaceName);
+        IREICOMRealizeRelation AddRealizeRel([MarshalAs(UnmanagedType.BStr)] String theRelationName, [MarshalAs(UnmanagedType.BStr)] String theInterfaceName);
 
         [DispId(12611)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteRealizeRel([MarshalAs(UnmanagedType.Interface)] REICOMRealizeRelation theRealizeRel);
+        Boolean DeleteRealizeRel([MarshalAs(UnmanagedType.Interface)] IREICOMRealizeRelation theRealizeRel);
 
         [DispId(12612)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMRealizeRelationCollection GetRealizeRelations();
+        IREICOMRealizeRelationCollection GetRealizeRelations();
 
         [DispId(12642)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -197,66 +197,66 @@ namespace RationalRose
         [DispId(12644)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassCollection GetSubclasses();
+        IREICOMClassCollection GetSubclasses();
 
         [DispId(12662)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassDependencyCollection GetClassDependencies();
+        IREICOMClassDependencyCollection GetClassDependencies();
 
         [DispId(12663)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassDependency AddClassDependency([MarshalAs(UnmanagedType.BStr)] String theSupplerName, [MarshalAs(UnmanagedType.BStr)] String theSupplierType);
+        IREICOMClassDependency AddClassDependency([MarshalAs(UnmanagedType.BStr)] String theSupplerName, [MarshalAs(UnmanagedType.BStr)] String theSupplierType);
 
         [DispId(12664)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteClassDependency([MarshalAs(UnmanagedType.Interface)] REICOMClassDependency theClassDependency);
+        Boolean DeleteClassDependency([MarshalAs(UnmanagedType.Interface)] IREICOMClassDependency theClassDependency);
 
         [DispId(12667)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMParameter AddParameter([MarshalAs(UnmanagedType.BStr)] String theName, [MarshalAs(UnmanagedType.BStr)] String theType, [MarshalAs(UnmanagedType.BStr)] String theDef, Int16 position);
+        IREICOMParameter AddParameter([MarshalAs(UnmanagedType.BStr)] String theName, [MarshalAs(UnmanagedType.BStr)] String theType, [MarshalAs(UnmanagedType.BStr)] String theDef, Int16 position);
 
         [DispId(12670)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMInstantiateRelationCollection GetInstantiateRelations();
+        IREICOMInstantiateRelationCollection GetInstantiateRelations();
 
         [DispId(12671)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMInstantiateRelation AddInstantiateRel([MarshalAs(UnmanagedType.BStr)] String theSupplierName);
+        IREICOMInstantiateRelation AddInstantiateRel([MarshalAs(UnmanagedType.BStr)] String theSupplierName);
 
         [DispId(12672)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteInstantiateRel([MarshalAs(UnmanagedType.Interface)] REICOMInstantiateRelation theInstantiateRel);
+        Boolean DeleteInstantiateRel([MarshalAs(UnmanagedType.Interface)] IREICOMInstantiateRelation theInstantiateRel);
 
         [DispId(12673)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassCollection GetClients(Int16 relationKind, Int16 relationType);
+        IREICOMClassCollection GetClients(Int16 relationKind, Int16 relationType);
 
         [DispId(12678)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean DeleteParameter([MarshalAs(UnmanagedType.Interface)] REICOMParameter theParameter);
+        Boolean DeleteParameter([MarshalAs(UnmanagedType.Interface)] IREICOMParameter theParameter);
 
         [DispId(12808)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMClassCollection GetAllNestedClasses();
+        IREICOMClassCollection GetAllNestedClasses();
 
         [DispId(12838)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMStringCollection GetAssignedUnloadedComponents();
+        IREICOMStringCollection GetAssignedUnloadedComponents();
 
         [DispId(12870)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean ChangeAttributePosition([MarshalAs(UnmanagedType.Interface)] REICOMAttribute theAttribute, Int16 thePosition);
+        Boolean ChangeAttributePosition([MarshalAs(UnmanagedType.Interface)] IREICOMAttribute theAttribute, Int16 thePosition);
 
         [DispId(12871)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        Boolean RelocateClass([MarshalAs(UnmanagedType.Interface)] REICOMClass theClass);
+        Boolean RelocateClass([MarshalAs(UnmanagedType.Interface)] IREICOMClass theClass);
         }
     }

@@ -69,7 +69,7 @@ namespace RationalRose
         [DispId(12702)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMControllableUnitCollection GetSubUnitItems();
+        IREICOMControllableUnitCollection GetSubUnitItems();
 
         [DispId(12703)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
@@ -82,7 +82,7 @@ namespace RationalRose
         [DispId(12707)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
         [return: MarshalAs(UnmanagedType.Interface)]
-        REICOMControllableUnitCollection GetAllSubUnitItems();
+        IREICOMControllableUnitCollection GetAllSubUnitItems();
 
         [DispId(12708)]
         [MethodImpl(MethodImplOptions.PreserveSig | MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
