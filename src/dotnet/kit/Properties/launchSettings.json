@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "kit": {
+      "commandName": "Project",
+      "commandLineArgs": "input:c:\\tfs\\h2\\icao\\nz\\*.crl batch:serialize \"output:{oledb://Data Source=DEV-SR-SQL02\\SQL2008SRV;Initial Catalog=icao;Persist Security Info=True;User ID=sa;Password=Qwerty11};;;\"",
+      "nativeDebugging": false
+    }
+  }
+}

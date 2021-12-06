@@ -1,0 +1,1137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InterchangeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="AlternativeName">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExtensionId" Type="int" />
+          <Property Name="GeneralNameId" Type="int" />
+        </EntityType>
+        <EntityType Name="AuthorityKeyIdentifier">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="int" Nullable="false" />
+          <Property Name="LongKey" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ShortKey" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="SerialNumber" Type="varchar" MaxLength="128" />
+          <Property Name="Issuer" Type="int" />
+        </EntityType>
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="int" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="5" />
+          <Property Name="SerialNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Thumbprint" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="Issuer" Type="int" Nullable="false" />
+          <Property Name="Subject" Type="int" Nullable="false" />
+          <Property Name="NotBefore" Type="datetime" Nullable="false" />
+          <Property Name="NotAfter" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CertificateRevocationList">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="int" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="5" />
+          <Property Name="Issuer" Type="int" />
+          <Property Name="EffectiveDate" Type="datetime" Nullable="false" />
+          <Property Name="NextUpdate" Type="datetime" />
+          <Property Name="Thumbprint" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Extension">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ObjectId" Type="int" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="IsCritical" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GeneralName">
+          <Key>
+            <PropertyRef Name="GeneralNameId" />
+          </Key>
+          <Property Name="GeneralNameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="IssuerAlternativeName">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Object">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ObjectIdentifier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ShortName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RelativeDistinguishedName">
+          <Key>
+            <PropertyRef Name="RelativeDistinguishedNameId" />
+          </Key>
+          <Property Name="RelativeDistinguishedNameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelativeDistinguishedNameSequence">
+          <Key>
+            <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+          </Key>
+          <Property Name="RelativeDistinguishedNameSequenceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelativeDistinguishedNameSequenceMapping">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RelativeDistinguishedNameSequenceId" Type="int" Nullable="false" />
+          <Property Name="RelativeDistinguishedNameId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="String">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SubjectAlternativeName">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubjectKeyIdentifier">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="int" Nullable="false" />
+          <Property Name="LongKey" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ShortKey" Type="char" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <Association Name="AlternativeName_Extension_FK">
+          <End Role="Extension" Type="Self.Extension" Multiplicity="0..1" />
+          <End Role="AlternativeName" Type="Self.AlternativeName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="AlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AlternativeName_GeneralName_FK">
+          <End Role="GeneralName" Type="Self.GeneralName" Multiplicity="0..1" />
+          <End Role="AlternativeName" Type="Self.AlternativeName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="AlternativeName">
+              <PropertyRef Name="GeneralNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorityKeyIdentifier_CertificateExtension_FK">
+          <End Role="Extension" Type="Self.Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AuthorityKeyIdentifier" Type="Self.AuthorityKeyIdentifier" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="AuthorityKeyIdentifier">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorityKeyIdentifier_GeneralName_FK">
+          <End Role="GeneralName" Type="Self.GeneralName" Multiplicity="0..1" />
+          <End Role="AuthorityKeyIdentifier" Type="Self.AuthorityKeyIdentifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="AuthorityKeyIdentifier">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_Object_FK">
+          <End Role="Object" Type="Self.Object" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_RelativeDistinguishedNameSequence_FK">
+          <End Role="RelativeDistinguishedNameSequence" Type="Self.RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_RelativeDistinguishedNameSequence_FK1">
+          <End Role="RelativeDistinguishedNameSequence" Type="Self.RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Crl_Object_FK">
+          <End Role="Object" Type="Self.Object" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CertificateRevocationList" Type="Self.CertificateRevocationList" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="CertificateRevocationList">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Crl_RelativeDistinguishedNameSequence_FK">
+          <End Role="RelativeDistinguishedNameSequence" Type="Self.RelativeDistinguishedNameSequence" Multiplicity="0..1" />
+          <End Role="CertificateRevocationList" Type="Self.CertificateRevocationList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="CertificateRevocationList">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Extension_Object_FK">
+          <End Role="Object" Type="Self.Object" Multiplicity="0..1" />
+          <End Role="Extension" Type="Self.Extension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="Extension">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Extension_ObjectIdentifier_FK">
+          <End Role="ObjectIdentifier" Type="Self.ObjectIdentifier" Multiplicity="1" />
+          <End Role="Extension" Type="Self.Extension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ObjectIdentifier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Extension">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IssuerAlternativeName_Extension_FK">
+          <End Role="Extension" Type="Self.Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IssuerAlternativeName" Type="Self.IssuerAlternativeName" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="IssuerAlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedName_Strings_FK">
+          <End Role="String" Type="Self.String" Multiplicity="1" />
+          <End Role="RelativeDistinguishedName" Type="Self.RelativeDistinguishedName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="String">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedName">
+              <PropertyRef Name="Value" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedName_TObjectIdentifier_FK">
+          <End Role="ObjectIdentifier" Type="Self.ObjectIdentifier" Multiplicity="1" />
+          <End Role="RelativeDistinguishedName" Type="Self.RelativeDistinguishedName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ObjectIdentifier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedName">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequence_GeneralName_FK">
+          <End Role="GeneralName" Type="Self.GeneralName" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RelativeDistinguishedNameSequence" Type="Self.RelativeDistinguishedNameSequence" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK">
+          <End Role="RelativeDistinguishedName" Type="Self.RelativeDistinguishedName" Multiplicity="1" />
+          <End Role="RelativeDistinguishedNameSequenceMapping" Type="Self.RelativeDistinguishedNameSequenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedName">
+              <PropertyRef Name="RelativeDistinguishedNameId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequenceMapping">
+              <PropertyRef Name="RelativeDistinguishedNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK">
+          <End Role="RelativeDistinguishedNameSequence" Type="Self.RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Role="RelativeDistinguishedNameSequenceMapping" Type="Self.RelativeDistinguishedNameSequenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequenceMapping">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SubjectAlternativeName_Extension_FK">
+          <End Role="Extension" Type="Self.Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SubjectAlternativeName" Type="Self.SubjectAlternativeName" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="SubjectAlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SubjectKeyIdentifier_Extension_FK">
+          <End Role="Extension" Type="Self.Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SubjectKeyIdentifier" Type="Self.SubjectKeyIdentifier" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="SubjectKeyIdentifier">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="RelativeDistinguishedNameSequenceToString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar(max)">
+          <Parameter Name="RelativeDistinguishedNameSequenceId" Type="int" Mode="In" />
+          <Parameter Name="PartType" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <EntityContainer Name="InterchangeModelStoreContainer">
+          <EntitySet Name="AlternativeName" EntityType="Self.AlternativeName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuthorityKeyIdentifier" EntityType="Self.AuthorityKeyIdentifier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Certificate" EntityType="Self.Certificate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CertificateRevocationList" EntityType="Self.CertificateRevocationList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Extension" EntityType="Self.Extension" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GeneralName" EntityType="Self.GeneralName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IssuerAlternativeName" EntityType="Self.IssuerAlternativeName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Object" EntityType="Self.Object" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ObjectIdentifier" EntityType="Self.ObjectIdentifier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelativeDistinguishedName" EntityType="Self.RelativeDistinguishedName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelativeDistinguishedNameSequence" EntityType="Self.RelativeDistinguishedNameSequence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelativeDistinguishedNameSequenceMapping" EntityType="Self.RelativeDistinguishedNameSequenceMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="String" EntityType="Self.String" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubjectAlternativeName" EntityType="Self.SubjectAlternativeName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubjectKeyIdentifier" EntityType="Self.SubjectKeyIdentifier" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="AlternativeName_Extension_FK" Association="Self.AlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extension" />
+            <End Role="AlternativeName" EntitySet="AlternativeName" />
+          </AssociationSet>
+          <AssociationSet Name="AlternativeName_GeneralName_FK" Association="Self.AlternativeName_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralName" />
+            <End Role="AlternativeName" EntitySet="AlternativeName" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorityKeyIdentifier_CertificateExtension_FK" Association="Self.AuthorityKeyIdentifier_CertificateExtension_FK">
+            <End Role="Extension" EntitySet="Extension" />
+            <End Role="AuthorityKeyIdentifier" EntitySet="AuthorityKeyIdentifier" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorityKeyIdentifier_GeneralName_FK" Association="Self.AuthorityKeyIdentifier_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralName" />
+            <End Role="AuthorityKeyIdentifier" EntitySet="AuthorityKeyIdentifier" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_Object_FK" Association="Self.Certificate_Object_FK">
+            <End Role="Object" EntitySet="Object" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_RelativeDistinguishedNameSequence_FK" Association="Self.Certificate_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequence" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_RelativeDistinguishedNameSequence_FK1" Association="Self.Certificate_RelativeDistinguishedNameSequence_FK1">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequence" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="Crl_Object_FK" Association="Self.Crl_Object_FK">
+            <End Role="Object" EntitySet="Object" />
+            <End Role="CertificateRevocationList" EntitySet="CertificateRevocationList" />
+          </AssociationSet>
+          <AssociationSet Name="Crl_RelativeDistinguishedNameSequence_FK" Association="Self.Crl_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequence" />
+            <End Role="CertificateRevocationList" EntitySet="CertificateRevocationList" />
+          </AssociationSet>
+          <AssociationSet Name="Extension_Object_FK" Association="Self.Extension_Object_FK">
+            <End Role="Object" EntitySet="Object" />
+            <End Role="Extension" EntitySet="Extension" />
+          </AssociationSet>
+          <AssociationSet Name="Extension_ObjectIdentifier_FK" Association="Self.Extension_ObjectIdentifier_FK">
+            <End Role="ObjectIdentifier" EntitySet="ObjectIdentifier" />
+            <End Role="Extension" EntitySet="Extension" />
+          </AssociationSet>
+          <AssociationSet Name="IssuerAlternativeName_Extension_FK" Association="Self.IssuerAlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extension" />
+            <End Role="IssuerAlternativeName" EntitySet="IssuerAlternativeName" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedName_Strings_FK" Association="Self.RelativeDistinguishedName_Strings_FK">
+            <End Role="String" EntitySet="String" />
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedName" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedName_TObjectIdentifier_FK" Association="Self.RelativeDistinguishedName_TObjectIdentifier_FK">
+            <End Role="ObjectIdentifier" EntitySet="ObjectIdentifier" />
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedName" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequence_GeneralName_FK" Association="Self.RelativeDistinguishedNameSequence_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralName" />
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequence" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK" Association="Self.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK">
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedName" />
+            <End Role="RelativeDistinguishedNameSequenceMapping" EntitySet="RelativeDistinguishedNameSequenceMapping" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK" Association="Self.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequence" />
+            <End Role="RelativeDistinguishedNameSequenceMapping" EntitySet="RelativeDistinguishedNameSequenceMapping" />
+          </AssociationSet>
+          <AssociationSet Name="SubjectAlternativeName_Extension_FK" Association="Self.SubjectAlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extension" />
+            <End Role="SubjectAlternativeName" EntitySet="SubjectAlternativeName" />
+          </AssociationSet>
+          <AssociationSet Name="SubjectKeyIdentifier_Extension_FK" Association="Self.SubjectKeyIdentifier_Extension_FK">
+            <End Role="Extension" EntitySet="Extension" />
+            <End Role="SubjectKeyIdentifier" EntitySet="SubjectKeyIdentifier" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InterchangeModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="AlternativeNames" EntityType="InterchangeModel.DAlternativeName" />
+          <EntitySet Name="AuthorityKeyIdentifiers" EntityType="InterchangeModel.DAuthorityKeyIdentifier" />
+          <EntitySet Name="Certificates" EntityType="InterchangeModel.DCertificate" />
+          <EntitySet Name="CertificateRevocationLists" EntityType="InterchangeModel.DCertificateRevocationList" />
+          <EntitySet Name="Extensions" EntityType="InterchangeModel.DExtension" />
+          <EntitySet Name="GeneralNames" EntityType="InterchangeModel.DGeneralName" />
+          <EntitySet Name="IssuerAlternativeNames" EntityType="InterchangeModel.DIssuerAlternativeName" />
+          <EntitySet Name="Objects" EntityType="InterchangeModel.DObject" />
+          <EntitySet Name="ObjectIdentifiers" EntityType="InterchangeModel.DObjectIdentifier" />
+          <EntitySet Name="RelativeDistinguishedNames" EntityType="InterchangeModel.DRelativeDistinguishedName" />
+          <EntitySet Name="RelativeDistinguishedNameSequences" EntityType="InterchangeModel.DRelativeDistinguishedNameSequence" />
+          <EntitySet Name="RelativeDistinguishedNameSequenceMappings" EntityType="InterchangeModel.DRelativeDistinguishedNameSequenceMapping" />
+          <EntitySet Name="Strings" EntityType="InterchangeModel.DString" />
+          <EntitySet Name="SubjectAlternativeNames" EntityType="InterchangeModel.DSubjectAlternativeName" />
+          <EntitySet Name="SubjectKeyIdentifiers" EntityType="InterchangeModel.DSubjectKeyIdentifier" />
+          <AssociationSet Name="AlternativeName_Extension_FK" Association="InterchangeModel.AlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="AlternativeName" EntitySet="AlternativeNames" />
+          </AssociationSet>
+          <AssociationSet Name="AlternativeName_GeneralName_FK" Association="InterchangeModel.AlternativeName_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralNames" />
+            <End Role="AlternativeName" EntitySet="AlternativeNames" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorityKeyIdentifier_CertificateExtension_FK" Association="InterchangeModel.AuthorityKeyIdentifier_CertificateExtension_FK">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="AuthorityKeyIdentifier" EntitySet="AuthorityKeyIdentifiers" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorityKeyIdentifier_GeneralName_FK" Association="InterchangeModel.AuthorityKeyIdentifier_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralNames" />
+            <End Role="AuthorityKeyIdentifier" EntitySet="AuthorityKeyIdentifiers" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_Object_FK" Association="InterchangeModel.Certificate_Object_FK">
+            <End Role="Object" EntitySet="Objects" />
+            <End Role="Certificate" EntitySet="Certificates" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_RelativeDistinguishedNameSequence_FK" Association="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequences" />
+            <End Role="Certificate" EntitySet="Certificates" />
+          </AssociationSet>
+          <AssociationSet Name="Certificate_RelativeDistinguishedNameSequence_FK1" Association="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK1">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequences" />
+            <End Role="Certificate" EntitySet="Certificates" />
+          </AssociationSet>
+          <AssociationSet Name="Crl_Object_FK" Association="InterchangeModel.Crl_Object_FK">
+            <End Role="Object" EntitySet="Objects" />
+            <End Role="CertificateRevocationList" EntitySet="CertificateRevocationLists" />
+          </AssociationSet>
+          <AssociationSet Name="Crl_RelativeDistinguishedNameSequence_FK" Association="InterchangeModel.Crl_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequences" />
+            <End Role="CertificateRevocationList" EntitySet="CertificateRevocationLists" />
+          </AssociationSet>
+          <AssociationSet Name="Extension_Object_FK" Association="InterchangeModel.Extension_Object_FK">
+            <End Role="Object" EntitySet="Objects" />
+            <End Role="Extension" EntitySet="Extensions" />
+          </AssociationSet>
+          <AssociationSet Name="Extension_ObjectIdentifier_FK" Association="InterchangeModel.Extension_ObjectIdentifier_FK">
+            <End Role="ObjectIdentifier" EntitySet="ObjectIdentifiers" />
+            <End Role="Extension" EntitySet="Extensions" />
+          </AssociationSet>
+          <AssociationSet Name="IssuerAlternativeName_Extension_FK" Association="InterchangeModel.IssuerAlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="IssuerAlternativeName" EntitySet="IssuerAlternativeNames" />
+          </AssociationSet>
+          <AssociationSet Name="SubjectAlternativeName_Extension_FK" Association="InterchangeModel.SubjectAlternativeName_Extension_FK">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="SubjectAlternativeName" EntitySet="SubjectAlternativeNames" />
+          </AssociationSet>
+          <AssociationSet Name="SubjectKeyIdentifier_Extension_FK" Association="InterchangeModel.SubjectKeyIdentifier_Extension_FK">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="SubjectKeyIdentifier" EntitySet="SubjectKeyIdentifiers" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequence_GeneralName_FK" Association="InterchangeModel.RelativeDistinguishedNameSequence_GeneralName_FK">
+            <End Role="GeneralName" EntitySet="GeneralNames" />
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequences" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedName_TObjectIdentifier_FK" Association="InterchangeModel.RelativeDistinguishedName_TObjectIdentifier_FK">
+            <End Role="ObjectIdentifier" EntitySet="ObjectIdentifiers" />
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedNames" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedName_Strings_FK" Association="InterchangeModel.RelativeDistinguishedName_Strings_FK">
+            <End Role="String" EntitySet="Strings" />
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedNames" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK" Association="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK">
+            <End Role="RelativeDistinguishedName" EntitySet="RelativeDistinguishedNames" />
+            <End Role="RelativeDistinguishedNameSequenceMapping" EntitySet="RelativeDistinguishedNameSequenceMappings" />
+          </AssociationSet>
+          <AssociationSet Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK" Association="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK">
+            <End Role="RelativeDistinguishedNameSequence" EntitySet="RelativeDistinguishedNameSequences" />
+            <End Role="RelativeDistinguishedNameSequenceMapping" EntitySet="RelativeDistinguishedNameSequenceMappings" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DAlternativeName">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExtensionId" Type="Int32" />
+          <Property Name="GeneralNameId" Type="Int32" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.AlternativeName_Extension_FK" FromRole="AlternativeName" ToRole="Extension" />
+          <NavigationProperty Name="GeneralName" Relationship="InterchangeModel.AlternativeName_GeneralName_FK" FromRole="AlternativeName" ToRole="GeneralName" />
+        </EntityType>
+        <EntityType Name="DAuthorityKeyIdentifier">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="Int32" Nullable="false" />
+          <Property Name="LongKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ShortKey" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="SerialNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Issuer" Type="Int32" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.AuthorityKeyIdentifier_CertificateExtension_FK" FromRole="AuthorityKeyIdentifier" ToRole="Extension" />
+          <NavigationProperty Name="GeneralName" Relationship="InterchangeModel.AuthorityKeyIdentifier_GeneralName_FK" FromRole="AuthorityKeyIdentifier" ToRole="GeneralName" />
+        </EntityType>
+        <EntityType Name="DCertificate">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="Int32" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Thumbprint" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Issuer" Type="Int32" Nullable="false" />
+          <Property Name="Subject" Type="Int32" Nullable="false" />
+          <Property Name="NotBefore" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NotAfter" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Object" Relationship="InterchangeModel.Certificate_Object_FK" FromRole="Certificate" ToRole="Object" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequence" Relationship="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK" FromRole="Certificate" ToRole="RelativeDistinguishedNameSequence" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequence1" Relationship="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK1" FromRole="Certificate" ToRole="RelativeDistinguishedNameSequence" />
+        </EntityType>
+        <EntityType Name="DCertificateRevocationList">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="Int32" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Issuer" Type="Int32" />
+          <Property Name="EffectiveDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NextUpdate" Type="DateTime" Precision="3" />
+          <Property Name="Thumbprint" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Object" Relationship="InterchangeModel.Crl_Object_FK" FromRole="CertificateRevocationList" ToRole="Object" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequence" Relationship="InterchangeModel.Crl_RelativeDistinguishedNameSequence_FK" FromRole="CertificateRevocationList" ToRole="RelativeDistinguishedNameSequence" />
+        </EntityType>
+        <EntityType Name="DExtension">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ObjectId" Type="Int32" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="IsCritical" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AlternativeName" Relationship="InterchangeModel.AlternativeName_Extension_FK" FromRole="Extension" ToRole="AlternativeName" />
+          <NavigationProperty Name="AuthorityKeyIdentifier" Relationship="InterchangeModel.AuthorityKeyIdentifier_CertificateExtension_FK" FromRole="Extension" ToRole="AuthorityKeyIdentifier" />
+          <NavigationProperty Name="Object" Relationship="InterchangeModel.Extension_Object_FK" FromRole="Extension" ToRole="Object" />
+          <NavigationProperty Name="ObjectIdentifier" Relationship="InterchangeModel.Extension_ObjectIdentifier_FK" FromRole="Extension" ToRole="ObjectIdentifier" />
+          <NavigationProperty Name="IssuerAlternativeName" Relationship="InterchangeModel.IssuerAlternativeName_Extension_FK" FromRole="Extension" ToRole="IssuerAlternativeName" />
+          <NavigationProperty Name="SubjectAlternativeName" Relationship="InterchangeModel.SubjectAlternativeName_Extension_FK" FromRole="Extension" ToRole="SubjectAlternativeName" />
+          <NavigationProperty Name="SubjectKeyIdentifier" Relationship="InterchangeModel.SubjectKeyIdentifier_Extension_FK" FromRole="Extension" ToRole="SubjectKeyIdentifier" />
+        </EntityType>
+        <EntityType Name="DGeneralName">
+          <Key>
+            <PropertyRef Name="GeneralNameId" />
+          </Key>
+          <Property Name="GeneralNameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AlternativeName" Relationship="InterchangeModel.AlternativeName_GeneralName_FK" FromRole="GeneralName" ToRole="AlternativeName" />
+          <NavigationProperty Name="AuthorityKeyIdentifier" Relationship="InterchangeModel.AuthorityKeyIdentifier_GeneralName_FK" FromRole="GeneralName" ToRole="AuthorityKeyIdentifier" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequence" Relationship="InterchangeModel.RelativeDistinguishedNameSequence_GeneralName_FK" FromRole="GeneralName" ToRole="RelativeDistinguishedNameSequence" />
+        </EntityType>
+        <EntityType Name="DIssuerAlternativeName">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.IssuerAlternativeName_Extension_FK" FromRole="IssuerAlternativeName" ToRole="Extension" />
+        </EntityType>
+        <EntityType Name="DObject">
+          <Key>
+            <PropertyRef Name="ObjectId" />
+          </Key>
+          <Property Name="ObjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Certificate" Relationship="InterchangeModel.Certificate_Object_FK" FromRole="Object" ToRole="Certificate" />
+          <NavigationProperty Name="CertificateRevocationList" Relationship="InterchangeModel.Crl_Object_FK" FromRole="Object" ToRole="CertificateRevocationList" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.Extension_Object_FK" FromRole="Object" ToRole="Extension" />
+        </EntityType>
+        <EntityType Name="DObjectIdentifier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.Extension_ObjectIdentifier_FK" FromRole="ObjectIdentifier" ToRole="Extension" />
+          <NavigationProperty Name="RelativeDistinguishedName" Relationship="InterchangeModel.RelativeDistinguishedName_TObjectIdentifier_FK" FromRole="ObjectIdentifier" ToRole="RelativeDistinguishedName" />
+        </EntityType>
+        <EntityType Name="DRelativeDistinguishedName">
+          <Key>
+            <PropertyRef Name="RelativeDistinguishedNameId" />
+          </Key>
+          <Property Name="RelativeDistinguishedNameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ObjectIdentifier" Relationship="InterchangeModel.RelativeDistinguishedName_TObjectIdentifier_FK" FromRole="RelativeDistinguishedName" ToRole="ObjectIdentifier" />
+          <NavigationProperty Name="String" Relationship="InterchangeModel.RelativeDistinguishedName_Strings_FK" FromRole="RelativeDistinguishedName" ToRole="String" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequenceMapping" Relationship="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK" FromRole="RelativeDistinguishedName" ToRole="RelativeDistinguishedNameSequenceMapping" />
+        </EntityType>
+        <EntityType Name="DRelativeDistinguishedNameSequence">
+          <Key>
+            <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+          </Key>
+          <Property Name="RelativeDistinguishedNameSequenceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Certificate" Relationship="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK" FromRole="RelativeDistinguishedNameSequence" ToRole="Certificate" />
+          <NavigationProperty Name="Certificate1" Relationship="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK1" FromRole="RelativeDistinguishedNameSequence" ToRole="Certificate" />
+          <NavigationProperty Name="CertificateRevocationList" Relationship="InterchangeModel.Crl_RelativeDistinguishedNameSequence_FK" FromRole="RelativeDistinguishedNameSequence" ToRole="CertificateRevocationList" />
+          <NavigationProperty Name="GeneralName" Relationship="InterchangeModel.RelativeDistinguishedNameSequence_GeneralName_FK" FromRole="RelativeDistinguishedNameSequence" ToRole="GeneralName" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequenceMapping" Relationship="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK" FromRole="RelativeDistinguishedNameSequence" ToRole="RelativeDistinguishedNameSequenceMapping" />
+        </EntityType>
+        <EntityType Name="DRelativeDistinguishedNameSequenceMapping">
+          <Key>
+            <PropertyRef Name="MappingId" />
+          </Key>
+          <Property Name="MappingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RelativeDistinguishedNameSequenceId" Type="Int32" Nullable="false" />
+          <Property Name="RelativeDistinguishedNameId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RelativeDistinguishedName" Relationship="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK" FromRole="RelativeDistinguishedNameSequenceMapping" ToRole="RelativeDistinguishedName" />
+          <NavigationProperty Name="RelativeDistinguishedNameSequence" Relationship="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK" FromRole="RelativeDistinguishedNameSequenceMapping" ToRole="RelativeDistinguishedNameSequence" />
+        </EntityType>
+        <EntityType Name="DString">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RelativeDistinguishedName" Relationship="InterchangeModel.RelativeDistinguishedName_Strings_FK" FromRole="String" ToRole="RelativeDistinguishedName" />
+        </EntityType>
+        <EntityType Name="DSubjectAlternativeName">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.SubjectAlternativeName_Extension_FK" FromRole="SubjectAlternativeName" ToRole="Extension" />
+        </EntityType>
+        <EntityType Name="DSubjectKeyIdentifier">
+          <Key>
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ExtensionId" Type="Int32" Nullable="false" />
+          <Property Name="LongKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ShortKey" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Extension" Relationship="InterchangeModel.SubjectKeyIdentifier_Extension_FK" FromRole="SubjectKeyIdentifier" ToRole="Extension" />
+        </EntityType>
+        <Association Name="AlternativeName_Extension_FK">
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="0..1" />
+          <End Type="InterchangeModel.DAlternativeName" Role="AlternativeName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="AlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AlternativeName_GeneralName_FK">
+          <End Type="InterchangeModel.DGeneralName" Role="GeneralName" Multiplicity="0..1" />
+          <End Type="InterchangeModel.DAlternativeName" Role="AlternativeName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="AlternativeName">
+              <PropertyRef Name="GeneralNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorityKeyIdentifier_CertificateExtension_FK">
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DAuthorityKeyIdentifier" Role="AuthorityKeyIdentifier" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="AuthorityKeyIdentifier">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AuthorityKeyIdentifier_GeneralName_FK">
+          <End Type="InterchangeModel.DGeneralName" Role="GeneralName" Multiplicity="0..1" />
+          <End Type="InterchangeModel.DAuthorityKeyIdentifier" Role="AuthorityKeyIdentifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="AuthorityKeyIdentifier">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_Object_FK">
+          <End Type="InterchangeModel.DObject" Role="Object" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DCertificate" Role="Certificate" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_RelativeDistinguishedNameSequence_FK">
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequence" Role="RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Type="InterchangeModel.DCertificate" Role="Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Certificate_RelativeDistinguishedNameSequence_FK1">
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequence" Role="RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Type="InterchangeModel.DCertificate" Role="Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Subject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Crl_Object_FK">
+          <End Type="InterchangeModel.DObject" Role="Object" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DCertificateRevocationList" Role="CertificateRevocationList" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="CertificateRevocationList">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Crl_RelativeDistinguishedNameSequence_FK">
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequence" Role="RelativeDistinguishedNameSequence" Multiplicity="0..1" />
+          <End Type="InterchangeModel.DCertificateRevocationList" Role="CertificateRevocationList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="CertificateRevocationList">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Extension_Object_FK">
+          <End Type="InterchangeModel.DObject" Role="Object" Multiplicity="0..1" />
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Object">
+              <PropertyRef Name="ObjectId" />
+            </Principal>
+            <Dependent Role="Extension">
+              <PropertyRef Name="ObjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Extension_ObjectIdentifier_FK">
+          <End Type="InterchangeModel.DObjectIdentifier" Role="ObjectIdentifier" Multiplicity="1" />
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ObjectIdentifier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Extension">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IssuerAlternativeName_Extension_FK">
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DIssuerAlternativeName" Role="IssuerAlternativeName" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="IssuerAlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SubjectAlternativeName_Extension_FK">
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DSubjectAlternativeName" Role="SubjectAlternativeName" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="SubjectAlternativeName">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SubjectKeyIdentifier_Extension_FK">
+          <End Type="InterchangeModel.DExtension" Role="Extension" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DSubjectKeyIdentifier" Role="SubjectKeyIdentifier" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Extension">
+              <PropertyRef Name="ExtensionId" />
+            </Principal>
+            <Dependent Role="SubjectKeyIdentifier">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequence_GeneralName_FK">
+          <End Type="InterchangeModel.DGeneralName" Role="GeneralName" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequence" Role="RelativeDistinguishedNameSequence" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralName">
+              <PropertyRef Name="GeneralNameId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedName_TObjectIdentifier_FK">
+          <End Type="InterchangeModel.DObjectIdentifier" Role="ObjectIdentifier" Multiplicity="1" />
+          <End Type="InterchangeModel.DRelativeDistinguishedName" Role="RelativeDistinguishedName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ObjectIdentifier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedName">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedName_Strings_FK">
+          <End Type="InterchangeModel.DString" Role="String" Multiplicity="1" />
+          <End Type="InterchangeModel.DRelativeDistinguishedName" Role="RelativeDistinguishedName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="String">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedName">
+              <PropertyRef Name="Value" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK">
+          <End Type="InterchangeModel.DRelativeDistinguishedName" Role="RelativeDistinguishedName" Multiplicity="1" />
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequenceMapping" Role="RelativeDistinguishedNameSequenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedName">
+              <PropertyRef Name="RelativeDistinguishedNameId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequenceMapping">
+              <PropertyRef Name="RelativeDistinguishedNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK">
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequence" Role="RelativeDistinguishedNameSequence" Multiplicity="1" />
+          <End Type="InterchangeModel.DRelativeDistinguishedNameSequenceMapping" Role="RelativeDistinguishedNameSequenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelativeDistinguishedNameSequence">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Principal>
+            <Dependent Role="RelativeDistinguishedNameSequenceMapping">
+              <PropertyRef Name="RelativeDistinguishedNameSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InterchangeModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="AlternativeNames">
+            <EntityTypeMapping TypeName="InterchangeModel.DAlternativeName">
+              <MappingFragment StoreEntitySet="AlternativeName">
+                <ScalarProperty Name="GeneralNameId" ColumnName="GeneralNameId" />
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+                <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuthorityKeyIdentifiers">
+            <EntityTypeMapping TypeName="InterchangeModel.DAuthorityKeyIdentifier">
+              <MappingFragment StoreEntitySet="AuthorityKeyIdentifier">
+                <ScalarProperty Name="Issuer" ColumnName="Issuer" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="ShortKey" ColumnName="ShortKey" />
+                <ScalarProperty Name="LongKey" ColumnName="LongKey" />
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Certificates">
+            <EntityTypeMapping TypeName="InterchangeModel.DCertificate">
+              <MappingFragment StoreEntitySet="Certificate">
+                <ScalarProperty Name="NotAfter" ColumnName="NotAfter" />
+                <ScalarProperty Name="NotBefore" ColumnName="NotBefore" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Issuer" ColumnName="Issuer" />
+                <ScalarProperty Name="Thumbprint" ColumnName="Thumbprint" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateRevocationLists">
+            <EntityTypeMapping TypeName="InterchangeModel.DCertificateRevocationList">
+              <MappingFragment StoreEntitySet="CertificateRevocationList">
+                <ScalarProperty Name="Thumbprint" ColumnName="Thumbprint" />
+                <ScalarProperty Name="NextUpdate" ColumnName="NextUpdate" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="Issuer" ColumnName="Issuer" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Extensions">
+            <EntityTypeMapping TypeName="InterchangeModel.DExtension">
+              <MappingFragment StoreEntitySet="Extension">
+                <ScalarProperty Name="IsCritical" ColumnName="IsCritical" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GeneralNames">
+            <EntityTypeMapping TypeName="InterchangeModel.DGeneralName">
+              <MappingFragment StoreEntitySet="GeneralName">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="GeneralNameId" ColumnName="GeneralNameId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssuerAlternativeNames">
+            <EntityTypeMapping TypeName="InterchangeModel.DIssuerAlternativeName">
+              <MappingFragment StoreEntitySet="IssuerAlternativeName">
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Objects">
+            <EntityTypeMapping TypeName="InterchangeModel.DObject">
+              <MappingFragment StoreEntitySet="Object">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ObjectIdentifiers">
+            <EntityTypeMapping TypeName="InterchangeModel.DObjectIdentifier">
+              <MappingFragment StoreEntitySet="ObjectIdentifier">
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelativeDistinguishedNames">
+            <EntityTypeMapping TypeName="InterchangeModel.DRelativeDistinguishedName">
+              <MappingFragment StoreEntitySet="RelativeDistinguishedName">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="RelativeDistinguishedNameId" ColumnName="RelativeDistinguishedNameId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelativeDistinguishedNameSequences">
+            <EntityTypeMapping TypeName="InterchangeModel.DRelativeDistinguishedNameSequence">
+              <MappingFragment StoreEntitySet="RelativeDistinguishedNameSequence">
+                <ScalarProperty Name="RelativeDistinguishedNameSequenceId" ColumnName="RelativeDistinguishedNameSequenceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelativeDistinguishedNameSequenceMappings">
+            <EntityTypeMapping TypeName="InterchangeModel.DRelativeDistinguishedNameSequenceMapping">
+              <MappingFragment StoreEntitySet="RelativeDistinguishedNameSequenceMapping">
+                <ScalarProperty Name="RelativeDistinguishedNameId" ColumnName="RelativeDistinguishedNameId" />
+                <ScalarProperty Name="RelativeDistinguishedNameSequenceId" ColumnName="RelativeDistinguishedNameSequenceId" />
+                <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Strings">
+            <EntityTypeMapping TypeName="InterchangeModel.DString">
+              <MappingFragment StoreEntitySet="String">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubjectAlternativeNames">
+            <EntityTypeMapping TypeName="InterchangeModel.DSubjectAlternativeName">
+              <MappingFragment StoreEntitySet="SubjectAlternativeName">
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubjectKeyIdentifiers">
+            <EntityTypeMapping TypeName="InterchangeModel.DSubjectKeyIdentifier">
+              <MappingFragment StoreEntitySet="SubjectKeyIdentifier">
+                <ScalarProperty Name="ShortKey" ColumnName="ShortKey" />
+                <ScalarProperty Name="LongKey" ColumnName="LongKey" />
+                <ScalarProperty Name="ExtensionId" ColumnName="ExtensionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

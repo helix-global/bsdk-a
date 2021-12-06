@@ -50,3 +50,11 @@
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/BinaryStudio.Modeling.UnifiedModelingLanguage.xml
 /mdl/.jazz3
 /mdl/.metadata
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange.Database/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange.Database/obj
+/src/dotnet/assemblies/BinaryStudio.Security.XAdES/bin
+/src/dotnet/assemblies/BinaryStudio.Security.XAdES/obj
+/src/dotnet/kit/bin/Debug/net40
+/src/dotnet/kit/obj
