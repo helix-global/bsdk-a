@@ -1,0 +1,821 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BinaryStudio.Security.Cryptography.Certificates</name>
+    </assembly>
+    <members>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation.Asn1CertificateSubjectPublicKeyInfo">
+            <summary>
+            
+            </summary>
+            <remarks>
+            <pre style="font-family: Consolas">
+            SubjectPublicKeyInfo  ::=  SEQUENCE  {
+              algorithm            AlgorithmIdentifier,
+              subjectPublicKey     BIT STRING
+              }
+            </pre>
+            </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.Asn1CertificateTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns><see langword="true"/> if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.X509DataTimeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns>true if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.X509DecodedObjectIdentifierTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns>true if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.X509DecodedObjectIdentifierTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to.</param>
+            <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null.</exception>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+            
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Converters.X509DisplayNameAttribute.DisplayName">
+            <summary>Gets the display name for a property, event, or public void method that takes no arguments stored in this attribute.</summary>
+            <returns>The display name.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.X509RelativeDistinguishedNameSequenceTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to.</param>
+            <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null.</exception>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Converters.X509RelativeDistinguishedNameSequenceTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns>true if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ByteArrayTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns><see langword="true"/> if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ByteArrayTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>Returns whether this converter can convert the object to the specified type, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to.</param>
+            <returns><see langword="true"/>if this converter can perform the conversion; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ByteArrayTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If <see langword="null"/> is passed, the current culture is assumed.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to.</param>
+            <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is <see langword="null"/>.</exception>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources._5000">
+            <summary>
+              Looks up a localized string similar to This certificate has expired..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources._5001">
+            <summary>
+              Looks up a localized string similar to This certificate is not yet valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources._9000">
+            <summary>
+              Looks up a localized string similar to Container.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain did not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_CTL_IS_NOT_TIME_VALID">
+            <summary>
+              Looks up a localized string similar to A certificate trust list (CTL) used to create this chain was not time valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain is not valid for this usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and one of the name choices in the end certificate is explicitly excluded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is missing for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and there is not a permitted name constraint for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT">
+            <summary>
+              Looks up a localized string similar to The certificate does not support a critical extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that contains unsupported fields. The minimum and maximum fields are not supported. Thus minimum must always be zero and maximum must always be absent. Only UPN is supported for an Other Name..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_WEAK_HYGIENE">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_HAS_WEAK_HYGIENE.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_HAS_WEAK_SIGNATURE">
+            <summary>
+              Looks up a localized string similar to The certificate has not been strong signed. Typically this indicates that the MD2 or MD5 hashing algorithms were used to create a hash of the certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_INVALID_BASIC_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a basic constraints extension, and either the certificate cannot be used to issue other certificates, or the chain path length has been exceeded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_INVALID_EXTENSION">
+            <summary>
+              Looks up a localized string similar to One of the certificates has an extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_INVALID_NAME_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_INVALID_POLICY_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued certificates has a disallowed policy mapping extension or does not have a required issuance policies extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_CYCLIC">
+            <summary>
+              Looks up a localized string similar to One of the certificates in the chain was issued by a certification authority that the original certificate had certified..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_EXPLICIT_DISTRUST">
+            <summary>
+              Looks up a localized string similar to The certificate is explicitly distrusted..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain does not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_NOT_TIME_NESTED">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_IS_NOT_TIME_NESTED.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_NOT_TIME_VALID">
+            <summary>
+              Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is not valid for its proposed usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_OFFLINE_REVOCATION">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is either offline or stale..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_PARTIAL_CHAIN">
+            <summary>
+              Looks up a localized string similar to The certificate chain is not complete..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_REVOKED">
+            <summary>
+              Looks up a localized string similar to Trust for this certificate or one of the certificates in the certificate chain has been revoked..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_IS_UNTRUSTED_ROOT">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is based on an untrusted root..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_NO_ERROR">
+            <summary>
+              Looks up a localized string similar to No error found for this certificate or chain..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY">
+            <summary>
+              Looks up a localized string similar to The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates has a policy constraints extension requiring it..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_REVOCATION_STATUS_UNKNOWN">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is unknown..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Extensions">
+            <summary>
+              Looks up a localized string similar to Extensions.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_HashAlgorithm">
+            <summary>
+              Looks up a localized string similar to Signature hash algorithm.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Issuer">
+            <summary>
+              Looks up a localized string similar to Issuer.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_NotAfter">
+            <summary>
+              Looks up a localized string similar to Valid from.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_NotBefore">
+            <summary>
+              Looks up a localized string similar to Valid to.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_PublicKey">
+            <summary>
+              Looks up a localized string similar to Public key.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_SerialNumber">
+            <summary>
+              Looks up a localized string similar to Serial number.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Signature">
+            <summary>
+              Looks up a localized string similar to Signature.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_SignatureAlgorithm">
+            <summary>
+              Looks up a localized string similar to Signature algorithm.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Subject">
+            <summary>
+              Looks up a localized string similar to Subject.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Thumbprint">
+            <summary>
+              Looks up a localized string similar to Thumbprint.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_ThumbprintAlgorithm">
+            <summary>
+              Looks up a localized string similar to Thumbprint Algorithm.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.X509Certificate_Version">
+            <summary>
+              Looks up a localized string similar to Version.
+            </summary>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509AlgorithmIdentifier">
+            <summary>
+            
+            </summary>
+            <remarks>
+            <pre style="font-family: Consolas">
+            AlgorithmIdentifier  ::=  SEQUENCE  {
+              algorithm               OBJECT IDENTIFIER,
+              parameters              ANY DEFINED BY algorithm OPTIONAL
+              }
+            </pre>
+            </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509AlgorithmIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.GetSchema">
+            <summary>This method is reserved and should not be used. When implementing the IXmlSerializable interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" /> to the class.</summary>
+            <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> that describes the XML representation of the object that is produced by the <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" /> method and consumed by the <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)" /> method.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.ReadXml(System.Xml.XmlReader)">
+            <summary>Generates an object from its XML representation.</summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader" /> stream from which the object is deserialized. </param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CryptographicException.System#Xml#Serialization#IXmlSerializable#GetSchema">
+            <summary>This method is reserved and should not be used. When implementing the <see cref="T:System.Xml.Serialization.IXmlSerializable"/> interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class.</summary>
+            <returns>An <see cref="T:System.Xml.Schema.XmlSchema"/> that describes the XML representation of the object that is produced by the <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)"/> method and consumed by the <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)"/> method.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CryptographicException.System#Xml#Serialization#IXmlSerializable#ReadXml(System.Xml.XmlReader)">
+            <summary>Generates an object from its XML representation.</summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CryptographicException.System#Xml#Serialization#IXmlSerializable#WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetAttributes">
+            <summary>Returns a collection of custom attributes for this instance of a component.</summary>
+            <returns>An <see cref="T:System.ComponentModel.AttributeCollection"/> containing the attributes for this object.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetClassName">
+            <summary>Returns the class name of this instance of a component.</summary>
+            <returns>The class name of the object, or null if the class does not have a name.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetComponentName">
+            <summary>Returns the name of this instance of a component.</summary>
+            <returns>The name of the object, or null if the object does not have a name.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetConverter">
+            <summary>Returns a type converter for this instance of a component.</summary>
+            <returns>A <see cref="T:System.ComponentModel.TypeConverter"/> that is the converter for this object, or null if there is no <see cref="T:System.ComponentModel.TypeConverter"/> for this object.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetDefaultEvent">
+            <summary>Returns the default event for this instance of a component.</summary>
+            <returns>An <see cref="T:System.ComponentModel.EventDescriptor"/> that represents the default event for this object, or null if this object does not have events.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetDefaultProperty">
+            <summary>Returns the default property for this instance of a component.</summary>
+            <returns>A <see cref="T:System.ComponentModel.PropertyDescriptor"/> that represents the default property for this object, or null if this object does not have properties.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetEditor(System.Type)">
+            <summary>Returns an editor of the specified type for this instance of a component.</summary>
+            <param name="editortype">A <see cref="T:System.Type"/> that represents the editor for this object. </param>
+            <returns>An <see cref="T:System.Object"/> of the specified type that is the editor for this object, or null if the editor cannot be found.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetEvents">
+            <summary>Returns the events for this instance of a component.</summary>
+            <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection"/> that represents the events for this component instance.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetEvents(System.Attribute[])">
+            <summary>Returns the events for this instance of a component using the specified attribute array as a filter.</summary>
+            <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter. </param>
+            <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection"/> that represents the filtered events for this component instance.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.GetProperties">
+            <summary>Returns the properties for this instance of a component.</summary>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetProperties">
+            <summary>Returns the properties for this instance of a component.</summary>
+            <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> that represents the properties for this component instance.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetPropertyOwner(System.ComponentModel.PropertyDescriptor)">
+            <summary>Returns an object that contains the property described by the specified property descriptor.</summary>
+            <param name="descriptor">A <see cref="T:System.ComponentModel.PropertyDescriptor"/> that represents the property whose owner is to be found. </param>
+            <returns>An <see cref="T:System.Object"/> that represents the owner of the specified property.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetProperties(System.Attribute[])">
+            <summary>Returns the properties for this instance of a component using the attribute array as a filter.</summary>
+            <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter. </param>
+            <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> that represents the filtered properties for this component instance.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ObjectIdentifier.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ObjectIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ObjectIdentifier.Equals(System.String)">
+            <summary>Indicates whether the current object is equal to another string object.</summary>
+            <param name="key">An object to compare with this object.</param>
+            <returns>true if the current object is equal to the <paramref name="key"/> parameter; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ObjectIdentifier.Equals(System.Object)">
+            <summary>Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.</summary>
+            <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+            <param name="other">The object to compare with the current object.</param>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509ObjectIdentifier.GetHashCode">
+            <summary>Serves as a hash function for a particular type.</summary>
+            <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.CanResetValue(System.Object)">
+            <summary>When overridden in a derived class, returns whether resetting an object changes its value.</summary>
+            <param name="component">The component to test for reset capability.</param>
+            <returns>true if resetting the component changes its value; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.GetValue(System.Object)">
+            <summary>When overridden in a derived class, gets the current value of the property on a component.</summary>
+            <param name="component">The component with the property for which to retrieve the value.</param>
+            <returns>The value of a property for a given component.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.ResetValue(System.Object)">
+            <summary>When overridden in a derived class, resets the value for this property of the component to the default value.</summary>
+            <param name="component">The component with the property value that is to be reset to the default value.</param>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.SetValue(System.Object,System.Object)">
+            <summary>When overridden in a derived class, sets the value of the component to a different value.</summary>
+            <param name="component">The component with the property value that is to be set.</param>
+            <param name="value">The new value.</param>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.ShouldSerializeValue(System.Object)">
+            <summary>When overridden in a derived class, determines a value indicating whether the value of this property needs to be persisted.</summary>
+            <param name="component">The component with the property to be examined for persistence.</param>
+            <returns>true if the property should be persisted; otherwise, false.</returns>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.X509RelativeDistinguishedNamePropertyDescriptor.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.System#Xml#Serialization#IXmlSerializable#GetSchema">
+            <summary>This method is reserved and should not be used. When implementing the IXmlSerializable interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class.</summary>
+            <returns>An <see cref="T:System.Xml.Schema.XmlSchema"/> that describes the XML representation of the object that is produced by the <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" /> method and consumed by the <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)"/> method.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.System#Xml#Serialization#IXmlSerializable#ReadXml(System.Xml.XmlReader)">
+            <summary>Generates an object from its XML representation.</summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader" /> stream from which the object is deserialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509RelativeDistinguishedNameSequence.System#Xml#Serialization#IXmlSerializable#WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1Certificate">
+             <summary>
+             Represents ASN.1 certificate structure.
+             </summary>
+             <remarks>
+             <pre style="font-family: Consolas">
+             Certificate  ::=  SEQUENCE  {
+               tbsCertificate       TBSCertificate,
+               signatureAlgorithm   AlgorithmIdentifier,
+               signatureValue       BIT STRING
+               }
+            
+             TBSCertificate  ::=  SEQUENCE  {
+               version         [0]  EXPLICIT Version DEFAULT v1,
+               serialNumber         CertificateSerialNumber,
+               signature            AlgorithmIdentifier,
+               issuer               Name,
+               validity             Validity,
+               subject              Name,
+               subjectPublicKeyInfo SubjectPublicKeyInfo,
+               issuerUniqueID  [1]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+               subjectUniqueID [2]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+               extensions      [3]  EXPLICIT Extensions OPTIONAL        # If present, version MUST be v3
+               }
+             Version  ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
+             CertificateSerialNumber  ::=  INTEGER
+             Validity ::= SEQUENCE {
+               notBefore      Time,
+               notAfter       Time
+               }
+             
+             Time ::= CHOICE {
+               utcTime        UTCTime,
+               generalTime    GeneralizedTime
+               }
+             
+             UniqueIdentifier  ::=  BIT STRING
+             
+             SubjectPublicKeyInfo  ::=  SEQUENCE  {
+               algorithm            AlgorithmIdentifier,
+               subjectPublicKey     BIT STRING
+               }
+             
+             Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
+             
+             Extension  ::=  SEQUENCE  {
+               extnID      OBJECT IDENTIFIER,
+               critical    BOOLEAN DEFAULT FALSE,
+               extnValue   OCTET STRING
+                              -- contains the DER encoding of an ASN.1 value
+                              -- corresponding to the extension type identified
+                              -- by extnID
+               }
+             
+             AlgorithmIdentifier  ::=  SEQUENCE  {
+               algorithm               OBJECT IDENTIFIER,
+               parameters              ANY DEFINED BY algorithm OPTIONAL
+               }
+             </pre>
+             </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1Certificate.ToString">
+            <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+            <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateExtensionCollection.X509CertificateExtensionPropertyDescriptor.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateExtensionCollection.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccess.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccessCollection.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccessExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityKeyIdentifierExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateBasicConstraintsExtension">
+             {joint-iso-itu-t(2) ds(5) certificateExtension(29) basicConstraints(19)}
+             {2.5.29.19}
+             {/Joint-ISO-ITU-T/5/29/19}
+             IETF RFC 5280,3280
+            
+             id-ce-basicConstraints OBJECT IDENTIFIER ::=  { id-ce 19 }
+             BasicConstraints ::= SEQUENCE
+             {
+               cA                      BOOLEAN DEFAULT FALSE,
+               pathLenConstraint       INTEGER (0..MAX) OPTIONAL
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateBasicConstraintsExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateCAVersionExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateCRLDistributionPointsExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateExtendedKeyUsageExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateIssuerDigitalSigningToolExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificatePoliciesExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificatePrivateKeyUsagePeriodExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateSubjectDigitalSigningToolExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateSubjectKeyIdentifierExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateTemplateInformation">
+             {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 7}
+             {1.3.6.1.4.1.311.21.7}
+             {/ISO/Identified-Organization/6/1/4/1/311/21/7}
+             [MS-WCCE]
+             Internal Name: szOID_CERTIFICATE_TEMPLATE
+             Contains the information about the template. This extension value MUST be DER-encoded. The critical field for this extension SHOULD be set to FALSE.
+            
+             CertificateTemplateOID ::= SEQUENCE
+             {
+               templateID              OBJECT IDENTIFIER,
+               templateMajorVersion    INTEGER (0..4294967295) OPTIONAL,
+               templateMinorVersion    INTEGER (0..4294967295) OPTIONAL
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateTemplateNameExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1IssuerAlternativeName.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1LocalKeyIdExtension">
+             {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) localKeyID(21)}
+             {1.2.840.113549.1.9.21}
+             {/ISO/Member-Body/US/113549/1/9/21}
+             Public-Key Cryptography Standards (PKCS) #9 localKeyID (for PKCS #12)
+            
+             localKeyId ATTRIBUTE ::=
+             {
+               WITH SYNTAX OCTET STRING
+               EQUALITY MATCHING RULE octetStringMatch
+               SINGLE VALUE TRUE
+               ID pkcs-9-at-localKeyId
+             }
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1PreviousCACertificateHash">
+            {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 2}
+            {1.3.6.1.4.1.311.21.2}
+            {/ISO/Identified-Organization/6/1/4/1/311/21/2}
+            szOID_CERTSRV_PREVIOUS_CERT_HASH
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateKeyUsage.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CRLDistributionPoints">
+            {joint-iso-itu-t(2) ds(5) certificateExtension(29) cRLDistributionPoints(31)}
+            2.5.29.31
+            /Joint-ISO-ITU-T/5/29/31
+            Certificate Revocation List (CRL) distribution points
+            IETF RFC 5280
+            
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.ICAODocumentTypeList">
+             {joint-iso-itu-t(2) international-organizations(23) 136 mrtd(1) security(1) extensions(6) documentTypeList(2)}
+             {2.23.136.1.1.6.2}
+             {/Joint-ISO-ITU-T/International-Organizations/136/1/1/6/2}
+            
+             id-icao                                     OBJECT IDENTIFIER ::= {2.23.136}
+             id-icao-mrtd                                OBJECT IDENTIFIER ::= {id-icao 1}
+             id-icao-mrtd-security                       OBJECT IDENTIFIER ::= {id-icao-mrtd 1}
+             id-icao-mrtd-security-extensions            OBJECT IDENTIFIER ::= {id-icao-mrtdsecurity 6}
+             id-icao-mrtd-security-extensions-documentTypeList OBJECT IDENTIFIER ::= {id-icao-mrtd-security-extensions 2}
+             documentTypeList EXTENSION ::=
+             {
+               SYNTAX DocumentTypeListSyntax
+               IDENTIFIED BY id-icao-mrtd-security-extensions-documentTypeList
+             }
+             DocumentTypeListSyntax ::= SEQUENCE
+             {
+               version DocumentTypeListVersion,
+               docTypeList SET OF DocumentType
+             }
+             DocumentTypeListVersion ::= INTEGER {v0(0)}
+             -- Document Type as contained in MRZ, e.g. "P" or "ID" where a
+             -- single letter denotes all document types starting with that letter
+             DocumentType ::= PrintableString(1..2)
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IcaoMrtdSecurityNameChange">
+             {joint-iso-itu-t(2) international-organizations(23) 136 mrtd(1) security(1) extensions(6) nameChange(1)}
+             {2.23.136.1.1.6.1}
+             {/Joint-ISO-ITU-T/International-Organizations/136/1/1/6/1}
+            
+             id-icao                                     OBJECT IDENTIFIER ::= {2.23.136}
+             id-icao-mrtd                                OBJECT IDENTIFIER ::= {id-icao 1}
+             id-icao-mrtd-security                       OBJECT IDENTIFIER ::= {id-icao-mrtd 1}
+             id-icao-mrtd-security-extensions            OBJECT IDENTIFIER ::= {id-icao-mrtdsecurity 6}
+             id-icao-mrtd-security-extensions-nameChange OBJECT IDENTIFIER ::= {idicaomrtd-security-extensions 1}
+             nameChange EXTENSION ::=
+             {
+               SYNTAX NULL IDENTIFIED BY id-icao-mrtd-security-extensions-nameChange
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationListEntry.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1RelativeDistinguishedNameSequence.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509AlgorithmIdentifierTypeConverter.GetPropertiesInternal(System.ComponentModel.ITypeDescriptorContext,System.Object,System.Attribute[])">
+            <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
+            <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
+            <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection"/> with the properties that are exposed for this data type, or <see langword="null"/> if there are no properties.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509AlgorithmIdentifierTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>Returns whether this object supports properties, using the specified context.</summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <returns><see langword="true"/> if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, <see langword="false"/>.</returns>
+        </member>
+    </members>
+</doc>

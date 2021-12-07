@@ -19,8 +19,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [Asn1SpecificObject("2.5.29.16")]
     internal class Asn1CertificatePrivateKeyUsagePeriodExtension : Asn1CertificateExtension
         {
-        [Asn1DisplayName(nameof(Asn1CertificatePrivateKeyUsagePeriodExtension) + "." + nameof(NotBefore))][TypeConverter(typeof(Asn1DataTimeConverter))] public DateTime? NotBefore { get; }
-        [Asn1DisplayName(nameof(Asn1CertificatePrivateKeyUsagePeriodExtension) + "." + nameof(NotAfter))] [TypeConverter(typeof(Asn1DataTimeConverter))] public DateTime? NotAfter  { get; }
+        [Asn1DisplayName(nameof(Asn1CertificatePrivateKeyUsagePeriodExtension) + "." + nameof(NotBefore))][TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime? NotBefore { get; }
+        [Asn1DisplayName(nameof(Asn1CertificatePrivateKeyUsagePeriodExtension) + "." + nameof(NotAfter))] [TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime? NotAfter  { get; }
 
         public Asn1CertificatePrivateKeyUsagePeriodExtension(Asn1CertificateExtension source)
             : base(source)
@@ -49,7 +49,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         private static String ToString(DateTime? value) {
             return (value != null)
-                ? Asn1DataTimeConverter.ToString(value.Value)
+                ? Asn1DateTimeConverter.ToString(value.Value)
                 : "*";
             }
 

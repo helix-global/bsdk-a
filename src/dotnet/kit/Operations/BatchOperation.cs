@@ -65,6 +65,7 @@ namespace Operations
 
         private void ProcessFile(Object so, MetadataScope scope, String filename, TextWriter output, X509CertificateStorage store, Entities connection)
             {
+            if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
             var E = Path.GetExtension(filename).ToLower();
             var targetfolder = (TargetFolder ?? Path.GetDirectoryName(filename)) ?? String.Empty;
             var F = 0;

@@ -62,10 +62,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                                         }
                                     throw;
                                     }
-                                catch (Exception e)
-                                    {
-                                    throw;
-                                    }
                                 }
                             }
                         }

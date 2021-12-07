@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax

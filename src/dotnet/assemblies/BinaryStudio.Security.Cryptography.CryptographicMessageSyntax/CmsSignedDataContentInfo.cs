@@ -7,11 +7,9 @@ using System.Runtime.InteropServices;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
-
-#pragma warning disable 1591
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {

@@ -1,10 +1,22 @@
 ﻿using System;
 using System.ComponentModel;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
-namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure
+namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// <pre style="font-family: Consolas">
+    /// AlgorithmIdentifier  ::=  SEQUENCE  {
+    ///   algorithm               OBJECT IDENTIFIER,
+    ///   parameters              ANY DEFINED BY algorithm OPTIONAL
+    ///   }
+    /// </pre>
+    /// </remarks>
     [TypeConverter(typeof(X509AlgorithmIdentifierTypeConverter))]
     [DefaultProperty(nameof(Identifier))]
     public sealed class X509AlgorithmIdentifier: IJsonSerializable
@@ -12,7 +24,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInf
         [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
         public Asn1ObjectIdentifier Identifier { get; }
 
-        public Asn1Object Parameters { get; }
+        public Object Parameters { get; }
 
         public X509AlgorithmIdentifier(Asn1Sequence source)
             {
@@ -22,9 +34,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInf
             if (c >  2)                               { throw new ArgumentOutOfRangeException(nameof(source)); }
             if (!(source[0] is Asn1ObjectIdentifier)) { throw new ArgumentOutOfRangeException(nameof(source)); }
             Identifier = (Asn1ObjectIdentifier)source[0];
-            if (c == 2)
-                {
-                Parameters = source[1];
+            if (c == 2) {
+                Parameters = X509PublicKeyParameters.From(
+                    Identifier.ToString(),
+                    source[1]);
                 }
             }
 

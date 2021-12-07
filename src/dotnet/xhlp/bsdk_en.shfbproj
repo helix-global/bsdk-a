@@ -18,8 +18,8 @@
     <HtmlHelpName>bsdk_en</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.en-US.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.en-US.xml" /></DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <CleanIntermediates>False</CleanIntermediates>

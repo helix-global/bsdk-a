@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
     {
-    internal class Asn1DataTimeConverter : TypeConverter
+    internal class Asn1DateTimeConverter : TypeConverter
         #if FEATURE_WPF_VALUE_CONVERTER
         , IValueConverter
         #endif
