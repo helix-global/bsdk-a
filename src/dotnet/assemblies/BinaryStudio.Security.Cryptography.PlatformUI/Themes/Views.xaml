@@ -27,7 +27,8 @@
       <TabControl Margin="5">
         <TabItem Header="Properties">
           <u:PropertyGridControl SelectedObject="{Binding Source}" Name="Host" IsDescriptionPanelVisible="False"
-                                 ReadOnlyForeground="{DynamicResource ControlTextBrushKey}"/>
+                                 ReadOnlyForeground="{DynamicResource ControlTextBrushKey}"
+                                 TextWrapping="Wrap"/>
         </TabItem>
         <TabItem Header="Structure">
           <c:Asn1Control SnapsToDevicePixels="True" DataContext="{Binding Source,Mode=OneWay}"/>

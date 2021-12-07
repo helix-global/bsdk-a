@@ -72,6 +72,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Crypt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.XAdES", "assemblies\BinaryStudio.Security.XAdES\BinaryStudio.Security.XAdES.csproj", "{6ECF55DD-F146-43DD-AC13-A547F3936DB5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Numeric", "assemblies\BinaryStudio.Numeric\BinaryStudio.Numeric.csproj", "{52CC24C1-3328-4604-BAAA-0AF7537F3B96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +178,10 @@ Global
 		{6ECF55DD-F146-43DD-AC13-A547F3936DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ECF55DD-F146-43DD-AC13-A547F3936DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ECF55DD-F146-43DD-AC13-A547F3936DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CC24C1-3328-4604-BAAA-0AF7537F3B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CC24C1-3328-4604-BAAA-0AF7537F3B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CC24C1-3328-4604-BAAA-0AF7537F3B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CC24C1-3328-4604-BAAA-0AF7537F3B96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,6 +207,7 @@ Global
 		{1A9A3DFB-2666-4ACD-A12A-2CA5E7279CC4} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{5CE2299C-7BB0-4CC4-881D-548002113443} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{6ECF55DD-F146-43DD-AC13-A547F3936DB5} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{52CC24C1-3328-4604-BAAA-0AF7537F3B96} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}

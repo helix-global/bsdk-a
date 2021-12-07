@@ -599,6 +599,10 @@ namespace Kit
                         {
                         operation = new BatchOperation(Console.Error, options);
                         }
+                    else if (HasOption(options, typeof(InfrastructureOption)))
+                        {
+                        operation = new InfrastructureOperation(Console.Error, options);
+                        }
                     operation.Execute(Console.Out);
                     return;
                     for (var i = 0; i < args.Length; ++i) {
@@ -614,7 +618,6 @@ namespace Kit
                             else if (args[i] == "-dumpcodes")               { dumpcodes = true;                                   }
                             else if (args[i] == "-l")                       { oflags |= Flags.List;                               }
                             else if (args[i] == "-keys")                    { keys   = true;                                      }
-                            else if (args[i] == "-providertypes")           { providertypes   = true;                             }
                             else if (args[i] == "-json")                    { json   = true; }
                             else if (args[i] == "-extract")                 { extract  = true; }
                             else if (args[i].StartsWith("-size:")) {

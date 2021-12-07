@@ -20,9 +20,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [Order(1)] public Int32 Version { get; }
         [Order(2)] public ECFiniteField FiniteField { get; }
         [Order(3)] public ECCurve Curve { get; }
-        [Order(4)] public ECPoint BasePoint { get; }
-        [Order(5)] public BigInteger  Order  { get; }
-        [Order(6)] public BigInteger? Factor { get; }
+        [Order(4)][Superscript("SUPERSCRIPT")][Subscript("SUBSCRIPT")] public ECPoint BasePoint { get; }
+        [Order(5)][Superscript("Superscript")][Subscript("Subscript")] public BigInteger  Order  { get; }
+        [Order(6)][Superscript("superscript")][Subscript("subscript")] public BigInteger? Factor { get; }
 
         internal ECPKParameters(Asn1Object source)
             : base(source)
