@@ -18,7 +18,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
         [Order(1)] public Int32 Version { get; }
-        [Order(2)] public ECFiniteField FiniteField { get; }
+        [Order(2)] public ECFieldIdentifier FieldIdentifier { get; }
         [Order(3)] public ECCurve Curve { get; }
         [Order(4)][Superscript("SUPERSCRIPT")][Subscript("SUBSCRIPT")] public ECPoint BasePoint { get; }
         [Order(5)][Superscript("Superscript")][Subscript("Subscript")] public BigInteger  Order  { get; }
@@ -31,8 +31,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (source is Asn1Sequence sequence) {
                 var c = sequence.Count - 1;
                 Version = (Asn1Integer)sequence[INDEX_VERSION];
-                FiniteField = new ECFiniteField(sequence[INDEX_FINITE_FIELD]);
-                Curve = new ECCurve(sequence[INDEX_CURVE]);
+                FieldIdentifier = ECFieldIdentifier.Create(sequence[INDEX_FINITE_FIELD]);
+                Curve = new ECCurve(sequence[INDEX_CURVE],FieldIdentifier);
                 BasePoint = new ECPoint(sequence[INDEX_BASE]);
                 Order = (Asn1Integer)sequence[INDEX_ORDER];
                 if (c > INDEX_ORDER) {

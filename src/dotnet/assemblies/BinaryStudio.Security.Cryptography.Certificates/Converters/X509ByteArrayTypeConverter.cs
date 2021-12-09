@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
+using System.Numerics;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -36,9 +39,27 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (destinationType == typeof(String)) {
                 if (value == null) { return "{none}"; }
-                if (value is Byte[] r) {
-                    if (r.Length == 0) { return "{empty}"; }
-                    return $"{{Size = {r.Length}}}";
+                if (value is Byte[] bytes) {
+                    if (bytes.Length == 0) { return "{empty}"; }
+                    if (bytes.Length > 40) { return $"{{Size = {bytes.Length}}}"; }
+                    return String.Join(String.Empty, bytes.
+                        Select(i => i.ToString("X2")));
+                    }
+                if (value is BigInteger bigint) {
+                    return String.Join(String.Empty, bigint.
+                        ToByteArray().
+                        Reverse().
+                        Select(i => i.ToString("X2")));
+                    }
+                if (value is Asn1OctetString octet) {
+                    return ConvertTo(context, culture,
+                        octet.Content.ToArray(),
+                        destinationType);
+                    }
+                if (value is Asn1BitString bitstring) {
+                    return ConvertTo(context, culture,
+                        bitstring.Content.ToArray(),
+                        destinationType);
                     }
                 }
             return base.ConvertTo(context, culture, value, destinationType);
