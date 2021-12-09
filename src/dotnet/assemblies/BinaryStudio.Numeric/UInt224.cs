@@ -1,8 +1,10 @@
 ﻿using System;
 
+// ReSharper disable once LocalVariableHidesMember
+
 namespace BinaryStudio.Numeric
     {
-    public struct UInt224
+    public struct UInt224 : IComparable<UInt224>, IComparable
         {
         private unsafe fixed UInt32 value[7];
 
@@ -21,6 +23,34 @@ namespace BinaryStudio.Numeric
             value[4] = source[2];
             value[5] = source[1];
             value[6] = source[0];
+            }
+
+        public Int32 CompareTo(UInt224 other)
+            {
+            return CompareTo(ref other);
+            }
+
+        public unsafe Int32 CompareTo(ref UInt224 other)
+            {
+            fixed (void* x = value)
+            fixed (void* y = other.value) {
+                Int32 r;
+                if ((r = (((UInt32*)x)[6]).CompareTo(((UInt32*)y)[6])) != 0) return r;
+                if ((r = (((UInt32*)x)[5]).CompareTo(((UInt32*)y)[5])) != 0) return r;
+                if ((r = (((UInt32*)x)[4]).CompareTo(((UInt32*)y)[4])) != 0) return r;
+                if ((r = (((UInt32*)x)[3]).CompareTo(((UInt32*)y)[3])) != 0) return r;
+                if ((r = (((UInt32*)x)[2]).CompareTo(((UInt32*)y)[2])) != 0) return r;
+                if ((r = (((UInt32*)x)[1]).CompareTo(((UInt32*)y)[1])) != 0) return r;
+                return (((UInt32*)x)[0]).CompareTo(((UInt32*)y)[0]);
+                }
+            }
+
+        public Int32 CompareTo(Object other) {
+            if (other == null) { return +1; }
+            if (other is UInt224 value) {
+                return CompareTo(ref value);
+                }
+            throw new ArgumentOutOfRangeException(nameof(other));
             }
         }
     }
