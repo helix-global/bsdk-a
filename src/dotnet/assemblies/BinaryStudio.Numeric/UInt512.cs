@@ -4,7 +4,7 @@
 
 namespace BinaryStudio.Numeric
     {
-    public struct UInt512 : IComparable<UInt512>,IComparable
+    public struct UInt512 : IComparable<UInt512>,IComparable,IEquatable<UInt512>
         {
         private unsafe fixed UInt32 value[16];
 
@@ -109,6 +109,26 @@ namespace BinaryStudio.Numeric
                 return CompareTo(ref value);
                 }
             throw new ArgumentOutOfRangeException(nameof(other));
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(UInt512 other)
+            {
+            return Equals(ref other);
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public unsafe Boolean Equals(ref UInt512 other)
+            {
+            fixed (void* x = value)
+            fixed (void* y = other.value) {
+                return ((((UInt256*)x)[1]).Equals(ref (((UInt256*)y)[1])))
+                    && ((((UInt256*)x)[0]).Equals(ref (((UInt256*)y)[0])));
+                }
             }
         }
     }

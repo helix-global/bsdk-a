@@ -4,7 +4,7 @@
 
 namespace BinaryStudio.Numeric
     {
-    public struct UInt192 : IComparable<UInt192>, IComparable
+    public struct UInt192 : IComparable<UInt192>, IComparable, IEquatable<UInt192>
         {
         private unsafe fixed UInt32 value[6];
 
@@ -48,8 +48,8 @@ namespace BinaryStudio.Numeric
             fixed (void* x = value)
             fixed (void* y = other.value) {
                 Int32 r;
-                if ((r = (((UInt64*) x)[2]).CompareTo(((UInt64*) y)[2])) != 0) return r;
-                if ((r = (((UInt64*) x)[1]).CompareTo(((UInt64*) y)[1])) != 0) return r;
+                if ((r = (((UInt64*)x)[2]).CompareTo(((UInt64*)y)[2])) != 0) return r;
+                if ((r = (((UInt64*)x)[1]).CompareTo(((UInt64*)y)[1])) != 0) return r;
                 return (((UInt64*)x)[0]).CompareTo(((UInt64*)y)[0]);
                 }
             }
@@ -60,6 +60,27 @@ namespace BinaryStudio.Numeric
                 return CompareTo(ref value);
                 }
             throw new ArgumentOutOfRangeException(nameof(other));
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(UInt192 other)
+            {
+            return Equals(ref other);
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public unsafe Boolean Equals(ref UInt192 other)
+            {
+            fixed (void* x = value)
+            fixed (void* y = other.value) {
+                return ((((UInt64*)x)[2]) == (((UInt64*)y)[2]))
+                    && ((((UInt64*)x)[1]) == (((UInt64*)y)[1]))
+                    && ((((UInt64*)x)[0]) == (((UInt64*)y)[0]));
+                }
             }
         }
     }
