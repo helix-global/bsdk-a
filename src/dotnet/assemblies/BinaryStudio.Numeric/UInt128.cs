@@ -93,5 +93,15 @@ namespace BinaryStudio.Numeric
                     && ((((UInt64*)x)[0]) == (((UInt64*)y)[0]));
                 }
             }
+
+        public static Boolean operator ==(UInt128 x, UInt128 y)
+            {
+            return x.Equals(ref y);
+            }
+
+        public static Boolean operator !=(UInt128 x, UInt128 y)
+            {
+            return !x.Equals(ref y);
+            }
         }
     }

@@ -124,5 +124,14 @@ namespace BinaryStudio.Numeric
                 }
             }
 
+        public static Boolean operator ==(UInt384 x, UInt384 y)
+            {
+            return x.Equals(ref y);
+            }
+
+        public static Boolean operator !=(UInt384 x, UInt384 y)
+            {
+            return !x.Equals(ref y);
+            }
         }
     }
