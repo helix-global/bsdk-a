@@ -1,16 +1,24 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Text;
 
 // ReSharper disable once LocalVariableHidesMember
 
 namespace BinaryStudio.Numeric
     {
+    [StructLayout(LayoutKind.Explicit,Pack = 1)]
     public struct UInt128 : IComparable<UInt128>, IComparable, IEquatable<UInt128>
         {
         public static readonly UInt128 Zero     = new UInt128(UInt64.MinValue, UInt64.MinValue);
         public static readonly UInt128 MinValue = new UInt128(UInt64.MinValue, UInt64.MinValue);
         public static readonly UInt128 MaxValue = new UInt128(UInt64.MaxValue, UInt64.MaxValue);
 
-        private unsafe fixed UInt32 value[4];
+        [FieldOffset(0)] private unsafe fixed UInt32 value[4];
+        [FieldOffset(0)] private UInt64 a;
+        [FieldOffset(8)] private UInt64 b;
 
         /// <summary>
         /// Constructs <see cref="UInt128"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -20,6 +28,8 @@ namespace BinaryStudio.Numeric
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 4) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = 0;
+            b = 0;
             value[0] = source[3];
             value[1] = source[2];
             value[2] = source[1];
@@ -33,6 +43,8 @@ namespace BinaryStudio.Numeric
         private unsafe UInt128(UInt64[] source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 2) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = 0;
+            b = 0;
             fixed (void* target = value) {
                 ((UInt64*)target)[0] = source[1];
                 ((UInt64*)target)[1] = source[0];
@@ -40,17 +52,17 @@ namespace BinaryStudio.Numeric
             }
 
         public unsafe UInt128(ref UInt64 hi, ref UInt64 lo) {
+            a = 0;
+            b = 0;
             fixed (void* target = value) {
                 ((UInt64*)target)[0] = lo;
                 ((UInt64*)target)[1] = hi;
                 }
             }
 
-        public unsafe UInt128(UInt64 hi, UInt64 lo) {
-            fixed (void* target = value) {
-                ((UInt64*)target)[0] = lo;
-                ((UInt64*)target)[1] = hi;
-                }
+        public UInt128(UInt64 hi, UInt64 lo)
+            :this(ref hi, ref lo)
+            {
             }
 
         #region M:CompareTo(UInt128):Int32
@@ -203,5 +215,48 @@ namespace BinaryStudio.Numeric
             return x.CompareTo(y) > 0;
             }
         #endregion
+
+        public static explicit operator UInt128(Byte   source) { return new UInt128(0, source); }
+        public static explicit operator UInt128(UInt16 source) { return new UInt128(0, source); }
+        public static explicit operator UInt128(UInt32 source) { return new UInt128(0, source); }
+        public static explicit operator UInt128(UInt64 source) { return new UInt128(0, source); }
+
+        public static unsafe UInt128 operator +(UInt128 x, UInt32 y) {
+            if (y == 0) { return x; }
+            var r = new UInt32[5];
+            UInt64 α;
+            var β = (UInt32*)&α;
+            α = x.value[0] + (UInt64)y;
+            r[0]  = β[0];
+            var γ = β[1];
+            for (var i = 1; i < 4; i++) {
+                α = x.value[i] + (UInt64)γ;
+                r[i] = β[0];
+                γ    = β[1];
+                }
+            r[4] = γ;
+            return x;
+            }
+
+        public String ToString(String format, IFormatProvider provider) {
+            switch (NumericHelper.ParseFormatSpecifier(format, out var digits)) {
+                case 'x':
+                    {
+                    return $"{b:x16}{a:x16}";
+                    }
+                }
+            return "{?}";
+            }
+
+        public String ToString(String format) {
+            return ToString(format, CultureInfo.CurrentCulture);
+            }
+
+        /// <summary>Returns the fully qualified type name of this instance.</summary>
+        /// <returns>The fully qualified type name.</returns>
+        public override String ToString()
+            {
+            return ToString("x");
+            }
         }
     }

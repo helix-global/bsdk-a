@@ -33,6 +33,7 @@ namespace shell
             var r64_1  = (UInt64*)&x64_1;
             var x128_1 = new UInt128(x64_1,0x1122334455667788UL);
             var r128_1 = (UInt64*)&x128_1;
+            var s_128_1 = x128_1.ToString();
             var u_1 = new U64();
             u_1.u64 = x64_1;
             var x32_0 = u_1.u32[0];
@@ -41,6 +42,10 @@ namespace shell
             var x16_1 = u_1.u16[1];
             var x16_2 = u_1.u16[2];
             var x16_3 = u_1.u16[3];
+            var x16_4 = UInt16.MaxValue;
+            var x32_5 = x32_0 + UInt32.MaxValue;
+            var x32_6 = (UInt64)x32_0 + UInt32.MaxValue;
+            var x128_2 = (UInt128)x32_6;
             //var x1 = 100000000000L;
             //var x2 = -x1;
             //var x3 = -100000000000L;
