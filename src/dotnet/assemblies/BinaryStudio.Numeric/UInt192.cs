@@ -6,6 +6,10 @@ namespace BinaryStudio.Numeric
     {
     public struct UInt192 : IComparable<UInt192>, IComparable, IEquatable<UInt192>
         {
+        public static readonly UInt192 Zero     = new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, UInt64.MinValue });
+        public static readonly UInt192 MinValue = new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, UInt64.MinValue });
+        public static readonly UInt192 MaxValue = new UInt192(new []{ UInt64.MaxValue, UInt64.MaxValue, UInt64.MaxValue });
+
         private unsafe fixed UInt32 value[6];
 
         /// <summary>

@@ -6,6 +6,10 @@ namespace BinaryStudio.Numeric
     {
     public struct UInt128 : IComparable<UInt128>, IComparable, IEquatable<UInt128>
         {
+        public static readonly UInt128 Zero     = new UInt128(UInt64.MinValue, UInt64.MinValue);
+        public static readonly UInt128 MinValue = new UInt128(UInt64.MinValue, UInt64.MinValue);
+        public static readonly UInt128 MaxValue = new UInt128(UInt64.MaxValue, UInt64.MaxValue);
+
         private unsafe fixed UInt32 value[4];
 
         /// <summary>
@@ -49,12 +53,31 @@ namespace BinaryStudio.Numeric
                 }
             }
 
-
+        #region M:CompareTo(UInt128):Int32
         public Int32 CompareTo(UInt128 other)
             {
             return CompareTo(ref other);
             }
-
+        #endregion
+        #region M:CompareTo(UInt64):Int32
+        public unsafe Int32 CompareTo(UInt64 other)
+            {
+            fixed (void* x = value) {
+                Int32 r;
+                return ((r = 
+                    (((UInt64*)x)[1]).CompareTo(0UL)) == 0) ?
+                    (((UInt64*)x)[0]).CompareTo(other) : r;
+                }
+            }
+        #endregion
+        #region M:CompareTo(Int64):Int32
+        public Int32 CompareTo(Int64 other)
+            {
+            if (other < 0) { return +1; }
+            return CompareTo((UInt64)other);
+            }
+        #endregion
+        #region M:CompareTo([ref]UInt128):Int32
         public unsafe Int32 CompareTo(ref UInt128 other)
             {
             fixed (void* x = value)
@@ -65,7 +88,8 @@ namespace BinaryStudio.Numeric
                     (((UInt64*)x)[0]).CompareTo(((UInt64*)y)[0]) : r;
                 }
             }
-
+        #endregion
+        #region M:CompareTo(Object):Int32
         public Int32 CompareTo(Object other) {
             if (other == null) { return +1; }
             if (other is UInt128 value) {
@@ -73,7 +97,8 @@ namespace BinaryStudio.Numeric
                 }
             throw new ArgumentOutOfRangeException(nameof(other));
             }
-
+        #endregion
+        #region M:Equals(UInt128):Boolean
         /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
@@ -81,7 +106,8 @@ namespace BinaryStudio.Numeric
             {
             return Equals(ref other);
             }
-
+        #endregion
+        #region M:Equals([ref]UInt128):Boolean
         /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
@@ -93,15 +119,89 @@ namespace BinaryStudio.Numeric
                     && ((((UInt64*)x)[0]) == (((UInt64*)y)[0]));
                 }
             }
+        #endregion
+        #region M:Equals(UInt64):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public unsafe Boolean Equals(UInt64 other)
+            {
+            fixed (void* x = value) {
+                return ((((UInt64*)x)[1]) == (UInt64.MinValue))
+                    && ((((UInt64*)x)[0]) == (other));
+                }
+            }
+        #endregion
+        #region M:Equals(Int64):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(Int64 other)
+            {
+            if (other < 0) { return false; }
+            return Equals((UInt64)other);
+            }
+        #endregion
 
+        #region M:operator ==(UInt128,UInt128):Boolean
         public static Boolean operator ==(UInt128 x, UInt128 y)
             {
             return x.Equals(ref y);
             }
-
+        #endregion
+        #region M:operator !=(UInt128,UInt128):Boolean
         public static Boolean operator !=(UInt128 x, UInt128 y)
             {
             return !x.Equals(ref y);
             }
+        #endregion
+        #region M:operator ==(UInt128,UInt64):Boolean
+        public static Boolean operator ==(UInt128 x, UInt64 y)
+            {
+            return x.Equals(y);
+            }
+        #endregion
+        #region M:operator !=(UInt128,UInt64):Boolean
+        public static Boolean operator !=(UInt128 x, UInt64 y)
+            {
+            return !x.Equals(y);
+            }
+        #endregion
+        #region M:operator ==(UInt128,Int64):Boolean
+        public static Boolean operator ==(UInt128 x, Int64 y)
+            {
+            return x.Equals(y);
+            }
+        #endregion
+        #region M:operator !=(UInt128,Int64):Boolean
+        public static Boolean operator !=(UInt128 x, Int64 y)
+            {
+            return !x.Equals(y);
+            }
+        #endregion
+        #region M:operator >(UInt128,UInt64):Boolean
+        public static Boolean operator >(UInt128 x, UInt64 y)
+            {
+            return x.CompareTo(y) > 0;
+            }
+        #endregion
+        #region M:operator <(UInt128,UInt64):Boolean
+        public static Boolean operator <(UInt128 x, UInt64 y)
+            {
+            return x.CompareTo(y) < 0;
+            }
+        #endregion
+        #region M:operator <(UInt128,Int64):Boolean
+        public static Boolean operator <(UInt128 x, Int64 y)
+            {
+            return x.CompareTo(y) < 0;
+            }
+        #endregion
+        #region M:operator >(UInt128,Int64):Boolean
+        public static Boolean operator >(UInt128 x, Int64 y)
+            {
+            return x.CompareTo(y) > 0;
+            }
+        #endregion
         }
     }

@@ -6,6 +6,10 @@ namespace BinaryStudio.Numeric
     {
     public struct UInt512 : IComparable<UInt512>,IComparable,IEquatable<UInt512>
         {
+        public static readonly UInt512 Zero     = new UInt512(UInt256.MinValue, UInt256.MinValue);
+        public static readonly UInt512 MinValue = new UInt512(UInt256.MinValue, UInt256.MinValue);
+        public static readonly UInt512 MaxValue = new UInt512(UInt256.MaxValue, UInt256.MaxValue);
+
         private unsafe fixed UInt32 value[16];
 
         /// <summary>
@@ -81,11 +85,16 @@ namespace BinaryStudio.Numeric
                 }
             }
 
-        private unsafe UInt512(ref UInt256 hi, ref UInt256 lo) {
+        public unsafe UInt512(ref UInt256 hi, ref UInt256 lo) {
             fixed (void* target = value) {
                 ((UInt256*)target)[0] = lo;
                 ((UInt256*)target)[1] = hi;
                 }
+            }
+
+        private UInt512(UInt256 hi, UInt256 lo)
+            :this(ref hi, ref lo)
+            {
             }
 
         public unsafe Int32 CompareTo(ref UInt512 other) {
