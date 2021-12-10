@@ -17,43 +17,87 @@ namespace BinaryStudio.Numeric
         public static readonly UInt128 MaxValue = new UInt128(UInt64.MaxValue, UInt64.MaxValue);
 
         [FieldOffset(0)] private unsafe fixed UInt32 value[4];
-        [FieldOffset(0)] private UInt64 a;
-        [FieldOffset(8)] private UInt64 b;
+        [FieldOffset(0)] private readonly UInt64 a;
+        [FieldOffset(8)] private readonly UInt64 b;
 
         /// <summary>
         /// Constructs <see cref="UInt128"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
         /// </summary>
-        /// <param name="source"></param>
-        private unsafe UInt128(UInt32[] source)
+        private unsafe UInt128(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            if (source.Length != 4) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            a = 0;
-            b = 0;
-            value[0] = source[3];
-            value[1] = source[2];
-            value[2] = source[1];
-            value[3] = source[0];
+            if (firstindex < 0) { throw new ArgumentOutOfRangeException(nameof(firstindex)); }
+            if (size != 4) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt64.MinValue;
+            b = UInt64.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[0] = source[firstindex + 3];
+                value[1] = source[firstindex + 2];
+                value[2] = source[firstindex + 1];
+                value[3] = source[firstindex + 0];
+                }
+            else
+                {
+                value[0] = source[firstindex + 0];
+                value[1] = source[firstindex + 1];
+                value[2] = source[firstindex + 2];
+                value[3] = source[firstindex + 3];
+                }
+            }
+
+        /// <summary>
+        /// Constructs <see cref="UInt128"/> structure from <see cref="Byte"/> array by (low-to-high) ordering.
+        /// </summary>
+        private unsafe UInt128(Byte[] source, NumericSourceFlags flags)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (source.Length != 16) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt64.MinValue;
+            b = UInt64.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                fixed (void* src = source)
+                fixed (void* target = value) {
+                    ((UInt64*)target)[0] = ((UInt64*)src)[1];
+                    ((UInt64*)target)[1] = ((UInt64*)src)[0];
+                    }
+                }
+            else
+                {
+                fixed (void* src = source)
+                fixed (void* target = value) {
+                    ((UInt64*)target)[0] = ((UInt64*)src)[0];
+                    ((UInt64*)target)[1] = ((UInt64*)src)[1];
+                    }
+                }
             }
 
         /// <summary>
         /// Constructs <see cref="UInt128"/> structure from <see cref="UInt64"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
-        private unsafe UInt128(UInt64[] source) {
+        private unsafe UInt128(UInt64[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 2) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            a = 0;
-            b = 0;
-            fixed (void* target = value) {
-                ((UInt64*)target)[0] = source[1];
-                ((UInt64*)target)[1] = source[0];
+            a = UInt64.MinValue;
+            b = UInt64.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                fixed (void* target = value) {
+                    ((UInt64*)target)[0] = source[1];
+                    ((UInt64*)target)[1] = source[0];
+                    }
+                }
+            else
+                { 
+                fixed (void* target = value) {
+                    ((UInt64*)target)[0] = source[0];
+                    ((UInt64*)target)[1] = source[1];
+                    }
                 }
             }
 
         public unsafe UInt128(ref UInt64 hi, ref UInt64 lo) {
-            a = 0;
-            b = 0;
+            a = UInt64.MinValue;
+            b = UInt64.MinValue;
             fixed (void* target = value) {
                 ((UInt64*)target)[0] = lo;
                 ((UInt64*)target)[1] = hi;
@@ -221,21 +265,36 @@ namespace BinaryStudio.Numeric
         public static explicit operator UInt128(UInt32 source) { return new UInt128(0, source); }
         public static explicit operator UInt128(UInt64 source) { return new UInt128(0, source); }
 
-        public static unsafe UInt128 operator +(UInt128 x, UInt32 y) {
-            if (y == 0) { return x; }
-            var r = new UInt32[5];
-            UInt64 α;
-            var β = (UInt32*)&α;
-            α = x.value[0] + (UInt64)y;
-            r[0]  = β[0];
-            var γ = β[1];
-            for (var i = 1; i < 4; i++) {
-                α = x.value[i] + (UInt64)γ;
-                r[i] = β[0];
-                γ    = β[1];
+        public static unsafe UInt128 operator +(UInt128 x, UInt32 y)
+            {
+            return (y == 0)
+                ? x
+                : new UInt128(
+                    NumericHelper.Add(x.value, 4, y),
+                    0, 4, 0);
+            }
+
+        public static unsafe UInt128 operator <<(UInt128 x, Int32 y) {
+            if (y == 0)   { return x; }
+            if (y  < 0)   { return x >> (-y); }
+            if (y >= 128) { return Zero; }
+            if (y%8 == 0) {
+                var source = (Byte*)x.value;
+                var target = new Byte[16];
+                var offset = y/8;
+                for (var i = 0; i < 16 - offset;i++) {
+                    target[i + offset] = source[i];
+                    }
+                return new UInt128(target, 0);;
                 }
-            r[4] = γ;
-            return x;
+            throw new NotImplementedException();
+            }
+
+        public static unsafe UInt128 operator >>(UInt128 x, Int32 y) {
+            if (y == 0)   { return x; }
+            if (y  < 0)   { return x << (-y); }
+            if (y >= 128) { return Zero; }
+            throw new NotImplementedException();
             }
 
         public String ToString(String format, IFormatProvider provider) {

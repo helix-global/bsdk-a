@@ -31,5 +31,21 @@ namespace BinaryStudio.Numeric
             return '\0';
             }
         #endregion
+
+        public static unsafe UInt32[] Add(UInt32* x, Int32 c, UInt32 y) {
+            var r = new UInt32[c + 1];
+            UInt64 α;
+            var β = (UInt32*)&α;
+            α = x[0] + (UInt64)y;
+            r[0]  = β[0];
+            var γ = β[1];
+            for (var i = 1; i < c; i++) {
+                α = x[i] + (UInt64)γ;
+                r[i] = β[0];
+                γ    = β[1];
+                }
+            r[c] = γ;
+            return r;
+            }
         }
     }

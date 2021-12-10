@@ -46,6 +46,10 @@ namespace shell
             var x32_5 = x32_0 + UInt32.MaxValue;
             var x32_6 = (UInt64)x32_0 + UInt32.MaxValue;
             var x128_2 = (UInt128)x32_6;
+            var x128_3 = (UInt128)1;
+            var x128_4 = x128_3 << 64;
+            var x64_2  = 0UL;
+            var x64_3  = x64_2 - 1UL;
             //var x1 = 100000000000L;
             //var x2 = -x1;
             //var x3 = -100000000000L;
