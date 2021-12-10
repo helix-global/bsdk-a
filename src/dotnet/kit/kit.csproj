@@ -10,7 +10,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Operations\Internal\**" />
@@ -33,7 +33,6 @@
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
-    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Interchange.Database\BinaryStudio.Security.Cryptography.Interchange.Database.sqlproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Xml\BinaryStudio.Security.Cryptography.Xml.csproj" />
