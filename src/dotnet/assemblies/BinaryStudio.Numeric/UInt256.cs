@@ -113,7 +113,7 @@ namespace BinaryStudio.Numeric
             }
 
         /// <summary>
-        /// Constructs <see cref="UInt128"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
+        /// Constructs <see cref="UInt256"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
         /// </summary>
         private unsafe UInt256(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
             {
@@ -464,5 +464,14 @@ namespace BinaryStudio.Numeric
             return Equals((UInt64)other);
             }
         #endregion
+
+        /// <summary>Returns the hash code for this instance.</summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override Int32 GetHashCode()
+            {
+            return NumericHelper.GetHashCode(
+                a.GetHashCode(),
+                b.GetHashCode());
+            }
         }
     }

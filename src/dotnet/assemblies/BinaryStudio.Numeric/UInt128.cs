@@ -447,5 +447,14 @@ namespace BinaryStudio.Numeric
             {
             return ToString("x");
             }
+
+        /// <summary>Returns the hash code for this instance.</summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override Int32 GetHashCode()
+            {
+            return NumericHelper.GetHashCode(
+                NumericHelper.GetHashCode(a),
+                NumericHelper.GetHashCode(b));
+            }
         }
     }

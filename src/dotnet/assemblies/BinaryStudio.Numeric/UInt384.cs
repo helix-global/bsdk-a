@@ -137,6 +137,47 @@ namespace BinaryStudio.Numeric
                 }
             }
 
+        /// <summary>
+        /// Constructs <see cref="UInt384"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
+        /// </summary>
+        private unsafe UInt384(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (firstindex < 0) { throw new ArgumentOutOfRangeException(nameof(firstindex)); }
+            if (size != 8) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt192.MinValue;
+            b = UInt192.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[ 0] = source[firstindex + 11];
+                value[ 1] = source[firstindex + 10];
+                value[ 2] = source[firstindex +  9];
+                value[ 3] = source[firstindex +  8];
+                value[ 4] = source[firstindex +  7];
+                value[ 5] = source[firstindex +  6];
+                value[ 6] = source[firstindex +  5];
+                value[ 7] = source[firstindex +  4];
+                value[ 8] = source[firstindex +  3];
+                value[ 9] = source[firstindex +  2];
+                value[10] = source[firstindex +  1];
+                value[11] = source[firstindex +  0];
+                }
+            else
+                {
+                value[ 0] = source[firstindex +  0];
+                value[ 1] = source[firstindex +  1];
+                value[ 2] = source[firstindex +  2];
+                value[ 3] = source[firstindex +  3];
+                value[ 4] = source[firstindex +  4];
+                value[ 5] = source[firstindex +  5];
+                value[ 6] = source[firstindex +  6];
+                value[ 7] = source[firstindex +  7];
+                value[ 8] = source[firstindex +  8];
+                value[ 9] = source[firstindex +  9];
+                value[10] = source[firstindex + 10];
+                value[11] = source[firstindex + 11];
+                }
+            }
+
         private UInt384(ref UInt192 hi, ref UInt192 lo) {
             a = lo;
             b = hi;
@@ -275,6 +316,15 @@ namespace BinaryStudio.Numeric
                 source.b,
                 source.a
                 }, NumericSourceFlags.BigEndian);
+            }
+
+        /// <summary>Returns the hash code for this instance.</summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override Int32 GetHashCode()
+            {
+            return NumericHelper.GetHashCode(
+                a.GetHashCode(),
+                b.GetHashCode());
             }
         }
     }

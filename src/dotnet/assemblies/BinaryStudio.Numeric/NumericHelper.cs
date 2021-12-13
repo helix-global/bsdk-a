@@ -164,5 +164,24 @@ namespace BinaryStudio.Numeric
                 }
             throw new NotImplementedException();
             }
+
+        public static Int32 GetHashCode(UInt32 x, UInt32 y)
+            {
+            return unchecked((Int32)(((x << 7) | (x >> 25)) ^ y));
+            }
+
+        public static Int32 GetHashCode(Int32 x, Int32 y)
+            {
+            return GetHashCode(
+                unchecked((UInt32)x),
+                unchecked((UInt32)y));
+            }
+
+        public static Int32 GetHashCode(UInt64 r1)
+            {
+            return GetHashCode(
+                (UInt32)(r1 & 0xffffffff),
+                (UInt32)((r1 >> 32) & 0xffffffff));
+            }
         }
     }

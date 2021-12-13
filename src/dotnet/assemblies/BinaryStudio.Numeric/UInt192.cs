@@ -49,6 +49,36 @@ namespace BinaryStudio.Numeric
             }
 
         /// <summary>
+        /// Constructs <see cref="UInt192"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
+        /// </summary>
+        private unsafe UInt192(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (firstindex < 0) { throw new ArgumentOutOfRangeException(nameof(firstindex)); }
+            if (size != 6) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt64.MinValue;
+            b = UInt64.MinValue;
+            c = UInt64.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[0] = source[firstindex + 5];
+                value[1] = source[firstindex + 4];
+                value[2] = source[firstindex + 3];
+                value[3] = source[firstindex + 2];
+                value[4] = source[firstindex + 1];
+                value[5] = source[firstindex + 0];
+                }
+            else
+                {
+                value[0] = source[firstindex + 0];
+                value[1] = source[firstindex + 1];
+                value[2] = source[firstindex + 2];
+                value[3] = source[firstindex + 3];
+                value[4] = source[firstindex + 4];
+                value[5] = source[firstindex + 5];
+                }
+            }
+
+        /// <summary>
         /// Constructs <see cref="UInt192"/> structure from <see cref="UInt64"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
@@ -78,6 +108,22 @@ namespace BinaryStudio.Numeric
             {
             return CompareTo(ref other);
             }
+
+        public Int32 CompareTo(ref UInt64 other)
+            {
+            Int32 r;
+            if ((r = c.CompareTo(UInt64.MinValue)) != 0) { return r; }
+            if ((r = b.CompareTo(UInt64.MinValue)) != 0) { return r; }
+            return a.CompareTo(other);
+            }
+
+        #region M:CompareTo(Int64):Int32
+        public Int32 CompareTo(Int64 other)
+            {
+            if (other < 0) { return +1; }
+            return CompareTo((UInt64)other);
+            }
+        #endregion
 
         public unsafe Int32 CompareTo(ref UInt192 other)
             {
@@ -172,5 +218,15 @@ namespace BinaryStudio.Numeric
         public static explicit operator UInt192(UInt32  source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
         public static explicit operator UInt192(UInt64  source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
         public static explicit operator UInt192(UInt128 source) { return new UInt192(new []{ UInt64.MinValue, source.b, source.a }, NumericSourceFlags.BigEndian); }
+
+        /// <summary>Returns the hash code for this instance.</summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override Int32 GetHashCode()
+            {
+            return NumericHelper.GetHashCode(
+                NumericHelper.GetHashCode(a), NumericHelper.GetHashCode(
+                NumericHelper.GetHashCode(b),
+                NumericHelper.GetHashCode(c)));
+            }
         }
     }

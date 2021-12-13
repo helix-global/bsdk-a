@@ -50,6 +50,40 @@ namespace BinaryStudio.Numeric
                 }
             }
 
+        /// <summary>
+        /// Constructs <see cref="UInt224"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
+        /// </summary>
+        private unsafe UInt224(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (firstindex < 0) { throw new ArgumentOutOfRangeException(nameof(firstindex)); }
+            if (size != 7) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt128.MinValue;
+            b = UInt64.MinValue;
+            c = UInt32.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[0] = source[firstindex + 7];
+                value[1] = source[firstindex + 6];
+                value[2] = source[firstindex + 5];
+                value[3] = source[firstindex + 4];
+                value[4] = source[firstindex + 3];
+                value[5] = source[firstindex + 2];
+                value[6] = source[firstindex + 1];
+                value[7] = source[firstindex + 0];
+                }
+            else
+                {
+                value[0] = source[firstindex + 0];
+                value[1] = source[firstindex + 1];
+                value[2] = source[firstindex + 2];
+                value[3] = source[firstindex + 3];
+                value[4] = source[firstindex + 4];
+                value[5] = source[firstindex + 5];
+                value[6] = source[firstindex + 6];
+                value[7] = source[firstindex + 7];
+                }
+            }
+
         public Int32 CompareTo(UInt224 other)
             {
             return CompareTo(ref other);
@@ -179,6 +213,17 @@ namespace BinaryStudio.Numeric
                 source.value[2],
                 source.value[1],
                 source.value[0]
-                }, NumericSourceFlags.BigEndian); }
+                }, NumericSourceFlags.BigEndian);
+            }
+
+        /// <summary>Returns the hash code for this instance.</summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override Int32 GetHashCode()
+            {
+            return NumericHelper.GetHashCode(
+                a.GetHashCode(), NumericHelper.GetHashCode(
+                NumericHelper.GetHashCode(b),
+                NumericHelper.GetHashCode(c)));
+            }
         }
     }
