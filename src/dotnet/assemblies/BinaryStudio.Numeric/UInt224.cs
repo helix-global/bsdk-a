@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 // ReSharper disable once LocalVariableHidesMember
 
 namespace BinaryStudio.Numeric
     {
+    [StructLayout(LayoutKind.Explicit,Pack = 1)]
     public struct UInt224 : IComparable<UInt224>, IComparable, IEquatable<UInt224>
         {
         public static readonly UInt224 MinValue = new UInt224(new []{ UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue }, NumericSourceFlags.BigEndian);
         public static readonly UInt224 MaxValue = new UInt224(new []{ UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue }, NumericSourceFlags.BigEndian);
         public static readonly UInt224 Zero = MinValue;
 
-        private unsafe fixed UInt32 value[7];
+        [FieldOffset( 0)] internal unsafe fixed UInt32 value[7];
+        [FieldOffset( 0)] internal UInt128 a;
+        [FieldOffset(16)] internal UInt64 b;
+        [FieldOffset(24)] internal UInt32 c;
 
         /// <summary>
         /// Constructs <see cref="UInt224"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -21,6 +26,9 @@ namespace BinaryStudio.Numeric
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 7) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt128.MinValue;
+            b = UInt64.MinValue;
+            c = UInt32.MinValue;
             if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
                 value[0] = source[6];
                 value[1] = source[5];
@@ -105,14 +113,60 @@ namespace BinaryStudio.Numeric
             return !x.Equals(ref y);
             }
 
+        public static UInt224 operator |(UInt224 x, UInt224 y)
+            {
+            return new UInt224{
+                a = x.a | y.a,
+                b = x.b | y.b,
+                c = x.c | y.c
+                };
+            }
+
+        public static UInt224 operator &(UInt224 x, UInt224 y)
+            {
+            return new UInt224{
+                a = x.a & y.a,
+                b = x.b & y.b,
+                c = x.c & y.c
+                };
+            }
+        public static UInt224 operator ^(UInt224 x, UInt224 y)
+            {
+            return new UInt224{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b,
+                c = x.c ^ y.c
+                };
+            }
+
         public static explicit operator UInt224(Byte   source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
         public static explicit operator UInt224(UInt16 source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
         public static explicit operator UInt224(UInt32 source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
         public static explicit operator UInt224(UInt64 source) {
-            return new UInt224(new UInt32[]{ 0,0,0,0,0,
+            return new UInt224(new []{ 0U,0U,0U,0U,0U,
                 (UInt32)((source >> 32) & 0xffffffff),
                 (UInt32)((source)       & 0xffffffff)
                 }, NumericSourceFlags.BigEndian);
             }
+        public static unsafe explicit operator UInt224(UInt128 source) {
+            return new UInt224(new []{
+                UInt32.MinValue,
+                UInt32.MinValue,
+                UInt32.MinValue,
+                source.value[3],
+                source.value[2],
+                source.value[1],
+                source.value[0]
+                }, NumericSourceFlags.BigEndian); }
+        public static unsafe explicit operator UInt224(UInt192 source) {
+            return new UInt224(new []{
+                UInt32.MinValue,
+                source.value[3],
+                source.value[4],
+                source.value[3],
+                source.value[2],
+                source.value[1],
+                source.value[0]
+                }, NumericSourceFlags.BigEndian); }
         }
     }

@@ -13,9 +13,9 @@ namespace BinaryStudio.Numeric
         public static readonly UInt128 MinValue = new UInt128(UInt64.MinValue, UInt64.MinValue);
         public static readonly UInt128 MaxValue = new UInt128(UInt64.MaxValue, UInt64.MaxValue);
 
-        [FieldOffset(0)] private unsafe fixed UInt32 value[4];
-        [FieldOffset(0)] private readonly UInt64 a;
-        [FieldOffset(8)] private readonly UInt64 b;
+        [FieldOffset(0)] internal unsafe fixed UInt32 value[4];
+        [FieldOffset(0)] internal UInt64 a;
+        [FieldOffset(8)] internal UInt64 b;
 
         /// <summary>
         /// Constructs <see cref="UInt128"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -268,6 +268,30 @@ namespace BinaryStudio.Numeric
                     0, 4, 0);
             }
 
+        public static UInt128 operator |(UInt128 x, UInt128 y)
+            {
+            return new UInt128{
+                a = x.a | y.a,
+                b = x.b | y.b
+                };
+            }
+
+        public static UInt128 operator &(UInt128 x, UInt128 y)
+            {
+            return new UInt128{
+                a = x.a & y.a,
+                b = x.b & y.b
+                };
+            }
+
+        public static UInt128 operator ^(UInt128 x, UInt128 y)
+            {
+            return new UInt128{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b
+                };
+            }
+
         public static unsafe UInt128 operator <<(UInt128 x, Int32 y) {
             if (y == 0)   { return x; }
             if (y  < 0)   { return x >> (-y); }
@@ -279,7 +303,7 @@ namespace BinaryStudio.Numeric
                 for (var i = 0; i < 16 - offset;i++) {
                     target[i + offset] = source[i];
                     }
-                return new UInt128(target, 0);;
+                return new UInt128(target, 0);
                 }
             throw new NotImplementedException();
             }

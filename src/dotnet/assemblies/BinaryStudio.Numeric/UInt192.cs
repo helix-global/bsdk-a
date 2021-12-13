@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 // ReSharper disable once LocalVariableHidesMember
 
 namespace BinaryStudio.Numeric
     {
+    [StructLayout(LayoutKind.Explicit,Pack = 1)]
     public struct UInt192 : IComparable<UInt192>, IComparable, IEquatable<UInt192>
         {
         public static readonly UInt192 Zero     = new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, UInt64.MinValue }, NumericSourceFlags.BigEndian);
         public static readonly UInt192 MinValue = new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, UInt64.MinValue }, NumericSourceFlags.BigEndian);
         public static readonly UInt192 MaxValue = new UInt192(new []{ UInt64.MaxValue, UInt64.MaxValue, UInt64.MaxValue }, NumericSourceFlags.BigEndian);
 
-        private unsafe fixed UInt32 value[6];
+        [FieldOffset( 0)] internal unsafe fixed UInt32 value[6];
+        [FieldOffset( 0)] internal UInt64 a;
+        [FieldOffset( 8)] internal UInt64 b;
+        [FieldOffset(16)] internal UInt64 c;
 
         /// <summary>
         /// Constructs <see cref="UInt192"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -21,6 +26,9 @@ namespace BinaryStudio.Numeric
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 6) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = 0;
+            b = 0;
+            c = 0;
             if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
                 value[0] = source[5];
                 value[1] = source[4];
@@ -48,6 +56,9 @@ namespace BinaryStudio.Numeric
         private unsafe UInt192(UInt64[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 3) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = 0;
+            b = 0;
+            c = 0;
             fixed (void* target = value) {
                 if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
                     ((UInt64*)target)[0] = source[2];
@@ -118,9 +129,36 @@ namespace BinaryStudio.Numeric
             return !x.Equals(ref y);
             }
 
-        public static explicit operator UInt192(Byte   source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
-        public static explicit operator UInt192(UInt16 source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
-        public static explicit operator UInt192(UInt32 source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
-        public static explicit operator UInt192(UInt64 source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
+        public static UInt192 operator |(UInt192 x, UInt192 y)
+            {
+            return new UInt192{
+                a = x.a | y.a,
+                b = x.b | y.b,
+                c = x.c | y.c,
+                };
+            }
+
+        public static UInt192 operator &(UInt192 x, UInt192 y)
+            {
+            return new UInt192{
+                a = x.a & y.a,
+                b = x.b & y.b,
+                c = x.c & y.c,
+                };
+            }
+        public static UInt192 operator ^(UInt192 x, UInt192 y)
+            {
+            return new UInt192{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b,
+                c = x.c ^ y.c,
+                };
+            }
+
+        public static explicit operator UInt192(Byte    source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt192(UInt16  source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt192(UInt32  source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt192(UInt64  source) { return new UInt192(new []{ UInt64.MinValue, UInt64.MinValue, source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt192(UInt128 source) { return new UInt192(new []{ UInt64.MinValue, source.b, source.a }, NumericSourceFlags.BigEndian); }
         }
     }

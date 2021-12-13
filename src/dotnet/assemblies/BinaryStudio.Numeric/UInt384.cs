@@ -12,9 +12,9 @@ namespace BinaryStudio.Numeric
         public static readonly UInt384 MinValue = new UInt384(UInt192.MinValue, UInt192.MinValue);
         public static readonly UInt384 MaxValue = new UInt384(UInt192.MaxValue, UInt192.MaxValue);
         
-        [FieldOffset( 0)] private unsafe fixed UInt32 value[12];
-        [FieldOffset( 0)] private readonly UInt192 a;
-        [FieldOffset(48)] private readonly UInt192 b;
+        [FieldOffset( 0)] internal unsafe fixed UInt32 value[12];
+        [FieldOffset( 0)] internal UInt192 a;
+        [FieldOffset(48)] internal UInt192 b;
 
         /// <summary>
         /// Constructs <see cref="UInt384"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -62,6 +62,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt384"/> structure from <see cref="UInt64"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt384(UInt64[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 6) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -92,6 +93,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt384"/> structure from <see cref="UInt128"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt384(UInt128[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 3) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -198,9 +200,68 @@ namespace BinaryStudio.Numeric
             return !x.Equals(ref y);
             }
 
+        public static UInt384 operator |(UInt384 x, UInt384 y)
+            {
+            return new UInt384{
+                a = x.a | y.a,
+                b = x.b | y.b
+                };
+            }
+
+        public static UInt384 operator &(UInt384 x, UInt384 y)
+            {
+            return new UInt384{
+                a = x.a & y.a,
+                b = x.b & y.b
+                };
+            }
+        public static UInt384 operator ^(UInt384 x, UInt384 y)
+            {
+            return new UInt384{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b
+                };
+            }
+
         public static explicit operator UInt384(Byte   source) { return new UInt384(UInt192.MinValue, (UInt192)source); }
         public static explicit operator UInt384(UInt16 source) { return new UInt384(UInt192.MinValue, (UInt192)source); }
         public static explicit operator UInt384(UInt32 source) { return new UInt384(UInt192.MinValue, (UInt192)source); }
         public static explicit operator UInt384(UInt64 source) { return new UInt384(UInt192.MinValue, (UInt192)source); }
+        public static explicit operator UInt384(UInt128 source) {
+            return new UInt384(new []{
+                UInt128.MinValue,
+                UInt128.MinValue,
+                source,
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static explicit operator UInt384(UInt192 source) {
+            return new UInt384(new []{
+                UInt192.MinValue,
+                source,
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static unsafe explicit operator UInt384(UInt224 source) {
+            return new UInt384(new []{
+                0U,
+                0U,
+                0U,
+                0U,
+                0U,
+                source.value[6],
+                source.value[5],
+                source.value[4],
+                source.value[3],
+                source.value[2],
+                source.value[1],
+                source.value[0]
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static explicit operator UInt384(UInt256 source) {
+            return new UInt384(new []{
+                UInt128.MinValue,
+                source.b,
+                source.a
+                }, NumericSourceFlags.BigEndian);
+            }
         }
     }

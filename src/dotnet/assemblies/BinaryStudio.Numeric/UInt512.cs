@@ -14,8 +14,8 @@ namespace BinaryStudio.Numeric
         public static readonly UInt512 MaxValue = new UInt512(UInt256.MaxValue, UInt256.MaxValue);
 
         [FieldOffset( 0)] private unsafe fixed UInt32 value[16];
-        [FieldOffset( 0)] private readonly UInt256 a;
-        [FieldOffset(32)] private readonly UInt256 b;
+        [FieldOffset( 0)] private UInt256 a;
+        [FieldOffset(32)] private UInt256 b;
 
         /// <summary>
         /// Constructs <see cref="UInt512"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -205,6 +205,29 @@ namespace BinaryStudio.Numeric
                 }
             }
 
+        public static UInt512 operator |(UInt512 x, UInt512 y)
+            {
+            return new UInt512{
+                a = x.a | y.a,
+                b = x.b | y.b
+                };
+            }
+
+        public static UInt512 operator &(UInt512 x, UInt512 y)
+            {
+            return new UInt512{
+                a = x.a & y.a,
+                b = x.b & y.b
+                };
+            }
+        public static UInt512 operator ^(UInt512 x, UInt512 y)
+            {
+            return new UInt512{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b
+                };
+            }
+
         public static Boolean operator ==(UInt512 x, UInt512 y)
             {
             return x.Equals(ref y);
@@ -240,5 +263,51 @@ namespace BinaryStudio.Numeric
         public static explicit operator UInt512(UInt16 source) { return new UInt512(UInt256.MinValue, (UInt256)source); }
         public static explicit operator UInt512(UInt32 source) { return new UInt512(UInt256.MinValue, (UInt256)source); }
         public static explicit operator UInt512(UInt64 source) { return new UInt512(UInt256.MinValue, (UInt256)source); }
+        public static explicit operator UInt512(UInt128 source) {
+            return new UInt512(new []{
+                UInt128.MinValue,
+                UInt128.MinValue,
+                UInt128.MinValue,
+                source
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static explicit operator UInt512(UInt192 source) {
+            return new UInt512(new []{
+                UInt256.MinValue,
+                (UInt256)source
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static explicit operator UInt512(UInt224 source) {
+            return new UInt512(new []{
+                UInt256.MinValue,
+                (UInt256)source
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static explicit operator UInt512(UInt256 source) {
+            return new UInt512(new []{
+                UInt256.MinValue,
+                source
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static unsafe explicit operator UInt512(UInt384 source) {
+            return new UInt512(new []{
+                0U,
+                0U,
+                0U,
+                0U,
+                source.value[11],
+                source.value[10],
+                source.value[ 9],
+                source.value[ 8],
+                source.value[ 7],
+                source.value[ 6],
+                source.value[ 5],
+                source.value[ 4],
+                source.value[ 3],
+                source.value[ 2],
+                source.value[ 1],
+                source.value[ 0],
+                }, NumericSourceFlags.BigEndian);
+            }
         }
     }

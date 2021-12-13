@@ -13,9 +13,9 @@ namespace BinaryStudio.Numeric
         public static readonly UInt256 MinValue = new UInt256(UInt128.MinValue, UInt128.MinValue);
         public static readonly UInt256 MaxValue = new UInt256(UInt128.MaxValue, UInt128.MaxValue);
 
-        [FieldOffset( 0)] private unsafe fixed UInt32 value[8];
-        [FieldOffset( 0)] private readonly UInt128 a;
-        [FieldOffset(16)] private readonly UInt128 b;
+        [FieldOffset( 0)] internal unsafe fixed UInt32 value[8];
+        [FieldOffset( 0)] internal UInt128 a;
+        [FieldOffset(16)] internal UInt128 b;
 
         /// <summary>
         /// Constructs <see cref="UInt256"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
@@ -185,9 +185,56 @@ namespace BinaryStudio.Numeric
             return ToString("x");
             }
 
-        public static explicit operator UInt256(Byte   source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
-        public static explicit operator UInt256(UInt16 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
-        public static explicit operator UInt256(UInt32 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
-        public static explicit operator UInt256(UInt64 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static UInt256 operator |(UInt256 x, UInt256 y)
+            {
+            return new UInt256{
+                a = x.a | y.a,
+                b = x.b | y.b
+                };
+            }
+
+        public static UInt256 operator &(UInt256 x, UInt256 y)
+            {
+            return new UInt256{
+                a = x.a & y.a,
+                b = x.b & y.b
+                };
+            }
+        public static UInt256 operator ^(UInt256 x, UInt256 y)
+            {
+            return new UInt256{
+                a = x.a ^ y.a,
+                b = x.b ^ y.b
+                };
+            }
+
+        public static explicit operator UInt256(Byte    source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt16  source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt32  source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt64  source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt128 source) { return new UInt256(UInt128.MinValue,          source); }
+        public static unsafe explicit operator UInt256(UInt192 source) {
+            return new UInt256(new []{
+                0U, 0U,
+                source.value[5],
+                source.value[4],
+                source.value[3],
+                source.value[2],
+                source.value[1],
+                source.value[0],
+                }, NumericSourceFlags.BigEndian);
+            }
+        public static unsafe explicit operator UInt256(UInt224 source) {
+            return new UInt256(new []{
+                0U,
+                source.value[6],
+                source.value[5],
+                source.value[4],
+                source.value[3],
+                source.value[2],
+                source.value[1],
+                source.value[0],
+                }, NumericSourceFlags.BigEndian);
+            }
         }
     }
