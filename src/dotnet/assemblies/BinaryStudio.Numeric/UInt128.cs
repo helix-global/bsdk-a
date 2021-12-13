@@ -1,9 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 
 // ReSharper disable once LocalVariableHidesMember
 
@@ -75,6 +72,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt128"/> structure from <see cref="UInt64"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt128(UInt64[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 2) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -95,13 +93,9 @@ namespace BinaryStudio.Numeric
                 }
             }
 
-        public unsafe UInt128(ref UInt64 hi, ref UInt64 lo) {
-            a = UInt64.MinValue;
-            b = UInt64.MinValue;
-            fixed (void* target = value) {
-                ((UInt64*)target)[0] = lo;
-                ((UInt64*)target)[1] = hi;
-                }
+        public UInt128(ref UInt64 hi, ref UInt64 lo) {
+            a = lo;
+            b = hi;
             }
 
         public UInt128(UInt64 hi, UInt64 lo)

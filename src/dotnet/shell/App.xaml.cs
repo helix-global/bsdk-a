@@ -48,6 +48,11 @@ namespace shell
             var x128_2 = (UInt128)x32_6;
             var x128_3 = (UInt128)1;
             var x128_4 = x128_3 << 64;
+            var x256_1 = (UInt256)1;
+            var x512_1 = (UInt512)1;
+            var x192_1 = (UInt192)1;
+            var x224_1 = (UInt224)1;
+            var x384_1 = (UInt384)1;
             var x64_2  = 0UL;
             var x64_3  = x64_2 - 1UL;
             //var x1 = 100000000000L;

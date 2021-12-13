@@ -6,8 +6,8 @@ namespace BinaryStudio.Numeric
     {
     public struct UInt224 : IComparable<UInt224>, IComparable, IEquatable<UInt224>
         {
-        public static readonly UInt224 MinValue = new UInt224(new []{ UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue });
-        public static readonly UInt224 MaxValue = new UInt224(new []{ UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue });
+        public static readonly UInt224 MinValue = new UInt224(new []{ UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue, UInt32.MinValue }, NumericSourceFlags.BigEndian);
+        public static readonly UInt224 MaxValue = new UInt224(new []{ UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue, UInt32.MaxValue }, NumericSourceFlags.BigEndian);
         public static readonly UInt224 Zero = MinValue;
 
         private unsafe fixed UInt32 value[7];
@@ -16,17 +16,30 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt224"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
-        private unsafe UInt224(UInt32[] source)
+        /// <param name="flags"></param>
+        private unsafe UInt224(UInt32[] source, NumericSourceFlags flags)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 7) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            value[0] = source[6];
-            value[1] = source[5];
-            value[2] = source[4];
-            value[3] = source[3];
-            value[4] = source[2];
-            value[5] = source[1];
-            value[6] = source[0];
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[0] = source[6];
+                value[1] = source[5];
+                value[2] = source[4];
+                value[3] = source[3];
+                value[4] = source[2];
+                value[5] = source[1];
+                value[6] = source[0];
+                }
+            else
+                {
+                value[0] = source[0];
+                value[1] = source[1];
+                value[2] = source[2];
+                value[3] = source[3];
+                value[4] = source[4];
+                value[5] = source[5];
+                value[6] = source[6];
+                }
             }
 
         public Int32 CompareTo(UInt224 other)
@@ -90,6 +103,16 @@ namespace BinaryStudio.Numeric
         public static Boolean operator !=(UInt224 x, UInt224 y)
             {
             return !x.Equals(ref y);
+            }
+
+        public static explicit operator UInt224(Byte   source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt224(UInt16 source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt224(UInt32 source) { return new UInt224(new UInt32[]{ 0,0,0,0,0,0,source }, NumericSourceFlags.BigEndian); }
+        public static explicit operator UInt224(UInt64 source) {
+            return new UInt224(new UInt32[]{ 0,0,0,0,0,
+                (UInt32)((source >> 32) & 0xffffffff),
+                (UInt32)((source)       & 0xffffffff)
+                }, NumericSourceFlags.BigEndian);
             }
         }
     }

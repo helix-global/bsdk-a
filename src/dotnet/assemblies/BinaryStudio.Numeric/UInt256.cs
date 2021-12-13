@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 // ReSharper disable once LocalVariableHidesMember
@@ -20,6 +21,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt256"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt256(UInt32[] source, NumericSourceFlags flags)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -53,6 +55,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt256"/> structure from <see cref="UInt64"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt256(UInt64[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 4) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -79,6 +82,7 @@ namespace BinaryStudio.Numeric
         /// Constructs <see cref="UInt256"/> structure from <see cref="UInt128"/> array by (high-to-low) ordering.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="flags"></param>
         private unsafe UInt256(UInt128[] source, NumericSourceFlags flags) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (source.Length != 2) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -97,13 +101,9 @@ namespace BinaryStudio.Numeric
                 }
             }
 
-        public unsafe UInt256(ref UInt128 hi, ref UInt128 lo) {
-            a = UInt128.MinValue;
-            b = UInt128.MinValue;
-            fixed (void* target = value) {
-                ((UInt128*)target)[0] = lo;
-                ((UInt128*)target)[1] = hi;
-                }
+        public UInt256(ref UInt128 hi, ref UInt128 lo) {
+            a = lo;
+            b = hi;
             }
 
         private UInt256(UInt128 hi, UInt128 lo)
@@ -163,5 +163,31 @@ namespace BinaryStudio.Numeric
             {
             return !x.Equals(ref y);
             }
+
+        public String ToString(String format, IFormatProvider provider) {
+            switch (NumericHelper.ParseFormatSpecifier(format, out var digits)) {
+                case 'x':
+                    {
+                    return $"{b:x}{a:x}";
+                    }
+                }
+            return "{?}";
+            }
+
+        public String ToString(String format) {
+            return ToString(format, CultureInfo.CurrentCulture);
+            }
+
+        /// <summary>Returns the fully qualified type name of this instance.</summary>
+        /// <returns>The fully qualified type name.</returns>
+        public override String ToString()
+            {
+            return ToString("x");
+            }
+
+        public static explicit operator UInt256(Byte   source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt16 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt32 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
+        public static explicit operator UInt256(UInt64 source) { return new UInt256(UInt128.MinValue, (UInt128)source); }
         }
     }
