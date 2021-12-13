@@ -185,6 +185,10 @@ namespace BinaryStudio.Numeric
             return ToString("x");
             }
 
+        /// <summary>Performs a bitwise <see langword="or"/> operation on two <see cref="UInt256"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt256 operator |(UInt256 x, UInt256 y)
             {
             return new UInt256{
@@ -193,6 +197,10 @@ namespace BinaryStudio.Numeric
                 };
             }
 
+        /// <summary>Performs a bitwise <see langword="and"/> operation on two <see cref="UInt256"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="and"/> operation.</returns>
         public static UInt256 operator &(UInt256 x, UInt256 y)
             {
             return new UInt256{
@@ -200,6 +208,11 @@ namespace BinaryStudio.Numeric
                 b = x.b & y.b
                 };
             }
+
+        /// <summary>Performs a bitwise exclusive <see langword="or"/> (<see langword="xor"/>) operation on two <see cref="UInt256"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt256 operator ^(UInt256 x, UInt256 y)
             {
             return new UInt256{

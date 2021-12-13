@@ -113,6 +113,10 @@ namespace BinaryStudio.Numeric
             return !x.Equals(ref y);
             }
 
+        /// <summary>Performs a bitwise <see langword="or"/> operation on two <see cref="UInt224"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt224 operator |(UInt224 x, UInt224 y)
             {
             return new UInt224{
@@ -122,6 +126,10 @@ namespace BinaryStudio.Numeric
                 };
             }
 
+        /// <summary>Performs a bitwise <see langword="and"/> operation on two <see cref="UInt224"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="and"/> operation.</returns>
         public static UInt224 operator &(UInt224 x, UInt224 y)
             {
             return new UInt224{
@@ -130,6 +138,10 @@ namespace BinaryStudio.Numeric
                 c = x.c & y.c
                 };
             }
+        /// <summary>Performs a bitwise exclusive <see langword="or"/> (<see langword="xor"/>) operation on two <see cref="UInt224"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt224 operator ^(UInt224 x, UInt224 y)
             {
             return new UInt224{

@@ -193,6 +193,23 @@ namespace BinaryStudio.Numeric
             }
         #endregion
 
+        /// <summary>Indicates whether this instance and a specified object are equal.</summary>
+        /// <param name="other">The object to compare with the current instance.</param>
+        /// <returns><see langword="true"/>if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, <see langword="false"/>.</returns>
+        public override Boolean Equals(Object other) {
+            if (other is null) { return false; }
+            if (other is UInt128 u128) { return Equals(ref u128);  }
+            if (other is Int32  i32) { return Equals((Int64)i32);  }
+            if (other is Int64  i64) { return Equals((Int64)i64);  }
+            if (other is Int16  i16) { return Equals((Int64)i16);  }
+            if (other is SByte   i8) { return Equals((Int64)i8 );  }
+            if (other is UInt32 u32) { return Equals((UInt64)u32); }
+            if (other is UInt64 u64) { return Equals((UInt64)u64); }
+            if (other is UInt16 u16) { return Equals((UInt64)u16); }
+            if (other is Byte    u8) { return Equals((UInt64)u8 ); }
+            return base.Equals(other);
+            }
+
         #region M:operator ==(UInt128,UInt128):Boolean
         public static Boolean operator ==(UInt128 x, UInt128 y)
             {
@@ -268,6 +285,62 @@ namespace BinaryStudio.Numeric
                     0, 4, 0);
             }
 
+        public static unsafe UInt128 operator -(UInt128 x, UInt32 y)
+            {
+            return (y == 0)
+                ? x
+                : new UInt128(
+                    NumericHelper.Sub(x.value, 4, y),
+                    0, 4, 0);
+            }
+
+        /// <summary>Divides a specified <see cref="UInt128"/> value by another specified <see cref="UInt32"/> value by using integer division.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The integral result of the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static unsafe UInt128 operator /(UInt128 x, UInt32 y)
+            {
+            if (y == 0) { throw new DivideByZeroException(); }
+            return (y == 0)
+                ? x
+                : new UInt128(
+                    NumericHelper.Div(x.value, 4, y),
+                    0, 4, 0);
+            }
+
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt128"/> and <see cref="UInt32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static unsafe UInt32 operator %(UInt128 x, UInt32 y)
+            {
+            if (y == 0) { throw new DivideByZeroException(); }
+            var r = 0UL;
+            for (var i = 0; i < 4; i++)
+                {
+                r += x.value[i] % y;
+                }
+            return (UInt32)(r % y);
+            }
+
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt128"/> and <see cref="Int32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static Int32 operator %(UInt128 x, Int32 y) {
+            if (y == 0) { throw new DivideByZeroException(); }
+            return (y < 0)
+                ? -(Int32)(x % (UInt32)(-y))
+                : +(Int32)(x % (UInt32)(+y));
+            }
+
+        /// <summary>Performs a bitwise <see langword="or"/> operation on two <see cref="UInt128"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt128 operator |(UInt128 x, UInt128 y)
             {
             return new UInt128{
@@ -276,6 +349,10 @@ namespace BinaryStudio.Numeric
                 };
             }
 
+        /// <summary>Performs a bitwise <see langword="and"/> operation on two <see cref="UInt128"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="and"/> operation.</returns>
         public static UInt128 operator &(UInt128 x, UInt128 y)
             {
             return new UInt128{
@@ -284,6 +361,10 @@ namespace BinaryStudio.Numeric
                 };
             }
 
+        /// <summary>Performs a bitwise exclusive <see langword="or"/> (<see langword="xor"/>) operation on two <see cref="UInt128"/> values.</summary>
+        /// <param name="x">The first value.</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The result of the bitwise <see langword="or"/> operation.</returns>
         public static UInt128 operator ^(UInt128 x, UInt128 y)
             {
             return new UInt128{
@@ -294,25 +375,22 @@ namespace BinaryStudio.Numeric
 
         public static unsafe UInt128 operator <<(UInt128 x, Int32 y) {
             if (y == 0)   { return x; }
-            if (y  < 0)   { return x >> (-y); }
             if (y >= 128) { return Zero; }
-            if (y%8 == 0) {
-                var source = (Byte*)x.value;
-                var target = new Byte[16];
-                var offset = y/8;
-                for (var i = 0; i < 16 - offset;i++) {
-                    target[i + offset] = source[i];
-                    }
-                return new UInt128(target, 0);
-                }
-            throw new NotImplementedException();
+            var r = new UInt128();
+            var source = (Byte*)&x.a;
+            var target = (Byte*)&r.a;
+            NumericHelper.Shl(source, target, 16, y);
+            return r;
             }
 
         public static unsafe UInt128 operator >>(UInt128 x, Int32 y) {
             if (y == 0)   { return x; }
-            if (y  < 0)   { return x << (-y); }
             if (y >= 128) { return Zero; }
-            throw new NotImplementedException();
+            var r = new UInt128();
+            var source = (Byte*)&x.a;
+            var target = (Byte*)&r.a;
+            NumericHelper.Shr(source, target, 16, y);
+            return r;
             }
 
         public String ToString(String format, IFormatProvider provider) {
@@ -321,7 +399,13 @@ namespace BinaryStudio.Numeric
                     {
                     return $"{b:x16}{a:x16}";
                     }
-                }
+                case 'r':
+                case 'R':
+                    {
+
+                    }
+                    break;
+            }
             return "{?}";
             }
 

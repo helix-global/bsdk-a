@@ -62,3 +62,5 @@
 /src/dotnet/shell/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange.Database/BinaryStudio.Security.Cryptography.Interchange.Database.dbmdl
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange.Database/BinaryStudio.Security.Cryptography.Interchange.Database.jfm
+/src/dotnet/testing/UnitTests.BinaryStudio.Numeric/bin/Debug/net40
+/src/dotnet/testing/UnitTests.BinaryStudio.Numeric/obj
