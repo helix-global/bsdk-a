@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Text;
 
 // ReSharper disable once LocalVariableHidesMember
 
@@ -111,20 +112,82 @@ namespace BinaryStudio.Numeric
             {
             }
 
+        /// <summary>
+        /// Constructs <see cref="UInt128"/> structure from <see cref="UInt32"/> array by (high-to-low) ordering.
+        /// </summary>
+        private unsafe UInt256(UInt32[] source, Int32 firstindex, Int32 size, NumericSourceFlags flags)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (firstindex < 0) { throw new ArgumentOutOfRangeException(nameof(firstindex)); }
+            if (size != 8) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            a = UInt128.MinValue;
+            b = UInt128.MinValue;
+            if (flags.HasFlag(NumericSourceFlags.BigEndian)) {
+                value[0] = source[firstindex + 7];
+                value[1] = source[firstindex + 6];
+                value[2] = source[firstindex + 5];
+                value[3] = source[firstindex + 4];
+                value[4] = source[firstindex + 3];
+                value[5] = source[firstindex + 2];
+                value[6] = source[firstindex + 1];
+                value[7] = source[firstindex + 0];
+                }
+            else
+                {
+                value[0] = source[firstindex + 0];
+                value[1] = source[firstindex + 1];
+                value[2] = source[firstindex + 2];
+                value[3] = source[firstindex + 3];
+                value[4] = source[firstindex + 4];
+                value[5] = source[firstindex + 5];
+                value[6] = source[firstindex + 6];
+                value[7] = source[firstindex + 7];
+                }
+            }
+
         public Int32 CompareTo(UInt256 other)
             {
             return CompareTo(ref other);
             }
 
-        public unsafe Int32 CompareTo(ref UInt256 other) {
-            fixed (void* x = value)
-            fixed (void* y = other.value) {
-                Int32 r;
-                return ((r = 
-                    (((UInt128*)x)[1]).CompareTo(ref ((UInt128*)y)[1])) == 0) ?
-                    (((UInt128*)x)[0]).CompareTo(ref ((UInt128*)y)[0]) : r;
-                }
+        public Int32 CompareTo(ref UInt256 other) {
+            Int32 r;
+            return (r =
+                b.CompareTo(other.b)) != 0 ? r :
+                a.CompareTo(other.a);
             }
+
+        #region M:CompareTo(UInt128):Int32
+        public Int32 CompareTo(UInt128 other)
+            {
+            return CompareTo(ref other);
+            }
+        #endregion
+        #region M:CompareTo(UInt64):Int32
+        public Int32 CompareTo(UInt64 other)
+            {
+            Int32 r;
+            return (r =
+                b.CompareTo(UInt128.MinValue)) != 0 ? r :
+                a.CompareTo(other);
+            }
+        #endregion
+        #region M:CompareTo(Int64):Int32
+        public Int32 CompareTo(Int64 other)
+            {
+            if (other < 0) { return +1; }
+            return CompareTo((UInt64)other);
+            }
+        #endregion
+        #region M:CompareTo([ref]UInt128):Int32
+        public Int32 CompareTo(ref UInt128 other)
+            {
+            Int32 r;
+            return (r =
+                b.CompareTo(UInt128.MinValue)) != 0 ? r :
+                a.CompareTo(other);
+            }
+        #endregion
 
         public Int32 CompareTo(Object other) {
             if (other == null) { return +1; }
@@ -134,41 +197,134 @@ namespace BinaryStudio.Numeric
             throw new ArgumentOutOfRangeException(nameof(other));
             }
 
-        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(UInt256 other)
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt256"/> and <see cref="UInt32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static unsafe UInt32 operator %(UInt256 x, UInt32 y)
             {
-            return Equals(ref other);
-            }
-
-        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
-        public unsafe Boolean Equals(ref UInt256 other)
-            {
-            fixed (void* x = value)
-            fixed (void* y = other.value) {
-                return ((((UInt128*)x)[1]).Equals(ref (((UInt128*)y)[1])))
-                    && ((((UInt128*)x)[0]).Equals(ref (((UInt128*)y)[0])));
+            if (y == 0)   { throw new DivideByZeroException(); }
+            if (x.b == 0) { return (x.a%y); }
+            var r = 0L;
+            for (var i = 7; i >= 0; i--) {
+                var α = (Int64)x.value[i];
+                var β = r << 32;
+                var γ = (β | α);
+                r = (γ %y);
                 }
+            return (UInt32)r;
             }
 
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt256"/> and <see cref="Int32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static Int32 operator %(UInt256 x, Int32 y) {
+            if (y == 0) { throw new DivideByZeroException(); }
+            return (y < 0)
+                ? -(Int32)(x % (UInt32)(-y))
+                : +(Int32)(x % (UInt32)(+y));
+            }
+
+        #region M:operator ==(UInt256,UInt256):Boolean
         public static Boolean operator ==(UInt256 x, UInt256 y)
             {
             return x.Equals(ref y);
             }
-
+        #endregion
+        #region M:operator !=(UInt256,UInt256):Boolean
         public static Boolean operator !=(UInt256 x, UInt256 y)
             {
             return !x.Equals(ref y);
             }
+        #endregion
+        #region M:operator ==(UInt256,UInt64):Boolean
+        public static Boolean operator ==(UInt256 x, UInt64 y)
+            {
+            return x.Equals(y);
+            }
+        #endregion
+        #region M:operator !=(UInt128,UInt64):Boolean
+        public static Boolean operator !=(UInt256 x, UInt64 y)
+            {
+            return !x.Equals(y);
+            }
+        #endregion
+        #region M:operator ==(UInt256,Int64):Boolean
+        public static Boolean operator ==(UInt256 x, Int64 y)
+            {
+            return x.Equals(y);
+            }
+        #endregion
+        #region M:operator !=(UInt256,Int64):Boolean
+        public static Boolean operator !=(UInt256 x, Int64 y)
+            {
+            return !x.Equals(y);
+            }
+        #endregion
+
+        /// <summary>Divides a specified <see cref="UInt256"/> value by another specified <see cref="UInt32"/> value by using integer division.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The integral result of the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static unsafe UInt256 operator /(UInt256 x, UInt32 y)
+            {
+            if (y == 0) { throw new DivideByZeroException(); }
+            return (y == 0)
+                ? x
+                : new UInt256(
+                    NumericHelper.Div(x.value, 8, y),
+                    0, 8, 0);
+            }
+
+        #region M:operator >(UInt256,UInt64):Boolean
+        public static Boolean operator >(UInt256 x, UInt64 y)
+            {
+            return x.CompareTo(y) > 0;
+            }
+        #endregion
+        #region M:operator <(UInt256,UInt64):Boolean
+        public static Boolean operator <(UInt256 x, UInt64 y)
+            {
+            return x.CompareTo(y) < 0;
+            }
+        #endregion
+        #region M:operator <(UInt256,Int64):Boolean
+        public static Boolean operator <(UInt256 x, Int64 y)
+            {
+            return x.CompareTo(y) < 0;
+            }
+        #endregion
+        #region M:operator >(UInt256,Int64):Boolean
+        public static Boolean operator >(UInt256 x, Int64 y)
+            {
+            return x.CompareTo(y) > 0;
+            }
+        #endregion
 
         public String ToString(String format, IFormatProvider provider) {
             switch (NumericHelper.ParseFormatSpecifier(format, out var digits)) {
                 case 'x':
                     {
                     return $"{b:x}{a:x}";
+                    }
+                case 'r':
+                case 'R':
+                    {
+                    var q = this;
+                    var o = new StringBuilder();
+                    var r = q%10;
+                        q = q/10;
+                    o.Append((char)('0' + r));
+                    for (;q > 0;) {
+                        r = q%10;
+                        q = q/10;
+                        o.Insert(0, (char)('0' + r));
+                        }
+                    return o.ToString();
                     }
                 }
             return "{?}";
@@ -249,5 +405,64 @@ namespace BinaryStudio.Numeric
                 source.value[0],
                 }, NumericSourceFlags.BigEndian);
             }
+
+        #region M:Equals(UInt256):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(UInt256 other)
+            {
+            return Equals(ref other);
+            }
+        #endregion
+        #region M:Equals([ref]UInt256):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(ref UInt256 other)
+            {
+            return (a == other.a) &&
+                   (b == other.b);
+            }
+        #endregion
+        #region M:Equals(UInt128):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(UInt128 other)
+            {
+            return Equals(ref other);
+            }
+        #endregion
+        #region M:Equals([ref]UInt128):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(ref UInt128 other)
+            {
+            return (b == UInt128.MinValue) &&
+                   (a == other);
+            }
+        #endregion
+        #region M:Equals(UInt64):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(UInt64 other)
+            {
+            return (b == UInt128.MinValue) &&
+                   (a == other);
+            }
+        #endregion
+        #region M:Equals(Int64):Boolean
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(Int64 other)
+            {
+            if (other < 0) { return false; }
+            return Equals((UInt64)other);
+            }
+        #endregion
         }
     }

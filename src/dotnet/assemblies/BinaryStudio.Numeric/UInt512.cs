@@ -241,6 +241,37 @@ namespace BinaryStudio.Numeric
                 };
             }
 
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt512"/> and <see cref="UInt32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static unsafe UInt32 operator %(UInt512 x, UInt32 y)
+            {
+            if (y == 0)   { throw new DivideByZeroException(); }
+            if (x.b == 0) { return (UInt32)(x.a%y); }
+            var r = 0L;
+            for (var i = 15; i >= 0; i--) {
+                var α = (Int64)x.value[i];
+                var β = r << 32;
+                var γ = (β | α);
+                r = (γ %y);
+                }
+            return (UInt32)r;
+            }
+
+        /// <summary>Returns the remainder that results from division with two specified <see cref="UInt512"/> and <see cref="Int32"/> values.</summary>
+        /// <param name="x">The value to be divided.</param>
+        /// <param name="y">The value to divide by.</param>
+        /// <returns>The remainder that results from the division.</returns>
+        /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
+        public static Int32 operator %(UInt512 x, Int32 y) {
+            if (y == 0) { throw new DivideByZeroException(); }
+            return (y < 0)
+                ? -(Int32)(x % (UInt32)(-y))
+                : +(Int32)(x % (UInt32)(+y));
+            }
+
         public static Boolean operator ==(UInt512 x, UInt512 y)
             {
             return x.Equals(ref y);

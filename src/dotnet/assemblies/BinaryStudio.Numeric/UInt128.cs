@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Xml;
 
 // ReSharper disable once LocalVariableHidesMember
 
@@ -276,6 +279,19 @@ namespace BinaryStudio.Numeric
         public static explicit operator UInt128(UInt32 source) { return new UInt128(0, source); }
         public static explicit operator UInt128(UInt64 source) { return new UInt128(0, source); }
 
+        public static unsafe explicit operator UInt128(BigInteger source) {
+            if (source.Sign < 0) { throw new NotSupportedException(); }
+            var r = source.ToByteArray();
+            if (r.Length >= 4) {
+                fixed (Byte* i = r) {
+                    return new UInt128(
+                        ((UInt64*)i)[0],
+                        ((UInt64*)i)[1]);
+                    }
+                }
+            throw new NotImplementedException();
+            }
+
         public static unsafe UInt128 operator +(UInt128 x, UInt32 y)
             {
             return (y == 0)
@@ -316,13 +332,16 @@ namespace BinaryStudio.Numeric
         /// <exception cref="T:System.DivideByZeroException"><paramref name="y"/> is 0 (zero).</exception>
         public static unsafe UInt32 operator %(UInt128 x, UInt32 y)
             {
-            if (y == 0) { throw new DivideByZeroException(); }
-            var r = 0UL;
-            for (var i = 0; i < 4; i++)
-                {
-                r += x.value[i] % y;
+            if (y == 0)   { throw new DivideByZeroException(); }
+            if (x.b == 0) { return (UInt32)(x.a%y); }
+            var r = 0L;
+            for (var i = 3; i >= 0; i--) {
+                var α = (Int64)x.value[i];
+                var β = r << 32;
+                var γ = (β | α);
+                r = (γ %y);
                 }
-            return (UInt32)(r % y);
+            return (UInt32)r;
             }
 
         /// <summary>Returns the remainder that results from division with two specified <see cref="UInt128"/> and <see cref="Int32"/> values.</summary>
@@ -402,9 +421,18 @@ namespace BinaryStudio.Numeric
                 case 'r':
                 case 'R':
                     {
-
+                    var q = this;
+                    var o = new StringBuilder();
+                    var r = q%10;
+                        q = q/10;
+                    o.Append((char)('0' + r));
+                    for (;q > 0;) {
+                        r = q%10;
+                        q = q/10;
+                        o.Insert(0, (char)('0' + r));
+                        }
+                    return o.ToString();
                     }
-                    break;
             }
             return "{?}";
             }

@@ -33,7 +33,9 @@ namespace shell
             var r64_1  = (UInt64*)&x64_1;
             var x128_1 = new UInt128(x64_1,0x1122334455667788UL);
             var r128_1 = (UInt64*)&x128_1;
-            var s_128_1 = x128_1.ToString();
+            var s64_1 = x64_1.ToString();
+            var s128_2 = ((UInt128)x64_1).ToString("r");
+            var s128_1 = x128_1.ToString("r");
             var u_1 = new U64();
             u_1.u64 = x64_1;
             var x32_0 = u_1.u32[0];
