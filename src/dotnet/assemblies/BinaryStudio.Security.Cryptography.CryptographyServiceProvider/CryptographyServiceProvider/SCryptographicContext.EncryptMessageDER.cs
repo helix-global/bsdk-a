@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    public partial class CryptographicContext
+    public partial class SCryptographicContext
         {
         #region M:EncryptMessageDER(IntPtr,IList<IX509Certificate>,Byte[],Int32):Byte[]
         private unsafe Byte[] EncryptMessageDER(IntPtr algid, IList<IX509Certificate> recipients, Byte[] block, Int32 blocksize) {

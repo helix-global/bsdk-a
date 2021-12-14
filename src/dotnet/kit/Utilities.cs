@@ -32,7 +32,7 @@ namespace Kit
 
         internal static IX509CertificateStorage BuildCertificateList(X509StoreLocation location, String storename, String certificates, CRYPT_PROVIDER_TYPE providertype) {
             if (storename == "device") {
-                using (var context = new CryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                using (var context = new SCryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     var storage = (IX509CertificateStorage)context.GetService(typeof(IX509CertificateStorage));
                     if (String.IsNullOrWhiteSpace(certificates)) { return storage; }
                     var values = certificates.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().ToUpper().Replace(" ", "")).ToList();

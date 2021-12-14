@@ -40,14 +40,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #endregion
 
         protected internal override ILogger Logger { get; }
-        public CryptographicContextStorage(CryptographicContext context)
+        public CryptographicContextStorage(SCryptographicContext context)
             {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             this.context = context;
             Logger = context.Logger;
             }
 
-        private readonly CryptographicContext context;
+        private readonly SCryptographicContext context;
         private MemoryCertificateStorage storage;
 
         IEnumerable<IX509Certificate> IX509CertificateStorage.Certificates { get {
@@ -56,7 +56,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }}
 
-        private unsafe void VerifyAccess(CryptographicContext context, Byte[] secdesc) {
+        private unsafe void VerifyAccess(SCryptographicContext context, Byte[] secdesc) {
             if (secdesc != null) {
                 var i = new RawSecurityDescriptor(secdesc, 0);
                 var c = WindowsIdentity.GetCurrent();
@@ -78,7 +78,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 yield break;
                 }
             storage = new MemoryCertificateStorage();
-            using (var provider = new CryptographicContext(context,
+            using (var provider = new SCryptographicContext(context,
                 CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT|
                 (context.UseMachineKeySet
                     ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET

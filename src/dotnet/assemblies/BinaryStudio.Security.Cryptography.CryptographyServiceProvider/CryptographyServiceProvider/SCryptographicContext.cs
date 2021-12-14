@@ -36,7 +36,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     [SuppressMessage("Design", "CA1060:Move pinvokes to native methods class")]
     [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
     #endif
-    public partial class CryptographicContext : CryptographicObject, ICryptographicContext
+    public partial class SCryptographicContext : CryptographicObject, ICryptographicContext
         {
         public const String XmlDsigSHA1                      = "http://www.w3.org/2000/09/xmldsig#sha1";
         public const String XmlDsigDSA                       = "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
@@ -63,7 +63,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public const String	URN_GOST_SIGN_2012_256           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
         public const String	URN_GOST_SIGN_2012_512           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
 
-        static CryptographicContext()
+        static SCryptographicContext()
             {
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), URN_GOST_SIGN_2012_256);
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_512_SignatureDescription), URN_GOST_SIGN_2012_512);
@@ -208,7 +208,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         #region M:EnumUserKeys:IEnumerable<CryptKey>
         public IEnumerable<CryptKey> EnumUserKeys(Boolean @throw) {
-            using (var context = new CryptographicContext(this,
+            using (var context = new SCryptographicContext(this,
                 CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT|
                 (UseMachineKeySet
                     ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
@@ -216,7 +216,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 {
                 var c = GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_FIRST, Encoding.ASCII)?.TrimEnd('\0');
                 while (c != null) {
-                    using (var ctx = new CryptographicContext(context, c,
+                    using (var ctx = new SCryptographicContext(context, c,
                         CryptographicContextFlags.CRYPT_SILENT|
                         (UseMachineKeySet
                             ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
@@ -233,7 +233,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
 
-        public CryptographicContext(Oid algid, CryptographicContextFlags flags)
+        public SCryptographicContext(Oid algid, CryptographicContextFlags flags)
             {
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             Logger = null;
@@ -255,7 +255,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         #region M:CryptographicContext(String,String,CRYPT_PROVIDER_TYPE,CryptographicContextFlags,ILogger)
-        public CryptographicContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags, ILogger logger) {
+        public SCryptographicContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags, ILogger logger) {
             UseMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             Logger = logger;
             Type = providertype;
@@ -277,31 +277,31 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:CryptographicContext(CRYPT_PROVIDER_TYPE,CryptographicContextFlags)
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags)
+        public SCryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags)
             :this(null, null, providertype, flags, null)
             {
             }
         #endregion
         #region M:CryptographicContext(CRYPT_PROVIDER_TYPE,CryptographicContextFlags,ILogger)
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags, ILogger logger)
+        public SCryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags, ILogger logger)
             :this(null, null, providertype, flags, logger)
             {
             }
         #endregion
         #region M:CryptographicContext(CRYPT_PROVIDER_TYPE,String,CryptographicContextFlags)
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags)
+        public SCryptographicContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags)
             :this(container, null, providertype, flags, null)
             {
             }
         #endregion
         #region M:CryptographicContext(CRYPT_PROVIDER_TYPE,String,CryptographicContextFlags,ILogger)
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags, ILogger logger)
+        public SCryptographicContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags, ILogger logger)
             :this(container, null, providertype, flags, logger)
             {
             }
         #endregion
         #region M:CryptographicContext(CryptographicContext,CryptographicContextFlags)
-        internal CryptographicContext(CryptographicContext provider, CryptographicContextFlags flags) {
+        internal SCryptographicContext(SCryptographicContext provider, CryptographicContextFlags flags) {
             if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
             Logger = provider.Logger;
             container = provider.container;
@@ -316,7 +316,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:CryptographicContext(CryptographicContext,String,CryptographicContextFlags)
-        internal CryptographicContext(CryptographicContext provider, String container, CryptographicContextFlags flags) {
+        internal SCryptographicContext(SCryptographicContext provider, String container, CryptographicContextFlags flags) {
             if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
             if (container == null) { throw new ArgumentNullException(nameof(container)); }
             Logger = provider.Logger;
@@ -331,7 +331,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:CryptographicContext(CryptographicContext,IX509Certificate)
-        public CryptographicContext(CryptographicContext provider, IX509Certificate certificate, CRYPT_ACQUIRE_FLAGS flags) {
+        public SCryptographicContext(SCryptographicContext provider, IX509Certificate certificate, CRYPT_ACQUIRE_FLAGS flags) {
             if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
             Logger = provider.Logger;
@@ -362,12 +362,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:RequestSigningSecureString(IX509Certificate,RequestSecureStringEventHandler):CryptographicContext
-        private CryptographicContext RequestSigningSecureString(IX509Certificate certificate, RequestSecureStringEventHandler requesthandler) {
-            var context = new CryptographicContext(this, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_NONE);
+        private SCryptographicContext RequestSigningSecureString(IX509Certificate certificate, RequestSecureStringEventHandler requesthandler) {
+            var context = new SCryptographicContext(this, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_NONE);
             if (requesthandler != null) {
                 if (!context.IsSecureCodeStored()) {
                     context.Dispose();
-                    context = new CryptographicContext(this, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_SILENT_FLAG);
+                    context = new SCryptographicContext(this, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_SILENT_FLAG);
                     var e = new RequestSecureStringEventArgs
                         {
                         Container = context.FullQualifiedContainerName
@@ -458,7 +458,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
             var si_32 = new CMSG_SIGNED_ENCODE_INFO32();
             var si_64 = new CMSG_SIGNED_ENCODE_INFO64();
-            var contextes = new List<CryptographicContext>();
+            var contextes = new List<SCryptographicContext>();
             try
                 {
                 #region x86

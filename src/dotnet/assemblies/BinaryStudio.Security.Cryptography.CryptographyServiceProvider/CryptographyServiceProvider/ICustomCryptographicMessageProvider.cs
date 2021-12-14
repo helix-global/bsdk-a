@@ -7,6 +7,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     public interface ICustomCryptographicMessageProvider
         {
-        Boolean VerifyMessage(CryptographicContext context, Stream input, Stream output, CryptographicMessageFlags type, out IList<IX509Certificate> certificates, out Exception e);
+        Boolean VerifyMessage(SCryptographicContext context, Stream input, Stream output, CryptographicMessageFlags type, out IList<IX509Certificate> certificates, out Exception e);
         }
     }

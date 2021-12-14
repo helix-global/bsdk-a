@@ -103,7 +103,7 @@ namespace Kit
         //    }
         //#endregion
         #region M:EncryptMessage(Stream,Stream,CryptographicContext,IList<X509Certificate>,Oid)
-        private static void EncryptMessage(Stream inputfile, Stream outputfile, CryptographicContext context, IList<IX509Certificate> recipients, Oid algid, String asn1)
+        private static void EncryptMessage(Stream inputfile, Stream outputfile, SCryptographicContext context, IList<IX509Certificate> recipients, Oid algid, String asn1)
             {
                  if (asn1 == "ber") { context.EncryptMessageBER(algid, recipients, inputfile, outputfile); }
             else if (asn1 == "der") { context.EncryptMessageDER(algid, recipients, inputfile, outputfile); }

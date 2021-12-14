@@ -697,7 +697,7 @@ namespace Kit
                             }
                         }
                     else if (providertype < 0) {
-                        foreach (var type in CryptographicContext.AvailableTypes)
+                        foreach (var type in SCryptographicContext.AvailableTypes)
                             {
                             Console.WriteLine($"{type.Key}[{(UInt32)type.Key}]:\"{type.Value}\"");
                             }
@@ -729,7 +729,7 @@ namespace Kit
                     #region Operations
                     else if (operations.Length > 0)
                         {
-                        using (var context = new CryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                        using (var context = new SCryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                             var store = Utilities.BuildCertificateList(storeloc, storename, certificates, (CRYPT_PROVIDER_TYPE)providertype);
                             #region Message Operations
                             if (message) {
@@ -974,7 +974,7 @@ namespace Kit
                         OmitXmlDeclaration = true,
                         })) {
                     using (IX509CertificateStorage store = (storename == "device")
-                        ? (IX509CertificateStorage)(new CryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)).GetService(typeof(IX509CertificateStorage))
+                        ? (IX509CertificateStorage)(new SCryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)).GetService(typeof(IX509CertificateStorage))
                         : Directory.Exists(storename)
                             ? (IX509CertificateStorage)new X509CertificateStorage(new Uri(GetFolderAbsolutePath(storename)))
                             : new X509CertificateStorage(ToStoreName(storename), storeloc)) {

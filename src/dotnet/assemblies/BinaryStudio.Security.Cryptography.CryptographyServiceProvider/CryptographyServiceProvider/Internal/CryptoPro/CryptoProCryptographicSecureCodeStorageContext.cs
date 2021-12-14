@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         #region M:IsSecureCodeStored(CryptographicContext):Boolean
-        public override Boolean IsSecureCodeStored(CryptographicContext context)
+        public override Boolean IsSecureCodeStored(SCryptographicContext context)
             {
             var uniquecontainer = context.UniqueContainer;
             if (String.IsNullOrWhiteSpace(uniquecontainer)) { return false; }

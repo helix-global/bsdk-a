@@ -15,14 +15,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     #endif
     public class CryptKey : CryptographicObject, ICryptKey
         {
-        internal CryptKey(CryptographicContext context, IntPtr handle) {
+        internal CryptKey(SCryptographicContext context, IntPtr handle) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (handle == null) { throw new ArgumentNullException(nameof(handle)); }
             this.handle = handle;
             Context = context;
             }
 
-        internal CryptKey(CryptographicContext context, IntPtr handle, String container, X509KeySpec keyspec)
+        internal CryptKey(SCryptographicContext context, IntPtr handle, String container, X509KeySpec keyspec)
             :this(context, handle)
             {
             Container = container;
@@ -66,7 +66,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #endregion
 
         public override IntPtr Handle { get { return handle; }}
-        public CryptographicContext Context {  get; }
+        public SCryptographicContext Context {  get; }
         protected internal override ILogger Logger { get; }
         public String Container { get; }
         public X509KeySpec KeySpec { get; }

@@ -36,7 +36,7 @@ namespace Operations
                 }
             }
 
-        protected override void Execute(TextWriter output, CryptographicContext context, IX509CertificateStorage store) {
+        protected override void Execute(TextWriter output, SCryptographicContext context, IX509CertificateStorage store) {
             CreateMessage(
                 context, store,
                 InputFileName[0], OutputFileName?.FirstOrDefault(),
@@ -44,7 +44,7 @@ namespace Operations
             }
 
         #region M:CreateMessage(CryptographicContext,IX509CertificateStorage,String,String,CryptographicMessageFlags)
-        public void CreateMessage(CryptographicContext context, IX509CertificateStorage store, String inputfilename, String outputfilename, CryptographicMessageFlags flags) {
+        public void CreateMessage(SCryptographicContext context, IX509CertificateStorage store, String inputfilename, String outputfilename, CryptographicMessageFlags flags) {
             if (store == null) { throw new ArgumentNullException(nameof(store)); }
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (String.IsNullOrEmpty(inputfilename)) { throw new ArgumentOutOfRangeException(nameof(inputfilename)); }
@@ -64,7 +64,7 @@ namespace Operations
             }
         #endregion
         #region M:CreateMessage(CryptographicContext,IEnumerable<IX509Certificate>,Stream,Stream,CryptographicMessageFlags)
-        private void CreateMessage(CryptographicContext context, IEnumerable<IX509Certificate> certificates, Stream inputfile, Stream outputfile, CryptographicMessageFlags flags) {
+        private void CreateMessage(SCryptographicContext context, IEnumerable<IX509Certificate> certificates, Stream inputfile, Stream outputfile, CryptographicMessageFlags flags) {
             if (certificates == null) { throw new ArgumentNullException(nameof(certificates)); }
             if (inputfile  == null) { throw new ArgumentNullException(nameof(inputfile));  }
             if (outputfile == null) { throw new ArgumentNullException(nameof(outputfile)); }

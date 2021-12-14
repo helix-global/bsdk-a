@@ -44,7 +44,7 @@ namespace Operations
         #region M:BuildCertificateStorage:IX509CertificateStorage
         private IX509CertificateStorage BuildCertificateStorage() {
             if (String.Equals(StoreName, "device", StringComparison.OrdinalIgnoreCase)) {
-                using (var context = new CryptographicContext(ProviderType, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                using (var context = new SCryptographicContext(ProviderType, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     var storage = (IX509CertificateStorage)context.GetService(typeof(IX509CertificateStorage));
                     if (IsNullOrEmpty(Certificates)) { return storage; }
                     var r = new X509CertificateStorage();
@@ -74,10 +74,10 @@ namespace Operations
             }
         #endregion
 
-        protected abstract void Execute(TextWriter output, CryptographicContext context, IX509CertificateStorage store);
+        protected abstract void Execute(TextWriter output, SCryptographicContext context, IX509CertificateStorage store);
 
         public sealed override void Execute(TextWriter output) {
-            using (var context = new CryptographicContext(
+            using (var context = new SCryptographicContext(
                 ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 using (var store = BuildCertificateStorage()) {

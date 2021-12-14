@@ -46,7 +46,7 @@ namespace Kit
                     break;
                     }
                 }
-            using (var context = new CryptographicContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+            using (var context = new SCryptographicContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 //using (var hashengine = new CryptHashAlgorithm(context, ALG_ID.CALG_GR3410_12_256))
                     {
                     //var hash = hashengine.Compute(Encoding.UTF8.GetBytes("sample"));

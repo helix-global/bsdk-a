@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    public partial class CryptographicContext
+    public partial class SCryptographicContext
         {
         #region M:DecryptMessageDER(Byte[],X509CertificateStorage):Byte[]
         private unsafe Byte[] DecryptMessageDER(Byte[] inputblock, X509CertificateStorage storage) {

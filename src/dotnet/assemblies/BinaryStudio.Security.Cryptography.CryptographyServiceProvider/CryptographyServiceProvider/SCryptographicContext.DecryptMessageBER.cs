@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    public partial class CryptographicContext
+    public partial class SCryptographicContext
         {
         #region M:DecryptMessageBER(Stream,Stream,X509Certificate[],X509Certificate[Out],Int32[Out],UInt32)
         private unsafe void DecryptMessageBER(Stream inputstream, Stream outputstream, X509Certificate[] certificates, out X509Certificate certificate, out Int32 recipientindex, CRYPT_ACQUIRE_FLAGS flags) {
@@ -73,7 +73,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                             continue;
                                             }
 
-                                        using (var context = new CryptographicContext(this, certificate, flags)) {
+                                        using (var context = new SCryptographicContext(this, certificate, flags)) {
                                             var para = new CMSG_CTRL_DECRYPT_PARA {
                                                 Size = sizeof(CMSG_CTRL_DECRYPT_PARA),
                                                 KeySpec = (KEY_SPEC_TYPE)certificate.KeySpec,
@@ -127,7 +127,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         if (!decrypting) {
                             m.GetParameter(CMSG_PARAM.CMSG_ENVELOPE_ALGORITHM_PARAM, 0, out var hr);
                             if (hr == 0) {
-                                using (var context = new CryptographicContext(this, certificate, flags)) {
+                                using (var context = new SCryptographicContext(this, certificate, flags)) {
                                     var para = new CMSG_CTRL_DECRYPT_PARA {
                                         Size = sizeof(CMSG_CTRL_DECRYPT_PARA),
                                         KeySpec = (KEY_SPEC_TYPE)certificate.KeySpec,
@@ -248,7 +248,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                             continue;
                                             }
 
-                                        using (var context = new CryptographicContext(this, certificate, flags)) {
+                                        using (var context = new SCryptographicContext(this, certificate, flags)) {
                                             var para = new CMSG_CTRL_DECRYPT_PARA {
                                                 Size = sizeof(CMSG_CTRL_DECRYPT_PARA),
                                                 KeySpec = (KEY_SPEC_TYPE)certificate.KeySpec,
@@ -304,7 +304,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         if (!decrypting) {
                             m.GetParameter(CMSG_PARAM.CMSG_ENVELOPE_ALGORITHM_PARAM, 0, out var hr);
                             if (hr == 0) {
-                                using (var context = new CryptographicContext(this, certificate, flags)) {
+                                using (var context = new SCryptographicContext(this, certificate, flags)) {
                                     var para = new CMSG_CTRL_DECRYPT_PARA {
                                         Size = sizeof(CMSG_CTRL_DECRYPT_PARA),
                                         KeySpec = (KEY_SPEC_TYPE)certificate.KeySpec,

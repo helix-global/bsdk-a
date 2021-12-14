@@ -16,23 +16,23 @@
     <Folder Include="Internal\CryptoAPICOM\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="CryptographyServiceProvider\CryptographicContext.EncryptMessageDER.cs" />
-    <Compile Remove="CryptographyServiceProvider\CryptographicContext.DecryptMessageBER.cs" />
-    <Compile Remove="CryptographyServiceProvider\CryptographicContext.DecryptMessageDER.cs" />
-    <Compile Remove="CryptographyServiceProvider\CryptographicContext.EncryptMessageBER.cs" />
+    <Compile Remove="CryptographyServiceProvider\SCryptographicContext.EncryptMessageDER.cs" />
+    <Compile Remove="CryptographyServiceProvider\SCryptographicContext.DecryptMessageBER.cs" />
+    <Compile Remove="CryptographyServiceProvider\SCryptographicContext.DecryptMessageDER.cs" />
+    <Compile Remove="CryptographyServiceProvider\SCryptographicContext.EncryptMessageBER.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptographyServiceProvider\CryptographicContext.DecryptMessageBER.cs">
-      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    <Compile Include="CryptographyServiceProvider\SCryptographicContext.DecryptMessageBER.cs">
+      <DependentUpon>SCryptographicContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="CryptographyServiceProvider\CryptographicContext.DecryptMessageDER.cs">
-      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    <Compile Include="CryptographyServiceProvider\SCryptographicContext.DecryptMessageDER.cs">
+      <DependentUpon>SCryptographicContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="CryptographyServiceProvider\CryptographicContext.EncryptMessageBER.cs">
-      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    <Compile Include="CryptographyServiceProvider\SCryptographicContext.EncryptMessageBER.cs">
+      <DependentUpon>SCryptographicContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="CryptographyServiceProvider\CryptographicContext.EncryptMessageDER.cs">
-      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    <Compile Include="CryptographyServiceProvider\SCryptographicContext.EncryptMessageDER.cs">
+      <DependentUpon>SCryptographicContext.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

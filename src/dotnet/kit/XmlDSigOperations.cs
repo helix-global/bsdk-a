@@ -24,7 +24,7 @@ namespace Kit
         protected const String XmlDSigSchema = "http://www.w3.org/2000/09/xmldsig#";
 
         #region M:CreateAttachedMessage(CryptographicContext,IEnumerable<IX509Certificate>,String,String,String)
-        public static void CreateAttachedMessage(CryptographicContext context, IEnumerable<IX509Certificate> certificates, String inputfilename, String outputfilename, String timestamp, XAdESFlags flags) {
+        public static void CreateAttachedMessage(SCryptographicContext context, IEnumerable<IX509Certificate> certificates, String inputfilename, String outputfilename, String timestamp, XAdESFlags flags) {
             if (certificates == null) { throw new ArgumentNullException(nameof(certificates)); }
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (String.IsNullOrEmpty(inputfilename)) { throw new ArgumentOutOfRangeException(nameof(inputfilename)); }
@@ -50,7 +50,7 @@ namespace Kit
             }
         #endregion
         #region M:CreateAttachedMessage(CryptographicContext,IEnumerable<IX509Certificate>,Stream,Stream,String)
-        private static void CreateAttachedMessage(CryptographicContext context, IEnumerable<IX509Certificate> certificates, Stream inputfile, Stream outputfile, String timestamp, XAdESFlags flags) {
+        private static void CreateAttachedMessage(SCryptographicContext context, IEnumerable<IX509Certificate> certificates, Stream inputfile, Stream outputfile, String timestamp, XAdESFlags flags) {
             if (certificates == null) { throw new ArgumentNullException(nameof(certificates)); }
             if (inputfile    == null) { throw new ArgumentNullException(nameof(inputfile));    }
             if (outputfile   == null) { throw new ArgumentNullException(nameof(outputfile));   }
@@ -119,7 +119,7 @@ namespace Kit
             }
         #endregion
         #region M:CreateAttachedSignature(CryptographicContext,IX509Certificate,XmlDocument,DateTime?):XmlElement
-        private static XmlElement CreateAttachedSignature(CryptographicContext context, IX509Certificate certificate, XmlDocument document, DateTime? timestamp, String tspserver, XAdESFlags flags)
+        private static XmlElement CreateAttachedSignature(SCryptographicContext context, IX509Certificate certificate, XmlDocument document, DateTime? timestamp, String tspserver, XAdESFlags flags)
             {
             var store = new X509Store(StoreName.My);
             store.Open(OpenFlags.ReadWrite);
@@ -148,7 +148,7 @@ namespace Kit
                     SigningKey = certificate.PrivateKey,
                     };
                 }
-            var digestmethod = CryptographicContext.OIDToXmlDSig(CryptographicContext.SignatureToHashAlg(certificate.SignatureAlgorithm));
+            var digestmethod = SCryptographicContext.OIDToXmlDSig(SCryptographicContext.SignatureToHashAlg(certificate.SignatureAlgorithm));
             signedxml.Signature.Id = $"id-{(new Random()).Next(65535):X4}";
             var reference = new Reference(String.Empty)
                 {
@@ -196,7 +196,7 @@ namespace Kit
             }
         #endregion
         #region M:VerifyMessage(CryptographicContext,String,String,[Out]HashSet<IX509Certificate>)
-        public static void VerifyMessage(CryptographicContext context, String inputfilename, String outputfilename, out HashSet<IX509Certificate> certificates)
+        public static void VerifyMessage(SCryptographicContext context, String inputfilename, String outputfilename, out HashSet<IX509Certificate> certificates)
             {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (String.IsNullOrEmpty(inputfilename)) { throw new ArgumentOutOfRangeException(nameof(inputfilename)); }
@@ -216,7 +216,7 @@ namespace Kit
             }
         #endregion
         #region M:VerifyMessage(CryptographicContext,Stream,Stream,[Out]HashSet<IX509Certificate>)
-        private static void VerifyMessage(CryptographicContext context,Stream inputfile, Stream outputfile, out HashSet<IX509Certificate> certificates,String inputpath)
+        private static void VerifyMessage(SCryptographicContext context,Stream inputfile, Stream outputfile, out HashSet<IX509Certificate> certificates,String inputpath)
             {
             certificates = new HashSet<IX509Certificate>();
             if (inputfile  == null) { throw new ArgumentNullException(nameof(inputfile));  }
@@ -296,7 +296,7 @@ namespace Kit
                 if (encapsulatedTimeStamp != null) {
                     var timestampresponse = Convert.FromBase64String(encapsulatedTimeStamp.InnerText);
                     var digestmethod = XAdESSignedXml.XmlDSigToOid(signedxml.SignatureMethod);
-                    using (var localcontext = new CryptographicContext(digestmethod, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                    using (var localcontext = new SCryptographicContext(digestmethod, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                         localcontext.VerifyAttachedMessageSignature(timestampresponse, out var signers, new CustomCertificateResolver());
                         certificates.UnionWith(signers);
                         }

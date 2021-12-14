@@ -45,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:IsSecureCodeStored(CryptographicContext):Boolean
-        public virtual Boolean IsSecureCodeStored(CryptographicContext context) {
+        public virtual Boolean IsSecureCodeStored(SCryptographicContext context) {
             return false;
             }
         #endregion

@@ -48,7 +48,7 @@ namespace BinaryStudio.Security.XAdES
                 var hashDataInfo = (XmlElement)signatureTimeStamp.AppendChild(document.CreateElement("HashDataInfo", XAdESSchema));
                 var encapsulatedTimeStamp = (XmlElement)signatureTimeStamp.AppendChild(document.CreateElement("EncapsulatedTimeStamp", XAdESSchema));
                 hashDataInfo.SetAttribute("uri", $"#{id}-value");
-                using (var context = new CryptographicContext(digestmethod, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                using (var context = new SCryptographicContext(digestmethod, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     using (var hashengine = context.CreateHashAlgorithm(digestmethod)) {
                         var signaturevalue = (XmlElement)target.SelectSingleNode("d:SignatureValue", nsmgr);
                         signaturevalue.SetAttribute("Id", $"#{id}-value");

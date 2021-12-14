@@ -12,7 +12,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    public partial class CryptographicContext
+    public partial class SCryptographicContext
         {
         #region M:EncryptMessageBER(Oid,IList<IX509Certificate>,Stream,Stream)
         public unsafe void EncryptMessageBER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream) {
