@@ -13,8 +13,8 @@ namespace Operations
         public String Policy { get; }
         public String InputFileName { get; }
 
-        public VerifyOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             ProviderType  = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
             Policy        = args.OfType<PolicyOption>().FirstOrDefault()?.Value;

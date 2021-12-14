@@ -19,8 +19,8 @@ namespace Operations
         public PinCodeRequestTypeKind PinCodeRequestType { get; }
         public Boolean IsXml {get; }
 
-        public CreateMessageOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        public CreateMessageOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             PinCodeRequestType = args.OfType<PinCodeRequestType>().First().Value;
             var flags = args.OfType<CreateOption>().FirstOrDefault();

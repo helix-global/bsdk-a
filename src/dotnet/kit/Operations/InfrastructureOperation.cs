@@ -8,8 +8,8 @@ namespace Operations
     {
     internal class InfrastructureOperation : Operation
         {
-        public InfrastructureOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        public InfrastructureOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             }
 

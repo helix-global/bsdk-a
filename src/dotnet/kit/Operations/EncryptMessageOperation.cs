@@ -22,8 +22,8 @@ namespace Operations
         public Boolean IsBlock { get; }
         public Int32 BlockSize { get; }
         public CryptographicMessageFlags MessageFlags { get; }
-        public EncryptMessageOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        public EncryptMessageOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             AlgId = args.OfType<AlgId>().FirstOrDefault();
             var flags = args.OfType<EncryptOption>().FirstOrDefault();

@@ -37,8 +37,8 @@ namespace Operations
         private String StoreName { get; }
         private String Filter { get; }
 
-        public BatchOperation(TextWriter output, IList<OperationOption> args) 
-            : base(output, args)
+        public BatchOperation(TextWriter output, TextWriter error, IList<OperationOption> args) 
+            : base(output, error, args)
             {
             InputFileName    = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values;
             TargetFolder     = args.OfType<OutputFileOrFolderOption>().FirstOrDefault()?.Values?.FirstOrDefault();

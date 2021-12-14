@@ -11,17 +11,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
-using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.PortableExecutable;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
-using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.PortableExecutable.DebugEngine;
 using kit;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -179,328 +175,6 @@ namespace Kit
             //Console.WriteLine("Press [ENTER] to continue...");
             //Console.ReadLine();
 #endif
-            //using (var sc = new TraceScope())
-            //    {
-            //    var x1 = sc.Enter("1");
-            //    var x2 = sc.Enter("2");
-            //    sc.Leave(x2);
-            //    sc.Leave(x1);
-            //    sc.Print();
-            //    }
-
-            /*
-            #if H1
-            var encoder = new ASCII85Encoder();
-            unsafe
-                {
-                for (var i = 0; i < 64; i++) {
-                    var buffer = new Byte[64];
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 0, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 16, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 32, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 48, 16);
-                    using (var hash = new SHA512Managed())
-                        {
-                        Console.Out.WriteLine(encoder.Encode(hash.ComputeHash(buffer)));
-                        }
-                    }
-                }
-            #else
-            var encoder = new ASCII85Encoder();
-            unsafe
-                {
-                for (var i = 0; i < 64; i++) {
-                    var buffer = new Byte[64];
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 0, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 16, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 32, 16);
-                    Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 48, 16);
-                    using (var hash = new MD5CryptoServiceProvider())
-                        {
-                        Console.Out.WriteLine(encoder.Encode(hash.ComputeHash(buffer)));
-                        }
-                    }
-                }
-            return;
-            #endif
-            */
-
-            //{
-            //var n = Enum.GetNames(typeof(NTSTATUS)).Max(i => i.Length);
-            //var format = "{0,-" + n + "} = unchecked((Int32)0x{1:X8}),";
-            //foreach (var value in Enum.GetValues(typeof(NTSTATUS)))
-            //    {
-            //    var x = String.Format(format,
-            //        Enum.GetName(typeof(NTSTATUS), value),
-            //        (Int32)(NTSTATUS)value
-            //        );
-            //    Console.WriteLine(x);
-            //    }
-            //}
-
-            //Debug.Print($"sizeof(HIDP_BUTTON_CAPS)={sizeof(HIDP_BUTTON_CAPS)}");
-            //foreach (var i in HidDeviceInterface.GetDeviceInterfaces(DIGCF_FLAGS.DIGCF_PRESENT | DIGCF_FLAGS.DIGCF_DEVICEINTERFACE)) {
-            //    JsonSerialize(i, Console.Out);
-            //    }
-            //HID.HidD_GetHidGuid(out var guid);
-            //var devinfoset = HID.SetupDiGetClassDevs(ref guid, null, IntPtr.Zero, DIGCF_FLAGS.DIGCF_PRESENT | DIGCF_FLAGS.DIGCF_DEVICEINTERFACE);
-            //if (devinfoset != IntPtr.Zero) {
-            //    Int16 deviceIndex = 0;
-            //    var deviceInterfaceData = new SP_DEVICE_INTERFACE_DATA{ Size = sizeof(SP_DEVICE_INTERFACE_DATA)};
-            //    while (HID.SetupDiEnumDeviceInterfaces(devinfoset, IntPtr.Zero, ref guid, deviceIndex, ref deviceInterfaceData)) {
-            //        if (HID.SetupDiGetDeviceInterfaceDetail(devinfoset, ref deviceInterfaceData, out var devicepath, IntPtr.Zero)) {
-            //            Debug.Print($"[{devicepath}]");
-            //            var file = HID.CreateFile(devicepath, 0, FileShare.ReadWrite, null, FileMode.Open, 0, IntPtr.Zero);
-            //            if (!file.IsInvalid) {
-            //                if (HID.HidD_GetPreparsedData(file, out var preparsedData)) {
-            //                    var attributes = new HIDD_ATTRIBUTES { Size = sizeof(HIDD_ATTRIBUTES)};
-            //                    if (HID.HidD_GetAttributes(file, ref attributes)) {
-            //                        if (HID.HidP_GetCaps(preparsedData, out var capabilities) == HID.HIDP_STATUS_SUCCESS) {
-            //                            Debug.Print($"  Capabilities:Usage={capabilities.Usage}[0x{(Int32)capabilities.Usage:x}];UsagePage={capabilities.UsagePage}[0x{(Int32)capabilities.UsagePage:x}]");
-            //                            }
-            //                        if (HID.HidP_GetButtonCaps(HIDP_REPORT_TYPE.HidP_Input, out var buttonCaps, preparsedData) == HID.HIDP_STATUS_SUCCESS) {
-            //                            var i = 0;
-            //                            foreach (var buttonCap in buttonCaps) {
-            //                                Debug.Print($"  ButtonCap#{i}:UsagePage={buttonCap.UsagePage}[0x{(Int32)buttonCap.UsagePage:x}];Usage={buttonCap.NotRange.Usage}[0x{(Int32)buttonCap.NotRange.Usage:x};IsAlias={buttonCap.IsAlias};IsRange={buttonCap.IsRange}]");
-            //                                i++;
-            //                                }
-            //                            }
-            //                        if (HID.HidP_GetValueCaps(HIDP_REPORT_TYPE.HidP_Input, out var valueCaps, preparsedData) == HID.HIDP_STATUS_SUCCESS) {
-            //                            var i = 0;
-            //                            foreach (var valueCap in valueCaps) {
-            //                                Debug.Print($"  ValueCap#{i}:UsagePage={valueCap.UsagePage}[0x{(Int32)valueCap.UsagePage:x}];Usage={valueCap.NotRange.Usage}[0x{(Int32)valueCap.NotRange.Usage:x};IsAlias={valueCap.IsAlias};IsRange={valueCap.IsRange}]");
-            //                                i++;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            else
-            //                {
-            //                var lastWin32Error = Marshal.GetLastWin32Error();
-            //                Validate(lastWin32Error);
-            //                }
-            //            }
-            //        deviceIndex++;
-            //        }
-            //}
-            //using (var md5 = new MD5Cng())
-            //    {
-            //    using (var file = File.OpenRead(@"c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\unknwnbase.h"))
-            //        {
-            //        md5.Initialize();
-            //        var r = md5.ComputeHash(file);
-            //        Debug.Print(String.Join("", r.Select(i => i.ToString("X2"))));
-            //        }
-            //    }
-
-            //using (var device = new HidDeviceStream(@"\\?\hid#vid_060e&pid_16c1#6&321daaac&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"))
-            //{
-            //    var buffer = new Byte[1024];
-            //    while (true)
-            //    {
-            //        var sz = device.Read(buffer, 0, buffer.Length);
-            //        Debug.Print($"Read:{sz}");
-            //        Thread.Sleep(1000);
-            //    }
-            //}
-            ////var lastWin32Error = Marshal.GetLastWin32Error();
-            ////Validate(lastWin32Error);
-
-            ////var deviceInfo = new SP_DEVINFO_DATA { cbSize = sizeof(SP_DEVINFO_DATA) };
-            ////while (HID.SetupDiEnumDeviceInfo(devinfoset, deviceIndex, ref deviceInfo))
-            ////    {
-            ////    Int32 c = 0;
-            ////    HID.SetupDiGetClassPropertyKeys(ref deviceInfo.ClassGuid, IntPtr.Zero, 0, &c, DICLASSPROP_FLAGS.DICLASSPROP_INSTALLER);
-            ////    var keys = new DEVPROPKEY[c];
-            ////    HID.SetupDiGetClassPropertyKeys(ref deviceInfo.ClassGuid, keys, keys.Length, &c, DICLASSPROP_FLAGS.DICLASSPROP_INSTALLER);
-            ////    //if (HID.SetupDiGetDeviceProperty(devinfoset, ref deviceInfo, ))
-            ////    deviceIndex++;
-            ////    }
-            //}
-            using (var scope = new MetadataScope())
-                {
-                //var z1 = scope.LoadObject(@"C:\Temp4\winhttp.dll.mui.dll ");
-                //return;
-                }
-
-            /*
-            var output = new Dictionary<String,Tuple<List<Int32>,HashSet<String>>>();
-            var maxcols = 0;
-            using (var reader = new CSVDataReader(
-                new StreamReader(new FileStream(@"C:\TFS\h2\rfc\IA-32E.csv", FileMode.Open, FileAccess.Read, FileShare.ReadWrite)),
-                ";", String.Empty, CultureInfo.CurrentCulture, Encoding.UTF8, CSVDataReaderFlags.Delimited, 1)) {
-                var oregex = new Regex(@"^(?:(NFx|NP)\s+)?(?:(?:(?:(REX[.][WR]|REX)(?:\s+[+])?))\s+)?(?:\s*((?:EVEX|VEX)[A-Z0-9.]+)\s+)?([A-Fa-f0-9]{2})(?:\s+([A-Fa-f0-9]{2}|REX[.][Ww]|REX))*([+]\s*(?:rb|rd|rw|i))?(?:\s*(/r|/r|/0?[0-9]))?(?:\s+(cp|cw|ib|id|io|imm8|iw|/ib|/is4|/vsib))*(\s+(00|01))?$");
-                var iregex = new Regex(@"^\p{L}+");
-                while (reader.Read()) {
-                    var n = reader.GetInt32(0);
-                    var o = reader.GetString(4);
-                    var ins = reader.GetString(5);
-                    if (!oregex.IsMatch(o)) { throw new InvalidDataException($"Invalid opcode at {n}"); }
-                    else
-                        {
-                        var match = oregex.Match(o);
-                        var builder = new StringBuilder();
-                        var j = 0;
-                        foreach (var i in match.Groups.OfType<Group>().Where(i => i.Success).Skip(1).SelectMany(i => i.Captures.OfType<Capture>()).Select(i => i.Value.Replace(" ",""))) {
-                            if (j == 0) {
-                                if (i.StartsWith("REX")) {
-                                    builder.Append($"{i.ToUpper()}");
-                                    }
-                                else if (i.StartsWith("NP"))
-                                    {
-                                    j--;
-                                    }
-                                else
-                                    {
-                                    builder.Append(i);
-                                    }
-                                }
-                            else
-                                {
-                                if (i[0] != '+') { builder.Append(' '); }
-                                if (i.StartsWith("REX")) {
-                                    builder.Append($"{i.ToUpper()}");
-                                    }
-                                else if (i.StartsWith("NP")) {
-                                    
-                                    }
-                                else
-                                    {
-                                    builder.Append(i);
-                                    }
-                                }
-                            j++;
-                            }
-                        var key = builder.ToString();
-                        //var values = key.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries);
-                        //if (!output.TryGetValue(key, out var r)) {
-                        //    output.Add(key, r = Tuple.Create(new List<Int32>(),new HashSet<String>()));
-                        //    }
-                        //r.Item1.Add(n);
-                        //r.Item2.Add(ins);
-                        //maxcols = Math.Max(maxcols, r.Item2.Count);
-                        Console.WriteLine($"{n};{String.Join(" ", key.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries).Select(x => $"{{{x}}}"))}");
-                        }
-                    }
-                return;
-                }
-
-            foreach (var item in output) {
-                Console.Write($"{String.Join(",", item.Value.Item1)};{item.Key};");
-                if (item.Value.Item2.Count == maxcols)
-                    {
-                    Console.Write($"{String.Join(";", item.Value.Item2)}");
-                    }
-                else
-                    {
-                    Console.Write($"{String.Join(";", item.Value.Item2)}");
-                    Console.Write(new String(';', maxcols - item.Value.Item2.Count));
-                    }
-                Console.WriteLine();
-                }
-                return;
-                */
-            //File.WriteAllBytes(@"C:\TFS\Old_ztfs_Collection\FCOD\Packages\ti\FT.Security.Cryptography\FT.Security.Cryptography.1.0.131\csecapi\.intermediate\x64\Release\asn1_r.obj", nfile);
-            //int X = Int32.MinValue;
-            //var L = LoadLibraryExW("kernel32.dll", IntPtr.Zero, 0);
-            //var F = GetProcAddress(L, "AddDllDirectory");
-            //var client = new DebugClient(-1);
-            //var BeginOffset = F;
-            //for (var i = 0; i < 30; i++)
-            //{
-            //    var r = client.Disassemble(BeginOffset, out var DisassemblySize, out var EndOffset);
-            //    Debug.Print(r);
-            //    BeginOffset = EndOffset;
-            //}
-            
-
-            //using (var reader = new OpcodeStreamReader64(GetProcAddress(L, "AddDllDirectory"))) {
-            ////using (var reader = new OpcodeStreamReader(new Byte[]{
-            ////        0x48,0x81,0x6C,0x24,0x40,0x00,0x00,0x00,0xA0,
-            ////        0x48,0x81,0xEC,0x00,0x00,0x00,0xA0,
-            ////        })) {
-            //    for (var i = 0; i < 100; i++) {
-            //        var opcode = reader.Read();
-            //        Console.WriteLine($@"Opcode:""{opcode.Size}"":{opcode.ToStringInternal()}");
-            //        }
-            //    return;
-            //    }
-
-            //using (var context = new SCardContext(SCardScope.User)) {
-            //    foreach (var reader in context.Readers) {
-            //        Debug.Print($@"Reader:""{reader.Name}""");
-            //        }
-            //    }
-
-            //var n = 0;
-            //using (var file = File.OpenRead(@"C:\TFS\Old_ztfs_Collection\FCOD\Packages\ti\FT.Security.Cryptography\FT.Security.Cryptography.1.0.131\packages\csecapi\OPK001_20210120175503.orig")) {
-            //    using (var reader = new BinaryReader(file)) {
-            //        file.Seek(4, SeekOrigin.Begin);
-            //        var sz = reader.ReadInt32();
-            //        var buffer = new Byte[sz];
-            //        Debug.Assert(file.Read(buffer, 0, sz) == sz);
-            //        File.WriteAllBytes($@"c:\temp5\out\{n:D5}.bin", buffer);
-            //        n++;
-            //        }
-            //    }
-            //return;
-
-            //var jws = new SignedJWS(new JsonTextReader(new StreamReader(File.OpenRead(@"C:\TFS\h2\samples\ChannelManifest.json"))));
-            //JsonSerialize(jws, Console.Out);
-
-            //JsonSerialize(new CmsMessage(File.ReadAllBytes(@"C:\TFS\h2\icao\ru\rfid\rfid07\DGE040.p7")), new StreamWriter(File.Create(@"C:\TFS\h2\icao\ru\rfid\rfid07\DGE040.json")));
-            //JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\Temp\29_09_2020.crl")), new StreamWriter(File.Create(@"c:\temp\29_09_2020.crl.json"))); 
-            //return;
-            //JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\Temp\20-02-12.crl")), new StreamWriter(File.Create(@"c:\temp\20-02-12.json"))); 
-            //foreach (var file in Directory.EnumerateFiles(@"C:\TFS\h2\icao\", "*.crl", SearchOption.AllDirectories))
-            //    {
-            //    JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(file)), Console.Out); 
-            //    }
-            //JsonSerialize(new X509Certificate(File.ReadAllBytes(@"C:\TFS\h2\icao\tm\C=TM,O=GOV,OU=SFCRS,CN=Document Signer 3,SN=61038A9D000100000093.cer")), Console.Out);
-            //return;
-            //foreach (var file in Directory.EnumerateFiles(@"C:\TFS\h2\icao\", "*.cer", SearchOption.AllDirectories))
-            //    {
-            //    try
-            //        {
-            //        JsonSerialize(new X509Certificate(File.ReadAllBytes(file)), Console.Out);
-            //        }
-            //    catch (Exception e)
-            //        {
-            //        Console.Error.WriteLine($@"FILE:""{file}""");
-            //        Console.Error.WriteLine(e);
-            //        throw;
-            //        }
-            //    }
-            //JsonSerialize(Asn1Object.Load(@"C:\TFS\h2\icao\csca-0\cer,C=AU,O=GOV,OU=DFAT,OU=PTB,CN=Passport Country Signing Authority,SN=30.cer" ), Console.Out);
-            //XmlSerialize(Asn1Object.Load(@"C:\TFS\h2\icao\csca-0\cer,C=AU,O=GOV,OU=DFAT,OU=PTB,CN=Passport Country Signing Authority,SN=30.cer").FirstOrDefault(), Console.Out);
-            //XmlSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\TFS\h2\icao\ru\O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,ED=19-09-09,NU=19-12-09.crl")), Console.Out); 
-            //JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\TFS\h2\icao\ru\O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,ED=19-09-09,NU=19-12-09.crl")), Console.Out); 
-            //JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\Temp\серт1.crl")), Console.Out); 
-            //JsonSerialize(new X509CertificateRevocationList(File.ReadAllBytes(@"C:\TFS\h2\icao\ru\O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,ED=19-09-09,NU=19-12-09.crl")), Console.Out); 
-            //JsonSerialize(new X509Certificate(File.ReadAllBytes(@"C:\TFS\h2\icao\ru\O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,SN=0114.cer")), Console.Out); 
-            
-            //return;
-
-            //using (var context = new CryptographicContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256, CryptographicContextFlags.CRYPT_NONE)) {
-            //    using (var store = (IX509CertificateStorage)context.GetService(typeof(IX509CertificateStorage))) {
-            //        var certificate = store.Certificates.FirstOrDefault(i=>i.Thumbprint == "559D92BD773323E5BD520A385FEB1F352C8F726E");
-            //        if (certificate != null) {
-            //            using (var ctx = new CryptographicContext(context, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_NONE)) {
-            //                ctx.SetParameter(out var e, CRYPT_PARAM.PP_PIN_PROMPT_STRING, 0 ,Encoding.Unicode, "Hello!");
-            //                using (var hash = ctx.CreateHashAlgorithm(ALG_ID.CALG_GR3411)) {
-            //                    var signature = new MemoryStream();
-            //                    hash.Compute(Encoding.UTF8.GetBytes("The data that is to be hashed and signed."));
-            //                    hash.CreateSignature(signature, KeySpec.Exchange|KeySpec.Signature);
-            //                    signature.Seek(0, SeekOrigin.Begin);
-            //                    Console.WriteLine($"Signature:{signature.ToArray().ToString("X")}");
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //return;
-
             var crrdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try
                 {
@@ -511,7 +185,6 @@ namespace Kit
                     Boolean randomgeneration = false;
                     String tspserver      = null;
                     String[] inputfilename  = null;
-                    var message = false;
                     String outputfilename = null;
                     String xmldsig        = null;
                     String certificates   = null;
@@ -522,94 +195,29 @@ namespace Kit
                     var algid = new String[0];
                     var dumpcodes = false;
                     var keys = false;
-                    var providertypes = false;
                     var operations = new String[0];
                     Int64 sizevalue = -1;
-                    var SSSS = Path.GetFileNameWithoutExtension(@"C:\TFS\Old_ztfs_Collection\FCOD\Packages\ti\FT.Security.Cryptography\FT.Security.Cryptography.1.0.131\csecapi\.intermediate\*.obj");
 
-
-                    #if DEBUG
-//                    var x = (new ASCII85Decoder()).Decode(@"
-//9jqo^BlbD-BleB1DJ+*+F(f,q/0JhKF<GL>Cj@.4Gp$d7F!,L7@<6@)/0JDEF<G%<+EV:2F!,
-//O<DJ+*.@<*K0@<6L(Df-\0Ec5e;DffZ(EZee.Bl.9pF""AGXBPCsi+DGm>@3BB/F*&OCAfu2/AKY
-//i(DIb:@FD,*)+C]U=@3BN#EcYf8ATD3s@q?d$AftVqCh[NqF<G:8+EV:.+Cf>-FD5W8ARlolDIa
-//l(DId<j@<?3r@:F%a+D58'ATD4$Bl@l3De:,-DJs`8ARoFb/0JMK@qB4^F!,R<AKZ&-DfTqBG%G
-//>uD.RTpAKYo'+CT/5+Cei#DII?(E,9)oF*2M7/c~>");
-/*
-                    var encoder = new ASCII85Encoder();
-                    unsafe
-                        {
-                        for (var i = 0; i < 64; i++) {
-                            var buffer = new Byte[64];
-                            Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 0, 16);
-                            Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 16, 16);
-                            Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 32, 16);
-                            Array.Copy(Guid.NewGuid().ToByteArray(), 0, buffer, 48, 16);
-                            using (var hash = new SHA512Managed())
-                                {
-                                Console.Out.WriteLine(encoder.Encode(hash.ComputeHash(buffer)));
-                                }
-                            }
-                        }
-                    var x = (new ASCII85Encoder()).Encode(Encoding.ASCII.GetBytes("Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure."));
-                    */
-                    //using (var scope = new MetadataScope())
-                    //{
-                    //    var o = scope.LoadObject(@"D:\Symbols\AboveLockAppHost.pdb\0268BACF32391B1C6525B8E51BBDD2FC1\AboveLockAppHost.pdb") as MultiStreamFile;
-                    //}
-                    //return;
-
-                    //var ofile = File.ReadAllBytes(@"C:\TFS\Old_ztfs_Collection\FCOD\Packages\ti\FT.Security.Cryptography\FT.Security.Cryptography.1.0.131\csecapi\.intermediate\x64\Release\asn1.obj");
-                    //var nfile = new Byte[ofile.Length - 6];
-                    //Array.Copy(ofile, 6, nfile, 0, nfile.Length);
-                    //File.WriteAllBytes(@"C:\TFS\Old_ztfs_Collection\FCOD\Packages\ti\FT.Security.Cryptography\FT.Security.Cryptography.1.0.131\csecapi\.intermediate\x64\Release\asn1_r.obj", nfile);
-#endif
-                    //Console.WriteLine($"---------------------");
-                    //Console.WriteLine($"{nameof(CryptographicContext)}.{nameof(CryptographicContext.AvailableProviders)}:");
-                    //foreach (var pi in CryptographicContext.AvailableProviders) {
-                    //    Console.WriteLine($"  ProviderName:{pi.Key}");
-                    //    Console.WriteLine($"  ProviderType:{pi.Value}");
-                    //    using (var context = new CryptographicContext(null, pi.Key, pi.Value, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT, null)) {
-                    //        foreach (var alg in context.SupportedAlgorithms) {
-                    //            Console.WriteLine($"    Alg:{alg.Key}:{alg.Value}");
-                    //            }
-                    //        }
-                    //    }
-
-                    //foreach (var country in Country.Countries) {
-                    //    Console.WriteLine($"INSERT INTO [dbo].[Country]([Code],[ShortName],[TwoLetterISOCountryName],[ThreeLetterISOCountryName]) VALUES ({country.Value.Code},'{country.Value.ShortName}','{country.Value.TwoLetterISOCountryName}','{country.Value.ThreeLetterISOCountryName}');");
-                    //    }
-                    //return;
-
-                    Operation operation = new UsageOperation(Console.Error, options);
+                    Operation operation = new UsageOperation(Console.Out, Console.Error, options);
                     if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
                     if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
                     if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
                     if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
                     if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
                     if (HasOption(options, typeof(MessageGroupOption))) {
-                             if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Error, options);  }
-                        else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Error, options);  }
-                        else if (HasOption(options, typeof(EncryptOption))) { operation = new EncryptMessageOperation(Console.Error, options); }
+                             if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Out, Console.Error, options);  }
+                        else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
+                        else if (HasOption(options, typeof(EncryptOption))) { operation = new EncryptMessageOperation(Console.Out, Console.Error, options); }
                         }
-                    else if (HasOption(options, typeof(VerifyOption)))  {
-                        operation = new VerifyOperation(Console.Error, options);
-                        }
-                    else if (HasOption(options, typeof(InputFileOrFolderOption)))
-                        {
-                        operation = new BatchOperation(Console.Error, options);
-                        }
-                    else if (HasOption(options, typeof(InfrastructureOption)))
-                        {
-                        operation = new InfrastructureOperation(Console.Error, options);
-                        }
+                    else if (HasOption(options, typeof(VerifyOption)))            { operation = new VerifyOperation(Console.Out, Console.Error, options);         }
+                    else if (HasOption(options, typeof(InfrastructureOption)))    { operation = new InfrastructureOperation(Console.Out, Console.Error, options); }
+                    else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
+                    else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
                     operation.Execute(Console.Out);
                     return;
                     for (var i = 0; i < args.Length; ++i) {
                         if (args[i][0] == '-') {
-                               if (args[i].StartsWith("-tsp:"))           { tspserver = args[i].Substring( 5);                  }
-                            //else if (args[i].StartsWith("-message:"))       { message   = args[i].Substring( 9).Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries); }
-                            else if (args[i].StartsWith("-m"))              { message = true; }
+                               if (args[i].StartsWith("-tsp:"))             { tspserver = args[i].Substring( 5);                  }
                             else if (args[i].StartsWith("-xmldsig:"))       { xmldsig   = args[i].Substring( 9);                  }
                             else if (args[i].StartsWith("-certificates:"))  { certificates = args[i].Substring(14);               }
                             else if (args[i].StartsWith("-timestamp:"))     { timestamp = args[i].Substring(11);                  }
@@ -696,12 +304,6 @@ namespace Kit
                                 }
                             }
                         }
-                    else if (providertype < 0) {
-                        foreach (var type in SCryptographicContext.AvailableTypes)
-                            {
-                            Console.WriteLine($"{type.Key}[{(UInt32)type.Key}]:\"{type.Value}\"");
-                            }
-                        }
                     else if (randomgeneration)
                         {
                         if (String.IsNullOrWhiteSpace(outputfilename)) { throw new ArgumentOutOfRangeException("outputfilename"); }
@@ -731,35 +333,7 @@ namespace Kit
                         {
                         using (var context = new SCryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                             var store = Utilities.BuildCertificateList(storeloc, storename, certificates, (CRYPT_PROVIDER_TYPE)providertype);
-                            #region Message Operations
-                            if (message) {
-                                if (HasFlag(operations, "verify")) {
-                                    if (HasFlag(operations, "asn1")) {
-                                        var o = Asn1Object.Load(new ReadOnlyFileMappingStream(inputfilename[0])).FirstOrDefault();
-                                        if (o != null) {
-                                            var p = o.FindAll(i=>{
-                                                if (i is Asn1Sequence) {
-                                                    if (i.Count >= 2) {
-                                                        if (i[0] is Asn1ObjectIdentifier identifier) {
-                                                            if (identifier.ToString() == "1.2.840.113549.1.7.2") {
-                                                                return true;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                return false;
-                                                }).FirstOrDefault();
-                                            if (p != null) {
-                                                var target = new CmsMessage(p);
-                                                JsonSerialize(target, Console.Out);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            #endregion
                             #region Certificate Operations
-                            else
                                 {
                                 foreach (var certificate in store.Certificates)
                                     {
@@ -796,97 +370,6 @@ namespace Kit
                         {
                         Usage();
                         }
-                    //else if (!String.IsNullOrEmpty(xmldsig)) {
-                    //    using (var context = new CryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                    //        context.PercentageChanged += OnPercentageChanged;
-                    //        switch (xmldsig.ToUpper()) {
-                    //            case "CREATE":
-                    //                {
-                    //                /*
-                    //                 * -i:{input-file} -o:{output-file} -xmldsig:create -signers:{name;name;...} [-timestamp:{value}]
-                    //                 */
-                    //                XmlDSigOperations.CreateAttachedMessage(context,
-                    //                    Utilities.BuildCertificateList(storeloc, storename, signers, (CRYPT_PROVIDER_TYPE)providertype),
-                    //                    inputfilename[0], outputfilename, timestamp, XAdESFlags.IncludeSigningCertificate|XAdESFlags.IncludeTimeStamp);
-                    //                }
-                    //                break;
-                    //            case "VERIFY":
-                    //                {
-                    //                HashSet<IX509Certificate> certificates;
-                    //                /*
-                    //                 * -i:{input-file} -xmldsig:verify
-                    //                 */
-                    //                XmlDSigOperations.VerifyMessage(context, inputfilename[0], outputfilename, out certificates);
-                    //                foreach (var certificate in certificates)
-                    //                    {
-                    //                    Console.WriteLine($"{certificate.Thumbprint}");
-                    //                    }
-                    //                }
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //#region Message Operations
-                    //else if (message.Length > 0) {
-                    //    using (var context = new CryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                    //        context.PercentageChanged += OnPercentageChanged;
-                    //        #region encrypt
-                    //        else if (HasFlag(message, "encrypt"))
-                    //            {
-                    //            if (HasFlag(message, "block"))
-                    //                {
-                    //                MessageOperations.EncryptMessage(context, inputfilename[0], outputfilename,
-                    //                    Utilities.BuildCertificateList(storeloc, storename, signers, (CRYPT_PROVIDER_TYPE)providertype).ToList(),
-                    //                    OidFromSource(algid[0]), "ber,block");
-                    //                }
-                    //            else
-                    //                {
-                    //                MessageOperations.EncryptMessage(context, inputfilename[0], outputfilename,
-                    //                    Utilities.BuildCertificateList(storeloc, storename, signers, (CRYPT_PROVIDER_TYPE)providertype).ToList(),
-                    //                    OidFromSource(algid[0]), "ber");
-                    //                }
-                    //            }
-                    //        #endregion
-                    //        else
-                    //            {
-                    //            throw new InvalidDataException();
-                    //            }
-                    //        }
-                    //    }
-                    //#endregion
-                    //using (var output = new StreamWriter(File.OpenWrite(tempfilename), Encoding.UTF8)) {
-                    //    if (keys) {
-                    //        using (var provider = new CryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                    //            foreach (var key in provider.EnumUserKeys(false)) {
-                    //                Console.WriteLine("Container:[{0}]",(key.Container != null) ? key.Container.TrimEnd('\0') : "(none)");
-                    //                }
-                    //            using (var store = new CryptographicContextStorage(provider)) {
-                    //                foreach (var certificate in store.Certificates) {
-                    //                    Console.WriteLine("Certificate:[{0}]",certificate.Thumbprint);
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //    else
-                    //        {
-                    //        #region [Flags.List]
-                    //        if (oflags.HasFlag(Flags.List))
-                    //            {
-                    //            ListCertificates((CRYPT_PROVIDER_TYPE)providertype, output, storename, storeloc, oflags, new String[0]);
-                    //            }
-                    //        #endregion
-                    //        }
-                    //    }
-                    //if (!oflags.HasFlag(Flags.Html)) { File.Delete(tempfilename); }
-                    //else
-                    //    {
-                    //    var outputfile = Path.Combine(Directory.GetCurrentDirectory(), "output.xml");
-                    //    if (File.Exists(outputfile)) { File.Delete(outputfile); }
-                    //    File.Move(tempfilename, outputfile);
-                    //    var xslt = new XslCompiledTransform();
-                    //    xslt.Load(Path.Combine(Path.Combine(crrdir, "Properties"), "Certificate.xsl"));
-                    //    xslt.Transform(outputfile, "output.html");
-                    //    }
                     }
                 //TraceManager.Instance.Write(Console.Out);
                 }

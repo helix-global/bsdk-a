@@ -13,8 +13,8 @@ namespace Operations
     {
     internal class VerifyMessageOperation : MessageOperation
         {
-        public VerifyMessageOperation(TextWriter output,IList<OperationOption> args)
-            : base(output, args)
+        public VerifyMessageOperation(TextWriter output, TextWriter error,IList<OperationOption> args)
+            : base(output, error, args)
             {
             }
 

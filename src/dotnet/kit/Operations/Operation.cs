@@ -10,8 +10,12 @@ namespace Operations
     {
     internal abstract class Operation
         {
-        protected Operation(TextWriter output, IList<OperationOption> args)
+        public TextWriter Out { get; }
+        public TextWriter Error { get; }
+        protected Operation(TextWriter output, TextWriter error, IList<OperationOption> args)
             {
+            Out = output;
+            Error = error ?? output;
             }
 
         public static IList<OperationOption> Parse(String[] args) {

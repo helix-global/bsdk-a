@@ -8,8 +8,8 @@ namespace Operations
     {
     internal class UsageOperation : Operation
         {
-        public UsageOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        public UsageOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             }
 

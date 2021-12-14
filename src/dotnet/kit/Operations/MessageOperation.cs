@@ -16,8 +16,8 @@ namespace Operations
         public IList<String> OutputFileName { get; }
         public String StoreName { get; }
 
-        protected MessageOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        protected MessageOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             ProviderType   = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
             StoreLocation  = args.OfType<StoreLocationOption>().First().Value;

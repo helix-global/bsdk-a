@@ -13,8 +13,8 @@ namespace Operations
     internal abstract class CreateOrEncryptMessageOperation : MessageOperation
         {
         public IList<InputCertificate> Certificates { get; }
-        protected CreateOrEncryptMessageOperation(TextWriter output, IList<OperationOption> args)
-            : base(output, args)
+        protected CreateOrEncryptMessageOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
+            : base(output, error, args)
             {
             Certificates = args.OfType<InputCertificateOption>().FirstOrDefault()?.Certificates;
             if (Certificates == null) {
