@@ -3,39 +3,63 @@ using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal class OpenSSLLibrary : Library, IOpenSSLLibrary
+    internal sealed class OpenSSLLibrary : Library, IOpenSSLLibrary
         {
         public OpenSSLLibrary(String filepath)
             : base(filepath)
             {
             }
 
-        public Int32 SHA1_Init(ref SHA_CTX c)
+        /// <summary>
+        /// Initializes a <see cref="SHA_CTX"/> structure.
+        /// </summary>
+        Int32 IOpenSSLLibrary.SHA1_Init(ref SHA_CTX c)
             {
             return EnsureProcedure("SHA1_Init", ref FSHA1_Init)(ref c);
             }
 
+        /// <summary>
+        /// Initializes a <see cref="SHA256_CTX"/> structure.
+        /// </summary>
         Int32 IOpenSSLLibrary.SHA256_Init(ref SHA256_CTX c)
             {
             return EnsureProcedure("SHA256_Init", ref FSHA256_Init)(ref c);
             }
 
-        public Int32 SHA512_Init(ref SHA512_CTX c)
+        /// <summary>
+        /// Initializes a <see cref="SHA512_CTX"/> structure.
+        /// </summary>
+        Int32 IOpenSSLLibrary.SHA512_Init(ref SHA512_CTX c)
             {
             return EnsureProcedure("SHA512_Init", ref FSHA512_Init)(ref c);
             }
 
-        public Int32 SHA1_Final(Byte[] digest, ref SHA_CTX c)
+        /// <summary>
+        /// Places the message digest in <paramref name="digest"/>, which must have space for SHA_DIGEST_LENGTH == 20 bytes of output, and erases the <see cref="SHA_CTX"/>.
+        /// </summary>
+        /// <param name="digest">Message digest.</param>
+        /// <param name="c">Context.</param>
+        Int32 IOpenSSLLibrary.SHA1_Final(Byte[] digest, ref SHA_CTX c)
             {
             return EnsureProcedure("SHA1_Final", ref FSHA1_Final)(digest, ref c);
             }
 
+        /// <summary>
+        /// Places the message digest in <paramref name="digest"/>, which must have space for SHA_DIGEST_LENGTH == 32 bytes of output, and erases the <see cref="SHA256_CTX"/>.
+        /// </summary>
+        /// <param name="digest">Message digest.</param>
+        /// <param name="c">Context.</param>
         Int32 IOpenSSLLibrary.SHA256_Final(Byte[] digest, ref SHA256_CTX c)
             {
             return EnsureProcedure("SHA256_Final", ref FSHA256_Final)(digest, ref c);
             }
 
-        public Int32 SHA512_Final(Byte[] digest, ref SHA512_CTX c)
+        /// <summary>
+        /// Places the message digest in <paramref name="digest"/>, which must have space for SHA_DIGEST_LENGTH == 48 bytes of output, and erases the <see cref="SHA512_CTX"/>.
+        /// </summary>
+        /// <param name="digest">Message digest.</param>
+        /// <param name="c">Context.</param>
+        Int32 IOpenSSLLibrary.SHA512_Final(Byte[] digest, ref SHA512_CTX c)
             {
             return EnsureProcedure("SHA512_Final", ref FSHA512_Final)(digest, ref c);
             }
@@ -50,22 +74,38 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return EnsureProcedure("SHA256_Update", ref FSHA256_Update)(ref c, data, length);
             }
 
+        /// <summary>
+        /// Initializes a <see cref="SHA256_CTX"/> structure.
+        /// </summary>
         Int32 IOpenSSLLibrary.SHA224_Init(ref SHA256_CTX c)
             {
             return EnsureProcedure("SHA224_Init", ref FSHA224_Init)(ref c);
             }
 
-        public Int32 SHA384_Init(ref SHA512_CTX c)
+        /// <summary>
+        /// Initializes a <see cref="SHA512_CTX"/> structure.
+        /// </summary>
+        Int32 IOpenSSLLibrary.SHA384_Init(ref SHA512_CTX c)
             {
             return EnsureProcedure("SHA384_Init", ref FSHA384_Init)(ref c);
             }
 
+        /// <summary>
+        /// Places the message digest in <paramref name="digest"/>, which must have space for SHA_DIGEST_LENGTH == 28 bytes of output, and erases the <see cref="SHA256_CTX"/>.
+        /// </summary>
+        /// <param name="digest">Message digest.</param>
+        /// <param name="c">Context.</param>
         Int32 IOpenSSLLibrary.SHA224_Final(Byte[] digest, ref SHA256_CTX c)
             {
             return EnsureProcedure("SHA224_Final", ref FSHA224_Final)(digest, ref c);
             }
 
-        public Int32 SHA384_Final(Byte[] digest, ref SHA512_CTX c)
+        /// <summary>
+        /// Places the message digest in <paramref name="digest"/>, which must have space for SHA_DIGEST_LENGTH == 64 bytes of output, and erases the <see cref="SHA512_CTX"/>.
+        /// </summary>
+        /// <param name="digest">Message digest.</param>
+        /// <param name="c">Context.</param>
+        Int32 IOpenSSLLibrary.SHA384_Final(Byte[] digest, ref SHA512_CTX c)
             {
             return EnsureProcedure("SHA384_Final", ref FSHA384_Final)(digest, ref c);
             }
