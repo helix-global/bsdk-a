@@ -39,9 +39,16 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         protected internal override ILogger Logger { get; }
         private readonly ICryptographicContext UnderlyingObject;
 
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags)
-            {
-            UnderlyingObject = new SCryptographicContext(providertype, flags);
+        /// <summary>
+        /// Constructs <see cref="CryptographicContext"/> using specified <paramref name="providertype"/> and flags.
+        /// </summary>
+        /// <param name="providertype">Type of provider (<see cref="CRYPT_PROVIDER_TYPE"/>).</param>
+        /// <param name="flags">Provider flags.</param>
+        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+            switch (providertype) {
+                case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(flags); break;
+                default: UnderlyingObject = new SCryptographicContext(providertype, flags); break;
+                }
             }
 
         public IHashAlgorithm CreateHashAlgorithm(Oid algid)

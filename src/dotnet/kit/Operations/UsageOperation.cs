@@ -36,7 +36,9 @@ namespace Operations
   input:{file-name}.ldif output:{folder} batch:extract,group
   input:{file-name}.ldif filter:*.cer batch:install   storelocation:LocalMachine storename:Root
   input:{file-name}.ldif filter:*.cer batch:uninstall storelocation:LocalMachine storename:Root
-  input:{file-name}.ldif filter:*.crl batch:install storelocation:LocalMachine storename:CA");
+  input:{file-name}.ldif filter:*.crl batch:install storelocation:LocalMachine storename:CA
+  input:{file-name} hash algid:{algid}
+  input:{file-name} hash algid:{algid} providertype:{number}");
             }
         }
     }

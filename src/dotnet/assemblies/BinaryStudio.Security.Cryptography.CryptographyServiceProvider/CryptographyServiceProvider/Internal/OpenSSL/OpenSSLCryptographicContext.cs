@@ -6,15 +6,32 @@ using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
-namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider.OpenSSL
+namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal class OCryptographicContext: CryptographicObject, ICryptographicContext
+    internal class OpenSSLCryptographicContext: CryptographicObject, ICryptographicContext
         {
+        public readonly CryptographicContextFlags flags;
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
+
+        /// <summary>
+        /// Constructs <see cref="OpenSSLCryptographicContext"/> instance using <paramref name="flags"/>.
+        /// </summary>
+        /// <param name="flags">Provider flags.</param>
+        public OpenSSLCryptographicContext(CryptographicContextFlags flags)
+            {
+            this.flags = flags;
+            }
+
+        /// <summary>
+        /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
+        /// </summary>
+        /// <param name="algid">Algorithm identifier.</param>
+        /// <returns>Returns hash engine.</returns>
         public IHashAlgorithm CreateHashAlgorithm(Oid algid)
             {
-            throw new NotImplementedException();
+            if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
+            return OpenSSLHashAlgorithm.Create(this, algid.Value);
             }
 
         public void CreateMessageSignature(Stream inputstream, Stream output, IList<IX509Certificate> certificates, CryptographicMessageFlags flags,RequestSecureStringEventHandler requesthandler)

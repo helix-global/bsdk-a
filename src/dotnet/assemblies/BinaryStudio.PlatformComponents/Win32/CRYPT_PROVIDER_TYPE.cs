@@ -2,7 +2,7 @@
     {
     public enum CRYPT_PROVIDER_TYPE
         {
-        OPENSSL                 = -500,
+        OPENSSL                 = -1,
         PROV_RSA_FULL           =  1,
         PROV_RSA_SIG            =  2,
         PROV_DSS                =  3,

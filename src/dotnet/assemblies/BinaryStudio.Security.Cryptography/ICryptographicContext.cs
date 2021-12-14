@@ -9,6 +9,11 @@ namespace BinaryStudio.Security.Cryptography
     {
     public interface ICryptographicContext
         {
+        /// <summary>
+        /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
+        /// </summary>
+        /// <param name="algid">Algorithm identifier.</param>
+        /// <returns>Returns hash engine.</returns>
         IHashAlgorithm CreateHashAlgorithm(Oid algid);
         void CreateMessageSignature(Stream inputstream, Stream output, IList<IX509Certificate> certificates, CryptographicMessageFlags flags, RequestSecureStringEventHandler requesthandler);
         Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags);
