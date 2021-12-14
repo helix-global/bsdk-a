@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -53,5 +54,46 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             throw new NotImplementedException();
             }
+
+        private static readonly Object o = new Object();
+        private static IOpenSSLLibrary core;
+
+        public IOpenSSLLibrary Core { get {
+            lock(o)
+                {
+                if (core == null) {
+                    var filename = String.Empty;
+                    switch (Environment.OSVersion.Platform)
+                        {
+                        case PlatformID.Win32S:
+                        case PlatformID.Win32Windows:
+                        case PlatformID.Win32NT:
+                        case PlatformID.WinCE:
+                            {
+                            #if NET35
+                            filename = (IntPtr.Size == 8)
+                                ? "libcrypto-1_1-x64.dll"
+                                : "libcrypto-1_1.dll";
+                            #else
+                            filename = Environment.Is64BitProcess
+                                ? "libcrypto-1_1-x64.dll"
+                                : "libcrypto-1_1.dll";
+                            #endif
+                            }
+                            break;
+                        case PlatformID.Unix:
+                            {
+                            filename = "libcrypto.so.1.0.0";
+                            }
+                            break;
+                        case PlatformID.Xbox:
+                        case PlatformID.MacOSX:
+                        default: { throw new NotSupportedException($"Platform {{{Environment.OSVersion.Platform}}} is not supported."); }
+                        }
+                    core = new OpenSSLLibrary(filename);
+                    }
+                return core;
+                }
+            }}
         }
     }
