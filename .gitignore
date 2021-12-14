@@ -64,3 +64,4 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Interchange.Database/BinaryStudio.Security.Cryptography.Interchange.Database.jfm
 /src/dotnet/testing/UnitTests.BinaryStudio.Numeric/bin/Debug/net40
 /src/dotnet/testing/UnitTests.BinaryStudio.Numeric/obj
+/.intermediate/openssl-1.1.0e

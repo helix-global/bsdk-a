@@ -244,7 +244,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         if (alg.Key == nalgid) {
                             Flags = flags;
                             Type = type.Value;
-                            context = CryptographicContextInternal.Create(Type, r, Logger);
+                            context = CryptographicSecureCodeStorageContext.Create(Type, r, Logger);
                             CallerFree = true;
                             return;
                             }
@@ -269,7 +269,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             Name = provider;
             Validate(CryptAcquireContext(out var r, container, provider, (Int32)providertype, (Int32)flags));
-            context = CryptographicContextInternal.Create(Type, r, logger);
+            context = CryptographicSecureCodeStorageContext.Create(Type, r, logger);
             Flags = flags;
             this.container = container;
             CallerFree = true;
@@ -310,7 +310,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Name = provider.Name;
             UseMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             Validate(CryptAcquireContext(out var r, container, Name, (Int32)Type, (Int32)flags));
-            context = CryptographicContextInternal.Create(Type, r, provider.Logger);
+            context = CryptographicSecureCodeStorageContext.Create(Type, r, provider.Logger);
             CallerFree = true;
             Version = GetVersionInternal();
             }
@@ -323,7 +323,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Type = provider.Type;
             UseMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             Validate(CryptAcquireContext(out var r, container, null, (Int32)Type, (Int32)flags));
-            context = CryptographicContextInternal.Create(Type, r, provider.Logger);
+            context = CryptographicSecureCodeStorageContext.Create(Type, r, provider.Logger);
             Flags = flags;
             CallerFree = true;
             Version = GetVersionInternal();
@@ -347,7 +347,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 CallerFree = false;
                 #else
                 Validate(CryptAcquireCertificatePrivateKey(certificate.Handle, flags, IntPtr.Zero, out var r, out var keyspec, out var freeprov));
-                context = CryptographicContextInternal.Create(Type, r, provider.Logger);
+                context = CryptographicSecureCodeStorageContext.Create(Type, r, provider.Logger);
                 CallerFree = freeprov;
                 Version = GetVersionInternal();
                 #endif
@@ -1293,7 +1293,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public CRYPT_PROVIDER_TYPE Type { get; }
         public String Name { get; }
 
-        internal CryptographicContextInternal context;
+        internal CryptographicSecureCodeStorageContext context;
         private CryptographicContextFlags Flags { get; }
         private readonly String container;
         private static readonly HashSet<ICustomCryptographicMessageProvider> CustomMessageProviders = new HashSet<ICustomCryptographicMessageProvider>();

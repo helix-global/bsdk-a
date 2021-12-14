@@ -2,12 +2,13 @@
     {
     public enum CRYPT_PROVIDER_TYPE
         {
-        PROV_RSA_FULL           = 1,
-        PROV_RSA_SIG            = 2,
-        PROV_DSS                = 3,
-        PROV_FORTEZZA           = 4,
-        PROV_MS_EXCHANGE        = 5,
-        PROV_SSL                = 6,
+        OPENSSL                 = -500,
+        PROV_RSA_FULL           =  1,
+        PROV_RSA_SIG            =  2,
+        PROV_DSS                =  3,
+        PROV_FORTEZZA           =  4,
+        PROV_MS_EXCHANGE        =  5,
+        PROV_SSL                =  6,
         PROV_RSA_SCHANNEL       = 12,
         PROV_DSS_DH             = 13,
         PROV_EC_ECDSA_SIG       = 14,
