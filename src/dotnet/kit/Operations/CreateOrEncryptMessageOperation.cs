@@ -74,10 +74,10 @@ namespace Operations
             }
         #endregion
 
-        protected abstract void Execute(TextWriter output, SCryptographicContext context, IX509CertificateStorage store);
+        protected abstract void Execute(TextWriter output, CryptographicContext context, IX509CertificateStorage store);
 
         public sealed override void Execute(TextWriter output) {
-            using (var context = new SCryptographicContext(
+            using (var context = new CryptographicContext(
                 ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 using (var store = BuildCertificateStorage()) {

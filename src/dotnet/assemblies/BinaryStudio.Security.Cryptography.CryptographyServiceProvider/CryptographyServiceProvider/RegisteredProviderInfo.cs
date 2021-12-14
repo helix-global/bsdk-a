@@ -7,12 +7,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         {
         public CRYPT_PROVIDER_TYPE ProviderType { get; }
         public String ProviderName { get; }
-        public Type HostType { get; }
 
-        internal RegisteredProviderInfo(CRYPT_PROVIDER_TYPE providerType, String name, Type type) {
+        internal RegisteredProviderInfo(CRYPT_PROVIDER_TYPE providerType, String name) {
             ProviderType = providerType;
             ProviderName = name;
-            HostType = type;
             }
         }
     }

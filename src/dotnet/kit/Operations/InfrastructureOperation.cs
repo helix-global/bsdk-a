@@ -16,11 +16,11 @@ namespace Operations
         public override void Execute(TextWriter output)
             {
             output.WriteLine("AvailableProviders:");
-            foreach (var type in SCryptographicContext.AvailableProviders) {
-                output.WriteLine($"  {type.Key}:{type.Value}");
+            foreach (var type in SCryptographicContext.RegisteredProviders) {
+                output.WriteLine($"  {type.ProviderName}:{type.ProviderType}");
                 try
                     {
-                    using (var context = new SCryptographicContext(null, type.Key, type.Value, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT, null)) {
+                    using (var context = new SCryptographicContext(null, type.ProviderName, type.ProviderType, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT, null)) {
                         foreach (var algid in context.SupportedAlgorithms) {
                             output.WriteLine($"    {algid.Key}:{algid.Value}");
                             }

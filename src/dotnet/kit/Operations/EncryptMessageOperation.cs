@@ -47,7 +47,7 @@ namespace Operations
                 }
             }
 
-        protected override void Execute(TextWriter output, SCryptographicContext context, IX509CertificateStorage store)
+        protected override void Execute(TextWriter output, CryptographicContext context, IX509CertificateStorage store)
             {
             EncryptMessage(output, context,
                 OutputFileName?.FirstOrDefault(),
@@ -55,7 +55,7 @@ namespace Operations
             }
 
         #region M:EncryptMessage(TextWriter,CryptographicContext,String,IList<IX509Certificate>)
-        private void EncryptMessage(TextWriter output, SCryptographicContext context,String outputfilename, IList<IX509Certificate> recipients)
+        private void EncryptMessage(TextWriter output, CryptographicContext context,String outputfilename, IList<IX509Certificate> recipients)
             {
             using (var inputfile = File.OpenRead(InputFileName[0])) {
                 if (outputfilename != null) {
@@ -78,7 +78,7 @@ namespace Operations
             }
         #endregion
         #region M:EncryptMessage(TextWriter,Stream,Stream,CryptographicContext,IList<X509Certificate>)
-        private void EncryptMessage(TextWriter output, Stream inputfile, Stream outputfile, SCryptographicContext context, IList<IX509Certificate> recipients)
+        private void EncryptMessage(TextWriter output, Stream inputfile, Stream outputfile, CryptographicContext context, IList<IX509Certificate> recipients)
             {
             if (MessageFlags.HasFlag(CryptographicMessageFlags.IndefiniteLength))
                 {

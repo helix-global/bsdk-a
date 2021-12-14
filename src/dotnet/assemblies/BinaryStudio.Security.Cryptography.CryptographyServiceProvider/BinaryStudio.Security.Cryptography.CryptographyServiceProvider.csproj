@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;CODE_ANALYSIS,FEATURE_ROTATE_SIGNATURE2</DefineConstants>
+    <DefineConstants>TRACE;CODE_ANALYSIS,FEATURE_ROTATE_SIGNATURE2;FEATURE_OPENSSL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
@@ -12,7 +12,6 @@
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CryptographyServiceProvider\Internal\OpenSSL\" />
     <Folder Include="Internal\CryptoAPICOM\" />
   </ItemGroup>
   <ItemGroup>

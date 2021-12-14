@@ -37,19 +37,36 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
+        private readonly ICryptographicContext UnderlyingObject;
+
+        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags)
+            {
+            UnderlyingObject = new SCryptographicContext(providertype, flags);
+            }
+
         public IHashAlgorithm CreateHashAlgorithm(Oid algid)
             {
-            throw new NotImplementedException();
+            return UnderlyingObject.CreateHashAlgorithm(algid);
             }
 
         public void CreateMessageSignature(Stream inputstream, Stream output, IList<IX509Certificate> certificates, CryptographicMessageFlags flags, RequestSecureStringEventHandler requesthandler)
             {
-            throw new NotImplementedException();
+            UnderlyingObject.CreateMessageSignature(inputstream, output, certificates, flags, requesthandler);
             }
 
         public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
-            throw new NotImplementedException();
+            return UnderlyingObject.VerifyCertificateSignature(out e, subject, issuer, flags);
+            }
+
+        public void EncryptMessageBER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)
+            {
+            UnderlyingObject.EncryptMessageBER(algid, recipients, inputstream, outputstream);
+            }
+
+        public void EncryptMessageDER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)
+            {
+            UnderlyingObject.EncryptMessageDER(algid, recipients, inputstream, outputstream);
             }
 
         static CryptographicContext()
@@ -78,5 +95,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
+
+        public static IEnumerable<RegisteredProviderInfo> AvailableProviders { get {
+            foreach (var i in SCryptographicContext.RegisteredProviders) { yield return i; }
+            //#if FEATURE_OPENSSL
+            //yield return new RegisteredProviderInfo(CRYPT_PROVIDER_TYPE.OPENSSL);
+            //#endif
+            }}
         }
     }

@@ -295,6 +295,98 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
+        #region M:GetHashAlgorithm(Oid):Oid
+        protected static Oid GetHashAlgorithm(Oid oid) {
+            if (oid == null) { return null; }
+            switch (oid.Value) {
+                #region ГОСТ Р 34.11-94
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_R3410EL:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_CP_GOST_R3411);
+                    }
+                #endregion
+                #region SHA1
+                case ObjectIdentifiers.szOID_RSA_SHA1RSA:
+                case ObjectIdentifiers.szOID_X957_SHA1DSA:
+                case ObjectIdentifiers.szOID_DH_SINGLE_PASS_STDDH_SHA1_KDF:
+                case ObjectIdentifiers.szOID_OIWSEC_dsaSHA1:
+                case ObjectIdentifiers.szOID_OIWSEC_dsaCommSHA1:
+                case ObjectIdentifiers.szOID_OIWSEC_sha1RSASign:
+                case ObjectIdentifiers.szOID_ECDSA_SHA1:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_OIWSEC_sha1);
+                    }
+                #endregion
+                #region SHA256
+                case ObjectIdentifiers.szOID_ECDSA_SHA256:
+                case ObjectIdentifiers.szOID_DH_SINGLE_PASS_STDDH_SHA256_KDF:
+                case ObjectIdentifiers.szOID_RSA_SHA256RSA:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_NIST_sha256);
+                    }
+                #endregion
+                #region ГОСТ Р 34.11-2012-256
+                case ObjectIdentifiers.szOID_CP_GOST_R3410_12_256:
+                case ObjectIdentifiers.szOID_tc26_gost_3410_12_256_paramSetA:
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_256_R3410:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_CP_GOST_R3411_12_256);
+                    }
+                #endregion
+                #region ГОСТ Р 34.11-2012-512
+                case ObjectIdentifiers.szOID_tc26_gost_3410_12_512_paramSetA:
+                case ObjectIdentifiers.szOID_tc26_gost_3410_12_512_paramSetB:
+                case ObjectIdentifiers.szOID_tc26_gost_3410_12_512_paramSetC:
+                case ObjectIdentifiers.szOID_CP_GOST_R3410_12_512:
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512_R3410:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_CP_GOST_R3411_12_512);
+                    }
+                #endregion
+                #region SHA384
+                case ObjectIdentifiers.szOID_ECDSA_SHA384:
+                case ObjectIdentifiers.szOID_DH_SINGLE_PASS_STDDH_SHA384_KDF:
+                case ObjectIdentifiers.szOID_RSA_SHA384RSA:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_NIST_sha384);
+                    }
+                #endregion
+                #region SHA512
+                case ObjectIdentifiers.szOID_ECDSA_SHA512:
+                case ObjectIdentifiers.szOID_RSA_SHA512RSA:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_NIST_sha512);
+                    }
+                #endregion
+                #region MD2
+                case ObjectIdentifiers.szOID_RSA_MD2RSA :
+                case ObjectIdentifiers.szOID_OIWDIR_md2:
+                case ObjectIdentifiers.szOID_OIWDIR_md2RSA:
+                case ObjectIdentifiers.szOID_OIWSEC_md2RSASign:
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_RSA_MD2);
+                    }
+                #endregion
+                #region MD4
+                case ObjectIdentifiers.szOID_OIWSEC_md4RSA:
+                case ObjectIdentifiers.szOID_OIWSEC_md4RSA2:
+                case ObjectIdentifiers.szOID_RSA_MD4RSA :
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_RSA_MD4);
+                    }
+                #endregion
+                #region MD5
+                case ObjectIdentifiers.szOID_OIWSEC_md5RSA:
+                case ObjectIdentifiers.szOID_OIWSEC_md5RSASign:
+                case ObjectIdentifiers.szOID_RSA_MD5RSA :
+                    {
+                    return new Oid(ObjectIdentifiers.szOID_RSA_MD5);
+                    }
+                #endregion
+                }
+            return null;
+            }
+        #endregion
 
         public unsafe void* StringToMem(String value, Encoding encoding) {
             if (value == null) { return null; }
