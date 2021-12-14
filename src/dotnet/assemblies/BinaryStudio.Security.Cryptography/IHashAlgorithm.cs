@@ -10,7 +10,7 @@ namespace BinaryStudio.Security.Cryptography
         Byte[] Hash { get; }
         /// <summary>Initializes an implementation of the <see cref="IHashAlgorithm"/> class.</summary>
         void Initialize();
-        Byte[] ComputeHash(Stream inputstream);
+        Byte[] Compute(Stream inputstream);
         Byte[] Compute(Byte[] bytes);
         void CreateSignature(Stream signature, KeySpec keyspec);
         }

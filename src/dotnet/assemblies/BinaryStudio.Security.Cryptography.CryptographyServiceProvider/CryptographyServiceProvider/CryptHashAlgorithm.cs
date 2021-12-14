@@ -545,7 +545,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <param name="inputstream">The input to compute the hash code for.</param>
         /// <returns>The computed hash code.</returns>
         /// <exception cref="ObjectDisposedException">The object has already been disposed.</exception>
-        Byte[] IHashAlgorithm.ComputeHash(Stream inputstream)
+        Byte[] IHashAlgorithm.Compute(Stream inputstream)
             {
             return Compute(inputstream);
             }

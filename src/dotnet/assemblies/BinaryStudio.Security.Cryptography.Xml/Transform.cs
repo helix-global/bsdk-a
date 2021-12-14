@@ -264,7 +264,7 @@ namespace BinaryStudio.Security.Cryptography.Xml
 
         [ComVisible(false)]
         public virtual Byte[] GetDigestedOutput(IHashAlgorithm hash) {
-            return hash.ComputeHash((Stream) GetOutput(typeof(Stream)));
+            return hash.Compute((Stream)GetOutput(typeof(Stream)));
         }
 
         [ComVisible(false)]

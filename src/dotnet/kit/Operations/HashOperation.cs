@@ -54,7 +54,7 @@ namespace Operations
 
         private void Execute(TextWriter output, CryptographicContext context, String filename) {
             using (var engine = context.CreateHashAlgorithm(AlgId.Value)) {
-                var hash = engine.ComputeHash(File.OpenRead(filename));
+                var hash = engine.Compute(File.OpenRead(filename));
                 output.WriteLine($"{String.Join(String.Empty, hash.Select(i => i.ToString("X2")))} {filename}");
                 }
             }

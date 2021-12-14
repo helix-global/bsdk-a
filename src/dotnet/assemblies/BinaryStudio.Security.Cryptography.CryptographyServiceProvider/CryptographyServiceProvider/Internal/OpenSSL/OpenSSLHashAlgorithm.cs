@@ -25,7 +25,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         /// <inheritdoc/>
-        public Byte[] Compute(Byte[] bytes)
+        Byte[] IHashAlgorithm.Compute(Stream inputstream)
+            {
+            return ComputeHash(inputstream);
+            }
+
+        /// <inheritdoc/>
+        Byte[] IHashAlgorithm.Compute(Byte[] bytes)
             {
             if (bytes == null) { throw new ArgumentNullException(nameof(bytes)); }
             using (new TraceScope(bytes.Length)) {

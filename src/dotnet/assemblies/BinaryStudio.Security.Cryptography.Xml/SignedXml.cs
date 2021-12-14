@@ -124,7 +124,7 @@ namespace BinaryStudio.Security.Cryptography.Xml
                 source.Initialize();
                 }
 
-            public Byte[] ComputeHash(Stream inputstream)
+            public Byte[] Compute(Stream inputstream)
                 {
                 return source.ComputeHash(inputstream);
                 }
