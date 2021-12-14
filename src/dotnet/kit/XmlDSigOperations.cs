@@ -148,7 +148,7 @@ namespace Kit
                     SigningKey = certificate.PrivateKey,
                     };
                 }
-            var digestmethod = SCryptographicContext.OIDToXmlDSig(SCryptographicContext.SignatureToHashAlg(certificate.SignatureAlgorithm));
+            var digestmethod = CryptographicContext.OIDToXmlDSig(SCryptographicContext.SignatureToHashAlg(certificate.SignatureAlgorithm));
             signedxml.Signature.Id = $"id-{(new Random()).Next(65535):X4}";
             var reference = new Reference(String.Empty)
                 {

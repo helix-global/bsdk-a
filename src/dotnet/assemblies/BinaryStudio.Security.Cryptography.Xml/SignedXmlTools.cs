@@ -15,8 +15,8 @@ namespace BinaryStudio.Security.Cryptography.Xml
         private static String GetDigestMethodFromOid(Oid source) {
             if (source != null) {
                 switch (source.Value) {
-                    case ObjectIdentifiers.szOID_CP_GOST_R3410_12_512: return SCryptographicContext.URN_GOST_DIGEST_2012_512;
-                    case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512: return SCryptographicContext.URN_GOST_DIGEST_2012_512;
+                    case ObjectIdentifiers.szOID_CP_GOST_R3410_12_512: return CryptographicContext.URN_GOST_DIGEST_2012_512;
+                    case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512: return CryptographicContext.URN_GOST_DIGEST_2012_512;
                     }
                 }
             return null;
@@ -44,7 +44,7 @@ namespace BinaryStudio.Security.Cryptography.Xml
                     var certificateData = new KeyInfoX509Data(certificate.Bytes);
                     keyInfo.AddClause(certificateData);
                     signedXml.KeyInfo = keyInfo;
-                    signedXml.Signature.SignedInfo.SignatureMethod = SCryptographicContext.OIDToXmlDSig(certificate.SignatureAlgorithm);
+                    signedXml.Signature.SignedInfo.SignatureMethod = CryptographicContext.OIDToXmlDSig(certificate.SignatureAlgorithm);
                     signedXml.ComputeSignature();
                     blocks.Add(signedXml.GetXml());
                     }

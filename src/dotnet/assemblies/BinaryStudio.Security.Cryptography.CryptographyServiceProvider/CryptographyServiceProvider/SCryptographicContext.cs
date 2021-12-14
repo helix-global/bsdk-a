@@ -38,49 +38,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     #endif
     public partial class SCryptographicContext : CryptographicObject, ICryptographicContext
         {
-        public const String XmlDsigSHA1                      = "http://www.w3.org/2000/09/xmldsig#sha1";
-        public const String XmlDsigDSA                       = "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
-        public const String XmlDsigRSASHA1                   = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
-        public const String XmlDsigHMACSHA1                  = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
-        public const String XmlDsigSHA256                    = "http://www.w3.org/2001/04/xmlenc#sha256";
-        public const String XmlDsigRSASHA256                 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-        public const String XmlDsigSHA384                    = "http://www.w3.org/2001/04/xmldsig-more#sha384";
-        public const String XmlDsigRSASHA384                 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
-        public const String XmlDsigSHA512                    = "http://www.w3.org/2001/04/xmlenc#sha512";
-        public const String XmlDsigRSASHA512                 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
-        public const String URI_GOST_CIPHER	                 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gost28147";
-        public const String	URI_GOST_DIGEST	                 = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
-        public const String	URI_GOST_HMAC_GOSTR3411	         = "http://www.w3.org/2001/04/xmldsig-more#hmac-gostr3411";
-        public const String	URI_GOST_SIGN                    = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
-        public const String	URI_GOST_TRANSPORT               = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2001";
-        public const String	URI_GOST_TRANSPORT_GOST_2012_256 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2012-256";
-        public const String	URI_GOST_TRANSPORT_GOST_2012_512 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2012-512";
-        public const String	URN_GOST_DIGEST                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr3411";
-        public const String	URN_GOST_DIGEST_2012_256         = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
-        public const String	URN_GOST_DIGEST_2012_512         = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
-        public const String	URN_GOST_HMAC_GOSTR3411          = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:hmac-gostr3411";
-        public const String	URN_GOST_SIGN                    = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102001-gostr3411";
-        public const String	URN_GOST_SIGN_2012_256           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
-        public const String	URN_GOST_SIGN_2012_512           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
-
         static SCryptographicContext()
             {
-            CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), URN_GOST_SIGN_2012_256);
-            CryptoConfig.AddAlgorithm(typeof(Gost3410_12_512_SignatureDescription), URN_GOST_SIGN_2012_512);
-            CryptoConfig.AddAlgorithm(typeof(Gost3411_12_256), URN_GOST_DIGEST_2012_256);
-            CryptoConfig.AddAlgorithm(typeof(Gost3411_12_512), URN_GOST_DIGEST_2012_512);
-            CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), ObjectIdentifiers.szOID_CP_GOST_R3410_12_256);
-            CryptoConfig.AddAlgorithm(typeof(Gost3410_12_512_SignatureDescription), ObjectIdentifiers.szOID_CP_GOST_R3410_12_512);
             RegisterCustomCryptographicMessageProvider(new FintechCryptographicMessageProvider());
-            //foreach (var type in AvailableTypes) {
-            //    Console.WriteLine($"{type.Key}:{type.Value}");
-            //    }
-            //Console.WriteLine("---");
-            //foreach (var type in AvailableProviders)
-            //    {
-            //    Console.WriteLine($"{type.Key}:{type.Value}");
-            //    }
-            //Console.WriteLine("---");
             }
 
         #region P:AvailableProviders:IDictionary<String,CRYPT_PROVIDER_TYPE>
@@ -101,8 +61,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 r.Add(builder.ToString(), (CRYPT_PROVIDER_TYPE)type);
                 i++;
                 }
-            //yield return new KeyValuePair<String, CRYPT_PROVIDER_TYPE>("Infotecs GOST 2012/1024 Cryptographic Service Provider",CRYPT_PROVIDER_TYPE.VPN_PROV_TYPE_2012_1024);
-            //yield return new KeyValuePair<String, CRYPT_PROVIDER_TYPE>("Infotecs GOST 2012/512 Cryptographic Service Provider", CRYPT_PROVIDER_TYPE.VPN_PROV_TYPE_2012_512);
             foreach (var o in r)
                 {
                 yield return o;
@@ -1201,22 +1159,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
             return CustomMessageProviders.Add(provider);
-            }
-        #endregion
-        #region M:OIDToXmlDSig(Oid):String
-        public static String OIDToXmlDSig(Oid algid)
-            {
-            if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
-            switch (algid.Value) {
-                case ObjectIdentifiers.szOID_NIST_sha256: { return XmlDsigSHA256; }
-                case ObjectIdentifiers.szOID_NIST_sha384: { return XmlDsigSHA384; }
-                case ObjectIdentifiers.szOID_NIST_sha512: { return XmlDsigSHA512; }
-                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_256: { return URN_GOST_DIGEST_2012_256; }
-                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512: { return URN_GOST_DIGEST_2012_512; }
-                case ObjectIdentifiers.szOID_CP_GOST_R3410_12_256: { return URN_GOST_SIGN_2012_256; }
-                case ObjectIdentifiers.szOID_CP_GOST_R3410_12_512: { return URN_GOST_SIGN_2012_512; }
-                default: throw new ArgumentOutOfRangeException(nameof(algid));
-                }
             }
         #endregion
         #region M:GetParameter<T>(CRYPT_PARAM,Int32,Encoding):T
