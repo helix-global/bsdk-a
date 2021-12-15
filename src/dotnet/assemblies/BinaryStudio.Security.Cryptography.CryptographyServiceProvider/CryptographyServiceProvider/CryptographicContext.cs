@@ -76,6 +76,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.EncryptMessageDER(algid, recipients, inputstream, outputstream);
             }
 
+        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+            {
+            UnderlyingObject.VerifyAttachedMessageSignature(
+                input, output, out certificates, finder);
+            }
+
+        public void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+            {
+            UnderlyingObject.VerifyDetachedMessageSignature(
+                input, inputdata, out certificates, finder);
+            }
+
         static CryptographicContext()
             {
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), URN_GOST_SIGN_2012_256);

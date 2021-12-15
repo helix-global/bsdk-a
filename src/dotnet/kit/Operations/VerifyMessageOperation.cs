@@ -20,7 +20,7 @@ namespace Operations
 
         public override void Execute(TextWriter output)
             {
-            using (var context = new SCryptographicContext(
+            using (var context = new CryptographicContext(
                 ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 X509Certificate[] certificates;
@@ -45,7 +45,7 @@ namespace Operations
             }
 
         #region M:VerifyAttachedMessage(TextWriter,CryptographicContext,String,String,[Out]X509Certificate[])
-        private void VerifyAttachedMessage(TextWriter output, SCryptographicContext context, String inputfilename, String outputfilename, out X509Certificate[] certificates)
+        private void VerifyAttachedMessage(TextWriter output, CryptographicContext context, String inputfilename, String outputfilename, out X509Certificate[] certificates)
             {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (String.IsNullOrEmpty(inputfilename)) { throw new ArgumentOutOfRangeException(nameof(inputfilename)); }
@@ -65,7 +65,7 @@ namespace Operations
             }
         #endregion
         #region M:VerifyAttachedMessage(TextWriter,CryptographicContext,Stream,Stream,[Out]X509Certificate[])
-        private void VerifyAttachedMessage(TextWriter output, SCryptographicContext context,Stream inputfile, Stream outputfile, out X509Certificate[] certificates)
+        private void VerifyAttachedMessage(TextWriter output, CryptographicContext context,Stream inputfile, Stream outputfile, out X509Certificate[] certificates)
             {
             certificates = new X509Certificate[0];
             if (inputfile  == null) { throw new ArgumentNullException(nameof(inputfile));  }
@@ -80,7 +80,7 @@ namespace Operations
             }
         #endregion
         #region M:VerifyDetachedMessage(TextWriter,CryptographicContext,String,String,[Out]X509Certificate[])
-        private void VerifyDetachedMessage(TextWriter output, SCryptographicContext context, String inputfilename, String outputfilename, out X509Certificate[] certificates)
+        private void VerifyDetachedMessage(TextWriter output, CryptographicContext context, String inputfilename, String outputfilename, out X509Certificate[] certificates)
             {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (String.IsNullOrEmpty(inputfilename)) { throw new ArgumentOutOfRangeException(nameof(inputfilename)); }
@@ -93,7 +93,7 @@ namespace Operations
             }
         #endregion
         #region M:VerifyDetachedMessage(TextWriter,CryptographicContext,Stream,Stream,[Out]X509Certificate[])
-        private void VerifyDetachedMessage(TextWriter output, SCryptographicContext context,Stream inputfile, Stream outputfile, out X509Certificate[] certificates)
+        private void VerifyDetachedMessage(TextWriter output, CryptographicContext context,Stream inputfile, Stream outputfile, out X509Certificate[] certificates)
             {
             certificates = new X509Certificate[0];
             if (inputfile  == null) { throw new ArgumentNullException(nameof(inputfile));  }

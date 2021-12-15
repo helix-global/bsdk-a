@@ -145,6 +145,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * */
         public override Object GetService(Type service)
             {
+            if (service == typeof(CmsSignedDataContentInfo)) { return ContentInfo as CmsSignedDataContentInfo; }
             return base.GetService(service);
             }
 

@@ -598,22 +598,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         ? new TraceScope(input.Length)
                         : new TraceScope())
                         {
-                    if (input.CanSeek)
-                        {
-                        foreach (var provider in CustomMessageProviders) {
-                            if (provider.VerifyMessage(this, input, output, CryptographicMessageFlags.Attached, out var localcertificates, out var x)) {
-                                certificates.Clear();
-                                ((List<IX509Certificate>)certificates).AddRange(localcertificates);
-                                return;
-                                }
-                            input.Seek(position, SeekOrigin.Begin);
-                            ((List<IX509Certificate>)certificates).AddRange(localcertificates);
-                            if (x != null)
-                                {
-                                e.Add(x);
-                                }
-                            }
-                        }
                     using (var message = CryptographicMessage.OpenToDecode((bytes, final) => {
                         if (output != null) {
                             output.Write(bytes, 0, bytes.Length);
@@ -640,8 +624,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                         Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.Select(i => i.ToString("X2")).ToArray()));
                                         Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.Select(i => i.ToString("X2")).ToArray()), encdigest.Length);
                                         #else
-                                        Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
-                                        Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
+                                        Console.WriteLine("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
+                                        Console.WriteLine("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
                                         #endif
                                         #endif
                                         var certinfo = (CERT_INFO*)blob;

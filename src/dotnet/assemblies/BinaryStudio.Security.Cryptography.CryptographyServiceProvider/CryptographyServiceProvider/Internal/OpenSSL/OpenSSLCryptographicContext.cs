@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
-using BinaryStudio.PlatformComponents;
+using BinaryStudio.IO;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
@@ -51,6 +55,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public void EncryptMessageDER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)
+            {
+            throw new NotImplementedException();
+            }
+
+        void ICryptographicContext.VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,IX509CertificateResolver finder)
+            {
+            certificates = EmptyArray<IX509Certificate>.Value;
+            if (input == null) { throw new ArgumentNullException(nameof(input)); }
+            using (var memory = new MemoryStream()) {
+                input.CopyTo(memory);
+                using (var ro = new ReadOnlyMemoryMappingStream(memory.ToArray())) {
+                    var o = Asn1Object.Load(ro).FirstOrDefault();
+                    if (o == null) { throw new ArgumentOutOfRangeException(nameof(input)); }
+                    var r = new CmsMessage(o);
+                    if (r.IsFailed)  { throw new ArgumentOutOfRangeException(nameof(input)); }
+                    if (r.ContentInfo is CmsSignedDataContentInfo ci) {
+                        foreach (var si in ci.Signers) {
+                            var algid = si.DigestAlgorithm.Identifier.ToString();
+                            using (var engine = CreateHashAlgorithm(new Oid(algid))) {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        void ICryptographicContext.VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates,IX509CertificateResolver finder)
             {
             throw new NotImplementedException();
             }
