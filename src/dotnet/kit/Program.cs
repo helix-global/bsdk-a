@@ -184,7 +184,7 @@ namespace Kit
                     String[] inputfilename;
                     String outputfilename;
                     Boolean dumpcodes;
-                    var operations = new String[0];
+                    String[] operations;
                     Int64 sizevalue;
 
                     Operation.Logger = new ConsoleLogger();
