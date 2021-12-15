@@ -72,3 +72,5 @@
 /scripts/FT.Security.Cryptography.1.0.131.17.zip
 /scripts/FT.Security.Cryptography.dll
 /scripts/FT.Security.Cryptography.1.0.112.zip
+/src/dotnet/srv/bin/Debug
+/src/dotnet/srv/obj/Debug

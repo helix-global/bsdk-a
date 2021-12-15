@@ -39,6 +39,7 @@
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.XAdES\BinaryStudio.Security.XAdES.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+    <ProjectReference Include="..\srv\srv.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\AssemblyFileVersion.tt">
