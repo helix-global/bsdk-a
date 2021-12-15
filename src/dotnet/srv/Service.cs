@@ -47,6 +47,7 @@ namespace srv
                 }
             }
 
+        /// <summary>When implemented in a derived class, executes when a Stop command is sent to the service by the Service Control Manager (SCM). Specifies actions to take when a service stops running.</summary>
         protected override void OnStop()
             {
             }
