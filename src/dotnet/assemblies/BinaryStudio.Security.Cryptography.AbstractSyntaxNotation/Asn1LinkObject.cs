@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using BinaryStudio.IO;
@@ -15,6 +16,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Browsable(false)] public override Int64 Size   { get { return UnderlyingObject.Size;   }}
         [Browsable(false)] public override Int32 Count  { get { return UnderlyingObject.Count;  }}
         [Browsable(false)] public override ReadOnlyMappingStream Content { get { return UnderlyingObject.Content; }}
+        [Browsable(false)] protected internal override IEnumerable<Byte[]> ContentSequence { get { return UnderlyingObject.ContentSequence; }}
 
         protected Asn1LinkObject(T source)
             {

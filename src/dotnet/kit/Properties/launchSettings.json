@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "hash input:kit.exe.config algid:2.16.840.1.101.3.4.2.1 providertype:-1"
+      "commandLineArgs": "input:efsod019.p7b message verify providertype:0"
     }
   }
 }

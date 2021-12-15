@@ -47,6 +47,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
             switch (providertype) {
                 case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(flags); break;
+                case  0: UnderlyingObject = new DefaultCryptographicContext(flags); break;
                 default: UnderlyingObject = new SCryptographicContext(providertype, flags); break;
                 }
             }
@@ -96,6 +97,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             CryptoConfig.AddAlgorithm(typeof(Gost3411_12_512), URN_GOST_DIGEST_2012_512);
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), ObjectIdentifiers.szOID_CP_GOST_R3410_12_256);
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_512_SignatureDescription), ObjectIdentifiers.szOID_CP_GOST_R3410_12_512);
+            CryptoConfig.AddAlgorithm(typeof(SHA384Managed), ObjectIdentifiers.szOID_NIST_sha384);
             }
 
         #region M:OIDToXmlDSig(Oid):String

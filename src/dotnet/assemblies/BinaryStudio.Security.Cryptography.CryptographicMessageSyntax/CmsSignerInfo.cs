@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using BinaryStudio.DataProcessing;
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
@@ -45,6 +47,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [TypeConverter(typeof(ObjectTypeConverter))]
     public class CmsSignerInfo : CmsObject
         {
+        private const Int32 ORDER_VERSION           = 0;
+        private const Int32 ORDER_SIGNER_IDENTIFIER = 1;
+        private const Int32 ORDER_DIGEST_ALGORITHM  = 2;
+        private const Int32 ORDER_SIGNED_ATTRIBUTES = 3;
+
         [Order(1)] public Int32 Version { get; }
         [Order(2)] public CmsSignerIdentifier SignerIdentifier { get; }
         [Order(3)] public X509AlgorithmIdentifier DigestAlgorithm { get; }
@@ -60,11 +67,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             UnsignedAttributes = new HashSet<CmsAttribute>();
             if (o is Asn1Sequence u) {
                 var c = u.Count;
-                Version = (Asn1Integer)u[0];
-                SignerIdentifier = CmsSignerIdentifier.Choice(u[1]);
-                DigestAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)u[2]);
-                var i = 3;
+                Version = (Asn1Integer)u[ORDER_VERSION];
+                SignerIdentifier = CmsSignerIdentifier.Choice(u[ORDER_SIGNER_IDENTIFIER]);
+                DigestAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)u[ORDER_DIGEST_ALGORITHM]);
+                var i = ORDER_SIGNED_ATTRIBUTES;
                 if (u[i] is Asn1ContextSpecificObject contextspecific) {
+                    SignedAttributesContainer = contextspecific;
                     SignedAttributes.UnionWith(u[i].Select(j => CmsAttribute.From(new CmsAttribute(j))));
                     i++;
                     }
@@ -120,5 +128,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             #endregion
             writer.WriteEndObject();
             }
+
+        private IEnumerable<Byte[]> DigestValueSourceSequence { get {
+            if (SignedAttributesContainer == null) { throw new NotImplementedException(); }
+            if (SignedAttributesContainer != null) {
+                #region {header as SET}
+                foreach (var i in HeaderSequence(
+                    SignedAttributesContainer.IsExplicitConstructed,
+                    Asn1ObjectClass.Universal, Asn1ObjectType.Set,
+                    SignedAttributesContainer.IsIndefiniteLength
+                        ? -1
+                        : SignedAttributesContainer.Length))
+                    {
+                    yield return i;
+                    }
+                #endregion
+                #region {content}
+                foreach (var i in SignedAttributesContainer.ContentSequence)
+                    {
+                    yield return i;
+                    }
+                #endregion
+                }
+            }}
+
+        public Stream DigestValueSource { get {
+            return new ReadOnlyBlockSequenceStream(DigestValueSourceSequence);
+            }}
+
+        private readonly Asn1ContextSpecificObject SignedAttributesContainer;
         }
     }

@@ -1012,6 +1012,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return Load(new ReadOnlyFileMappingStream(filename), flags);
             }
         #endregion
+
         protected internal virtual void Write(Stream target) {
             WriteHeader(target);
             WriteContent(target);
@@ -1035,19 +1036,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                  : Length);
             }
 
-        protected static void WriteHeader(Stream target, Boolean constructed, Asn1ObjectClass @class, Asn1ObjectType type, Int64? length)
-            {
-            WriteHeader(target, constructed, @class, (SByte)type, length);
-            }
-
         protected static void WriteHeader(Stream target, Boolean constructed, Asn1ObjectClass @class, SByte type, Int64? length)
             {
             if (target == null) { throw new ArgumentNullException(nameof(target)); }
-            if (length < 0)     { return; }
             var r = constructed ? 0x20 : 0x00;
             r |= ((Byte)@class) << 6;
             r |= (Byte)type;
             target.WriteByte((Byte)r);
+            if (length < 0)     {
+                target.WriteByte((Byte)0x80);
+                return;
+                }
             if (length < 0x80) { target.WriteByte((Byte)length); }
             else
                 {
@@ -1070,5 +1069,44 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return (source == null) || (source.Count == 0);
             }
         #endregion
+
+        protected static IEnumerable<Byte[]> HeaderSequence(Boolean explct, Asn1ObjectClass forceclass, Asn1ObjectType forcetype, Int64 length) {
+            return HeaderSequence(
+                explct,forceclass,
+                (Byte)forcetype,
+                length);
+            }
+
+        protected static IEnumerable<Byte[]> HeaderSequence(Boolean explct, Asn1ObjectClass forceclass, Byte forcetype, Int64 length) {
+            var c = explct ? 0x20 : 0x00;
+            c |= ((Byte)forceclass) << 6;
+            c |= ((Byte)forcetype);
+            yield return new []{ (Byte)c };
+            if (length < 0) {
+                yield return new[]{ (Byte)0x80 };
+                yield break;
+                }
+            if (length < 0x80) {
+                yield return new[]{ (Byte)length };
+                yield break;
+                }
+            var r = new List<Byte>();
+            while (length > 0) {
+                r.Add((Byte)(length & 0xff));
+                length >>= 8;
+                }
+            r.Reverse();
+            yield return new[]{ (Byte)(r.Count | 0x80) };
+            yield return r.ToArray();
+            }
+
+        protected internal virtual IEnumerable<Byte[]> ContentSequence { get {
+            using (var r = new MemoryStream()) {
+                Content.Seek(0, SeekOrigin.Begin);
+                Content.CopyTo(r);
+                yield return r.ToArray();
+                }
+            if (IsIndefiniteLength) { yield return new Byte[4]; }
+            }}
         }
     }
