@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
+using BinaryStudio.Security.Cryptography.Services;
 using Microsoft.Win32;
 using Options;
 
@@ -23,6 +27,7 @@ namespace Operations
                 if (flags.HasValue("types")) { Flags |= InfrastructureFlags.CSPtypes; }
                 if (flags.HasValue("keys"))  { Flags |= InfrastructureFlags.CSPkeys;  }
                 if (flags.HasValue("algs"))  { Flags |= InfrastructureFlags.CSPalgs;  }
+                if (flags.HasValue("srv"))   { Flags |= InfrastructureFlags.CSPsrv;   }
                 }
             if (Flags == 0)
                 {
@@ -88,6 +93,35 @@ namespace Operations
                             ? ((Int64)i.Handle).ToString("X16")
                             : ((Int32)i.Handle).ToString("X8");
                         WriteLine(ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}", j, handle, i.Container);
+                        j++;
+                        }
+                    }
+                if (Flags.HasFlag(InfrastructureFlags.CSPsrv)) {
+                    var channel = new TcpChannel();
+                    bool needreg = true;
+                    foreach (var item in ChannelServices.RegisteredChannels) {
+                        if (item.ChannelName == channel.ChannelName)
+                            {
+                            needreg = false;
+                            }
+                        }
+                    if (needreg)
+                        {
+                        ChannelServices.RegisterChannel(channel, false);
+                        }
+
+                    WriteLine(ConsoleColor.White, "Server Keys {{{0}}}:", (CRYPT_PROVIDER_TYPE)ProviderType.Value);
+                    var o = (ICryptographicOperations)Activator.GetObject(typeof(ICryptographicOperations),"tcp://localhost:50000/CryptographicOperations");
+                    WriteLine(ConsoleColor.White, "  User Keys:");
+                    j = 0;
+                    foreach (var i in o.Keys((CRYPT_PROVIDER_TYPE)ProviderType.Value, X509StoreLocation.CurrentUser)) {
+                        WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
+                        j++;
+                        }
+                    WriteLine(ConsoleColor.White, "  Machine Keys:");
+                    j = 0;
+                    foreach (var i in o.Keys((CRYPT_PROVIDER_TYPE)ProviderType.Value, X509StoreLocation.LocalMachine)) {
+                        WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
                         j++;
                         }
                     }

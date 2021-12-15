@@ -1,16 +1,19 @@
 ﻿using System;
 using System.ServiceProcess;
+using System.Threading;
 using BinaryStudio.Diagnostics.Logging;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using log4net;
 using Microsoft.Win32;
 
 namespace srv
     {
-    public partial class Service : ServiceBase, ILogger
+    public partial class Service : ServiceBase
         {
-        private static readonly ILog log = LogManager.GetLogger(nameof(Service));
+        private static readonly ILogger logger = new ServiceLogger(LogManager.GetLogger(nameof(Service)));
         public CRYPT_PROVIDER_TYPE ProviderType { get;set; }
+        private static Thread thread;
+        private Boolean stop;
+
         public Service()
             {
             InitializeComponent();
@@ -21,69 +24,34 @@ namespace srv
         /// <param name="args">Data passed by the start command.</param>
         protected override void OnStart(String[] args)
             {
-            var Is64Bit = Environment.Is64BitProcess;
-            log.Info($"Keys {{{ProviderType}}}:");
-            log.Info("  User Keys:");
-            var j = 0;
-            using (var context = new CryptographicContext(this, ProviderType, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                foreach (var i in context.Keys) {
-                    var handle = Is64Bit
-                        ? ((Int64)i.Handle).ToString("X16")
-                        : ((Int32)i.Handle).ToString("X8");
-                    log.Info($"    {{{j}}}:{{{handle}}}:{i.Container}");
-                    j++;
+            logger.Log(LogLevel.Information, "Starting...");
+            thread = new Thread(()=>{
+                try
+                    {
+                    using (new ServiceLogic(50000)) {
+                        logger.Log(LogLevel.Information, "Started");
+                        while (!stop)
+                            {
+                            Thread.Sleep(5000);
+                            }
+                        }
                     }
-                }
-            log.Info("  Machine Keys:");
-            j = 0;
-            using (var context = new CryptographicContext(this, ProviderType, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_MACHINE_KEYSET)) {
-                foreach (var i in context.Keys) {
-                    var handle = Is64Bit
-                        ? ((Int64)i.Handle).ToString("X16")
-                        : ((Int32)i.Handle).ToString("X8");
-                    log.Info($"    {{{j}}}:{{{handle}}}:{i.Container}");
-                    j++;
+                catch (Exception e)
+                    {
+                    logger.Log(LogLevel.Critical, e.ToString());
+                    stop = true;
                     }
-                }
+                });
+            thread.Start();
             }
 
         /// <summary>When implemented in a derived class, executes when a Stop command is sent to the service by the Service Control Manager (SCM). Specifies actions to take when a service stops running.</summary>
         protected override void OnStop()
             {
-            }
-
-        Boolean ILogger.IsEnabled(LogLevel loglevel) {
-            switch (loglevel)
-                {
-                case LogLevel.Trace:       return log.IsDebugEnabled;
-                case LogLevel.Debug:       return log.IsDebugEnabled;
-                case LogLevel.Information: return log.IsInfoEnabled;
-                case LogLevel.Warning:     return log.IsWarnEnabled;
-                case LogLevel.Error:       return log.IsErrorEnabled;
-                case LogLevel.Critical:    return log.IsFatalEnabled;
-                case LogLevel.None: break;
-                default: throw new ArgumentOutOfRangeException(nameof(loglevel), loglevel, null);
-                }
-            return false;
-            }
-
-        public void Log(LogLevel loglevel, String message) {
-            switch (loglevel)
-                {
-                case LogLevel.Trace:       log.Debug(message); break;
-                case LogLevel.Debug:       log.Debug(message); break;
-                case LogLevel.Information: log.Info(message);  break;
-                case LogLevel.Warning:     log.Warn(message);  break;
-                case LogLevel.Error:       log.Error(message); break;
-                case LogLevel.Critical:    log.Fatal(message); break;
-                case LogLevel.None: break;
-                default: throw new ArgumentOutOfRangeException(nameof(loglevel), loglevel, null);
-                }
-            }
-
-        void ILogger.Log(LogLevel loglevel, String format, params Object[] args)
-            {
-            Log(loglevel, String.Format(format, args));
+            logger.Log(LogLevel.Information, "Stopping...");
+            stop = true;
+            thread.Join();
+            logger.Log(LogLevel.Information, "Stopped");
             }
         }
     }

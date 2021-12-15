@@ -22,6 +22,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.3.0" />
@@ -35,6 +36,7 @@
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Services\BinaryStudio.Security.Cryptography.Services.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Xml\BinaryStudio.Security.Cryptography.Xml.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.XAdES\BinaryStudio.Security.XAdES.csproj" />

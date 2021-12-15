@@ -74,3 +74,5 @@
 /scripts/FT.Security.Cryptography.1.0.112.zip
 /src/dotnet/srv/bin/Debug
 /src/dotnet/srv/obj/Debug
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Services/bin/Debug/net40
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Services/obj
