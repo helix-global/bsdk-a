@@ -17,9 +17,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <summary>
         /// Constructs <see cref="OpenSSLCryptographicContext"/> instance using <paramref name="flags"/>.
         /// </summary>
+        /// <param name="logger">Reference to logger.</param>
         /// <param name="flags">Provider flags.</param>
-        public OpenSSLCryptographicContext(CryptographicContextFlags flags)
+        public OpenSSLCryptographicContext(ILogger logger, CryptographicContextFlags flags)
             {
+            Logger = logger ?? EmptyLogger;
             this.flags = flags;
             }
 

@@ -78,7 +78,7 @@ namespace Operations
 
         public sealed override void Execute(TextWriter output) {
             using (var context = new CryptographicContext(
-                ProviderType,
+                Logger,ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 using (var store = BuildCertificateStorage()) {
                     Execute(output,context, store);

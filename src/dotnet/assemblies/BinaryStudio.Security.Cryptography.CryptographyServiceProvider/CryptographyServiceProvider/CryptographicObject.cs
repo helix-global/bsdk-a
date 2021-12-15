@@ -479,6 +479,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return !((value == null) || (value.IsInvalid) || (value.IsClosed));
             }
 
+        protected static readonly EmptyLogger EmptyLogger = new EmptyLogger();
+
         static CryptographicObject()
             {
             }

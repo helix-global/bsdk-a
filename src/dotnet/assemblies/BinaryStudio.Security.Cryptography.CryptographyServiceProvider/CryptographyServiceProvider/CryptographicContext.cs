@@ -6,6 +6,8 @@ using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
+// ReSharper disable VirtualMemberCallInConstructor
+
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     public class CryptographicContext : CryptographicObject, ICryptographicContext
@@ -42,13 +44,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <summary>
         /// Constructs <see cref="CryptographicContext"/> using specified <paramref name="providertype"/> and flags.
         /// </summary>
+        /// <param name="logger">Reference to logger.</param>
         /// <param name="providertype">Type of provider (<see cref="CRYPT_PROVIDER_TYPE"/>).</param>
         /// <param name="flags">Provider flags.</param>
-        public CryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+        public CryptographicContext(ILogger logger, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+            Logger = logger ?? EmptyLogger;
             switch (providertype) {
-                case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(flags); break;
-                case  0: UnderlyingObject = new DefaultCryptographicContext(flags); break;
-                default: UnderlyingObject = new SCryptographicContext(providertype, flags); break;
+                case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(Logger, flags); break;
+                case  0: UnderlyingObject = new DefaultCryptographicContext(Logger, flags); break;
+                default: UnderlyingObject = new SCryptographicContext(Logger, providertype, flags); break;
                 }
             }
 

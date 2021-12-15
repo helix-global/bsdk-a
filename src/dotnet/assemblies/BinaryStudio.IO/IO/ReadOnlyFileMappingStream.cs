@@ -10,14 +10,21 @@ namespace BinaryStudio.IO
         {
         private FileMapping mapping;
         protected override Int64 Offset { get; }
+        protected Boolean DeleteOnDispose;
 
         public ReadOnlyFileMappingStream(String filename)
+            :this(filename, false)
+            {
+            }
+
+        internal ReadOnlyFileMappingStream(String filename, Boolean flags)
             {
             if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
             if (String.IsNullOrWhiteSpace(filename)) { throw new ArgumentOutOfRangeException(nameof(filename)); }
             mapping = new FileMapping(filename);
             Length = mapping.Size;
             Offset = 0;
+            DeleteOnDispose = flags;
             }
 
         internal ReadOnlyFileMappingStream(FileMapping mapping, Int64 offset, Int64 length) {
@@ -156,5 +163,23 @@ namespace BinaryStudio.IO
 
         public override ReadOnlyMappingStream Clone(Int64 offset, Int64 length) { return new ReadOnlyFileMappingStream(this, offset, length); }
         public override ReadOnlyMappingStream Clone(Int64 length)               { return new ReadOnlyFileMappingStream(this, length);         }
+
+        /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            if (disposing) {
+                if (DeleteOnDispose) {
+                    if (mapping != null) {
+                        var filename = mapping.FileName;
+                        mapping.Dispose();
+                        mapping = null;
+                        if (File.Exists(filename)) {
+                            File.Delete(filename);
+                            }
+                        }
+                    }
+                }
+            base.Dispose(disposing);
+            }
         }
     }

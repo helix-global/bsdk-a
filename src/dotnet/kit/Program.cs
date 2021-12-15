@@ -179,25 +179,15 @@ namespace Kit
             try
                 {
                 using (new TraceScope()) {
-                    var json = false;
-                    var extract = false;
-                    var oflags = Flags.None;
-                    Boolean randomgeneration = false;
-                    String tspserver      = null;
-                    String[] inputfilename  = null;
-                    String outputfilename = null;
-                    String xmldsig        = null;
-                    String certificates   = null;
-                    var storename = "MY";
-                    var storeloc  = X509StoreLocation.CurrentUser;
-                    var providertype = 81;
-                    var timestamp = "none";
-                    var algid = new String[0];
-                    var dumpcodes = false;
-                    var keys = false;
+                    Boolean json;
+                    Boolean randomgeneration;
+                    String[] inputfilename;
+                    String outputfilename;
+                    Boolean dumpcodes;
                     var operations = new String[0];
-                    Int64 sizevalue = -1;
+                    Int64 sizevalue;
 
+                    Operation.Logger = new ConsoleLogger();
                     Operation operation = new UsageOperation(Console.Out, Console.Error, options);
                     if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
                     if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
@@ -214,20 +204,12 @@ namespace Kit
                     else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
                     else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
                     operation.Execute(Console.Out);
+                    operation = null;
+                    GC.Collect();
                     return;
                     for (var i = 0; i < args.Length; ++i) {
                         if (args[i][0] == '-') {
-                               if (args[i].StartsWith("-tsp:"))             { tspserver = args[i].Substring( 5);                  }
-                            else if (args[i].StartsWith("-xmldsig:"))       { xmldsig   = args[i].Substring( 9);                  }
-                            else if (args[i].StartsWith("-certificates:"))  { certificates = args[i].Substring(14);               }
-                            else if (args[i].StartsWith("-timestamp:"))     { timestamp = args[i].Substring(11);                  }
-                            else if (args[i].StartsWith("-operation:"))     { operations = args[i].Substring(11).Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries); }
-                            else if (args[i].StartsWith("-algid:"))         { algid = ToStringArray(args[i].Substring(7));        }
-                            else if (args[i] == "-dumpcodes")               { dumpcodes = true;                                   }
-                            else if (args[i] == "-l")                       { oflags |= Flags.List;                               }
-                            else if (args[i] == "-keys")                    { keys   = true;                                      }
-                            else if (args[i] == "-json")                    { json   = true; }
-                            else if (args[i] == "-extract")                 { extract  = true; }
+                                  if (args[i] == "-dumpcodes")     { dumpcodes = true; }
                             else if (args[i].StartsWith("-size:")) {
                                 var r = Regex.Match(args[i].Substring(6).ToUpper(), @"^(\p{N}+)([KMGКМГ])?");
                                 if (r.Success) {
@@ -330,8 +312,12 @@ namespace Kit
                         }
                     #region Operations
                     else if (operations.Length > 0)
-                        {
+                    {
+                        var providertype = 81;
                         using (var context = new SCryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                            var storename = "MY";
+                            var storeloc  = X509StoreLocation.CurrentUser;
+                            String certificates   = null;
                             var store = Utilities.BuildCertificateList(storeloc, storename, certificates, (CRYPT_PROVIDER_TYPE)providertype);
                             #region Certificate Operations
                                 {
@@ -364,7 +350,7 @@ namespace Kit
                                 }
                             #endregion
                             }
-                        }
+                    }
                     #endregion
                     else
                         {

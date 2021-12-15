@@ -18,10 +18,9 @@ namespace Operations
             {
             }
 
-        public override void Execute(TextWriter output)
-            {
+        public override void Execute(TextWriter output) {
             using (var context = new CryptographicContext(
-                ProviderType,
+                Logger, ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 X509Certificate[] certificates;
                 if (InputFileName.Count > 1)

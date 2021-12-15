@@ -672,77 +672,78 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return r;
             }
         #endregion
-        #region M:ReadNext(ReadOnlyMappingStream,Int64):Asn1Object
+
+        /// <summary>
+        /// Reads next ASN.1 object from specified read-only stream and with specified offset.
+        /// </summary>
+        /// <param name="source">Read only source stream.</param>
+        /// <param name="forceoffset">Offset to pass to newly created object.</param>
+        /// <returns>Returns next ASN.1 object.</returns>
         protected static Asn1Object ReadNext(ReadOnlyMappingStream source, Int64 forceoffset)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            #if TRACE
-            using (TraceManager.Instance.Trace())
-            #endif
+            Asn1Object o = null;
+            if (source.Position == source.Length) { return null; }
+            var p = source.Position;
+            var r = source.ReadByte();
+            var c = (Asn1ObjectClass)((r & 0xc0) >> 6);
+            var state = ((r & 0x20) == 0x20) ? ObjectState.ExplicitConstructed : ObjectState.None;
+            switch (c)
                 {
-                Asn1Object o = null;
-                if (source.Position == source.Length) { return null; }
-                var p = source.Position;
-                var r = source.ReadByte();
-                var c = (Asn1ObjectClass)((r & 0xc0) >> 6);
-                var state = ((r & 0x20) == 0x20) ? ObjectState.ExplicitConstructed : ObjectState.None;
-                switch (c)
+                case Asn1ObjectClass.Universal:
                     {
-                    case Asn1ObjectClass.Universal:
+                    switch ((Asn1ObjectType)(r & 0x1f))
                         {
-                        switch ((Asn1ObjectType)(r & 0x1f))
-                            {
-                            case Asn1ObjectType.EndOfContent:               { o = new Asn1EndOfContent(source, forceoffset);             } break;
-                            case Asn1ObjectType.Boolean:                    { o = new Asn1Boolean(source, forceoffset);                  } break;
-                            case Asn1ObjectType.Integer:                    { o = new Asn1Integer(source, forceoffset);                  } break;
-                            case Asn1ObjectType.BitString:                  { o = new Asn1BitString(source, forceoffset);                } break;
-                            case Asn1ObjectType.OctetString:                { o = new Asn1OctetString(source, forceoffset);              } break;
-                            case Asn1ObjectType.Null:                       { o = new Asn1Null(source, forceoffset);                     } break;
-                            case Asn1ObjectType.ObjectIdentifier:           { o = new Asn1ObjectIdentifier(source, forceoffset);         } break;
-                            case Asn1ObjectType.ObjectDescriptor:           { o = new Asn1ObjectDescriptor(source, forceoffset);         } break;
-                            case Asn1ObjectType.External:                   { o = new Asn1External(source, forceoffset);                 } break;
-                            case Asn1ObjectType.Real:                       { o = new Asn1Real(source, forceoffset);                     } break;
-                            case Asn1ObjectType.Enum:                       { o = new Asn1Enum(source, forceoffset);                     } break;
-                            case Asn1ObjectType.EmbeddedPDV:                { o = new Asn1EmbeddedPDV(source, forceoffset);              } break;
-                            case Asn1ObjectType.RelativeObjectIdentifier:   { o = new Asn1RelativeObjectIdentifier(source, forceoffset); } break;
-                            case Asn1ObjectType.Sequence:                   { o = new Asn1Sequence(source, forceoffset);                 } break;
-                            case Asn1ObjectType.Set:                        { o = new Asn1Set(source, forceoffset);                      } break;
-                            case Asn1ObjectType.Utf8String:                 { o = new Asn1Utf8String(source, forceoffset);               } break;
-                            case Asn1ObjectType.NumericString:              { o = new Asn1NumericString(source, forceoffset);            } break;
-                            case Asn1ObjectType.PrintableString:            { o = new Asn1PrintableString(source, forceoffset);          } break;
-                            case Asn1ObjectType.TeletexString:              { o = new Asn1TeletexString(source, forceoffset);            } break;
-                            case Asn1ObjectType.VideotexString:             { o = new Asn1VideotexString(source, forceoffset);           } break;
-                            case Asn1ObjectType.IA5String:                  { o = new Asn1IA5String(source, forceoffset);                } break;
-                            case Asn1ObjectType.UtcTime:                    { o = new Asn1UtcTime(source, forceoffset);                  } break;
-                            case Asn1ObjectType.GeneralTime:                { o = new Asn1GeneralTime(source, forceoffset);              } break;
-                            case Asn1ObjectType.GraphicString:              { o = new Asn1GraphicString(source, forceoffset);            } break;
-                            case Asn1ObjectType.VisibleString:              { o = new Asn1VisibleString(source, forceoffset);            } break;
-                            case Asn1ObjectType.GeneralString:              { o = new Asn1GeneralString(source, forceoffset);            } break;
-                            case Asn1ObjectType.UniversalString:            { o = new Asn1UniversalString(source, forceoffset);          } break;
-                            case Asn1ObjectType.UnicodeString:              { o = new Asn1UnicodeString(source, forceoffset);            } break;
-                            }
+                        case Asn1ObjectType.EndOfContent:               { o = new Asn1EndOfContent            (source, forceoffset); } break;
+                        case Asn1ObjectType.Boolean:                    { o = new Asn1Boolean                 (source, forceoffset); } break;
+                        case Asn1ObjectType.Integer:                    { o = new Asn1Integer                 (source, forceoffset); } break;
+                        case Asn1ObjectType.BitString:                  { o = new Asn1BitString               (source, forceoffset); } break;
+                        case Asn1ObjectType.OctetString:                { o = new Asn1OctetString             (source, forceoffset); } break;
+                        case Asn1ObjectType.Null:                       { o = new Asn1Null                    (source, forceoffset); } break;
+                        case Asn1ObjectType.ObjectIdentifier:           { o = new Asn1ObjectIdentifier        (source, forceoffset); } break;
+                        case Asn1ObjectType.ObjectDescriptor:           { o = new Asn1ObjectDescriptor        (source, forceoffset); } break;
+                        case Asn1ObjectType.External:                   { o = new Asn1External                (source, forceoffset); } break;
+                        case Asn1ObjectType.Real:                       { o = new Asn1Real                    (source, forceoffset); } break;
+                        case Asn1ObjectType.Enum:                       { o = new Asn1Enum                    (source, forceoffset); } break;
+                        case Asn1ObjectType.EmbeddedPDV:                { o = new Asn1EmbeddedPDV             (source, forceoffset); } break;
+                        case Asn1ObjectType.RelativeObjectIdentifier:   { o = new Asn1RelativeObjectIdentifier(source, forceoffset); } break;
+                        case Asn1ObjectType.Sequence:                   { o = new Asn1Sequence                (source, forceoffset); } break;
+                        case Asn1ObjectType.Set:                        { o = new Asn1Set                     (source, forceoffset); } break;
+                        case Asn1ObjectType.Utf8String:                 { o = new Asn1Utf8String              (source, forceoffset); } break;
+                        case Asn1ObjectType.NumericString:              { o = new Asn1NumericString           (source, forceoffset); } break;
+                        case Asn1ObjectType.PrintableString:            { o = new Asn1PrintableString         (source, forceoffset); } break;
+                        case Asn1ObjectType.TeletexString:              { o = new Asn1TeletexString           (source, forceoffset); } break;
+                        case Asn1ObjectType.VideotexString:             { o = new Asn1VideotexString          (source, forceoffset); } break;
+                        case Asn1ObjectType.IA5String:                  { o = new Asn1IA5String               (source, forceoffset); } break;
+                        case Asn1ObjectType.UtcTime:                    { o = new Asn1UtcTime                 (source, forceoffset); } break;
+                        case Asn1ObjectType.GeneralTime:                { o = new Asn1GeneralTime             (source, forceoffset); } break;
+                        case Asn1ObjectType.GraphicString:              { o = new Asn1GraphicString           (source, forceoffset); } break;
+                        case Asn1ObjectType.VisibleString:              { o = new Asn1VisibleString           (source, forceoffset); } break;
+                        case Asn1ObjectType.GeneralString:              { o = new Asn1GeneralString           (source, forceoffset); } break;
+                        case Asn1ObjectType.UniversalString:            { o = new Asn1UniversalString         (source, forceoffset); } break;
+                        case Asn1ObjectType.UnicodeString:              { o = new Asn1UnicodeString           (source, forceoffset); } break;
                         }
-                        break;
-                    case Asn1ObjectClass.Application:     { o = new Asn1ApplicationObject(source, forceoffset, (SByte)(r & 0x1f));     } break;
-                    case Asn1ObjectClass.ContextSpecific: { o = new Asn1ContextSpecificObject(source, forceoffset, (SByte)(r & 0x1f)); } break;
-                    case Asn1ObjectClass.Private:         { o = new Asn1PrivateObject(source, forceoffset, (SByte)(r & 0x1f));         } break;
                     }
-                if ((o == null) || (o.IsFailed))
-                    {
+                    break;
+                case Asn1ObjectClass.Application:     { o = new Asn1ApplicationObject    (source, forceoffset, (SByte)(r & 0x1f)); } break;
+                case Asn1ObjectClass.ContextSpecific: { o = new Asn1ContextSpecificObject(source, forceoffset, (SByte)(r & 0x1f)); } break;
+                case Asn1ObjectClass.Private:         { o = new Asn1PrivateObject        (source, forceoffset, (SByte)(r & 0x1f)); } break;
+                }
+            if ((o == null) || (o.IsFailed))
+                {
+                source.Seek(p, SeekOrigin.Begin);
+                return null;
+                }
+            o.state |= state;
+            if (o.IsIndefiniteLength) {
+                if (!o.Decode()) {
                     source.Seek(p, SeekOrigin.Begin);
                     return null;
                     }
-                o.state |= state;
-                if (o.IsIndefiniteLength) {
-                    if (!o.Decode()) {
-                        source.Seek(p, SeekOrigin.Begin);
-                        return null;
-                        }
-                    }
-                return o;
                 }
+            return o;
             }
-        #endregion
+
         #region M:Find(Func<Asn1Object,Boolean>):IEnumerable<Asn1Object>
         public virtual IEnumerable<Asn1Object> Find(Func<Asn1Object, Boolean> predicate) {
             if (predicate != null) {
@@ -972,13 +973,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
 
-        #region M:Load(ReadOnlyMappingStream,Asn1ReadFlags):IEnumerable<Asn1Object>
+        /// <summary>
+        /// Loads ASN.1 structure from specified read-only stream and by specified flags.
+        /// </summary>
+        /// <param name="source">Read only stream.</param>
+        /// <param name="flags">Load flags.</param>
+        /// <returns>Returns sequence of ASN.1 objects.</returns>
         public static IEnumerable<Asn1Object> Load(ReadOnlyMappingStream source, Asn1ReadFlags flags = 0) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            #if TRACE
-            using (TraceManager.Instance.Trace(new TraceContextStackFrameIdentity(new StackTrace(true).GetFrame(0)), source.Length))
-            #endif
-                {
+            if (source.CanSeek) {
                 var sz = source.Length;
                 if (flags.HasFlag(Asn1ReadFlags.IgnoreLeadLineEnding)) {
                     if (sz > 1) {
@@ -996,22 +999,37 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             }
                         }
                     }
-                for (;;)
-                    {
-                    if (source.Position >= sz) { break; }
-                    var i = ReadNext(source, source.Position);
-                    if (i == null) { break; }
-                    i.Decode();
-                    yield return i;
-                    }
+                }
+            for (;;)
+                {
+                var i = ReadNext(source, source.Position);
+                if (i == null) { break; }
+                i.Decode();
+                yield return i;
                 }
             }
-        #endregion
-        #region M:Load(String,Asn1ReadFlags):IEnumerable<Asn1Object>
+
+        /// <summary>
+        /// Loads ASN.1 structure from specified <paramref name="filename"/> and by specified <paramref name="flags"/>.
+        /// </summary>
+        /// <param name="filename">File name where ASN.1 is located.</param>
+        /// <param name="flags">Load flags.</param>
+        /// <returns>Returns sequence of ASN.1 objects.</returns>
         public static IEnumerable<Asn1Object> Load(String filename, Asn1ReadFlags flags = 0) {
             return Load(new ReadOnlyFileMappingStream(filename), flags);
             }
-        #endregion
+
+        /// <summary>
+        /// Loads ASN.1 structure from specified read-only stream and by specified flags.
+        /// </summary>
+        /// <param name="source">Read only stream.</param>
+        /// <param name="flags">Load flags.</param>
+        /// <returns>Returns sequence of ASN.1 objects.</returns>
+        public static IEnumerable<Asn1Object> Load(Stream source, Asn1ReadFlags flags = 0) {
+            if (source == null)  { throw new ArgumentNullException(nameof(source));       }
+            if (!source.CanRead) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            return Load(new ReadOnlyStream(source), flags);
+            }
 
         protected internal virtual void Write(Stream target) {
             WriteHeader(target);

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
-using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
@@ -20,11 +19,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
 
-        public DefaultCryptographicContext(CryptographicContextFlags flags)
+        public DefaultCryptographicContext(ILogger logger, CryptographicContextFlags flags)
             {
+            Logger = logger ?? EmptyLogger;
             this.flags = flags;
             }
 
+        /// <summary>
+        /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
+        /// </summary>
+        /// <param name="algid">Algorithm identifier.</param>
+        /// <returns>Returns hash engine.</returns>
         public IHashAlgorithm CreateHashAlgorithm(Oid algid)
             {
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
@@ -58,23 +63,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             certificates = EmptyArray<IX509Certificate>.Value;
             if (input == null) { throw new ArgumentNullException(nameof(input)); }
-            using (var memory = new MemoryStream()) {
-                input.CopyTo(memory);
-                using (var ro = new ReadOnlyMemoryMappingStream(memory.ToArray())) {
-                    var o = Asn1Object.Load(ro).FirstOrDefault();
-                    if (o == null) { throw new ArgumentOutOfRangeException(nameof(input)); }
-                    var r = new CmsMessage(o);
-                    if (r.IsFailed)  { throw new ArgumentOutOfRangeException(nameof(input)); }
-                    if (r.ContentInfo is CmsSignedDataContentInfo ci) {
-                        var signerindex = 0;
-                        foreach (var si in ci.Signers) {
-                            var algid = si.DigestAlgorithm.Identifier.ToString();
-                            using (var engine = CreateHashAlgorithm(new Oid(algid))) {
-                                var digest = engine.Compute(si.DigestValueSource);
-                                Console.WriteLine("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
-                                signerindex++;
-                                }
-                            }
+            var o = Asn1Object.Load(input).FirstOrDefault();
+            if (o == null) { throw new ArgumentOutOfRangeException(nameof(input), "No valid ASN.1 sequence found."); }
+            var r = new CmsMessage(o);
+            if (r.IsFailed)  { throw new ArgumentOutOfRangeException(nameof(input)); }
+            if (r.ContentInfo is CmsSignedDataContentInfo ci) {
+                var signerindex = 0;
+                foreach (var signer in ci.Signers) {
+                    var algid = signer.DigestAlgorithm.Identifier.ToString();
+                    using (var engine = CreateHashAlgorithm(new Oid(algid))) {
+                        var digest = engine.Compute(signer.DigestValueSource);
+                        #if DEBUG
+                        Logger.Log(LogLevel.Debug, "SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
+                        #endif
+                        signerindex++;
                         }
                     }
                 }

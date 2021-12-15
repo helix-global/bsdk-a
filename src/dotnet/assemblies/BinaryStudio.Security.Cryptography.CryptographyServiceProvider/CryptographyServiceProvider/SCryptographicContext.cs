@@ -240,7 +240,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:CryptographicContext(CRYPT_PROVIDER_TYPE,CryptographicContextFlags,ILogger)
-        public SCryptographicContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags, ILogger logger)
+        public SCryptographicContext(ILogger logger, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags)
             :this(null, null, providertype, flags, logger)
             {
             }

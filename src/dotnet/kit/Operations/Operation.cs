@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.Security.Cryptography;
 using Options;
 using Options.Descriptors;
@@ -10,6 +11,7 @@ namespace Operations
     {
     internal abstract class Operation
         {
+        public static ILogger Logger { get;set; }
         public TextWriter Out { get; }
         public TextWriter Error { get; }
         protected Operation(TextWriter output, TextWriter error, IList<OperationOption> args)

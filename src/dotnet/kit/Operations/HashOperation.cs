@@ -27,7 +27,7 @@ namespace Operations
         public override void Execute(TextWriter output) {
             output = output ?? Console.Out;
             using (var context = new CryptographicContext(
-                ProviderType,
+                Logger, ProviderType,
                 CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                 foreach (var filename in InputFileName) {
                     if (Path.GetFileNameWithoutExtension(filename).Contains("*")) {
