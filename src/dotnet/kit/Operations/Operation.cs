@@ -4,6 +4,7 @@ using System.IO;
 using System.Security;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.Security.Cryptography;
+using Kit;
 using Options;
 using Options.Descriptors;
 
@@ -12,8 +13,9 @@ namespace Operations
     internal abstract class Operation
         {
         public static ILogger Logger { get;set; }
-        public TextWriter Out { get; }
+        public TextWriter Out   { get; }
         public TextWriter Error { get; }
+
         protected Operation(TextWriter output, TextWriter error, IList<OperationOption> args)
             {
             Out = output;
@@ -55,6 +57,24 @@ namespace Operations
             fixed (Char* c = o)
                 {
                 e.SecureString = new SecureString(c, o.Length);
+                }
+            }
+
+        protected void WriteLine(ConsoleColor color, String format, params Object[] args) {
+            using (new ConsoleColorScope(color)) {
+                Out.WriteLine(format, args);
+                }
+            }
+
+        protected void WriteLine(ConsoleColor color, String message) {
+            using (new ConsoleColorScope(color)) {
+                Out.WriteLine(message);
+                }
+            }
+
+        protected void Write(ConsoleColor color, String message) {
+            using (new ConsoleColorScope(color)) {
+                Out.Write(message);
                 }
             }
 

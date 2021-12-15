@@ -93,6 +93,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 input, inputdata, out certificates, finder);
             }
 
+        public IEnumerable<ICryptKey> Keys { get { return UnderlyingObject.Keys; }}
+
         static CryptographicContext()
             {
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), URN_GOST_SIGN_2012_256);

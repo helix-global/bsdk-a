@@ -87,6 +87,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
+        public IEnumerable<ICryptKey> Keys { get {
+            yield break;
+            }}
+
         private class HashEngine : HashAlgorithm, IHashAlgorithm
             {
             private HashAlgorithm UnderlyingObject;

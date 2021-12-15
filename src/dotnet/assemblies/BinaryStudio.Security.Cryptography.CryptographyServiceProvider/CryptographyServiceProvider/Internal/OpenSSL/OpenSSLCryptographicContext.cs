@@ -66,6 +66,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
+        public IEnumerable<ICryptKey> Keys { get {
+            yield break;
+            }}
+
         private static readonly Object o = new Object();
         private static IOpenSSLLibrary core;
 

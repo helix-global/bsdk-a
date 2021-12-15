@@ -1348,5 +1348,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 Validate(CertSetCertificateContextProperty(H, CERT_KEY_PROV_INFO_PROP_ID, 0, ref P));
                 }
             }
+
+        public IEnumerable<ICryptKey> Keys { get {
+            foreach (var i in EnumUserKeys(false)) {
+                yield return i;
+                }
+            }}
         }
     }

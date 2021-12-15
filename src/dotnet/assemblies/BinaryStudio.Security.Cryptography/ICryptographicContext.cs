@@ -21,5 +21,6 @@ namespace BinaryStudio.Security.Cryptography
         void EncryptMessageDER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream);
         void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder);
         void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates, IX509CertificateResolver finder);
+        IEnumerable<ICryptKey> Keys { get; }
         }
     }
