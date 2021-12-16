@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Threading;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Services;
@@ -32,6 +36,22 @@ namespace Operations
             if (Flags == 0)
                 {
                 Flags = InfrastructureFlags.CSP;
+                }
+            }
+
+        private void Execute(ICryptographicOperations source, CRYPT_PROVIDER_TYPE providertype) {
+            WriteLine(ConsoleColor.White, "Server Keys {{{0}}}:", providertype);
+            WriteLine(ConsoleColor.White, "  User Keys:");
+            var j = 0;
+            foreach (var i in source.Keys(providertype, X509StoreLocation.CurrentUser)) {
+                WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
+                j++;
+                }
+            WriteLine(ConsoleColor.White, "  Machine Keys:");
+            j = 0;
+            foreach (var i in source.Keys(providertype, X509StoreLocation.LocalMachine)) {
+                WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
+                j++;
                 }
             }
 
@@ -110,20 +130,29 @@ namespace Operations
                         ChannelServices.RegisterChannel(channel, false);
                         }
 
-                    WriteLine(ConsoleColor.White, "Server Keys {{{0}}}:", (CRYPT_PROVIDER_TYPE)ProviderType.Value);
                     var o = (ICryptographicOperations)Activator.GetObject(typeof(ICryptographicOperations),"tcp://localhost:50000/CryptographicOperations");
-                    WriteLine(ConsoleColor.White, "  User Keys:");
-                    j = 0;
-                    foreach (var i in o.Keys((CRYPT_PROVIDER_TYPE)ProviderType.Value, X509StoreLocation.CurrentUser)) {
-                        WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
-                        j++;
+                    var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                    var c = 0;
+                    while (c < 5) {
+                        try
+                            {
+                            if (o.IsAlive) {
+                                Execute(o, (CRYPT_PROVIDER_TYPE)ProviderType.Value);
+                                break;
+                                }
+                            }
+                        catch (SocketException e) {
+                            c++;
+                            if (e.SocketErrorCode == SocketError.ConnectionRefused) {
+                                var installer = new ServiceInstaller();
+                                installer.InstallService(Path.Combine(dir, "srv.exe"), "KIT", "KIT");
+                                Thread.Sleep(10000);
+                                continue;
+                                }
+                            throw;
+                            }
                         }
-                    WriteLine(ConsoleColor.White, "  Machine Keys:");
-                    j = 0;
-                    foreach (var i in o.Keys((CRYPT_PROVIDER_TYPE)ProviderType.Value, X509StoreLocation.LocalMachine)) {
-                        WriteLine(ConsoleColor.Gray, "    {{{0}}}:{1}", j, i);
-                        j++;
-                        }
+
                     }
                 }
             }
