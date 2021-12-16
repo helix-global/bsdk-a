@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -35,10 +34,8 @@ namespace Kit
             {
             None              = 0x00000000,
             List              = 0x00000001,
-            VerifyCertificate = 0x00000002,
             Xml               = 0x10000000,
             Json              = 0x20000000,
-            Html              = 0x20000000,
             }
 
         #region M:Validate(Boolean)
