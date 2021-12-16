@@ -12,10 +12,13 @@ using System.Xml.Serialization;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.PlatformComponents.Win32.ProcessControl;
+using log4net;
 using Newtonsoft.Json;
-using Operations;
 using Options;
+using srv;
 #if USE_WINDOWS_API_CODE_PACK
 using Microsoft.WindowsAPICodePack.Taskbar;
 #endif
@@ -25,6 +28,7 @@ namespace Kit
     {
     public class Program
         {
+        private static readonly ILogger logger = new ServiceLogger(LogManager.GetLogger(nameof(Program)));
         #if USE_WINDOWS_API_CODE_PACK
         internal static TaskbarManager taskbar = TaskbarManager.Instance;
         #endif
@@ -214,13 +218,28 @@ namespace Kit
         //    }
 
         [MTAThread]
-        internal static void Main(String[] args) {
-            Int32 exitcode;
-            using (var client = new LocalClient())
+        internal static unsafe void Main(String[] args) {
+            logger.Log(LogLevel.Trace, $">Main({String.Join(" ", args)})");
+            try
                 {
-                exitcode = client.Main(args);
+                logger.Log(LogLevel.Debug, $"PEB_LDR_DATA:{sizeof(PEB32_LDR_DATA)}:{sizeof(PEB64_LDR_DATA)}");
+                return;
+                Int32 exitcode;
+                using (var client = new LocalClient())
+                    {
+                    exitcode = client.Main(args);
+                    }
+                Environment.ExitCode = exitcode;
                 }
-            Environment.ExitCode = exitcode;
+            catch (Exception e)
+                {
+                logger.Log(LogLevel.Error, $"{e}");
+                Environment.ExitCode = -1;
+                }
+            finally
+                {
+                logger.Log(LogLevel.Trace, $"<Main");
+                }
             }
 
         #region M:GetFolderAbsolutePath(String):String
@@ -303,5 +322,12 @@ namespace Kit
         [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Ansi)] private static extern IntPtr GetProcAddress(IntPtr module, String procedure);
         [DllImport("kernel32.dll")] private static extern Int32 GetProcessId(IntPtr handle);
         [DllImport("kernel32.dll")] private static extern IntPtr GetCurrentProcess();
+        [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe UInt32 NtQueryInformationProcess(IntPtr process, Int32 iclass, void* pi, UInt32 pisz, out UInt32 r);
+
+        private const Int32 ProcessBasicInformation = 0;
+        private const Int32 ProcessDebugPort = 7;
+        private const Int32 ProcessWow64Information = 26;
+        private const Int32 ProcessImageFileName = 27;
+        private const Int32 ProcessBreakOnTermination = 29;
         }
     }

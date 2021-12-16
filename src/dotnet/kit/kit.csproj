@@ -23,9 +23,13 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.3.0" />
+    <PackageReference Include="log4net" Version="2.0.13" />
     <PackageReference Include="Microsoft.SqlServer.Types" Version="11.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -41,9 +45,9 @@
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.XAdES\BinaryStudio.Security.XAdES.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
-    <ProjectReference Include="..\srv\srv.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Installer.cs" />
     <None Update="Properties\AssemblyFileVersion.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyFileVersion.cs</LastGenOutput>
@@ -53,6 +57,9 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Installer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Properties\AssemblyFileVersion.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

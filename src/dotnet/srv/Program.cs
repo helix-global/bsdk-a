@@ -13,12 +13,14 @@ namespace srv
         /// </summary>
         static void Main()
             {
+            #if D
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new Service()
             };
             ServiceBase.Run(ServicesToRun);
+            #endif
             }
         }
     }
