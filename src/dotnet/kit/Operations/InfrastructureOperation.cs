@@ -117,42 +117,7 @@ namespace Operations
                         }
                     }
                 if (Flags.HasFlag(InfrastructureFlags.CSPsrv)) {
-                    var channel = new TcpChannel();
-                    bool needreg = true;
-                    foreach (var item in ChannelServices.RegisteredChannels) {
-                        if (item.ChannelName == channel.ChannelName)
-                            {
-                            needreg = false;
-                            }
-                        }
-                    if (needreg)
-                        {
-                        ChannelServices.RegisterChannel(channel, false);
-                        }
-
-                    var o = (ICryptographicOperations)Activator.GetObject(typeof(ICryptographicOperations),"tcp://localhost:50000/CryptographicOperations");
-                    var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                    var c = 0;
-                    while (c < 5) {
-                        try
-                            {
-                            if (o.IsAlive) {
-                                Execute(o, (CRYPT_PROVIDER_TYPE)ProviderType.Value);
-                                break;
-                                }
-                            }
-                        catch (SocketException e) {
-                            c++;
-                            if (e.SocketErrorCode == SocketError.ConnectionRefused) {
-                                var installer = new ServiceInstaller();
-                                installer.InstallService(Path.Combine(dir, "srv.exe"), "KIT", "KIT");
-                                Thread.Sleep(10000);
-                                continue;
-                                }
-                            throw;
-                            }
-                        }
-
+                    Execute(LocalClient.CryptographicOperations, (CRYPT_PROVIDER_TYPE)ProviderType.Value);
                     }
                 }
             }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security;
 using BinaryStudio.Diagnostics.Logging;
-using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography;
 using Kit;
 using Options;
@@ -14,7 +13,7 @@ namespace Operations
     internal abstract class Operation
         {
         public static ILogger Logger { get;set; }
-        public static ServiceManager ServiceManager { get;set; }
+        public static LocalClient LocalClient { get;set; }
         public TextWriter Out   { get; }
         public TextWriter Error { get; }
 
@@ -84,7 +83,7 @@ namespace Operations
             }
         #endregion
 
-        protected static unsafe void RequestWindowSecureStringEventHandler(Object sender, RequestSecureStringEventArgs e)
+        protected static void RequestWindowSecureStringEventHandler(Object sender, RequestSecureStringEventArgs e)
             {
             e.SecureString = new SecureString();
             e.SecureString.AppendChar('1');
@@ -96,10 +95,6 @@ namespace Operations
             e.SecureString.AppendChar('7');
             e.SecureString.AppendChar('8');
             e.StoreSecureString = true;
-            }
-
-        protected void EnsureService()
-            {
             }
         }
     }

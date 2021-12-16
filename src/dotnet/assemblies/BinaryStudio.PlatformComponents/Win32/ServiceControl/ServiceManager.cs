@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
-    public class ServiceManager : IDisposable
+    public class ServiceManager : ServiceObject
         {
-        public IntPtr sc;
+        public override IntPtr Handle { get { return sc; }}
+
         public ServiceManager()
             {
             sc = OpenSCManagerW();
@@ -32,8 +34,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr OpenSCManagerW([MarshalAs(UnmanagedType.LPWStr)] [In] String machinename = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String databasename = null, UInt32 desiredaccess = SC_MANAGER_ALL_ACCESS);
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CreateServiceW(IntPtr manager, [MarshalAs(UnmanagedType.LPWStr)] [In] String servicename, [MarshalAs(UnmanagedType.LPWStr)] [In] String displayname, UInt32 desiredaccess, UInt32 servicetype, UInt32 starttype, UInt32 errorcontrol, [MarshalAs(UnmanagedType.LPWStr)] [In] String binarypathname, [MarshalAs(UnmanagedType.LPWStr)] [In] String loadordergroup = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String tagid = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String dependencies = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String servicestartname = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String password = null);
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr OpenServiceW(IntPtr manager, [MarshalAs(UnmanagedType.LPWStr)] [In] String servicename, UInt32 desiredaccess);
-        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean StartServiceW(IntPtr service, UInt32 numserviceargs, [MarshalAs(UnmanagedType.LPArray)] [In] String[] serviceargvectors);
-        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern bool DeleteService(IntPtr service);
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean DeleteService(IntPtr service);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean OpenThreadToken(IntPtr threadhandle, UInt32 desiredaccess, Boolean openasself, out IntPtr tokenhandle);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean OpenProcessToken(IntPtr processhandle, UInt32 desiredaccess, out IntPtr tokenhandle);
         [DllImport("advapi32.dll", CharSet = CharSet.Auto)] private static extern Boolean LookupPrivilegeValue(String systemname, String name, out LUID luid);
@@ -45,16 +46,32 @@ namespace BinaryStudio.PlatformComponents.Win32
         [DllImport("kernel32.dll")] private static extern IntPtr GetCurrentProcess();
         [DllImport("kernel32.dll")] private static extern Boolean CloseHandle(IntPtr o);
         [DllImport("advapi32.dll", SetLastError = true)] public static extern Boolean LogonUser(String lpszUserName,String lpszDomain,String lpszPassword,int dwLogonType,int dwLogonProvider,out IntPtr phToken);
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean QueryServiceStatus(IntPtr service, out SERVICE_STATUS status);
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean StartServiceW(IntPtr service, UInt32 numserviceargs, [MarshalAs(UnmanagedType.LPArray)] [In] String[] serviceargvectors);
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean ControlService(IntPtr service, Int32 control, out SERVICE_STATUS status);
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean ControlServiceExW(IntPtr service, Int32 control, Int32 level, out SERVICE_STATUS status);
 
-        #region M:CloseServiceHandle([ref]IntPtr)
-        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CloseServiceHandle(IntPtr sc);
-        private static void CloseServiceHandle(ref IntPtr sc) {
-            if (sc != IntPtr.Zero) {
-                CloseServiceHandle(sc);
-                sc = IntPtr.Zero;
-                }
-            }
-        #endregion
+        private const Int32 SERVICE_CONTROL_STATUS_REASON_INFO      = 1;
+        private const Int32 SERVICE_CONTROL_STOP                    = 0x00000001;
+        private const Int32 SERVICE_CONTROL_PAUSE                   = 0x00000002;
+        private const Int32 SERVICE_CONTROL_CONTINUE                = 0x00000003;
+        private const Int32 SERVICE_CONTROL_INTERROGATE             = 0x00000004;
+        private const Int32 SERVICE_CONTROL_SHUTDOWN                = 0x00000005;
+        private const Int32 SERVICE_CONTROL_PARAMCHANGE             = 0x00000006;
+        private const Int32 SERVICE_CONTROL_NETBINDADD              = 0x00000007;
+        private const Int32 SERVICE_CONTROL_NETBINDREMOVE           = 0x00000008;
+        private const Int32 SERVICE_CONTROL_NETBINDENABLE           = 0x00000009;
+        private const Int32 SERVICE_CONTROL_NETBINDDISABLE          = 0x0000000A;
+        private const Int32 SERVICE_CONTROL_DEVICEEVENT             = 0x0000000B;
+        private const Int32 SERVICE_CONTROL_HARDWAREPROFILECHANGE   = 0x0000000C;
+        private const Int32 SERVICE_CONTROL_POWEREVENT              = 0x0000000D;
+        private const Int32 SERVICE_CONTROL_SESSIONCHANGE           = 0x0000000E;
+        private const Int32 SERVICE_CONTROL_PRESHUTDOWN             = 0x0000000F;
+        private const Int32 SERVICE_CONTROL_TIMECHANGE              = 0x00000010;
+        private const Int32 SERVICE_CONTROL_USER_LOGOFF             = 0x00000011;
+        private const Int32 SERVICE_CONTROL_TRIGGEREVENT            = 0x00000020;
+        private const Int32 SERVICE_CONTROL_LOWRESOURCES            = 0x00000060;
+        private const Int32 SERVICE_CONTROL_SYSTEMLOWRESOURCES      = 0x00000061;
 
         private const UInt32 SC_MANAGER_CONNECT             = 0x0001;
         private const UInt32 SC_MANAGER_CREATE_SERVICE      = 0x0002;
@@ -139,23 +156,28 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             }
 
-        #region M:Dispose(Boolean)
-        protected virtual void Dispose(Boolean disposing) {
+        public Service OpenService(String servicename) {
+            if (servicename == null) { throw new ArgumentNullException(nameof(servicename)); }
+            if (String.IsNullOrWhiteSpace(servicename)) { throw new ArgumentOutOfRangeException(nameof(servicename)); }
+            var r = OpenServiceW(sc, servicename, SC_MANAGER_ALL_ACCESS);
+            return (r != IntPtr.Zero)
+                ? new Service(this, r)
+                : null;
+            }
+
+        public void DeleteService(ref Service service) {
+            if (service != null) {
+                service.Stop(Timeout.Infinite);
+                DeleteService(service.Handle);
+                service.Dispose();
+                service = null;
+                }
+            }
+
+        protected override void Dispose(Boolean disposing) {
             CloseServiceHandle(ref sc);
             }
-        #endregion
-        #region M:Dispose
-        public void Dispose()
-            {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-            }
-        #endregion
-        #region M:Finalize
-        ~ServiceManager()
-            {
-            Dispose(false);
-            }
-        #endregion
+
+        private IntPtr sc;
         }
     }

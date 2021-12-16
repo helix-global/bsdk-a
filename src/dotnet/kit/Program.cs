@@ -215,17 +215,12 @@ namespace Kit
 
         [MTAThread]
         internal static void Main(String[] args) {
-            using (var client = new LocalClient()) {
-                Environment.Exit(client.Main(args));
+            Int32 exitcode;
+            using (var client = new LocalClient())
+                {
+                exitcode = client.Main(args);
                 }
-            var options = Operation.Parse(args);
-            if (HasOption(options, typeof(TraceOption))) {
-                using (new ConsoleColorScope(ConsoleColor.DarkGray))
-                    {
-                    TraceScope.WriteTo(Console.Out);
-                    //TraceManager.Instance.Write(Console.Out);
-                    }
-                }
+            Environment.ExitCode = exitcode;
             }
 
         #region M:GetFolderAbsolutePath(String):String
