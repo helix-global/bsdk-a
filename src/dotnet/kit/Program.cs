@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
-using BinaryStudio.IO;
 using BinaryStudio.PortableExecutable;
-using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.PlatformComponents.Win32;
-using kit;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using Operations;
 using Options;
@@ -27,7 +20,6 @@ using Options;
 using Microsoft.WindowsAPICodePack.Taskbar;
 #endif
 using Formatting = Newtonsoft.Json.Formatting;
-using X509StoreLocation = BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation;
 
 namespace Kit
     {
@@ -37,110 +29,13 @@ namespace Kit
         internal static TaskbarManager taskbar = TaskbarManager.Instance;
         #endif
 
-        #region Usage
-        private static void Usage()
-            {
-            Console.WriteLine("kit.exe [options]");
-            Console.WriteLine("Options:");
-            Console.WriteLine(@"
-  -i:{input-file-name}              -- The input file name for operation.
-  -o:{output-file-name}             -- The output file name for operation.
-  -size:{size}[K|M[G]               -- The size parameter for current operation.
-  -random                           -- Use random generator.
-  -operation:{operation}            -- Use specific operation.
-  -storename:{name}                 -- Specifies store name for certificate search.
-                                       Available values:
-                                        AddressBook,
-                                        AuthRoot,
-                                        CertificateAuthority,
-                                        Disallowed,
-                                        My (Default),
-                                        Root,
-                                        TrustedPeople,
-                                        TrustedPublisher,
-                                        TrustedDevices,
-                                        NTAuth
-                                        {folder}
-  -storelocation:{name}             -- Specifies store location for certificate search.
-                                       Available values:
-                                        CurrentUser (Default),
-                                        LocalMachine,
-                                        Enterprise
-  -pincode:{pincode}                -- PIN-code for crypto operations.
-  -l
-  -certificates:{name;name;...}     -- Specifies signer or recipient list.
-  -stream                           -- Specifies stream-based methods.
-  -serialize:{'xml'|'json'}         -- Output options.
-  -providertype:{number}            -- Specifies CSP provider type. The default value is 75.
-  -asn1:{'ber'|'der'}               -- Specified ASN1
-  -signature:{operation}            -- Signature operation ('verify','create','update') options
-                                        # Update signature for specified file
-                                        -signature:update -i:{file} -o:{file} -signer:{thumbprint} [-storename:{storename} -storelocation:{storeloc}]
-
-                                        # Verify signature for specified file by specified certificate thumbprint
-                                        -signature:verify -i:{file} -storename:{storename} -storelocation:{storeloc} -certificates:{thumbprint}
-
-                                        # Verify signature for specified file, by issuer certificate from specified location
-                                        -signature:verify -i:{file} -storename:{storename} -storelocation:{storeloc}
-
-                                        # Verify signature for specified file, by issuer certificate from My+CurrentUser location
-                                        -signature:verify -i:{file}
-
-                                        # Create detached simple signature for specified file
-                                        -signature:create -i:{file} -certificates:{thumbprint}
-    samples:
-    # batch rename certificate files
-    input:{folder}\*.cer batch:rename [quarantine:{folder}]
-    # extracts all certificates from specified (or default) storage to specified folder.
-    -o:{folder} -extract [-storename:{storename} -storelocation:{storeloc}]
-    # creates an encrypted message for the specified recipients
-    -i:{input-file} -o:{output-file} -message:encrypt -certificates:{name;name;...} -algid:{oid}
-    -m                              -- Using message operations
-    input:{input-file} output:{output-file} start:{start-offset} batch:none
-");
-            }
-        #endregion
-        #region M:ToStoreLocation(String):X509StoreLocation
-        private static X509StoreLocation ToStoreLocation(String source) {
-            if (source == null) { return X509StoreLocation.CurrentUser; }
-            switch (source.ToUpper())
-                {
-                case "CURRENTUSER":  { return X509StoreLocation.CurrentUser;  }
-                case "LOCALMACHINE": { return X509StoreLocation.LocalMachine; }
-                case "ENTERPRISE":   { return X509StoreLocation.LocalMachineEnterprise;  }
-                }
-            return X509StoreLocation.CurrentUser;
-            }
-        #endregion
-        #region M:ToStoreName(String):X509StoreName?
-        private static X509StoreName ToStoreName(String source) {
-            if (source == null) { return X509StoreName.My; }
-            switch (source.ToUpper())
-                {
-                case "ADDRESSBOOK"          : { return X509StoreName.AddressBook;          }
-                case "AUTHROOT"             : { return X509StoreName.AuthRoot;             }
-                case "CERTIFICATEAUTHORITY" : { return X509StoreName.CertificateAuthority; }
-                case "DISALLOWED"           : { return X509StoreName.Disallowed;           }
-                case "MY"                   : { return X509StoreName.My;                   }
-                case "ROOT"                 : { return X509StoreName.Root;                 }
-                case "TRUSTEDPEOPLE"        : { return X509StoreName.TrustedPeople;        }
-                case "TRUSTEDPUBLISHER"     : { return X509StoreName.TrustedPublisher;     }
-                case "TRUSTEDDEVICES"       : { return X509StoreName.TrustedDevices;       }
-                case "NTAUTH"               : { return X509StoreName.NTAuth;               }
-                }
-            return X509StoreName.My;
-            }
-        #endregion
-
         [Flags]
         internal enum Flags
             {
             None              = 0x00000000,
             List              = 0x00000001,
-            VerifyCertificate = 0x00000002,
             Xml               = 0x10000000,
             Json              = 0x20000000,
-            Html              = 0x20000000,
             }
 
         #region M:Validate(Boolean)
@@ -161,51 +56,18 @@ namespace Kit
                 Debug.Print($"COMException:{e.Message}");
                 #endif
                 }
-            return;
-            //throw e;
             }
         #endregion
-        internal static unsafe void InternalLoad(IList<OperationOption> options, String[] args)
+        internal static void InternalLoad(String[] args)
             {
-            var xxxx = new SHA1Managed();
-#if USE_WINDOWS_API_CODE_PACK
-            taskbar.SetProgressValue(0, 1, WindowHandle);
-#endif
-#if DEBUG
-            //Console.WriteLine("Press [ENTER] to continue...");
-            //Console.ReadLine();
-#endif
-            var crrdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try
                 {
                 using (new TraceScope()) {
-                    Boolean json;
                     Boolean randomgeneration;
                     String[] inputfilename;
                     String outputfilename;
                     Boolean dumpcodes;
-                    String[] operations;
                     Int64 sizevalue;
-
-                    Operation.Logger = new ConsoleLogger();
-                    Operation operation = new UsageOperation(Console.Out, Console.Error, options);
-                    if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
-                    if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
-                    if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
-                    if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
-                    if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
-                    if (HasOption(options, typeof(MessageGroupOption))) {
-                             if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Out, Console.Error, options);  }
-                        else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
-                        else if (HasOption(options, typeof(EncryptOption))) { operation = new EncryptMessageOperation(Console.Out, Console.Error, options); }
-                        }
-                    else if (HasOption(options, typeof(VerifyOption)))            { operation = new VerifyOperation(Console.Out, Console.Error, options);         }
-                    else if (HasOption(options, typeof(InfrastructureOption)))    { operation = new InfrastructureOperation(Console.Out, Console.Error, options); }
-                    else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
-                    else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
-                    operation.Execute(Console.Out);
-                    operation = null;
-                    GC.Collect();
                     return;
                     for (var i = 0; i < args.Length; ++i) {
                         if (args[i][0] == '-') {
@@ -306,58 +168,7 @@ namespace Kit
                                 }
                             }
                         }
-                    else if (json)
-                        {
-                        JsonOperations.GenerateJson(inputfilename[0], outputfilename, "*.*");
-                        }
-                    #region Operations
-                    else if (operations.Length > 0)
-                    {
-                        var providertype = 81;
-                        using (var context = new SCryptographicContext((CRYPT_PROVIDER_TYPE)providertype, CryptographicContextFlags.CRYPT_SILENT | CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                            var storename = "MY";
-                            var storeloc  = X509StoreLocation.CurrentUser;
-                            String certificates   = null;
-                            var store = Utilities.BuildCertificateList(storeloc, storename, certificates, (CRYPT_PROVIDER_TYPE)providertype);
-                            #region Certificate Operations
-                                {
-                                foreach (var certificate in store.Certificates)
-                                    {
-                                    Console.WriteLine("Certificate:{0}", certificate.FriendlyName);
-                                    if (HasFlag(operations, "verify")) {
-                                        if (certificate.Verify(out var e, context, store)) {
-                                            using (new ConsoleColorScope(ConsoleColor.Green))
-                                                {
-                                                Console.WriteLine("  Status:[no errors]");
-                                                }
-                                            }
-                                        else
-                                            {
-                                            using (new ConsoleColorScope(ConsoleColor.Red))
-                                                {
-                                                if (e is AggregateException a) {
-                                                    Console.WriteLine("  Status:");
-                                                    Console.WriteLine(String.Join("\n", a.InnerExceptions.Select(i => $"    {i.Message}")));
-                                                    }
-                                                else
-                                                    {
-                                                    Console.WriteLine(@"  Status:""{0}""", e.Message);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            #endregion
-                            }
                     }
-                    #endregion
-                    else
-                        {
-                        Usage();
-                        }
-                    }
-                //TraceManager.Instance.Write(Console.Out);
                 }
             catch(OptionRequiredException exception)
                 {
@@ -368,8 +179,6 @@ namespace Kit
             catch(Exception x)
                 {
                 (new ExceptionFormatter()).Write(Console.Error, x);
-                //Console.WriteLine(e.Message);
-                //Console.WriteLine(e.StackTrace);
                 }
             }
 
@@ -405,23 +214,13 @@ namespace Kit
         //    }
 
         [MTAThread]
-        internal static void Main(String[] args)
-            {
-            var options = Operation.Parse(args);
-            using (new TraceScope())
+        internal static void Main(String[] args) {
+            Int32 exitcode;
+            using (var client = new LocalClient())
                 {
-                InternalLoad(options, args);
+                exitcode = client.Main(args);
                 }
-            using (new TraceScope("GC.Collect")) {
-                GC.Collect();
-                }
-            if (HasOption(options, typeof(TraceOption))) {
-                using (new ConsoleColorScope(ConsoleColor.DarkGray))
-                    {
-                    TraceScope.WriteTo(Console.Out);
-                    //TraceManager.Instance.Write(Console.Out);
-                    }
-                }
+            Environment.ExitCode = exitcode;
             }
 
         #region M:GetFolderAbsolutePath(String):String
@@ -431,60 +230,6 @@ namespace Kit
             var buffer = new Byte[32767*2];
             var r = GetFullPathName(folder, 32767, buffer, IntPtr.Zero);
             return Encoding.Unicode.GetString(buffer, 0, r*2);
-            }
-        #endregion
-        #region M:ListCertificates(String,X509StoreLocation,Flags,IList<String>)
-        private static void ListCertificates(CRYPT_PROVIDER_TYPE providertype, TextWriter output, String storename, X509StoreLocation storeloc, Flags flags, IList<String> filters) {
-            using (new TraceScope()) {
-                using (var writer = !flags.HasFlag(Flags.Xml)
-                    ? null
-                    : XmlWriter.Create(output ?? Console.Out, new XmlWriterSettings {
-                        Indent = true,
-                        OmitXmlDeclaration = true,
-                        })) {
-                    using (IX509CertificateStorage store = (storename == "device")
-                        ? (IX509CertificateStorage)(new SCryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)).GetService(typeof(IX509CertificateStorage))
-                        : Directory.Exists(storename)
-                            ? (IX509CertificateStorage)new X509CertificateStorage(new Uri(GetFolderAbsolutePath(storename)))
-                            : new X509CertificateStorage(ToStoreName(storename), storeloc)) {
-                        if (writer != null) { writer.WriteStartElement("Certificates"); }
-                        foreach (var certificate in store.Certificates) {
-                            PrintCertificate(writer, certificate, flags);
-                            }
-                        if (writer != null) { writer.WriteEndElement(); }
-                        }
-                    }
-                }
-            }
-        #endregion
-        #region M:PrintCertificate(X509Certificate,Flags)
-        private static void PrintCertificate(XmlWriter writer, IX509Certificate certificate, Flags flags)
-            {
-            using (new TraceScope()) {
-                if (flags.HasFlag(Flags.Xml)) {
-                    if (flags.HasFlag(Flags.VerifyCertificate))
-                        {
-                        try
-                            {
-                            //certificate.Verify();
-                            //certificate.WriteXml(writer);
-                            }
-                        catch (Exception e)
-                            {
-                            (new ExceptionXmlSerializer()).Write(writer, e);
-                            }
-                        }
-                    else
-                        {
-                        //certificate.WriteXml(writer);
-                        }
-                    }
-                else
-                    {
-                    Console.Write($"{certificate.Thumbprint}");
-                    }
-                Console.WriteLine();
-                }
             }
         #endregion
         #region M:ToStringArray(String):String[]
@@ -500,15 +245,6 @@ namespace Kit
             return source.ToUpper().Replace(" ", "");
             }
         #endregion
-        #region M:OidFromSource(String):Oid
-        private static Oid OidFromSource(String oid)
-            {
-            if (oid == null) { throw new ArgumentNullException(nameof(oid)); }
-            if (String.IsNullOrWhiteSpace(oid)) { throw new ArgumentOutOfRangeException(nameof(oid)); }
-            oid = oid.Replace(" ", String.Empty).ToUpper();
-            return new Oid(oid);
-            }
-        #endregion
 
         [DllImport("kernel32.dll")] private static extern IntPtr GetConsoleWindow();
 
@@ -517,17 +253,6 @@ namespace Kit
             //Debug.Print($"{(Int64)r:X}");
             return r;
             }}
-
-        private static Boolean HasFlag(String[] values, String value)
-            {
-            if ((values == null) || (values.Length == 0)) { return false; }
-            foreach (var i in values) {
-                if (String.Equals(i, value, StringComparison.OrdinalIgnoreCase)) {
-                    return true;
-                    }
-                }
-            return false;
-            }
 
         #region M:JsonSerialize(Object,TextWriter)
         private static void JsonSerialize(Object value, TextWriter output) {
