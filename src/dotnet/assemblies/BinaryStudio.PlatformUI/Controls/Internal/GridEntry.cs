@@ -40,7 +40,7 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             if (component == null) { throw new ArgumentNullException(nameof(component)); }
             if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
             PropertyDescriptor = descriptor;
-            Name = descriptor.Name;
+            Name  = descriptor.Name;
             Value = descriptor.GetValue(component);
             Instance = component;
             Owner = owner;
@@ -69,13 +69,21 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             }
 
         private void OnPropertyDescriptorChanged() {
-            if (PropertyDescriptor != null) {
-                IsReadOnly = PropertyDescriptor.IsReadOnly;
-                IsCompositeDescriptor = PropertyDescriptor is CompositePropertyDescriptor;
-                DisplayName = PropertyDescriptor.DisplayName;
+            var descriptor = PropertyDescriptor;
+            if (descriptor != null) {
+                IsReadOnly = descriptor.IsReadOnly;
+                IsCompositeDescriptor = descriptor is CompositePropertyDescriptor;
+                DisplayName = descriptor.DisplayName;
+                Subscript = descriptor.Attributes.OfType<SubscriptAttribute>().FirstOrDefault()?.Text;
+                Superscript = descriptor.Attributes.OfType<SuperscriptAttribute>().FirstOrDefault()?.Text;
                 }
-            TypeEditor = GetEditor(PropertyDescriptor, Value);
-            Converter = GetConverter(PropertyDescriptor, Value);
+            else
+                {
+                Subscript = null;
+                Superscript = null;
+                }
+            TypeEditor = GetEditor(descriptor, Value);
+            Converter  = GetConverter(descriptor, Value);
             }
 
         public static readonly DependencyProperty PropertyDescriptorProperty = PropertyDescriptorPropertyKey.DependencyProperty;
@@ -95,8 +103,7 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
         #region P:Value:Object
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Object), typeof(GridEntry), new PropertyMetadata(default(Object), OnValueChanged));
         private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as GridEntry);
-            if (source != null) {
+            if (sender is GridEntry source) {
                 source.OnValueChanged();
                 }
             }
@@ -121,83 +128,6 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             set { SetValue(ValueProperty, value); }
             }
         #endregion
-
-        //#region P:Value:Object
-        //public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Object), typeof(GridEntry), new PropertyMetadata(default(Object), OnValueChanged));
-        //private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-        //    ((GridEntry)sender).OnValueChanged();
-        //    }
-
-        //private void OnValueChanged() {
-        //    var value = Value;
-        //    if ((value != null) && (PropertyDescriptor != null)) {
-        //        if (IsPaintValueSupported && (TypeEditor != null)) {
-        //            var bitmap = new Bitmap(20,14);
-        //            using (var graphics = Graphics.FromImage(bitmap)) {
-        //                TypeEditor.PaintValue(value, graphics, new Rectangle(0,0,20,14));
-        //                }
-        //            PaintValueImage = new Image {Source = ToBitmapSource(bitmap)};
-        //            }
-        //        else
-        //            {
-        //            PaintValueImage = null;
-        //            }
-        //        try
-        //            {
-        //            var r = (value != null)
-        //                ? value.ToString()
-        //                : String.Empty;
-        //            if (!PropertyDescriptor.IsReadOnly) {
-        //                var converter = PropertyDescriptor.Converter;
-        //                if (converter != null) {
-        //                    var type = value.GetType();
-        //                    if (converter.CanConvertFrom(this, type)) {
-        //                        value = converter.ConvertFrom(this, CultureInfo.CurrentUICulture, value);
-        //                        }
-        //                    }
-        //                PropertyDescriptor.SetValue(Instance, value);
-        //                }
-        //            if (PropertyDescriptor != null) {
-        //                var converter = GetConverter(PropertyDescriptor, value);
-        //                if (converter != null) {
-        //                    if (converter.CanConvertTo(this, typeof(String))) {
-        //                        r = converter.ConvertToString(this, value);
-        //                        }
-        //                    }
-        //                }
-        //            GridValue = r;
-        //            }
-        //        catch (Exception e)
-        //            {
-        //            var r = (MessageBox.Show(e.Message, "Error", MessageBoxButton.OKCancel));
-        //            if (r == MessageBoxResult.Cancel) {
-        //                ResetValue();
-        //                return;
-        //                }
-        //            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(()=> {
-        //                Owner.Edit(this);
-        //                }));
-        //            }
-        //        }
-        //    else
-        //        {
-        //        Style = GridEntryStyle.TextBox;
-        //        PaintValueImage = null;
-        //        PropertyDescriptor.SetValue(Instance, null);
-        //        }
-        //    }
-
-        //private void ResetValue() {
-        //    Value = (PropertyDescriptor != null)
-        //        ? PropertyDescriptor.GetValue(Instance)
-        //        : null;
-        //    }
-
-        //public Object Value {
-        //    get { return (Object)GetValue(ValueProperty); }
-        //    set { SetValue(ValueProperty, value); }
-        //    }
-        //#endregion
         #region P:IsCompositeDescriptor:Boolean
         private static readonly DependencyPropertyKey IsCompositeDescriptorPropertyKey = DependencyProperty.RegisterReadOnly("IsCompositeDescriptor", typeof(Boolean), typeof(GridEntry), new PropertyMetadata(default(Boolean)));
         public static readonly DependencyProperty IsCompositeDescriptorProperty = IsCompositeDescriptorPropertyKey.DependencyProperty;
@@ -273,6 +203,33 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             private set { SetValue(StandardValuesPropertyKey, value); }
             }
         #endregion
+        #region P:Subscript:String
+        public static readonly DependencyProperty SubscriptProperty = DependencyProperty.Register(nameof(Subscript), typeof(String), typeof(GridEntry), new PropertyMetadata(default(String), OnSubscriptChanged));
+        private static void OnSubscriptChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is GridEntry source) {
+                source.HasSubscript = String.IsNullOrWhiteSpace((String)e.NewValue);
+                }
+            }
+
+        public String Subscript
+            {
+            get { return (String)GetValue(SubscriptProperty); }
+            set { SetValue(SubscriptProperty, value); }
+            }
+        #endregion
+        #region P:Superscript:String
+        public static readonly DependencyProperty SuperscriptProperty = DependencyProperty.Register(nameof(Superscript), typeof(String), typeof(GridEntry), new PropertyMetadata(default(String), OnSuperscriptChanged));
+        private static void OnSuperscriptChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is GridEntry source) {
+                source.HasSuperscript = String.IsNullOrWhiteSpace((String)e.NewValue);
+                }
+            }
+        public String Superscript
+            {
+            get { return (String)GetValue(SuperscriptProperty); }
+            set { SetValue(SuperscriptProperty, value); }
+            }
+        #endregion
         #region P:TypeEditor:UITypeEditor
         private static readonly DependencyPropertyKey TypeEditorPropertyKey = DependencyProperty.RegisterReadOnly("TypeEditor", typeof(UITypeEditor), typeof(GridEntry), new PropertyMetadata(default(UITypeEditor), OnTypeEditorChanged));
         public static readonly DependencyProperty TypeEditorProperty = TypeEditorPropertyKey.DependencyProperty;
@@ -311,8 +268,7 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
         public static readonly DependencyProperty GridValueProperty = DependencyProperty.Register("GridValue", typeof(String), typeof(GridEntry), new PropertyMetadata(default(String), OnGridValueChanged));
         private static void OnGridValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
             {
-            var source = (sender as GridEntry);
-            if (source != null) {
+            if (sender is GridEntry source) {
                 source.OnGridValueChanged();
                 }
             }
@@ -326,7 +282,22 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             set { SetValue(GridValueProperty, value); }
             }
         #endregion
-
+        #region P:HasSubscript:Boolean
+        public static readonly DependencyProperty HasSubscriptProperty = DependencyProperty.Register(nameof(HasSubscript), typeof(Boolean), typeof(GridEntry), new PropertyMetadata(default(Boolean)));
+        public Boolean HasSubscript
+            {
+            get { return (Boolean)GetValue(HasSubscriptProperty); }
+            set { SetValue(HasSubscriptProperty, value); }
+            }
+        #endregion
+        #region P:HasSuperscript:Boolean
+        public static readonly DependencyProperty HasSuperscriptProperty = DependencyProperty.Register(nameof(HasSuperscript), typeof(Boolean), typeof(GridEntry), new PropertyMetadata(default(Boolean)));
+        public Boolean HasSuperscript
+            {
+            get { return (Boolean)GetValue(HasSuperscriptProperty); }
+            set { SetValue(HasSuperscriptProperty, value); }
+            }
+        #endregion
         #region M:GetConverter(PropertyDescriptor,Object):TypeConverter
         private static TypeConverter GetConverter(PropertyDescriptor descriptor, Object value) {
             if (descriptor != null) {
@@ -361,179 +332,6 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             }
         #endregion
 
-        //public Boolean OnComponentChanging()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void OnComponentChanged()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public IContainer Container { get; }
-        //public Object Instance {get; private set;}
-        //public PropertyDescriptor PropertyDescriptor { get; }
-        //public PropertyGridControl Owner { get;set; }
-        //#region P:DisplayName:String
-        //private static readonly DependencyPropertyKey DisplayNamePropertyKey = DependencyProperty.RegisterReadOnly("DisplayName", typeof(String), typeof(GridEntry), new PropertyMetadata(null));
-        //public static readonly DependencyProperty DisplayNameProperty= DisplayNamePropertyKey.DependencyProperty;
-        //public String DisplayName {
-        //    get { return (String)GetValue(DisplayNameProperty); }
-        //    private set { SetValue(DisplayNamePropertyKey, value); }
-        //    }
-        //#endregion
-        //#region P:FontSize:Double
-        //private static readonly DependencyPropertyKey FontSizePropertyKey = DependencyProperty.RegisterReadOnly("FontSize", typeof(Double), typeof(GridEntry), new PropertyMetadata(default(Double)));
-        //public static readonly DependencyProperty FontSizeProperty= FontSizePropertyKey.DependencyProperty;
-        //public Double FontSize {
-        //    get { return (Double)GetValue(FontSizeProperty); }
-        //    private set { SetValue(FontSizePropertyKey, value); }
-        //    }
-        //#endregion
-        //#region P:IsSelected:Boolean
-        //public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(Boolean),typeof(GridEntry),new FrameworkPropertyMetadata(false));
-        //public Boolean IsSelected {
-        //    get { return (Boolean)GetValue(IsSelectedProperty); }
-        //    set { SetValue(IsSelectedProperty, value); }
-        //    }
-        //#endregion
-        //#region P:IsAttached:Boolean
-        //private static readonly DependencyPropertyKey IsAttachedPropertyKey = DependencyProperty.RegisterReadOnly("IsAttached", typeof(Boolean), typeof(GridEntry), new PropertyMetadata(default(Boolean)));
-        //public static readonly DependencyProperty IsAttachedProperty= IsAttachedPropertyKey.DependencyProperty;
-        //public Boolean IsAttached {
-        //    get { return (Boolean)GetValue(IsAttachedProperty); }
-        //    private set { SetValue(IsAttachedPropertyKey, value); }
-        //    }
-        //#endregion
-        //#region P:IsIndexed:Boolean
-        //private static readonly DependencyPropertyKey IsIndexedPropertyKey = DependencyProperty.RegisterReadOnly("IsIndexed", typeof(Boolean), typeof(GridEntry), new PropertyMetadata(default(Boolean)));
-        //public static readonly DependencyProperty IsIndexedProperty= IsIndexedPropertyKey.DependencyProperty;
-        //public Boolean IsIndexed {
-        //    get { return (Boolean)GetValue(IsIndexedProperty); }
-        //    private set { SetValue(IsIndexedPropertyKey, value); }
-        //    }
-        //#endregion
-        //#region P:IsExpanded:Boolean
-        //public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(Boolean),typeof(GridEntry),new FrameworkPropertyMetadata(false));
-        //public Boolean IsExpanded {
-        //    get { return (Boolean)GetValue(IsExpandedProperty); }
-        //    set { SetValue(IsExpandedProperty, value); }
-        //    }
-        //#endregion
-        //#region P:IndexPlaceholderSize:Boolean
-        //public static readonly DependencyProperty IndexPlaceholderSizeProperty = DependencyProperty.Register("IndexPlaceholderSize", typeof(Size),typeof(GridEntry),new FrameworkPropertyMetadata(default(Size)));
-        //public Size IndexPlaceholderSize {
-        //    get { return (Size)GetValue(IndexPlaceholderSizeProperty); }
-        //    set { SetValue(IndexPlaceholderSizeProperty, value); }
-        //    }
-        //#endregion
-        //#region P:Margin:Thickness
-        //public Thickness Margin { get {
-        //    return new Thickness(
-        //        Level*16,
-        //        0,
-        //        5,0);
-        //    }}
-        //#endregion
-        //#region P:Value:Object
-        //public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Object), typeof(GridEntry), new PropertyMetadata(default(Object), OnValueChanged));
-        //private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        //    var source = d as GridEntry;
-        //    if (source != null) {
-        //        source.OnValueChanged();
-        //        }
-        //    }
-
-        //private void OnValueChanged() {
-        //    if (PropertyDescriptor != null) {
-        //        //PropertyDescriptor.SetValue(Instance, Value);
-        //        }
-        //    }
-
-        //public Object Value {
-        //    get { return (Object)GetValue(ValueProperty); }
-        //    set { SetValue(ValueProperty, value); }
-        //    }
-        //#endregion
-        //protected internal virtual IEnumerable<GridEntry> Entries { get {
-        //    if (PropertyDescriptor != null) {
-        //        var value = Value;
-        //        return GetEntries(value, Level + 1, Owner);
-        //        //var converter = PropertyDescriptor.Converter;
-        //        //var value = Value;
-        //        //if ((value != null) && (converter != null)) {
-        //        //    if (converter.GetPropertiesSupported(this)) {
-        //        //        return converter.GetProperties(this, value).OfType<PropertyDescriptor>().
-        //        //            Where(i => i.IsBrowsable).
-        //        //            OrderBy(i => i.DisplayName).
-        //        //            Select(i => new GridEntry(i, value, Level + 1, Owner));
-        //        //        }
-        //        //    }
-        //        }
-        //    return new GridEntry[0];
-        //    }
-        //    set { }
-        //    }
-
-        //private static readonly Type[] NonExpanableTypes = {
-        //    typeof(String),
-        //    typeof(Color),
-        //    typeof(SolidColorBrush)
-        //    };
-
-        //protected static internal IEnumerable<GridEntry> GetEntries(Object source, Int32 level, PropertyGridControl owner) {
-        //    if (source != null) {
-        //        if (!NonExpanableTypes.Contains(source.GetType())) {
-        //            if (source is IList) { return GetEntries((IList)source, level, owner); }
-        //            var descriptors = TypeDescriptor.GetProperties(source).OfType<PropertyDescriptor>().ToArray();
-        //            var services = new SortedDictionary<String, IList<PropertyDescriptor>>();
-        //            var r = new List<PropertyDescriptor>();
-        //            foreach (var descriptor in descriptors.Where(i => i.IsBrowsable)) {
-        //                var index = descriptor.DisplayName.IndexOf(".", StringComparison.OrdinalIgnoreCase);
-        //                if (index != -1) {
-        //                    var service = descriptor.DisplayName.Substring(0, index);
-        //                    IList<PropertyDescriptor> list;
-        //                    if (!services.TryGetValue(service, out list)) { services.Add(service, list = new List<PropertyDescriptor>()); }
-        //                    list.Add(descriptor);
-        //                    }
-        //                else
-        //                    {
-        //                    r.Add(descriptor);
-        //                    }
-        //                }
-        //            foreach (var service in services) {
-        //                var descriptor = new CompositePropertyDescriptor(
-        //                    source,
-        //                    service.Key, service.Value);
-        //                r.Add(descriptor);
-        //                }
-        //            return r.OrderBy(i => i.DisplayName).Select(i => new GridEntry(i, source, level, owner));
-        //            }
-        //        }
-        //    return new GridEntry[0];
-        //    }
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="source"></param>
-        ///// <param name="level"></param>
-        ///// <param name="owner"></param>
-        ///// <returns></returns>
-        //private static IEnumerable<GridEntry> GetEntries(IList source, Int32 level, PropertyGridControl owner) {
-        //    if (source != null) {
-        //        var c = source.Count;
-        //        var f = new FormattedText(new String('X', c.ToString().Length),
-        //            CultureInfo.InvariantCulture, owner.FlowDirection,
-        //            new Typeface(owner.FontFamily, owner.FontStyle, owner.FontWeight, owner.FontStretch),
-        //            owner.FontSize*0.8, null);
-        //        for (var i = 0; i < c; ++i) {
-        //            yield return new GridEntry(i, source, level + 1, owner, new Size(f.Width,f.Height));
-        //            }
-        //        }
-        //    }
-
         protected IEnumerable<GridEntry> Entries {
             get {
                 if (PropertyDescriptor != null) {
@@ -557,68 +355,6 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
-        //private class ArrayPropertyDescriptor : PropertyDescriptor
-        //    {
-        //    public ArrayPropertyDescriptor(Int32 index, Type propertyType)
-        //        : base(index.ToString(), new Attribute[0])
-        //        {
-        //        Index = index;
-        //        PropertyType = propertyType;
-        //        }
-
-        //    #region M:CanResetValue(Object):Boolean
-        //    public override Boolean CanResetValue(Object component) {
-        //        var defaultValueAttribute = (DefaultValueAttribute)Attributes[typeof(DefaultValueAttribute)];
-        //        return (defaultValueAttribute != null) && defaultValueAttribute.Value.Equals(GetValue(component));
-        //        }
-        //    #endregion
-        //    #region M:GetValue(Object):Object
-        //    public override Object GetValue(Object component) {
-        //        var source = component as IList;
-        //        if (source != null) {
-        //            if (Index < source.Count) {
-        //                return source[Index];
-        //                }
-        //            }
-        //        return null;
-        //        }
-        //    #endregion
-        //    #region M:ResetValue(Object)
-        //    public override void ResetValue(Object component) {
-        //        var defaultValueAttribute = (DefaultValueAttribute)Attributes[typeof(DefaultValueAttribute)];
-        //        if (defaultValueAttribute != null) {
-        //            SetValue(component, defaultValueAttribute.Value);
-        //            }
-        //        }
-        //    #endregion
-        //    #region M:SetValue(Object,Object)
-        //    public override void SetValue(Object component, Object value) {
-        //        var source = component as IList;
-        //        if (source != null) {
-        //            if (Index < source.Count) {
-        //                source[Index] = value;
-        //                OnValueChanged(source, EventArgs.Empty);
-        //                }
-        //            }
-        //        }
-        //    #endregion
-        //    #region M:ShouldSerializeValue(Object):Boolean
-        //    public override Boolean ShouldSerializeValue(Object component) {
-        //        return false;
-        //        }
-        //    #endregion
-
-        //    public override Type ComponentType { get; }
-        //    public override Boolean IsReadOnly { get; }
-        //    public override Type PropertyType { get; }
-        //    private Int32 Index {get; }
-        //    }
-
-        //public Object GetService(Type serviceType)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         private static IEnumerable<T> OfType<T>(IEnumerable<T> source) {
             return (source != null)
                 ? source.OfType<T>()
@@ -638,9 +374,14 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                 var converter = ((context != null) && (context.PropertyDescriptor != null))
                     ? GetConverter(context.PropertyDescriptor, source)
                     : TypeDescriptor.GetConverter(source);
-                var descriptors = (converter != null) && (context != null)
+                //var descriptors = (converter != null) && (context != null)
+                //    ? converter.GetPropertiesSupported(context)
+                //        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray()
+                //        : new PropertyDescriptor[0]
+                //    : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
+                var descriptors = (converter != null)
                     ? converter.GetPropertiesSupported(context)
-                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray()
+                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[] { new BrowsableAttribute(true) })).ToArray()
                         : new PropertyDescriptor[0]
                     : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
                 foreach (var e in descriptors.Select(i => new GridEntry(i, source, level, owner))) {

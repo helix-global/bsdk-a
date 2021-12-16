@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.DataProcessing.Annotations;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -24,15 +26,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      *
      * AttributeValue ::= ANY
      */
+    [TypeConverter(typeof(ObjectTypeConverter))]
+    [DefaultProperty(nameof(Value))]
     public class CmsAttribute : CmsObject
         {
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))][Order(-1)]
+        [DisplayName("{Type}")]
         public Asn1ObjectIdentifier Type { get; }
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))][NotNull] public virtual Object Value { get { return Values; }}
         [NotNull] protected ISet<Asn1Object> Values { get; }
 
         protected CmsAttribute(CmsAttribute o)
             : base(o)
             {
-            Type   = o.Type;
+            Type  = o.Type;
             Values = o.Values;
             }
 
@@ -42,7 +49,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             Values = new HashSet<Asn1Object>();
             if (o is Asn1Sequence u)
                 {
-                Type = (Asn1ObjectIdentifier)u[0];
+                Type   = (Asn1ObjectIdentifier)u[0];
                 Values = new HashSet<Asn1Object>(u[1]);
                 }
             }

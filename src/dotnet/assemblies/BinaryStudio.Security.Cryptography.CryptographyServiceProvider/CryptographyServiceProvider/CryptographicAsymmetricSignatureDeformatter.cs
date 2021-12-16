@@ -7,14 +7,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     public class CryptographicAsymmetricSignatureDeformatter : AsymmetricSignatureDeformatter, IDisposable
         {
-        private CryptographicContext context;
+        private SCryptographicContext context;
         private IX509Certificate certificate;
         public override void SetKey(AsymmetricAlgorithm key)
             {
             var certificate = (key as CertificateAsymmetricAlgorithm)?.Certificate;
             if (certificate != null) {
                 this.certificate = certificate;
-                context = new CryptographicContext(
+                context = new SCryptographicContext(
                     certificate.SignatureAlgorithm,
                     CryptographicContextFlags.CRYPT_SILENT|
                     CryptographicContextFlags.CRYPT_VERIFYCONTEXT);

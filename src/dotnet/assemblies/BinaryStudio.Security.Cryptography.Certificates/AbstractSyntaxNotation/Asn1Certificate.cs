@@ -1,35 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
-using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents ASN.1 certificate structure.
+    /// </summary>
+    /// <remarks>
+    /// <pre style="font-family: Consolas">
+    /// Certificate  ::=  SEQUENCE  {
+    ///   tbsCertificate       TBSCertificate,
+    ///   signatureAlgorithm   AlgorithmIdentifier,
+    ///   signatureValue       BIT STRING
+    ///   }
+    ///
+    /// TBSCertificate  ::=  SEQUENCE  {
+    ///   version         [0]  EXPLICIT Version DEFAULT v1,
+    ///   serialNumber         CertificateSerialNumber,
+    ///   signature            AlgorithmIdentifier,
+    ///   issuer               Name,
+    ///   validity             Validity,
+    ///   subject              Name,
+    ///   subjectPublicKeyInfo SubjectPublicKeyInfo,
+    ///   issuerUniqueID  [1]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+    ///   subjectUniqueID [2]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+    ///   extensions      [3]  EXPLICIT Extensions OPTIONAL        # If present, version MUST be v3
+    ///   }
+    /// Version  ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
+    /// CertificateSerialNumber  ::=  INTEGER
+    /// Validity ::= SEQUENCE {
+    ///   notBefore      Time,
+    ///   notAfter       Time
+    ///   }
+    /// 
+    /// Time ::= CHOICE {
+    ///   utcTime        UTCTime,
+    ///   generalTime    GeneralizedTime
+    ///   }
+    /// 
+    /// UniqueIdentifier  ::=  BIT STRING
+    /// 
+    /// SubjectPublicKeyInfo  ::=  SEQUENCE  {
+    ///   algorithm            AlgorithmIdentifier,
+    ///   subjectPublicKey     BIT STRING
+    ///   }
+    /// 
+    /// Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
+    /// 
+    /// Extension  ::=  SEQUENCE  {
+    ///   extnID      OBJECT IDENTIFIER,
+    ///   critical    BOOLEAN DEFAULT FALSE,
+    ///   extnValue   OCTET STRING
+    ///                  -- contains the DER encoding of an ASN.1 value
+    ///                  -- corresponding to the extension type identified
+    ///                  -- by extnID
+    ///   }
+    /// 
+    /// AlgorithmIdentifier  ::=  SEQUENCE  {
+    ///   algorithm               OBJECT IDENTIFIER,
+    ///   parameters              ANY DEFINED BY algorithm OPTIONAL
+    ///   }
+    /// </pre>
+    /// </remarks>
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
         {
         private String _thumbprint;
 
-        public Int32 Version { get; }
-        public Asn1ByteArray SerialNumber { get; }
-        public Asn1RelativeDistinguishedNameSequence Issuer  { get; }
-        public Asn1RelativeDistinguishedNameSequence Subject { get; }
-        public Asn1SignatureAlgorithm SignatureAlgorithm { get; }
-        public DateTime NotBefore { get; }
-        public DateTime NotAfter  { get; }
-        #region P:[10]:Extensions:X509CertificateExtensionCollection
-        public Asn1CertificateExtensionCollection Extensions { get; }
-        #endregion
-        public Byte[] PublicKeyParameters { get; }
-        public Byte[] PublicKey { get; }
-        public String Country { get; }
-
+        [Order( 1)] public Int32 Version { get; }
+        [Order( 2)] public Asn1ByteArray SerialNumber { get; }
+        [Order( 3)] public Asn1SignatureAlgorithm SignatureAlgorithm { get; }
+        [Order( 4)] public Asn1RelativeDistinguishedNameSequence Issuer  { get; }
+        [Order( 5)] public Asn1RelativeDistinguishedNameSequence Subject { get; }
+        [Order( 6)][TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime NotBefore { get; }
+        [Order( 7)][TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime NotAfter  { get; }
+        [Order( 8)] public IAsn1CertificateSubjectPublicKeyInfo SubjectPublicKeyInfo { get; }
+        [Order( 9)] public String Country { get; }
+        [Order(10)] public Asn1CertificateExtensionCollection Extensions { get; }
+        [Order(11)] 
         public String Thumbprint { get {
             if (_thumbprint == null) {
                 using (var engine = SHA1.Create())
@@ -45,7 +105,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
-            PublicKey = new Byte[0];
+            SubjectPublicKeyInfo = new X509NoCertificateSubjectPublicKeyInfo();
             State |= ObjectState.Failed;
             if (o is Asn1Sequence u)
                 {
@@ -86,13 +146,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                                 if (!key.IsFailed) {
                                     var algid = key.AlgorithmIdentifier?.Identifier;
                                     if ((algid != null) && !String.Equals(SignatureAlgorithm.SignatureAlgorithm.ToString(), algid.ToString())) {
-                                        SignatureAlgorithm = new Asn1SignatureAlgorithm(algid);
+                                        //SignatureAlgorithm = new Asn1SignatureAlgorithm(algid);
                                         }
-                                    PublicKey = u[0][j + 5].Body;
+                                    SubjectPublicKeyInfo = key;
                                     }
-                                PublicKeyParameters = new Byte[0];
+                                //PublicKeyParameters = new Byte[0];
                                 if (u[0][j + 5][0].Count > 1) {
-                                    PublicKeyParameters = u[0][j + 5][0][1].Body;
+                                    //PublicKeyParameters = u[0][j + 5][0][1].Body;
                                     }
                                 }
                             var contextspecifics = u[0].Find(i => (i.Class == Asn1ObjectClass.ContextSpecific)).ToArray();
@@ -121,6 +181,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
 
+        [Browsable(false)]
         public String FriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
             var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
@@ -136,6 +197,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }}
 
+        [Browsable(false)]
         public String AlternativeFriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
             var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
@@ -205,19 +267,19 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 if (!IsNullOrEmpty(extensions)) {
                     WriteValue(writer, serializer, nameof(Extensions), extensions);
                     }
-                var array = PublicKey;
-                writer.WritePropertyName(nameof(PublicKey));
-                if (array.Length > 50) {
-                    using (writer.ArrayScope(serializer)) {
-                        foreach (var value in Convert.ToBase64String(array, Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
-                            writer.WriteValue(value);
-                            }
-                        }
-                    }
-                else
-                    {
-                    writer.WriteValue(array);
-                    }
+                //var array = PublicKey;
+                //writer.WritePropertyName(nameof(PublicKey));
+                //if (array.Length > 50) {
+                //    using (writer.ArrayScope(serializer)) {
+                //        foreach (var value in Convert.ToBase64String(array, Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
+                //            writer.WriteValue(value);
+                //            }
+                //        }
+                //    }
+                //else
+                //    {
+                //    writer.WriteValue(array);
+                //    }
                 //array = PublicKeyParameters;
                 //writer.WritePropertyName(nameof(PublicKeyParameters));
                 //if (array.Length > 50)
@@ -261,5 +323,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         IcaoCertificateType IIcaoCertificate.Type { get; }
+        [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
         }
     }

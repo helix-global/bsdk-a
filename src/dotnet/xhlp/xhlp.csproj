@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\assemblies\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Diagnostics\BinaryStudio.Diagnostics.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Xml\BinaryStudio.Security.Cryptography.Xml.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml lang:ru-RU&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.xml lang:ru-RU&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Modeling.UnifiedModelingLanguage.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Modeling.UnifiedModelingLanguage.xml lang:ru-RU&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.Certificates.xml lang:en-US&#xD;&#xA;$(SolutionDir)xdoc\bin\$(ConfigurationName)\net5.0\xdoc.exe input:$(TargetDir)\BinaryStudio.Security.Cryptography.Certificates.xml lang:ru-RU&#xD;&#xA;" />
+  </Target>
+</Project>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using BinaryStudio.IO;
 
@@ -7,14 +9,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public class Asn1LinkObject<T> : Asn1Object
         where T: Asn1Object
         {
-        public virtual T UnderlyingObject { get; }
-        public override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
-        public override Int64 Offset { get { return UnderlyingObject.Offset; }}
-        public override Int64 Length { get { return UnderlyingObject.Length; }}
-        public override Int64 Size   { get { return UnderlyingObject.Size;   }}
-        public override Int32 Count  { get { return UnderlyingObject.Count;  }}
-
-        public override ReadOnlyMappingStream Content { get { return UnderlyingObject.Content; }}
+        [Browsable(false)] public virtual T UnderlyingObject { get; }
+        [Browsable(false)] public override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
+        [Browsable(false)] public override Int64 Offset { get { return UnderlyingObject.Offset; }}
+        [Browsable(false)] public override Int64 Length { get { return UnderlyingObject.Length; }}
+        [Browsable(false)] public override Int64 Size   { get { return UnderlyingObject.Size;   }}
+        [Browsable(false)] public override Int32 Count  { get { return UnderlyingObject.Count;  }}
+        [Browsable(false)] public override ReadOnlyMappingStream Content { get { return UnderlyingObject.Content; }}
+        [Browsable(false)] protected internal override IEnumerable<Byte[]> ContentSequence { get { return UnderlyingObject.ContentSequence; }}
 
         protected Asn1LinkObject(T source)
             {

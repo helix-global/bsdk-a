@@ -15,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Interna
         private const UInt32 FT_SIGNATURE_CONTAINER_BARRIER_MAGIC = 0xFF00EE10;
         private const Int32 DEFAULT_BUFFER_SIZE = (1024 * 1024 * 5);
 
-        public Boolean VerifyMessage(CryptographicContext context, Stream input, Stream output, CryptographicMessageFlags type,
+        public Boolean VerifyMessage(SCryptographicContext context, Stream input, Stream output, CryptographicMessageFlags type,
             out IList<IX509Certificate> certificates, out Exception e)
             {
             if (input == null)  { throw new ArgumentNullException(nameof(input)); }

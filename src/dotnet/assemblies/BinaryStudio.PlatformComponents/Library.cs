@@ -59,8 +59,8 @@ namespace BinaryStudio.PlatformComponents
                 }
             }
         #endregion
-        #region M:EnsureProcedure<T>(String,[Ref]T)
-        protected void EnsureProcedure<T>(String name, ref T value) {
+        #region M:EnsureProcedure<T>(String,[Ref]T):T
+        protected T EnsureProcedure<T>(String name, ref T value) {
             if (value == null) {
                 EnsureCore();
                 if (!Entries.TryGetValue(name, out var r)) {
@@ -69,6 +69,7 @@ namespace BinaryStudio.PlatformComponents
                     }
                 value = (T)(Object)Marshal.GetDelegateForFunctionPointer(r, typeof(T));
                 }
+            return value;
             }
         #endregion
         #region M:DefineDynamicAssembly(AssemblyName,AssemblyBuilderAccess):AssemblyBuilder

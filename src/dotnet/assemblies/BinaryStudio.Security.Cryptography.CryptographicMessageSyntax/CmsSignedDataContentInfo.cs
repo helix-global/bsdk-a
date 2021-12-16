@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.PublicKeyInfrastructure;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
-
-#pragma warning disable 1591
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
@@ -29,6 +29,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     ///   SignerInfos ::= SET OF SignerInfo
     /// </pre>
     /// </summary>
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public class CmsSignedDataContentInfo : CmsContentInfo
         {
         private const Int32 INDEX_VERSION                   = 0;
@@ -39,28 +40,33 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         /// Gives a syntax version number, for compatibility
         /// with future revisions of this specification.
         /// </summary>
-        public Int32 Version { get; }
-        public new CmsContentSpecificObject Content { get; }
+        [Order(1)] public Int32 Version { get; }
+        [Order(3)] public new CmsContentSpecificObject Content { get; }
 
         /// <summary>
         /// A collection of message digest algorithm identifiers.
         /// </summary>
-        public ISet<X509AlgorithmIdentifier> DigestAlgorithms { get; }
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
+        [Order(2)] public ISet<X509AlgorithmIdentifier> DigestAlgorithms { get; }
 
         /// <summary>
         /// A collection of certificates.
         /// </summary>
-        public ISet<Asn1Certificate> Certificates { get; }
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
+        [Order(4)] public ISet<Asn1Certificate> Certificates { get; }
 
         /// <summary>
         /// A collection of certificate revocation lists.
         /// </summary>
-        public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
+        [Order(5)] public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
 
         /// <summary>
         /// Retrieves the <see cref="ISet{CmsSignerInfo}"/> collection associated with the CMS message.
         /// </summary>
-        public ISet<CmsSignerInfo> Signers { get; }
+        [TypeConverter(typeof(ObjectCollectionTypeConverter))]
+        [Order(6)] public ISet<CmsSignerInfo> Signers { get; }
+
         public CmsSignedDataContentInfo(Asn1Object source)
             : base(source)
             {

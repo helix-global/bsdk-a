@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Newtonsoft.Json;
@@ -29,8 +30,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      * }
      */
     [CmsSpecific("1.2.840.113549.1.9.16.2.12")]
+    [DefaultProperty(nameof(Certificates))]
     public class EssSigningCertificateAttribute : CmsAttribute
         {
+        [Browsable(false)] public override Object Value { get { return base.Value; }}
         public IList<EssCertificateIdentifier> Certificates { get; }
         public EssSigningCertificateAttribute(CmsAttribute o)
             : base(o)

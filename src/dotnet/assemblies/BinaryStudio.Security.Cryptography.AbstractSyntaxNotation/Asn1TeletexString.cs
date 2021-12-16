@@ -4,12 +4,18 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    internal class Asn1TeletexString : Asn1String
+    /// <summary>
+    /// Represents a <see langword="T61STRING"/> type.
+    /// </summary>
+    internal sealed class Asn1TeletexString : Asn1String
         {
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.TeletexString"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.TeletexString; }}
         public override Encoding Encoding { get { return new T61Encoding(); }}
 
-        public Asn1TeletexString(ReadOnlyMappingStream source, long forceoffset)
+        internal Asn1TeletexString(ReadOnlyMappingStream source, long forceoffset)
             : base(source, forceoffset)
             {
             }

@@ -29,7 +29,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         private IntPtr source;
         private CMSG_STREAM_INFO so;
-        private IList<CryptographicContext> contextes = new List<CryptographicContext>();
+        private IList<SCryptographicContext> contextes = new List<SCryptographicContext>();
 
         #if CAPILITE
         [DllImport(CAPI20, CharSet = CharSet.None)] private static extern unsafe CryptographicMessageHandle CryptMsgOpenToEncode([In] CRYPT_MSG_TYPE dwMsgEncodingType, [In] CMSG_FLAGS flags, [In] CMSG_TYPE dwMsgType, [In] IntPtr pvMsgEncodeInfo, [In] IntPtr pszInnerContentObjID, [In] IntPtr pStreamInfo);

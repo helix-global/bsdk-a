@@ -1,13 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Newtonsoft.Json;
 
-#pragma warning disable 1591
+#pragma warning disable 1591,1571
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
@@ -15,14 +17,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     /// <see cref="CmsMessage"/> class represents a CMS structure.
     /// For additional information, see <a href="https://tools.ietf.org/html/rfc5652">RFC 5652</a>.
     /// </summary>
-    public sealed class CmsMessage : Asn1LinkObject
+    [TypeConverter(typeof(CmsMessageTypeConverter))]
+    public sealed class CmsMessage : CmsObject
         {
         /**
          * <summary>
          * This is the associated content. The type of content can be determined uniquely by <see cref="ContentType"/>.
          * </summary>
          */
-        public CmsContentInfo ContentInfo { get; }
+        [Order(1)] public CmsContentInfo ContentInfo { get; }
 
         /**
          * <summary>
@@ -65,6 +68,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * </table>
          * </remarks>
          */
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
+        [Order(-1)]
         public Oid ContentType { get; }
 
         /**
@@ -72,6 +77,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * Constructs new instance of <see cref="CmsMessage"/> class by using an array of byte values as the content data.
          * </summary>
          * <param name="content">An array of byte values that represents the data from which to create the <see cref="CmsMessage"/> object.</param>
+         * <x:block xmlns:x="http://xmldoc.schemas.helix.global" x:lang="ru-RU">
+         *   <summary>
+         *   Constructs new instance of <see cref="CmsMessage"/> class by using an array of byte values as the content data.
+         *   </summary>
+         *   <param name="content">Массив байт из которых будет сформировано содержимое объекта <see cref="CmsMessage"/>.</param>
+         * </x:block>
          */
         public CmsMessage(Byte[] content)
             :this(Load(new ReadOnlyMemoryMappingStream(content)).FirstOrDefault())
@@ -134,7 +145,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          * */
         public override Object GetService(Type service)
             {
+            if (service == typeof(CmsSignedDataContentInfo)) { return ContentInfo as CmsSignedDataContentInfo; }
             return base.GetService(service);
             }
+
+        [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
         }
     }

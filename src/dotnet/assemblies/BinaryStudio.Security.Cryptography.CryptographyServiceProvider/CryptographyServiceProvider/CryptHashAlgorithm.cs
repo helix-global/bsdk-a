@@ -21,7 +21,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     public class CryptHashAlgorithm : HashAlgorithm, IHashAlgorithm, IHashOperation
     {
         private const Int32 BLOCK_SIZE_64K = 64*1024;
-        public CryptHashAlgorithm(CryptographicContext context, ALG_ID algorithm) {
+        public CryptHashAlgorithm(SCryptographicContext context, ALG_ID algorithm) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             HashSizeValue = -1;
             this.context = context;
@@ -289,8 +289,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
             if (signature == null) { throw new ArgumentNullException(nameof(signature)); }
             if (digest == null) { throw new ArgumentNullException(nameof(digest)); }
-            using (var context = new CryptographicContext(certificate.SignatureAlgorithm, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                using (var signing = new CryptographicContext(context, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_NONE)) {
+            using (var context = new SCryptographicContext(certificate.SignatureAlgorithm, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                using (var signing = new SCryptographicContext(context, certificate, CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_NONE)) {
                     using (var engine = new CryptHashAlgorithm(signing, CryptographicObject.OidToAlgId(certificate.HashAlgorithm))) {
                         engine.EnsureCore();
                         var sz = sizeof(Int32);
@@ -458,7 +458,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr LocalFree(IntPtr handle);
 
         private IntPtr handle;
-        private CryptographicContext context;
+        private SCryptographicContext context;
         private readonly ALG_ID algorithm;
         private const Int32 HP_ALGID                = 0x0001;  // Hash algorithm
         private const Int32 HP_HASHVAL              = 0x0002;  // Hash value
@@ -545,7 +545,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <param name="inputstream">The input to compute the hash code for.</param>
         /// <returns>The computed hash code.</returns>
         /// <exception cref="ObjectDisposedException">The object has already been disposed.</exception>
-        Byte[] IHashAlgorithm.ComputeHash(Stream inputstream)
+        Byte[] IHashAlgorithm.Compute(Stream inputstream)
             {
             return Compute(inputstream);
             }

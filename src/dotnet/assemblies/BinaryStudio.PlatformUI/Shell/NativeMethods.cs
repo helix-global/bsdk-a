@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.PlatformUI
     {
@@ -714,19 +715,10 @@ namespace BinaryStudio.PlatformUI
             }
 
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr SetCursor(IntPtr hCursor);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetCapture();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean ShowOwnedPopups(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] Boolean fShow);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern Boolean GetWindowPlacement(IntPtr hwnd, WINDOWPLACEMENT lpwndpl);
+        [DllImport("user32.dll")] public static extern IntPtr SetCursor(IntPtr hCursor);
+        [DllImport("user32.dll")] public static extern IntPtr GetCapture();
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean ShowOwnedPopups(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] Boolean fShow);
+        [DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static extern Boolean GetWindowPlacement(IntPtr hwnd, WINDOWPLACEMENT lpwndpl);
 
         public static WINDOWPLACEMENT GetWindowPlacement(IntPtr hwnd) {
             var lpwndpl = new WINDOWPLACEMENT();
@@ -735,9 +727,7 @@ namespace BinaryStudio.PlatformUI
             throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GetCursorPos(ref POINT point);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean GetCursorPos(ref POINT point);
 
         internal static Point GetCursorPos() {
             var point1 = new POINT { x = 0, y = 0 };
@@ -749,47 +739,23 @@ namespace BinaryStudio.PlatformUI
             return point2;
             }
 
-        [DllImport("user32.dll")]
-        public static extern Int32 GetSysColor(Int32 nIndex);
-
-        [DllImport("user32.dll")]
-        internal static extern Int32 GetSystemMetrics(Int32 index);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean SystemParametersInfo(Int32 uiAction, Int32 uiParam, ref NONCLIENTMETRICS pvParam, Int32 fWinIni);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr GetSystemMenu(IntPtr hwnd, Boolean bRevert);
-
-        [DllImport("user32.dll")]
-        internal static extern Int32 TrackPopupMenuEx(IntPtr hmenu, UInt32 fuFlags, Int32 x, Int32 y, IntPtr hwnd, IntPtr lptpm);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean EnableMenuItem(IntPtr menu, UInt32 uIDEnableItem, UInt32 uEnable);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern Int32 RegisterWindowMessage(String lpString);
-
-        [DllImport("user32.dll")]
-        internal static extern Int16 GetAsyncKeyState(Int32 vKey);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern Int32 GetMessagePos();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern Int32 MsgWaitForMultipleObjectsEx(Int32 nCount, IntPtr[] pHandles, Int32 dwMilliseconds, Int32 dwWakeMask, Int32 dwFlags);
-
-        [DllImport("user32.dll")]
-        internal static extern Int16 GetKeyState(Int32 vKey);
+        [DllImport("user32.dll")] public static extern Int32 GetSysColor(Int32 nIndex);
+        [DllImport("user32.dll")] internal static extern Int32 GetSystemMetrics(Int32 index);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean SystemParametersInfo(Int32 uiAction, Int32 uiParam, ref NONCLIENTMETRICS pvParam, Int32 fWinIni);
+        [DllImport("user32.dll")] internal static extern IntPtr GetSystemMenu(IntPtr hwnd, Boolean bRevert);
+        [DllImport("user32.dll")] internal static extern Int32 TrackPopupMenuEx(IntPtr hmenu, UInt32 fuFlags, Int32 x, Int32 y, IntPtr hwnd, IntPtr lptpm);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean EnableMenuItem(IntPtr menu, UInt32 uIDEnableItem, UInt32 uEnable);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern Int32 RegisterWindowMessage(String lpString);
+        [DllImport("user32.dll")] internal static extern Int16 GetAsyncKeyState(Int32 vKey);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)] public static extern Int32 GetMessagePos();
+        [DllImport("user32.dll", CharSet = CharSet.Auto)] public static extern Int32 MsgWaitForMultipleObjectsEx(Int32 nCount, IntPtr[] pHandles, Int32 dwMilliseconds, Int32 dwWakeMask, Int32 dwFlags);
+        [DllImport("user32.dll")] internal static extern Int16 GetKeyState(Int32 vKey);
 
         internal static Boolean IsKeyPressed(Int32 vKey) {
             return GetKeyState(vKey) < 0;
             }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern IntPtr LoadLibraryEx(String filename, IntPtr hReservedNull, LoadLibraryFlags flags);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr LoadLibraryEx(String filename, IntPtr hReservedNull, LoadLibraryFlags flags);
 
         public static IntPtr LoadLibraryEx(String filename, LoadLibraryFlags flags) {
             return LoadLibraryEx(filename, IntPtr.Zero, flags);
@@ -799,20 +765,11 @@ namespace BinaryStudio.PlatformUI
             return LoadLibraryEx(filename, IntPtr.Zero, LoadLibraryFlags.LOAD_LIBRARY_AS_DATAFILE);
             }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Boolean FreeLibrary(IntPtr handle);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr FindResource(IntPtr hModule, Int32 lpName, Int32 lpType);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr FindResource(IntPtr hModule, Int32 lpName, String lpType);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr FindResource(IntPtr hModule, String lpName, Int32 lpType);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr FindResource(IntPtr hModule, String lpName, String lpType);
+        [DllImport("kernel32.dll", SetLastError = true)] public static extern Boolean FreeLibrary(IntPtr handle);
+        [DllImport("kernel32.dll", SetLastError = true)] public static extern IntPtr FindResource(IntPtr hModule, Int32 lpName, Int32 lpType);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr FindResource(IntPtr hModule, Int32 lpName, String lpType);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr FindResource(IntPtr hModule, String lpName, Int32 lpType);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr FindResource(IntPtr hModule, String lpName, String lpType);
 
         public static IntPtr FindResource(IntPtr hModule, NativeResourceIdentifier nameId, NativeResourceIdentifier typeId) {
             if (nameId.IsIntegerId) {
@@ -825,25 +782,17 @@ namespace BinaryStudio.PlatformUI
             return FindResource(hModule, nameId.StringId, typeId.StringId);
             }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr LockResource(IntPtr hResData);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern Int32 SizeofResource(IntPtr hModule, IntPtr hResInfo);
+        [DllImport("kernel32.dll", SetLastError = true)] public static extern IntPtr LoadResource(IntPtr hModule, IntPtr hResInfo);
+        [DllImport("kernel32.dll", SetLastError = true)] public static extern IntPtr LockResource(IntPtr hResData);
+        [DllImport("kernel32.dll", SetLastError = true)] public static extern Int32 SizeofResource(IntPtr hModule, IntPtr hResInfo);
 
         //[DllImport("ComCtl32.dll")]
         //public static extern Boolean SetWindowSubclass(IntPtr hWnd, SubClassProc pfnSubclass, UIntPtr uIdSubclass, UIntPtr dwRefData);
         //[DllImport("ComCtl32.dll")]
         //public static extern Boolean RemoveWindowSubclass(IntPtr hWnd, SubClassProc pfnSubclass, UIntPtr uIdSubclass);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr EnumResourceNames(IntPtr hModule, String type, EnumResourceNameProc callback, IntPtr lParam);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr EnumResourceNames(IntPtr hModule, Int32 id, EnumResourceNameProc callback, IntPtr lParam);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr EnumResourceNames(IntPtr hModule, String type, EnumResourceNameProc callback, IntPtr lParam);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern IntPtr EnumResourceNames(IntPtr hModule, Int32 id, EnumResourceNameProc callback, IntPtr lParam);
 
         public static IntPtr EnumResourceNames(IntPtr hModule, NativeResourceIdentifier id, EnumResourceNameProc callback, IntPtr lParam) {
             if (id.IsIntegerId)
@@ -851,11 +800,8 @@ namespace BinaryStudio.PlatformUI
             return EnumResourceNames(hModule, id.StringId, callback, lParam);
             }
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr LoadImage(IntPtr hModule, String name, LoadImageType type, Int32 cx, Int32 cy, LoadImageFlags flags);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr LoadImage(IntPtr hModule, Int32 id, LoadImageType type, Int32 cx, Int32 cy, LoadImageFlags flags);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr LoadImage(IntPtr hModule, String name, LoadImageType type, Int32 cx, Int32 cy, LoadImageFlags flags);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern IntPtr LoadImage(IntPtr hModule, Int32 id, LoadImageType type, Int32 cx, Int32 cy, LoadImageFlags flags);
 
         public static IntPtr LoadImage(IntPtr hModule, NativeResourceIdentifier id, LoadImageType type, Int32 cx, Int32 cy, LoadImageFlags flags) {
             if (id.IsIntegerId)
@@ -903,147 +849,79 @@ namespace BinaryStudio.PlatformUI
             return (Int16)(value & UInt16.MaxValue);
             }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean ScreenToClient(IntPtr hWnd, ref POINT point);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern unsafe Boolean GetKeyboardState(Byte* lpKeyState);
-
-        [DllImport("user32.dll")]
-        internal static extern UInt32 MapVirtualKey(UInt32 uCode, UInt32 uMapType);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr MonitorFromWindow(IntPtr handle, Int32 flags);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr MonitorFromPoint(POINT pt, Int32 flags);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        public static extern UInt32 GetWindowThreadProcessId(IntPtr hWnd, out UInt32 processId);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean BringWindowToTop(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean ClientToScreen(IntPtr hWnd, ref POINT point);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        internal static extern IntPtr DefWindowProc(IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean EnumThreadWindows(UInt32 dwThreadId, EnumWindowsProc lpfn, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean SetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] String lpString);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean PostMessage(IntPtr hWnd, Int32 nMsg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean PostThreadMessage(UInt32 threadId, UInt32 msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("User32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean PrintWindow(IntPtr hwnd, IntPtr hDC, UInt32 nFlags);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean ScreenToClient(IntPtr hWnd, ref POINT point);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern unsafe Boolean GetKeyboardState(Byte* lpKeyState);
+        [DllImport("user32.dll")] internal static extern UInt32 MapVirtualKey(UInt32 uCode, UInt32 uMapType);
+        [DllImport("user32.dll")] internal static extern IntPtr MonitorFromWindow(IntPtr handle, Int32 flags);
+        [DllImport("user32.dll")] internal static extern IntPtr MonitorFromPoint(POINT pt, Int32 flags);
+        [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")] public static extern UInt32 GetWindowThreadProcessId(IntPtr hWnd, out UInt32 processId);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean BringWindowToTop(IntPtr hWnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean ClientToScreen(IntPtr hWnd, ref POINT point);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] internal static extern IntPtr DefWindowProc(IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean EnumThreadWindows(UInt32 dwThreadId, EnumWindowsProc lpfn, IntPtr lParam);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean SetWindowText(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)] String lpString);
+        [DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean PostMessage(IntPtr hWnd, Int32 nMsg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean PostThreadMessage(UInt32 threadId, UInt32 msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("User32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean PrintWindow(IntPtr hwnd, IntPtr hDC, UInt32 nFlags);
 
         internal static Boolean PrintWindow(HandleRef hwnd, HandleRef hDC, UInt32 nFlags) {
             return PrintWindow(hwnd.Handle, hDC.Handle, nFlags);
             }
 
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern Int32 GetBitmapBits(IntPtr hbmp, Int32 cbBuffer, Byte[] lpvBits);
-
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern Int32 GetBitmapBits(IntPtr hbmp, Int32 cbBuffer, IntPtr lpvBits);
-
-        [DllImport("gdi32.dll")]
-        internal static extern Int32 GetDIBits(IntPtr hdc, IntPtr hbmp, UInt32 uStartScan, UInt32 cScanLines, [Out] Byte[] lpvBits, ref BITMAPINFO lpbmi, UInt32 uUsage);
-
-        [DllImport("gdi32.dll")]
-        internal static extern IntPtr CreateBitmap(Int32 nWidth, Int32 nHeight, UInt32 cPlanes, UInt32 cBitsPerPel, IntPtr lpvBits);
-
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr GetDC(IntPtr hWnd);
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)] internal static extern Int32 GetBitmapBits(IntPtr hbmp, Int32 cbBuffer, Byte[] lpvBits);
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)] internal static extern Int32 GetBitmapBits(IntPtr hbmp, Int32 cbBuffer, IntPtr lpvBits);
+        [DllImport("gdi32.dll")] internal static extern Int32 GetDIBits(IntPtr hdc, IntPtr hbmp, UInt32 uStartScan, UInt32 cScanLines, [Out] Byte[] lpvBits, ref BITMAPINFO lpbmi, UInt32 uUsage);
+        [DllImport("gdi32.dll")] internal static extern IntPtr CreateBitmap(Int32 nWidth, Int32 nHeight, UInt32 cPlanes, UInt32 cBitsPerPel, IntPtr lpvBits);
+        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern IntPtr GetDC(IntPtr hWnd);
 
         internal static IntPtr GetDC(HandleRef hWnd) {
             return GetDC(hWnd.Handle);
             }
 
-        [DllImport("User32.dll")]
-        internal static extern IntPtr GetDCEx(IntPtr hWnd, IntPtr hrgnClip, Int32 dwFlags);
-
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern Int32 ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        [DllImport("User32.dll")] internal static extern IntPtr GetDCEx(IntPtr hWnd, IntPtr hrgnClip, Int32 dwFlags);
+        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern Int32 ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         internal static Int32 ReleaseDC(HandleRef hWnd, HandleRef hDC) {
             return ReleaseDC(hWnd.Handle, hDC.Handle);
             }
 
-        [DllImport("gdi32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean DeleteDC(IntPtr hdc);
+        [DllImport("gdi32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean DeleteDC(IntPtr hdc);
 
         internal static Boolean DeleteDC(HandleRef hdc) {
             return DeleteDC(hdc.Handle);
             }
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        internal static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+        [DllImport("gdi32.dll", SetLastError = true)] internal static extern IntPtr CreateCompatibleDC(IntPtr hdc);
 
         internal static IntPtr CreateCompatibleDC(HandleRef hdc) {
             return CreateCompatibleDC(hdc.Handle);
             }
 
-        [DllImport("gdi32.dll")]
-        internal static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, Int32 nWidth, Int32 nHeight);
+        [DllImport("gdi32.dll")] internal static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, Int32 nWidth, Int32 nHeight);
 
         internal static IntPtr CreateCompatibleBitmap(HandleRef hdc, Int32 nWidth, Int32 nHeight) {
             return CreateCompatibleBitmap(hdc.Handle, nWidth, nHeight);
             }
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        internal static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+        [DllImport("gdi32.dll", SetLastError = true)] internal static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
         internal static IntPtr SelectObject(HandleRef hdc, IntPtr hgdiobj) {
             return SelectObject(hdc.Handle, hgdiobj);
             }
 
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern Int32 GetDeviceCaps(IntPtr hdc, Int32 nIndex);
-
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr CreateRoundRectRgn(Int32 nLeftRect, Int32 nTopRect, Int32 nRightRect, Int32 nBottomRect, Int32 nWidthEllipse, Int32 nHeightEllipse);
-
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr CreateRectRgn(Int32 nLeftRect, Int32 nTopRect, Int32 nRightRect, Int32 nBottomRect);
-
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr CreateRectRgnIndirect(ref RECT lprc);
-
-        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)]
-        private static extern Int32 CombineRgn(IntPtr hrngDest, IntPtr hrgnSrc1, IntPtr hrgnSrc2, Int32 fnCombineMode);
+        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern Int32 GetDeviceCaps(IntPtr hdc, Int32 nIndex);
+        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern IntPtr CreateRoundRectRgn(Int32 nLeftRect, Int32 nTopRect, Int32 nRightRect, Int32 nBottomRect, Int32 nWidthEllipse, Int32 nHeightEllipse);
+        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern IntPtr CreateRectRgn(Int32 nLeftRect, Int32 nTopRect, Int32 nRightRect, Int32 nBottomRect);
+        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern IntPtr CreateRectRgnIndirect(ref RECT lprc);
+        [DllImport("Gdi32.dll", CallingConvention = CallingConvention.StdCall)] private static extern Int32 CombineRgn(IntPtr hrngDest, IntPtr hrgnSrc1, IntPtr hrgnSrc2, Int32 fnCombineMode);
 
         internal static Int32 CombineRgn(IntPtr hrnDest, IntPtr hrgnSrc1, IntPtr hrgnSrc2, CombineMode combineMode) {
             return CombineRgn(hrnDest, hrgnSrc1, hrgnSrc2, (Int32)combineMode);
             }
 
-        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)]
-        internal static extern Int32 SetWindowRgn(IntPtr hWnd, IntPtr hRgn, [MarshalAs(UnmanagedType.Bool)] Boolean redraw);
+        [DllImport("User32.dll", CallingConvention = CallingConvention.StdCall)] internal static extern Int32 SetWindowRgn(IntPtr hWnd, IntPtr hRgn, [MarshalAs(UnmanagedType.Bool)] Boolean redraw);
 
         internal static Boolean PostMessage(IntPtr hwnd, Int32 msg) {
             return PostMessage(hwnd, msg, IntPtr.Zero, IntPtr.Zero);
@@ -1053,15 +931,9 @@ namespace BinaryStudio.PlatformUI
             return PostMessage(hwnd, msg, wParam, IntPtr.Zero);
             }
 
-        [DllImport("user32.dll")]
-        internal static extern IntPtr SetCapture(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean ReleaseCapture();
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, Int32 nMsg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll")] internal static extern IntPtr SetCapture(IntPtr hWnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean ReleaseCapture();
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessage(IntPtr hWnd, Int32 nMsg, IntPtr wParam, IntPtr lParam);
 
         internal static IntPtr SendMessage(IntPtr hwnd, Int32 msg) {
             return SendMessage(hwnd, msg, IntPtr.Zero, IntPtr.Zero);
@@ -1072,82 +944,28 @@ namespace BinaryStudio.PlatformUI
             }
 
         [DllImport("user32.dll")] public static extern IntPtr SetFocus(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SetActiveWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindow(IntPtr hwnd, Int32 nCmd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
-
-        [DllImport("user32.dll")]
-        internal static extern Int32 GetMessageTime();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsWindowEnabled(IntPtr hwnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsWindowVisible(IntPtr hwnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsIconic(IntPtr hwnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsZoomed(IntPtr hwnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsWindow(IntPtr hWnd);
-
-        [DllImport("ole32.dll")]
-        internal static extern Int32 OleSetContainedObject(IntPtr punkObj, [MarshalAs(UnmanagedType.Bool)] Boolean fVisible);
-
-        [DllImport("ole32.dll")]
-        internal static extern Int32 OleRun(IntPtr punkObj);
-
-        [DllImport("user32.dll")]
-        private static extern Int32 CopyAcceleratorTable(IntPtr hAccelSrc, [Out] ACCEL[] lpAccelDst, Int32 cAccelEntries);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr GetFocus();
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr GetActiveWindow();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IsChild(IntPtr hWndParent, IntPtr hWnd);
-
-        [DllImport("User32", CharSet = CharSet.Auto)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, Int32 x, Int32 y, Int32 cx, Int32 cy, Int32 flags);
-
-        [DllImport("Comctl32", CharSet = CharSet.Auto)]
-        internal static extern Int32 ImageList_Draw(HandleRef hImageList, Int32 i, HandleRef hdc, Int32 x, Int32 y, Int32 fStyle);
-
-        [DllImport("user32.dll")]
-        private static extern Int32 GetWindowLong(IntPtr hWnd, Int32 nIndex);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetWindowLongPtr(IntPtr hWnd, Int32 nIndex);
-
-        [DllImport("comctl32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean SetWindowSubclass(this IntPtr hwnd, SubclassProc callback, UIntPtr id, IntPtr refData);
-
-        [DllImport("comctl32.dll")]
-        internal static extern IntPtr DefSubclassProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("comctl32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean RemoveWindowSubclass(IntPtr hwnd, SubclassProc callback, UIntPtr id);
+        [DllImport("user32.dll")] public static extern IntPtr SetActiveWindow(IntPtr hWnd);
+        [DllImport("user32.dll")] public static extern IntPtr GetWindow(IntPtr hwnd, Int32 nCmd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
+        [DllImport("user32.dll")] internal static extern Int32 GetMessageTime();
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsWindowEnabled(IntPtr hwnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsWindowVisible(IntPtr hwnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsIconic(IntPtr hwnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsZoomed(IntPtr hwnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsWindow(IntPtr hWnd);
+        [DllImport("ole32.dll")] internal static extern Int32 OleSetContainedObject(IntPtr punkObj, [MarshalAs(UnmanagedType.Bool)] Boolean fVisible);
+        [DllImport("ole32.dll")] internal static extern Int32 OleRun(IntPtr punkObj);
+        [DllImport("user32.dll")] private static extern Int32 CopyAcceleratorTable(IntPtr hAccelSrc, [Out] ACCEL[] lpAccelDst, Int32 cAccelEntries);
+        [DllImport("user32.dll")] internal static extern IntPtr GetFocus();
+        [DllImport("user32.dll")] internal static extern IntPtr GetActiveWindow();
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IsChild(IntPtr hWndParent, IntPtr hWnd);
+        [DllImport("User32", CharSet = CharSet.Auto)][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, Int32 x, Int32 y, Int32 cx, Int32 cy, Int32 flags);
+        [DllImport("Comctl32", CharSet = CharSet.Auto)] internal static extern Int32 ImageList_Draw(HandleRef hImageList, Int32 i, HandleRef hdc, Int32 x, Int32 y, Int32 fStyle);
+        [DllImport("user32.dll")] private static extern Int32 GetWindowLong(IntPtr hWnd, Int32 nIndex);
+        [DllImport("user32.dll")] private static extern IntPtr GetWindowLongPtr(IntPtr hWnd, Int32 nIndex);
+        [DllImport("comctl32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean SetWindowSubclass(this IntPtr hwnd, SubclassProc callback, UIntPtr id, IntPtr refData);
+        [DllImport("comctl32.dll")] internal static extern IntPtr DefSubclassProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("comctl32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean RemoveWindowSubclass(IntPtr hwnd, SubclassProc callback, UIntPtr id);
 
         internal static IntPtr GetWindowLongPtr(IntPtr hWnd, GWLP nIndex) {
             if (IntPtr.Size == 8)
@@ -1159,22 +977,11 @@ namespace BinaryStudio.PlatformUI
             return GetWindowLong(hWnd, (Int32)nIndex);
             }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GetWindowRect(IntPtr hwnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GetClientRect(IntPtr hwnd, out RECT lpRect);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        internal static extern Int32 SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLong")]
-        internal static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLongPtr")]
-        internal static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean GetWindowRect(IntPtr hwnd, out RECT lpRect);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean GetClientRect(IntPtr hwnd, out RECT lpRect);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] internal static extern Int32 SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLong")] internal static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "SetWindowLongPtr")] internal static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
 
         internal static IntPtr SetWindowLong(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong) {
             if (IntPtr.Size == 4) {
@@ -1183,8 +990,7 @@ namespace BinaryStudio.PlatformUI
             return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
             }
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, Int32 nIndex, IntPtr dwNewLong);
 
         public static IntPtr SetWindowLongPtr(IntPtr hWnd, GWLP nIndex, IntPtr dwNewLong) {
             if (IntPtr.Size == 8)
@@ -1200,10 +1006,7 @@ namespace BinaryStudio.PlatformUI
             return SetWindowLong(hWnd, (Int32)nIndex, dwNewLong);
             }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean SetLayeredWindowAttributes(IntPtr hwnd, Int32 crKey, Byte bAlpha, Int32 dwFlags);
-
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean SetLayeredWindowAttributes(IntPtr hwnd, Int32 crKey, Byte bAlpha, Int32 dwFlags);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern UInt16 RegisterClassEx(ref WNDCLASSEX lpWndClass);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern UInt16 RegisterClass(ref WNDCLASS lpWndClass);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern Int32 GetClassName(IntPtr window, StringBuilder classname, Int32 size);
@@ -1213,150 +1016,57 @@ namespace BinaryStudio.PlatformUI
             return builder.ToString();
             }
 
-        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr OpenEvent(UInt32 dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] Boolean bInheritHandle, String lpName);
-
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean SetEvent(IntPtr hEvent);
-
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean CloseHandle(IntPtr handle);
-
-        [DllImport("kernel32.dll")]
-        public static extern UInt32 GetCurrentThreadId();
-
-        [DllImport("kernel32.dll")]
-        public static extern UInt32 GetCurrentProcessId();
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetWindowsHookEx(WindowsHookType hookType, WindowsHookProc hookProc, IntPtr module, UInt32 threadId);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr CallNextHookEx(IntPtr hhk, CbtHookAction code, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean UnhookWindowsHookEx(IntPtr hhk);
-
-        [DllImport("oleaut32.dll", CharSet = CharSet.Unicode)]
-        public static extern Int32 VariantClear(ref VARIANT var);
-
-        [DllImport("oleaut32.dll", CharSet = CharSet.Unicode)]
-        public static extern Int32 VariantChangeType(out Object pvargDest, [In] ref Object pvarSrc, VARIANTFLAGS wFlags, VARTYPE vt);
-
-        [DllImport("gdi32.dll")]
-        public static extern IntPtr GetStockObject(Int32 fnObject);
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr OpenEvent(UInt32 dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] Boolean bInheritHandle, String lpName);
+        [DllImport("kernel32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean SetEvent(IntPtr hEvent);
+        [DllImport("kernel32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean CloseHandle(IntPtr handle);
+        [DllImport("kernel32.dll")] public static extern UInt32 GetCurrentThreadId();
+        [DllImport("kernel32.dll")] public static extern UInt32 GetCurrentProcessId();
+        [DllImport("user32.dll", SetLastError = true)] public static extern IntPtr SetWindowsHookEx(WindowsHookType hookType, WindowsHookProc hookProc, IntPtr module, UInt32 threadId);
+        [DllImport("user32.dll")] public static extern IntPtr CallNextHookEx(IntPtr hhk, CbtHookAction code, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean UnhookWindowsHookEx(IntPtr hhk);
+        [DllImport("oleaut32.dll", CharSet = CharSet.Unicode)] public static extern Int32 VariantClear(ref VARIANT var);
+        [DllImport("oleaut32.dll", CharSet = CharSet.Unicode)] public static extern Int32 VariantChangeType(out Object pvargDest, [In] ref Object pvarSrc, VARIANTFLAGS wFlags, VARTYPE vt);
+        [DllImport("gdi32.dll")] public static extern IntPtr GetStockObject(Int32 fnObject);
 
         public static IntPtr GetStockObject(StockObjects objectID) {
             return GetStockObject((Int32)objectID);
             }
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr CreateWindowEx(Int32 dwExStyle, IntPtr classAtom, String lpWindowName, Int32 dwStyle, Int32 x, Int32 y, Int32 nWidth, Int32 nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr CreateWindowEx(Int32 dwExStyle, String className, String lpWindowName, Int32 dwStyle, Int32 x, Int32 y, Int32 nWidth, Int32 nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr GetModuleHandle(String moduleName);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        internal static extern Boolean GetFileInformationByHandleEx(IntPtr hFile, UInt32 FileInformationClass, out _FILE_STANDARD_INFO lpFileInformation, UInt32 dwBufferSize);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern Boolean GetFileInformationByHandleEx(IntPtr hFile, UInt32 FileInformationClass, out _FILE_COMPRESSION_INFORMATION lpFileInformation, UInt32 dwBufferSize);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern Boolean GetDiskFreeSpace(String lpRootPathName, out UInt32 lpSectorsPerCluster, out UInt32 lpBytesPerSector, out UInt32 lpNumberOfFreeClusters, out UInt32 lpTotalNumberOfClusters);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern Boolean GetVolumeInformation(String RootPathName, StringBuilder VolumeNameBuffer, Int32 VolumeNameSize, out UInt32 VolumeSerialNumber, out UInt32 MaximumComponentLength, out FileSystemFeature FileSystemFlags, StringBuilder FileSystemNameBuffer, Int32 nFileSystemNameSize);
-
-        [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern Boolean DeviceIoControl(IntPtr hDevice, Int32 dwIoControlCode, ref Int16 InBuffer, Int32 nInBufferSize, IntPtr OutBuffer, Int32 nOutBufferSize, ref Int32 pBytesReturned, IntPtr lpOverlapped);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean TranslateMessage([In] ref MSG lpMsg);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean PeekMessage(out MSG lpMsg, IntPtr hWnd, UInt32 wMsgFilterMin, UInt32 wMsgFilterMax, UInt32 wRemoveMsg);
-
-        [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateSolidBrush(Int32 colorref);
-
-        [DllImport("gdi32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean DeleteObject(IntPtr hObject);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr CreateWindowEx(Int32 dwExStyle, IntPtr classAtom, String lpWindowName, Int32 dwStyle, Int32 x, Int32 y, Int32 nWidth, Int32 nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr CreateWindowEx(Int32 dwExStyle, String className, String lpWindowName, Int32 dwStyle, Int32 x, Int32 y, Int32 nWidth, Int32 nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr GetModuleHandle(String moduleName);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] internal static extern Boolean GetFileInformationByHandleEx(IntPtr hFile, UInt32 FileInformationClass, out _FILE_STANDARD_INFO lpFileInformation, UInt32 dwBufferSize);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Boolean GetFileInformationByHandleEx(IntPtr hFile, UInt32 FileInformationClass, out _FILE_COMPRESSION_INFORMATION lpFileInformation, UInt32 dwBufferSize);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Boolean GetDiskFreeSpace(String lpRootPathName, out UInt32 lpSectorsPerCluster, out UInt32 lpBytesPerSector, out UInt32 lpNumberOfFreeClusters, out UInt32 lpTotalNumberOfClusters);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Boolean GetVolumeInformation(String RootPathName, StringBuilder VolumeNameBuffer, Int32 VolumeNameSize, out UInt32 VolumeSerialNumber, out UInt32 MaximumComponentLength, out FileSystemFeature FileSystemFlags, StringBuilder FileSystemNameBuffer, Int32 nFileSystemNameSize);
+        [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern Boolean DeviceIoControl(IntPtr hDevice, Int32 dwIoControlCode, ref Int16 InBuffer, Int32 nInBufferSize, IntPtr OutBuffer, Int32 nOutBufferSize, ref Int32 pBytesReturned, IntPtr lpOverlapped);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean TranslateMessage([In] ref MSG lpMsg);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean PeekMessage(out MSG lpMsg, IntPtr hWnd, UInt32 wMsgFilterMin, UInt32 wMsgFilterMax, UInt32 wRemoveMsg);
+        [DllImport("gdi32.dll")] public static extern IntPtr CreateSolidBrush(Int32 colorref);
+        [DllImport("gdi32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean DeleteObject(IntPtr hObject);
 
         public static Boolean DeleteObject(HandleRef hObject) {
             return DeleteObject(hObject.Handle);
             }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean ShowWindow(IntPtr hwnd, Int32 code);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean MoveWindow(IntPtr hwnd, Int32 x, Int32 y, Int32 width, Int32 height, [MarshalAs(UnmanagedType.Bool)] Boolean repaint);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean DestroyWindow(IntPtr hwnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean UnregisterClass(IntPtr classAtom, IntPtr hInstance);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDest, ref POINT pptDest, ref Win32SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, UInt32 crKey, [In] ref BLENDFUNCTION pblend, UInt32 dwFlags);
-
-        [DllImport("user32.dll")]
-        public static extern Boolean RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RedrawWindowFlags flags);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr WindowFromPoint(POINT pt);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetAncestor(IntPtr hWnd, Int32 flags);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean FillRect(IntPtr hDC, ref RECT rect, IntPtr hbrush);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetParent(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean SetProp(IntPtr hwnd, String propName, IntPtr value);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetProp(IntPtr hwnd, String propName);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr RemoveProp(IntPtr hwnd, String propName);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SetParent(IntPtr hChild, IntPtr hNewParent);
-
-        [DllImport("Ole32.dll", CharSet = CharSet.Auto)]
-        public static extern Int32 RevokeDragDrop(IntPtr hwnd);
-
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean PathIsNetworkPath(String path);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-        public unsafe static extern Int32 ExtractIconEx(String szFileName, Int32 nIconIndex, IntPtr* phiconLarge, IntPtr* phiconSmall, Int32 nIcons);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean ShowWindow(IntPtr hwnd, Int32 code);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean MoveWindow(IntPtr hwnd, Int32 x, Int32 y, Int32 width, Int32 height, [MarshalAs(UnmanagedType.Bool)] Boolean repaint);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean DestroyWindow(IntPtr hwnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean UnregisterClass(IntPtr classAtom, IntPtr hInstance);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDest, ref POINT pptDest, ref Win32SIZE psize, IntPtr hdcSrc, ref POINT pptSrc, UInt32 crKey, [In] ref BLENDFUNCTION pblend, UInt32 dwFlags);
+        [DllImport("user32.dll")] public static extern Boolean RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, RedrawWindowFlags flags);
+        [DllImport("user32.dll")] public static extern IntPtr WindowFromPoint(POINT pt);
+        [DllImport("user32.dll")] public static extern IntPtr GetAncestor(IntPtr hWnd, Int32 flags);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean FillRect(IntPtr hDC, ref RECT rect, IntPtr hbrush);
+        [DllImport("user32.dll")]public static extern IntPtr GetParent(IntPtr hWnd);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean SetProp(IntPtr hwnd, String propName, IntPtr value);
+        [DllImport("user32.dll")] public static extern IntPtr GetProp(IntPtr hwnd, String propName);
+        [DllImport("user32.dll")] public static extern IntPtr RemoveProp(IntPtr hwnd, String propName);
+        [DllImport("user32.dll")] public static extern IntPtr SetParent(IntPtr hChild, IntPtr hNewParent);
+        [DllImport("Ole32.dll", CharSet = CharSet.Auto)] public static extern Int32 RevokeDragDrop(IntPtr hwnd);
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean PathIsNetworkPath(String path);
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)] public unsafe static extern Int32 ExtractIconEx(String szFileName, Int32 nIconIndex, IntPtr* phiconLarge, IntPtr* phiconSmall, Int32 nIcons);
 
         public unsafe static SafeIcon ExtractIcon(String filename, Int32 index, Boolean large) {
             IntPtr* ptr = stackalloc IntPtr[1];
@@ -1370,89 +1080,35 @@ namespace BinaryStudio.PlatformUI
             return new SafeIcon(*ptr, true);
             }
 
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(String pszPath, UInt32 dwFileAttributes, ref SHFILEINFO psfi, UInt32 cbFileInfo, SHGFI uFlags);
-
-        [DllImport("shell32.dll")]
-        private static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] String pv);
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr SHGetFileInfo(String pszPath, UInt32 dwFileAttributes, ref SHFILEINFO psfi, UInt32 cbFileInfo, SHGFI uFlags);
+        [DllImport("shell32.dll")] private static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] String pv);
 
         internal static void SHAddToRecentDocs(String path) {
             SHAddToRecentDocs(SHARD.PATHW, path);
             }
 
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern Boolean DestroyIcon(IntPtr hIcon);
-
-        [DllImport("user32.dll")]
-        public static extern Boolean GetIconInfo(IntPtr hIcon, out ICONINFO piconinfo);
-
-        [DllImport("comctl32.dll")]
-        internal static extern IntPtr ImageList_Create(Int32 cx, Int32 cy, ILC flags, Int32 cInitial, Int32 cGrow);
-
-        [DllImport("comctl32.dll")]
-        internal static extern IntPtr ImageList_Destroy(IntPtr himl);
-
-        [DllImport("comctl32.dll")]
-        internal static extern Int32 ImageList_Add(IntPtr himl, IntPtr hbmImage, IntPtr hbmMask);
-
-        [DllImport("comctl32.dll")]
-        internal static extern Int32 ImageList_GetImageCount(IntPtr himl);
-
-        [DllImport("comctl32.dll")]
-        internal static extern IntPtr ImageList_GetIcon(IntPtr himl, Int32 i, UInt32 flags);
-
-        [DllImport("comctl32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean ImageList_GetIconSize(IntPtr himl, out Int32 cx, out Int32 cy);
-
-        [DllImport("comctl32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean ImageList_GetImageInfo(IntPtr himl, Int32 i, out IMAGEINFO pImageInfo);
-
-        [DllImport("comctl32.dll")]
-        internal static extern Int32 ImageList_GetBkColor(IntPtr himl);
-
-        [DllImport("gdi32.dll")]
-        internal static extern Int32 GetObject(IntPtr hGdiObj, Int32 cbBuffer, IntPtr lpvObject);
-
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern Int32 GetObject(IntPtr hGdiObj, Int32 cbBuffer, [In, Out] BITMAP bm);
-
-        [DllImport("gdi32.dll")]
-        internal static extern GdiObjectType GetObjectType(IntPtr hGdiObj);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, EnumMonitorsDelegate lpfnEnum, IntPtr dwData);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean IntersectRect(out RECT lprcDst, [In] ref RECT lprcSrc1, [In] ref RECT lprcSrc2);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean PtInRect([In] ref RECT lprc, POINT pt);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO monitorInfo);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr CreateIconFromResourceEx([In] Byte[] pbIconBits, Int32 cbIconBits, Boolean fIcon, Int32 dwVersion, Int32 cxDesired, Int32 cyDesired, Int32 flags);
-
-        [DllImport("oleaut32.dll", CharSet = CharSet.Ansi)]
-        internal static extern Int32 OleCreatePictureIndirect(ref PictDescBitmap pictdesc, ref Guid iid, Boolean fOwn, [MarshalAs(UnmanagedType.Interface)] out Object ppVoid);
-
-        [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
-        internal static extern void CopyMemory(IntPtr Destination, IntPtr Source, UInt32 Length);
-
-        [DllImport("gdi32.dll", SetLastError = true)]
-        internal static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFO pbmi, UInt32 iUsage, out IntPtr ppvBits, IntPtr hSection, UInt32 dwOffset);
-
-        [DllImport("msimg32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean AlphaBlend(IntPtr hdcDest, Int32 xoriginDest, Int32 yoriginDest, Int32 wDest, Int32 hDest, IntPtr hdcSrc, Int32 xoriginSrc, Int32 yoriginSrc, Int32 wSrc, Int32 hSrc, BLENDFUNCTION pfn);
+        [DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern Boolean DestroyIcon(IntPtr hIcon);
+        [DllImport("user32.dll")] public static extern Boolean GetIconInfo(IntPtr hIcon, out ICONINFO piconinfo);
+        [DllImport("comctl32.dll")] internal static extern IntPtr ImageList_Create(Int32 cx, Int32 cy, ILC flags, Int32 cInitial, Int32 cGrow);
+        [DllImport("comctl32.dll")] internal static extern IntPtr ImageList_Destroy(IntPtr himl);
+        [DllImport("comctl32.dll")] internal static extern Int32 ImageList_Add(IntPtr himl, IntPtr hbmImage, IntPtr hbmMask);
+        [DllImport("comctl32.dll")] internal static extern Int32 ImageList_GetImageCount(IntPtr himl);
+        [DllImport("comctl32.dll")] internal static extern IntPtr ImageList_GetIcon(IntPtr himl, Int32 i, UInt32 flags);
+        [DllImport("comctl32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean ImageList_GetIconSize(IntPtr himl, out Int32 cx, out Int32 cy);
+        [DllImport("comctl32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean ImageList_GetImageInfo(IntPtr himl, Int32 i, out IMAGEINFO pImageInfo);
+        [DllImport("comctl32.dll")] internal static extern Int32 ImageList_GetBkColor(IntPtr himl);
+        [DllImport("gdi32.dll")] internal static extern Int32 GetObject(IntPtr hGdiObj, Int32 cbBuffer, IntPtr lpvObject);
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)] internal static extern Int32 GetObject(IntPtr hGdiObj, Int32 cbBuffer, [In, Out] BITMAP bm);
+        [DllImport("gdi32.dll")] internal static extern GdiObjectType GetObjectType(IntPtr hGdiObj);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, EnumMonitorsDelegate lpfnEnum, IntPtr dwData);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean IntersectRect(out RECT lprcDst, [In] ref RECT lprcSrc1, [In] ref RECT lprcSrc2);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean PtInRect([In] ref RECT lprc, POINT pt);
+        [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO monitorInfo);
+        [DllImport("user32.dll")] internal static extern IntPtr CreateIconFromResourceEx([In] Byte[] pbIconBits, Int32 cbIconBits, Boolean fIcon, Int32 dwVersion, Int32 cxDesired, Int32 cyDesired, Int32 flags);
+        [DllImport("oleaut32.dll", CharSet = CharSet.Ansi)] internal static extern Int32 OleCreatePictureIndirect(ref PictDescBitmap pictdesc, ref Guid iid, Boolean fOwn, [MarshalAs(UnmanagedType.Interface)] out Object ppVoid);
+        [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")] internal static extern void CopyMemory(IntPtr Destination, IntPtr Source, UInt32 Length);
+        [DllImport("gdi32.dll", SetLastError = true)] internal static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFO pbmi, UInt32 iUsage, out IntPtr ppvBits, IntPtr hSection, UInt32 dwOffset);
+        [DllImport("msimg32.dll")][return: MarshalAs(UnmanagedType.Bool)] internal static extern Boolean AlphaBlend(IntPtr hdcDest, Int32 xoriginDest, Int32 yoriginDest, Int32 wDest, Int32 hDest, IntPtr hdcSrc, Int32 xoriginSrc, Int32 yoriginSrc, Int32 wSrc, Int32 hSrc, BLENDFUNCTION pfn);
 
         private static WINDOWPOS LParamToWindowPos(IntPtr lParam) {
             var structure = new WINDOWPOS();
@@ -1477,29 +1133,15 @@ namespace BinaryStudio.PlatformUI
             return (Int32)wParam & 65520;
             }
 
-        [DllImport("user32.dll")]
-        internal static extern Boolean IsDialogMessage(IntPtr hDlg, [In] ref MSG lpMsg);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr GetNextDlgTabItem(IntPtr hDlg, IntPtr hCtl, Boolean bPrevious);
-
-        [DllImport("user32.dll")]
-        internal static extern IntPtr GetTopWindow(IntPtr parent);
-
-        [DllImport("kernel32.dll")]
-        internal static extern IntPtr GetCurrentThread();
-
-        [DllImport("kernel32.dll")]
-        internal static extern Boolean SetThreadPriority(IntPtr hThread, ThreadPriority nPriority);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern UInt32 GetPrivateProfileString(String section, String key, String defaultValue, [Out] StringBuilder buffer, UInt32 bufferCharLength, String path);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern Int32 GetPrivateProfileInt(String section, String key, Int32 defaultValue, String path);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern Int32 WritePrivateProfileString(String section, String key, String value, String path);
+        [DllImport("user32.dll")] internal static extern Boolean IsDialogMessage(IntPtr hDlg, [In] ref MSG lpMsg);
+        [DllImport("user32.dll")] internal static extern IntPtr GetNextDlgTabItem(IntPtr hDlg, IntPtr hCtl, Boolean bPrevious);
+        [DllImport("user32.dll")] internal static extern IntPtr GetTopWindow(IntPtr parent);
+        [DllImport("kernel32.dll")] internal static extern IntPtr GetCurrentThread();
+        [DllImport("kernel32.dll")] internal static extern Boolean SetThreadPriority(IntPtr hThread, ThreadPriority nPriority);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern UInt32 GetPrivateProfileString(String section, String key, String defaultValue, [Out] StringBuilder buffer, UInt32 bufferCharLength, String path);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Int32 GetPrivateProfileInt(String section, String key, Int32 defaultValue, String path);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Int32 WritePrivateProfileString(String section, String key, String value, String path);
+        [DllImport("uxtheme.dll", CharSet = CharSet.Auto)] public static extern HRESULT SetWindowTheme(IntPtr hWnd, string subAppName, string subIdList);
 
         [Flags]
         public enum LoadLibraryFlags : uint

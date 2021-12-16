@@ -6,5 +6,6 @@ namespace BinaryStudio.Diagnostics.Logging
         {
         Boolean IsEnabled(LogLevel loglevel);
         void Log(LogLevel loglevel, String message);
+        void Log(LogLevel loglevel, String format, params Object[] args);
         }
     }

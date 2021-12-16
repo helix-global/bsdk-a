@@ -1,6 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
-using BinaryStudio.IO;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -13,9 +14,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
      * MessageDigest ::= OCTET STRING
      */
     [CmsSpecific("1.2.840.113549.1.9.4")]
+    [TypeConverter(typeof(ObjectTypeConverter))]
+    [DefaultProperty(nameof(MessageDigest))]
     public class CmsMessageDigestAttribute : CmsAttribute
         {
-        public Byte[] MessageDigest { get; }
+        [TypeConverter(typeof(CmsMessageDigestTypeConverter))] public Byte[] MessageDigest { get; }
+        [Browsable(false)] public override Object Value { get { return base.Value; }}
+
         protected CmsMessageDigestAttribute(CmsAttribute o)
             : base(o)
             {

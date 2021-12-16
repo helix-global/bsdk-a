@@ -15,8 +15,7 @@ namespace BinaryStudio.PlatformUI.Controls
         #region P:SelectedObject:Object
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register("SelectedObject", typeof(Object), typeof(PropertyGridControl), new PropertyMetadata(default(Object), OnSelectedObjectChanged));
         private static void OnSelectedObjectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = sender as PropertyGridControl;
-            if (source != null)
+            if (sender is PropertyGridControl source)
                 {
                 source.OnSelectedObjectChanged();
                 }
@@ -31,7 +30,7 @@ namespace BinaryStudio.PlatformUI.Controls
             }
 
         public Object SelectedObject {
-            get { return (Object)GetValue(SelectedObjectProperty); }
+            get { return GetValue(SelectedObjectProperty); }
             set { SetValue(SelectedObjectProperty, value); }
             }
         #endregion
@@ -88,8 +87,7 @@ namespace BinaryStudio.PlatformUI.Controls
         private static readonly DependencyPropertyKey SelectedValuePropertyKey = DependencyProperty.RegisterReadOnly("SelectedValue", typeof(Object), typeof(PropertyGridControl), new PropertyMetadata(default(Object), OnSelectedValueChanged));
         public static readonly DependencyProperty SelectedValueProperty = SelectedValuePropertyKey.DependencyProperty;
         private static void OnSelectedValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as PropertyGridControl);
-            if (source != null) {
+            if (sender is PropertyGridControl source) {
                 source.OnSelectedValueChanged();
                 }
             }
@@ -103,7 +101,7 @@ namespace BinaryStudio.PlatformUI.Controls
 
         public Object SelectedValue
             {
-            get { return (Object)GetValue(SelectedValueProperty); }
+            get { return GetValue(SelectedValueProperty); }
             internal set { SetValue(SelectedValuePropertyKey, value); }
             }
         #endregion

@@ -11,4 +11,5 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Controls")]
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Controls.Primitives")]
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Shell.Controls")]
+[assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Media.Effects")]
 [assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography")]

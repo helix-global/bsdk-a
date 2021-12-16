@@ -943,7 +943,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 #if NET40
                 oid = new Oid(Marshal.PtrToStringAnsi(pi.Algorithm.ObjectId));
                 publickey = new PublicKey(oid,
-                    new AsnEncodedData(oid, Source.PublicKeyParameters),
+                    new AsnEncodedData(oid, pk),
                     new AsnEncodedData(oid, pk));
                 #else
                 oid = Oid.FromOidValue(

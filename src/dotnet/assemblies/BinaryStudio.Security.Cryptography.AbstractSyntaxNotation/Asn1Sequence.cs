@@ -3,13 +3,19 @@ using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1Sequence : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="SEQUENCE"/> type.
+    /// </summary>
+    public sealed class Asn1Sequence : Asn1UniversalObject
         {
-        public Asn1Sequence(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Sequence(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }
 
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.Sequence"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Sequence; }}
         }
     }

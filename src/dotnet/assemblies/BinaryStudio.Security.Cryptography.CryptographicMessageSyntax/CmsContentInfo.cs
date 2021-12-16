@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
@@ -8,6 +9,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     /// data structure as defined in the CMS standards document.<br/>This data
     /// structure is the basis for all CMS messages.
     /// </summary>
+    [TypeConverter(typeof(CmsContentInfoTypeConverter))]
     public abstract class CmsContentInfo : CmsObject
         {
         /// <summary>

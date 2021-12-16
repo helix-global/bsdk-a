@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
+    [TypeConverter(typeof(ObjectTypeConverter))]
     public abstract class CmsObject : Asn1LinkObject
         {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Length { get { return base.Length; }}
@@ -19,7 +22,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1ObjectClass Class { get { return base.Class; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override ReadOnlyMappingStream Content { get { return base.Content; }}
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Byte[] Body { get { return base.Body; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public override Byte[] Body { get { return base.Body; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         protected internal override ObjectState State
             {
@@ -27,7 +30,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             set { base.State = value; }
             }
 
-        public CmsObject(Asn1Object source)
+        protected CmsObject(Asn1Object source)
             : base(source)
             {
             }

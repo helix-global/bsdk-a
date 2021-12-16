@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -9,8 +10,14 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// Represents a <see langword="OBJECT IDENTIFIER"/> type.
+    /// </summary>
     public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>
         {
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.ObjectIdentifier"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.ObjectIdentifier; }}
         public Int64[] Sequence { get;private set; }
 
@@ -19,10 +26,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             var r = OID.ResourceManager.GetString(value, PlatformSettings.DefaultCulture);
             return (!String.IsNullOrWhiteSpace(r))
                     ? r
-                    : value;
+                    : (new Oid(value)).FriendlyName;
             }}
 
-        public Asn1ObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1ObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }
@@ -154,6 +161,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (Offset >= 0) { WriteValue(writer, serializer, nameof(Offset), Offset); }
             WriteValue(writer, serializer, "Value", ToString());
             writer.WriteEndObject();
+            }
+
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="service">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
+        /// <filterpriority>2</filterpriority>
+        public override Object GetService(Type service)
+            {
+            if (service == typeof(Asn1ObjectIdentifier)) { return this; }
+            return base.GetService(service);
             }
         }
     }

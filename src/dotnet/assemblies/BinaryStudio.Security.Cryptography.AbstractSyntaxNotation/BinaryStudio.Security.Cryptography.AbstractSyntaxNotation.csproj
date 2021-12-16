@@ -3,6 +3,10 @@
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>FEATURE_MULTI_THREAD_PROCESSING</DefineConstants>
+    <DocumentationFile>BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
@@ -24,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\OID.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OID.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">

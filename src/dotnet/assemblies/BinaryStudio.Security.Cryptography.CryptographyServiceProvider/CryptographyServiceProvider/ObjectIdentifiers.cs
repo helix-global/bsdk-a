@@ -186,6 +186,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public const String szOID_NIST_sha256                                                                  = "2.16.840.1.101.3.4.2.1";
         public const String szOID_NIST_sha384                                                                  = "2.16.840.1.101.3.4.2.2";
         public const String szOID_NIST_sha512                                                                  = "2.16.840.1.101.3.4.2.3";
+        public const String szOID_NIST_sha224                                                                  = "2.16.840.1.101.3.4.2.4";
         public const String szOID_CP_GOST_PRIVATE_KEYS_V1                                                      = "1.2.643.2.2.37.1";
         public const String szOID_CP_GOST_PRIVATE_KEYS_V2                                                      = "1.2.643.2.2.37.2";
         public const String szOID_CP_GOST_PRIVATE_KEYS_V2_FULL                                                 = "1.2.643.2.2.37.2.1";

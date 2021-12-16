@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="35d15c0fc3ec41b08a44bf6cf44edea4" Name="Diagram1">
+        <EntityTypeShape EntityType="InterchangeModel.DAlternativeName" Width="1.5" PointX="8.25" PointY="7.375" />
+        <EntityTypeShape EntityType="InterchangeModel.DAuthorityKeyIdentifier" Width="1.5" PointX="8.25" PointY="10.125" />
+        <EntityTypeShape EntityType="InterchangeModel.DCertificate" Width="1.5" PointX="6" PointY="9.75" />
+        <EntityTypeShape EntityType="InterchangeModel.DCertificateRevocationList" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="InterchangeModel.DExtension" Width="1.5" PointX="3" PointY="9.75" />
+        <EntityTypeShape EntityType="InterchangeModel.DGeneralName" Width="1.5" PointX="1.5" PointY="2.25" />
+        <EntityTypeShape EntityType="InterchangeModel.DIssuerAlternativeName" Width="1.5" PointX="5.25" PointY="19.875" />
+        <EntityTypeShape EntityType="InterchangeModel.DObject" Width="1.5" PointX="0.75" PointY="10.375" />
+        <EntityTypeShape EntityType="InterchangeModel.DObjectIdentifier" Width="1.5" PointX="0.75" PointY="13.375" />
+        <EntityTypeShape EntityType="InterchangeModel.DRelativeDistinguishedName" Width="1.5" PointX="3" PointY="14.25" />
+        <EntityTypeShape EntityType="InterchangeModel.DRelativeDistinguishedNameSequence" Width="1.5" PointX="0.75" PointY="6.25" />
+        <EntityTypeShape EntityType="InterchangeModel.DRelativeDistinguishedNameSequenceMapping" Width="1.5" PointX="8.25" PointY="13.375" />
+        <EntityTypeShape EntityType="InterchangeModel.DString" Width="1.5" PointX="0.75" PointY="16.5" />
+        <EntityTypeShape EntityType="InterchangeModel.DSubjectAlternativeName" Width="1.5" PointX="5.25" PointY="17.625" />
+        <EntityTypeShape EntityType="InterchangeModel.DSubjectKeyIdentifier" Width="1.5" PointX="5.25" PointY="14.375" />
+        <AssociationConnector Association="InterchangeModel.AlternativeName_Extension_FK" />
+        <AssociationConnector Association="InterchangeModel.AlternativeName_GeneralName_FK" />
+        <AssociationConnector Association="InterchangeModel.AuthorityKeyIdentifier_CertificateExtension_FK" />
+        <AssociationConnector Association="InterchangeModel.AuthorityKeyIdentifier_GeneralName_FK" />
+        <AssociationConnector Association="InterchangeModel.Certificate_Object_FK" />
+        <AssociationConnector Association="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK" />
+        <AssociationConnector Association="InterchangeModel.Certificate_RelativeDistinguishedNameSequence_FK1" />
+        <AssociationConnector Association="InterchangeModel.Crl_Object_FK" />
+        <AssociationConnector Association="InterchangeModel.Crl_RelativeDistinguishedNameSequence_FK" />
+        <AssociationConnector Association="InterchangeModel.Extension_Object_FK" />
+        <AssociationConnector Association="InterchangeModel.Extension_ObjectIdentifier_FK" />
+        <AssociationConnector Association="InterchangeModel.IssuerAlternativeName_Extension_FK" />
+        <AssociationConnector Association="InterchangeModel.SubjectAlternativeName_Extension_FK" />
+        <AssociationConnector Association="InterchangeModel.SubjectKeyIdentifier_Extension_FK" />
+        <AssociationConnector Association="InterchangeModel.RelativeDistinguishedNameSequence_GeneralName_FK" />
+        <AssociationConnector Association="InterchangeModel.RelativeDistinguishedName_TObjectIdentifier_FK" />
+        <AssociationConnector Association="InterchangeModel.RelativeDistinguishedName_Strings_FK" />
+        <AssociationConnector Association="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedName_FK" />
+        <AssociationConnector Association="InterchangeModel.RelativeDistinguishedNameSequenceMapping_RelativeDistinguishedNameSequence_FK" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

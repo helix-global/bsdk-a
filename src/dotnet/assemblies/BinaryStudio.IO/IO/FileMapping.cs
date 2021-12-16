@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 using Microsoft.Win32.SafeHandles;
 
 namespace BinaryStudio.IO
@@ -11,6 +10,7 @@ namespace BinaryStudio.IO
     public class FileMapping : IDisposable
         {
         public Int64 Size { get; private set; }
+        public String FileName { get; }
         #if UBUNTU_16_4
         internal SafeHandle Mapping { get;private set; }
         #else
@@ -20,6 +20,7 @@ namespace BinaryStudio.IO
         public FileMapping(String filename)
             {
             if (!File.Exists(filename)) { throw new FileNotFoundException(filename); }
+            FileName = filename;
             var security = new SecurityAttributes();
             try
                 {
@@ -55,13 +56,14 @@ namespace BinaryStudio.IO
             }
 
         #region M:Dispose(Boolean)
-        protected virtual void Dispose(Boolean disposing)
-            {
-            //if (Mapping != null)
-            //    {
-            //    Mapping.Dispose();
-            //    Mapping = null;
-            //    }
+        protected virtual void Dispose(Boolean disposing) {
+            if (disposing) {
+                if (Mapping != null)
+                    {
+                    Mapping.Dispose();
+                    Mapping = null;
+                    }
+                }
             Size = 0;
             }
         #endregion

@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    [TypeConverter(typeof(ObjectTypeConverter))]
+    [DefaultProperty(nameof(SignatureAlgorithm))]
     public class Asn1SignatureAlgorithm : Asn1LinkObject
         {
-        public Asn1ObjectIdentifier SignatureAlgorithm { get; }
-        public virtual Asn1ObjectIdentifier HashAlgorithm { get; }
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public Asn1ObjectIdentifier SignatureAlgorithm { get; }
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public virtual Asn1ObjectIdentifier HashAlgorithm { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal override Boolean IsDecoded { get { return base.IsDecoded; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsFailed  { get { return base.IsFailed;  }}
@@ -31,13 +35,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             HashAlgorithm = GetHashAlgorithm(SignatureAlgorithm.ToString());
             }
 
-        private static readonly ReaderWriterLockSlim syncobject = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim o = new ReaderWriterLockSlim();
         private static readonly IDictionary<String, Type> types = new Dictionary<String, Type>();
         public static Asn1SignatureAlgorithm From(Asn1SignatureAlgorithm source)
             {
             EnsureFactory();
             var key = source.SignatureAlgorithm.ToString();
-            using (ReadLock(syncobject)) {
+            using (ReadLock(o)) {
                 if (types.TryGetValue(key, out Type type)) {
                     var ctor = type.GetConstructor(
                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, CallingConventions.Any,
@@ -51,9 +55,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         private static void EnsureFactory() {
-            using (UpgradeableReadLock(syncobject)) {
+            using (UpgradeableReadLock(o)) {
                 if (types.Count == 0) {
-                    using (WriteLock(syncobject)) {
+                    using (WriteLock(o)) {
                         foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(Asn1SignatureAlgorithm)))) {
                             var attribute = (Asn1SpecificObjectAttribute)type.GetCustomAttributes(typeof(Asn1SpecificObjectAttribute), false).FirstOrDefault();
                             if (attribute != null) {

@@ -4,13 +4,19 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    internal class Asn1Null : Asn1UniversalObject
+    /// <summary>
+    /// Represents a <see langword="NULL"/> type.
+    /// </summary>
+    public sealed class Asn1Null : Asn1UniversalObject
         {
-        public Asn1Null(ReadOnlyMappingStream source, Int64 forceoffset)
+        internal Asn1Null(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
             {
             }
 
+        /// <summary>
+        /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.Null"/>.
+        /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Null; }}
 
         protected override void WriteJsonOverride(JsonWriter writer, JsonSerializer serializer)

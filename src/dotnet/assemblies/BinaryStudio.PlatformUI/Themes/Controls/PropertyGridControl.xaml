@@ -63,7 +63,7 @@
              CaretBrush="{DynamicResource ControlTextBrushKey}"
              IsReadOnlyCaretVisible="True"
              IsReadOnly="{Binding IsReadOnly}"
-             Margin="-2,0,0,0"/>
+             Margin="-2,0,0,1"/>
     <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
         <Setter TargetName="TextBox" Property="Foreground" Value="{DynamicResource GrayTextBrushKey}"/>
@@ -409,7 +409,19 @@
                                                                Margin="5,0,5,0">
                                         <e:GridEntryContentPresenter.DisplayTemplate>
                                           <DataTemplate DataType="{x:Type e:GridEntry}">
-                                            <TextBlock Text="{Binding GridValue}" TextWrapping="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}},Path=(u:TextBox.TextWrapping),Mode=OneWay}"/>
+                                              <TextBlock TextWrapping="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}},Path=(u:TextBox.TextWrapping),Mode=OneWay}">
+                                                <Run Text="{Binding GridValue,Mode=OneWay}"/>
+                                                <InlineUIContainer BaselineAlignment="Center">
+                                                  <Grid VerticalAlignment="Center">
+                                                    <Grid.RowDefinitions>
+                                                      <RowDefinition Height="Auto"/>
+                                                      <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Margin="0,0,0,-3" Padding="0" Grid.Row="0" FontSize="7" Text="{Binding Superscript,Mode=OneWay}"/>
+                                                    <TextBlock Margin="0,-1,0,0" Padding="0" Grid.Row="1" FontSize="7" Text="{Binding Subscript,Mode=OneWay}"/>
+                                                  </Grid>
+                                                </InlineUIContainer>
+                                              </TextBlock>
                                           </DataTemplate>
                                         </e:GridEntryContentPresenter.DisplayTemplate>
                                       </e:GridEntryContentPresenter>
