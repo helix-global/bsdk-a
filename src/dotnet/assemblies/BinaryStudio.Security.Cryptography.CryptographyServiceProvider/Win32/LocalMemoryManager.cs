@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.Win32
     {

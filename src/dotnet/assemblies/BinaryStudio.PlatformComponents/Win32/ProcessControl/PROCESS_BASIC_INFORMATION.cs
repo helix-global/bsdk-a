@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace BinaryStudio.PlatformComponents.Win32.ProcessControl
+namespace BinaryStudio.PlatformComponents.Win32
     {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
     public struct PROCESS_BASIC_INFORMATION
         {
         public readonly NTSTATUS ExitStatus;
-        public readonly IntPtr PebBaseAddress;
-        public readonly UIntPtr AffinityMask;
-        public readonly IntPtr BasePriority;
-        public readonly UIntPtr UniqueProcessId;
-        public readonly UIntPtr InheritedFromUniqueProcessId;
+        public readonly IntPtr   PebBaseAddress;
+        public readonly IntPtr   AffinityMask;
+        public readonly IntPtr   BasePriority;
+        public readonly IntPtr   UniqueProcessId;
+        public readonly IntPtr   InheritedFromUniqueProcessId;
         }
     }

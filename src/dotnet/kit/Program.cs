@@ -14,7 +14,6 @@ using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.PlatformComponents.Win32.ProcessControl;
 using log4net;
 using Newtonsoft.Json;
 using Options;
@@ -218,14 +217,16 @@ namespace Kit
         //    }
 
         [MTAThread]
-        internal static unsafe void Main(String[] args) {
+        internal static void Main(String[] args) {
             logger.Log(LogLevel.Trace, $">Main({String.Join(" ", args)})");
             try
                 {
-                logger.Log(LogLevel.Debug, $"PEB_LDR_DATA:{sizeof(PEB32_LDR_DATA)}:{sizeof(PEB64_LDR_DATA)}");
-                return;
+                var parentprocess = ProcessHelper.GetParentProcessIdentifier();
+                var processname = ProcessHelper.GetProcessName(parentprocess);
                 Int32 exitcode;
-                using (var client = new LocalClient())
+                using (var client = (String.Equals(processname, "services.exe", StringComparison.OrdinalIgnoreCase)
+                        ? (ILocalClient)(new LocalService())
+                        : (ILocalClient)(new LocalClient())))
                     {
                     exitcode = client.Main(args);
                     }
@@ -233,7 +234,7 @@ namespace Kit
                 }
             catch (Exception e)
                 {
-                logger.Log(LogLevel.Error, $"{e}");
+                logger.Log(LogLevel.Error, $"{Utilities.FormatException(e)}");
                 Environment.ExitCode = -1;
                 }
             finally
@@ -329,5 +330,6 @@ namespace Kit
         private const Int32 ProcessWow64Information = 26;
         private const Int32 ProcessImageFileName = 27;
         private const Int32 ProcessBreakOnTermination = 29;
+        private const Int32 PROCESS_QUERY_INFORMATION          = 0x0400;
         }
     }

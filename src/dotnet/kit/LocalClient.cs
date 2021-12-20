@@ -81,7 +81,7 @@ public class LocalClient : ILocalClient
             while (service == null) {
                 var installer = new ServiceInstaller();
                 var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                installer.InstallService(Path.Combine(dir, "srv.exe"), "{kit}", "{kit}");
+                installer.InstallService(Path.Combine(dir, "kit.exe"), "{kit}", "{kit}");
                 service = sc.OpenService("{kit}");
                 }
             if (service.CurrentState != SERVICE_STATE.SERVICE_RUNNING) {

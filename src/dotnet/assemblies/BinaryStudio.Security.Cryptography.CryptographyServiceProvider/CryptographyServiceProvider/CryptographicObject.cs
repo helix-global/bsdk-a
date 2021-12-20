@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.Win32;
 using Microsoft.Win32;
 

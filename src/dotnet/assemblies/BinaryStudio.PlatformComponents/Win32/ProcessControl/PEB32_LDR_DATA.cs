@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BinaryStudio.PlatformComponents.Win32.ProcessControl
+namespace BinaryStudio.PlatformComponents.Win32
     {
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
     public struct PEB32_LDR_DATA

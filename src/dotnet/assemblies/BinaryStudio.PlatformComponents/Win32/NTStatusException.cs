@@ -5,10 +5,17 @@ namespace BinaryStudio.PlatformComponents.Win32
     {
     public class NTStatusException : Exception
         {
+        public NTSTATUS Status { get; }
         public override String Message { get; }
+
         public NTStatusException(NTSTATUS status)
             {
-            Message = FormatMessage((Int32)status);
+            Status = status;
+            #if DEBUG
+            Message = $"{FormatMessage((Int32)status)?.TrimEnd('\n', '\r')} [{status}]";
+            #else
+            Message = FormatMessage((Int32)status)?.TrimEnd('\n', '\r');
+            #endif
             }
 
         static NTStatusException()
