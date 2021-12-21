@@ -407,7 +407,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 throw new ArgumentOutOfRangeException(
                     paramName: nameof(flags),
                     message: String.Format(
-                        PlatformSettings.DefaultCulture,
+                        PlatformContext.DefaultCulture,
                         Resources.Cryptography_InvalidFlagCombination,
                             nameof(CryptographicMessageFlags.Attached) + "," +
                             nameof(CryptographicMessageFlags.Detached)));
@@ -1282,12 +1282,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public static String GetOidFriendlyName(String oid) {
-            return GetOidFriendlyName(oid, PlatformSettings.DefaultCulture);
+            return GetOidFriendlyName(oid, PlatformContext.DefaultCulture);
             }
 
         public static unsafe String GetOidFriendlyName(String oid, CultureInfo culture) {
             #if !UBUNTU
-            var lcid = (UInt16)(culture ?? PlatformSettings.DefaultCulture).LCID;
+            var lcid = (UInt16)(culture ?? PlatformContext.DefaultCulture).LCID;
             SetThreadUILanguage(lcid);
             #endif
             var r = CryptFindOIDInfo(CRYPT_OID_INFO_TYPE.CRYPT_OID_INFO_OID_KEY, Marshal.StringToHGlobalAnsi(oid), 0);

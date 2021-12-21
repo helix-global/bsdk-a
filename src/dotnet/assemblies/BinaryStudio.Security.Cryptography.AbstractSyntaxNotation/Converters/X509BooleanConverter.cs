@@ -53,7 +53,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
             }
 
         public static String ToString(Boolean value) {
-            return ToString(value, PlatformSettings.DefaultCulture);
+            return ToString(value, PlatformContext.DefaultCulture);
             }
 
         #if FEATURE_WPF_VALUE_CONVERTER

@@ -20,7 +20,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
          * */
         public override String DisplayName { get {
             #if DEBUG
-            var r = Resources.ResourceManager.GetString(Key, PlatformSettings.DefaultCulture);
+            var r = Resources.ResourceManager.GetString(Key, PlatformContext.DefaultCulture);
             Debug.Assert(!String.IsNullOrWhiteSpace(r));
             return r;
             #else

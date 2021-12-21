@@ -8,7 +8,6 @@ namespace Options
         CSP      =  1,
         CSPtypes =  2,
         CSPkeys  =  4,
-        CSPalgs  =  8,
-        CSPsrv   = 16
+        CSPalgs  =  8
         }
     }

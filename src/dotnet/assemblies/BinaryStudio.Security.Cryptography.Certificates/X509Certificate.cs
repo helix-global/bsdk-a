@@ -417,7 +417,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (NotAfter < datetime)
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformSettings.DefaultCulture)));
+                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformContext.DefaultCulture)));
                 }
             }
         #endregion
@@ -426,7 +426,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (datetime < NotBefore)
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformSettings.DefaultCulture)));
+                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformContext.DefaultCulture)));
                 }
             }
         #endregion
@@ -503,7 +503,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     }
                 if (status != CertificateChainErrorStatus.CERT_TRUST_NO_ERROR)
                     {
-                    target.UnionWith(GetExceptionForChainErrorStatus(chaincontext->TrustStatus.ErrorStatus, PlatformSettings.DefaultCulture));
+                    target.UnionWith(GetExceptionForChainErrorStatus(chaincontext->TrustStatus.ErrorStatus, PlatformContext.DefaultCulture));
                     }
                 }
             finally

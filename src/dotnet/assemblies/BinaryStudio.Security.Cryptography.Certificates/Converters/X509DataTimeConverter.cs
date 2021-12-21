@@ -65,7 +65,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Converters
             {
             if (value == null) { return null; }
             return (targetType == typeof(String))
-                ? ToString(value, PlatformSettings.DefaultCulture, (parameter ?? "dd.MM.yyyy HH:mm:ss").ToString())
+                ? ToString(value, PlatformContext.DefaultCulture, (parameter ?? "dd.MM.yyyy HH:mm:ss").ToString())
                 : value;
             }
         #endregion

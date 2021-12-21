@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
@@ -31,7 +32,6 @@ namespace Operations
                 if (flags.HasValue("types")) { Flags |= InfrastructureFlags.CSPtypes; }
                 if (flags.HasValue("keys"))  { Flags |= InfrastructureFlags.CSPkeys;  }
                 if (flags.HasValue("algs"))  { Flags |= InfrastructureFlags.CSPalgs;  }
-                if (flags.HasValue("srv"))   { Flags |= InfrastructureFlags.CSPsrv;   }
                 }
             if (Flags == 0)
                 {
@@ -116,7 +116,7 @@ namespace Operations
                         j++;
                         }
                     }
-                if (Flags.HasFlag(InfrastructureFlags.CSPsrv)) {
+                if (PlatformContext.IsRemoteSession) {
                     Execute(LocalClient.CryptographicOperations, (CRYPT_PROVIDER_TYPE)ProviderType.Value);
                     }
                 }

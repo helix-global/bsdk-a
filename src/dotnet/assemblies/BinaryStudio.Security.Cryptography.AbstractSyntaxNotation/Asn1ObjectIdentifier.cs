@@ -23,7 +23,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         public String FriendlyName { get {
             var value = ToString();
-            var r = OID.ResourceManager.GetString(value, PlatformSettings.DefaultCulture);
+            var r = OID.ResourceManager.GetString(value, PlatformContext.DefaultCulture);
             return (!String.IsNullOrWhiteSpace(r))
                     ? r
                     : (new Oid(value)).FriendlyName;

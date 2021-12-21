@@ -13,6 +13,7 @@ using BinaryStudio.PortableExecutable;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using log4net;
 using Newtonsoft.Json;
@@ -22,6 +23,7 @@ using srv;
 using Microsoft.WindowsAPICodePack.Taskbar;
 #endif
 using Formatting = Newtonsoft.Json.Formatting;
+using Process = BinaryStudio.PlatformComponents.Win32.Process;
 
 namespace Kit
     {
@@ -218,15 +220,12 @@ namespace Kit
 
         [MTAThread]
         internal static void Main(String[] args) {
-            logger.Log(LogLevel.Trace, $">Main({String.Join(" ", args)})");
             try
                 {
-                var parentprocess = ProcessHelper.GetParentProcessIdentifier();
-                var processname = ProcessHelper.GetProcessName(parentprocess);
                 Int32 exitcode;
-                using (var client = (String.Equals(processname, "services.exe", StringComparison.OrdinalIgnoreCase)
+                using (var client = PlatformContext.IsRunningUnderServiceControl
                         ? (ILocalClient)(new LocalService())
-                        : (ILocalClient)(new LocalClient())))
+                        : (ILocalClient)(new LocalClient()))
                     {
                     exitcode = client.Main(args);
                     }
@@ -239,8 +238,31 @@ namespace Kit
                 }
             finally
                 {
-                logger.Log(LogLevel.Trace, $"<Main");
                 }
+            }
+
+        private static String JsonSerialize(Object o) {
+            var r = new StringBuilder();
+            using (var output = new StringWriter(r)) {
+                using (var writer = new JsonTextWriter(output){
+                        Formatting = Formatting.Indented,
+                        Indentation = 2,
+                        IndentChar = ' '
+                        })
+                    {
+                    var serializer = new JsonSerializer();
+                    if (o is IJsonSerializable serializable)
+                        {
+                        serializable.WriteJson(writer, serializer);
+                        }
+                    else
+                        {
+                        serializer.Serialize(writer, o);
+                        }
+                    writer.Flush();
+                    }
+                }
+            return r.ToString();
             }
 
         #region M:GetFolderAbsolutePath(String):String
