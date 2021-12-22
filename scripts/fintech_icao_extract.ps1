@@ -2,7 +2,8 @@ using namespace System.Diagnostics
 using namespace System.IO
 using namespace System.Linq
 using namespace BinaryStudio.IO
-using namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
+using namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
 
 param
     (
@@ -33,10 +34,11 @@ Write-Host $InputFileName -ForegroundColor Yellow
 
 Try
     {
-    Internal-Add-Type "BinaryStudio.Security.Cryptography.dll"
     Internal-Add-Type "BinaryStudio.IO.dll"
+    Internal-Add-Type "BinaryStudio.Security.Cryptography.dll"
     Internal-Add-Type "BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.dll"
     Internal-Add-Type "BinaryStudio.Security.Cryptography.Certificates.dll"
+    Internal-Add-Type "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.dll"
     }
 Catch [Exception]
     {
@@ -115,22 +117,17 @@ Try
         ByPass($InputFile.Seek(64, [SeekOrigin]::Current))
         ByPass($InputFile.Seek( 2, [SeekOrigin]::Current))
         ByPass($InputFile.Seek(64, [SeekOrigin]::Current))
-        #[Console]::WriteLine([String]::Format("{{{0}}}:{1}",
-        #    $InputFile.Position.ToString("D8"),
-        #    (Peek($InputFile)).ToString("X2")))
         $I = 0
         $J = $InputFile.Position
-        #Write-Host "$FileId" -ForegroundColor Red
         ForEach($O In [Asn1Object]::Load($InputFile,0)) {
             [Stream]$OutputFile=$null
             [Stream]$InputObjectFile=$null
-            [Stream]$OutputCertificateFile=$null
             $I = $I + 1
             $P = $InputFile.Position
-            $OutputFileName = [String]::Format("efsod{0}+{1}.hex",$StartIndex.ToString("D4"),$FileId)
+            $OutputFileName = [String]::Format("efsod{0}+{1}",$StartIndex.ToString("D4"),$FileId)
             Try
                 {
-                $OutputFile=[File]::OpenWrite([Path]::Combine($OutputFolder,$OutputFileName))
+                $OutputFile=[File]::OpenWrite([Path]::Combine($OutputFolder,$OutputFileName + ".hex"))
                 $O.Write($OutputFile)
                 Write-Info -Offset $J -Message $OutputFileName -ForegroundColor Gray
                 $StartIndex = $StartIndex + 1
@@ -141,11 +138,61 @@ Try
                 }
             Try
                 {
-                $InputObjectFile=[File]::OpenWrite([Path]::Combine($OutputFolder,$OutputFileName))
+                $InputObjectFile=New-Object ReadOnlyFileMappingStream @(,[Path]::Combine($OutputFolder,$OutputFileName + ".hex"))
+                [Asn1Object]$A = [Enumerable]::FirstOrDefault([Asn1Object]::Load($InputObjectFile))
+                If ($A.Count -eq 0)
+                    {
+                    Write-Info -Offset $J -Message "Cannot find PKCS#7" -ForegroundColor Red
+                    Continue
+                    }
+                $A = $A[0]
+                [CmsMessage]$M = New-Object CmsMessage @(,$A)
+                [CmsSignedDataContentInfo]$ContentInfo = $M.ContentInfo -as [CmsSignedDataContentInfo]
+                $Certificates = $ContentInfo.Certificates
+                If ($Certificates.Count -eq 1)
+                    {
+                    [Stream]$OutputCertificateFile=$null
+                    Try
+                        {
+                        $OutputCertificateFile=[File]::OpenWrite([Path]::Combine($OutputFolder,$OutputFileName + ".cer"))
+                        [Enumerable]::FirstOrDefault($Certificates).Write($OutputCertificateFile)
+                        }
+                    Finally
+                        {
+                        Dispose($OutputCertificateFile)
+                        }
+                    }
+                Else
+                    {
+                    $K = 0
+                    ForEach($C In $Certificates) {
+                        [Stream]$OutputCertificateFile=$null
+                        Try
+                            {
+                            $OutputCertificateFile=[File]::OpenWrite([Path]::Combine($OutputFolder,$OutputFileName + "_" + $K + ".cer"))
+                            $C.Write($OutputCertificateFile)
+                            }
+                        Finally
+                            {
+                            Dispose($OutputCertificateFile)
+                            }
+                        $K = $K + 1
+                        }
+                    }
+                $Certificates = $null
+                $ContentInfo = $null
+                $M = $null
+                $A = $null
+                }
+            Catch
+                {
+                Write-Info -Offset $J -Message "Other problem" -ForegroundColor Red
                 }
             Finally
                 {
+                Dispose($InputObjectFile)
                 }
+            [GC]::Collect()
             Try
                 {
                 $InputFile.Position = $P
@@ -158,7 +205,6 @@ Try
             {
             Break;
             }
-        #Break;
         }
     }
 Catch [Exception]
