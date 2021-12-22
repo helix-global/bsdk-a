@@ -60,6 +60,9 @@
     <Compile Include="Installer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <None Include="..\..\..\scripts\fintech_icao_extract.ps1" Link="fintech_icao_extract.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Update="Properties\AssemblyFileVersion.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

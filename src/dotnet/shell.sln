@@ -51,6 +51,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{EE3818D1-4B9C-4CA4-AE2D-A1A5CE761177}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\scripts\crypt_fetch_bd_certificates_1.0.112.ps1 = ..\..\scripts\crypt_fetch_bd_certificates_1.0.112.ps1
+		..\..\scripts\fintech_icao_extract.ps1 = ..\..\scripts\fintech_icao_extract.ps1
 		..\..\scripts\xmldoc-en.xslt = ..\..\scripts\xmldoc-en.xslt
 		..\..\scripts\xmldoc-ru.xslt = ..\..\scripts\xmldoc-ru.xslt
 	EndProjectSection

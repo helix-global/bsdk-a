@@ -1031,7 +1031,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return Load(new ReadOnlyStream(source), flags);
             }
 
-        protected internal virtual void Write(Stream target) {
+        public virtual void Write(Stream target) {
             WriteHeader(target);
             WriteContent(target);
             }

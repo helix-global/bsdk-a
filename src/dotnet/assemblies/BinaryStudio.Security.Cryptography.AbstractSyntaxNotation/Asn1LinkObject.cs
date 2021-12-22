@@ -25,7 +25,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State = source.State;
             }
 
-        protected internal override void Write(Stream target)
+        public override void Write(Stream target)
             {
             UnderlyingObject.Write(target);
             }
