@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Threading;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -238,6 +239,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "Process32NextW" )] private static extern unsafe Boolean Process32Next (IntPtr snapshot, [In][Out] void* r);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr GetCurrentProcess();
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool ProcessIdToSessionId([In] int dwProcessId, out int pSessionId);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean OpenThreadToken(IntPtr threadhandle, TokenAccessLevels desiredaccess, Boolean openasself, out IntPtr tokenhandle);
 
         private const Int32 LMEM_FIXED = 0x0000;
         public const Int32 ProcessBasicInformation   =  0;

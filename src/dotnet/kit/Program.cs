@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -15,6 +19,7 @@ using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using kit;
 using log4net;
 using Newtonsoft.Json;
 using Options;
@@ -23,13 +28,13 @@ using srv;
 using Microsoft.WindowsAPICodePack.Taskbar;
 #endif
 using Formatting = Newtonsoft.Json.Formatting;
-using Process = BinaryStudio.PlatformComponents.Win32.Process;
+using Process = System.Diagnostics.Process;
 
 namespace Kit
     {
     public class Program
         {
-        private static readonly ILogger logger = new ServiceLogger(LogManager.GetLogger(nameof(Program)));
+        private static readonly ILogger logger = new ClientLogger(LogManager.GetLogger(nameof(Program)));
         #if USE_WINDOWS_API_CODE_PACK
         internal static TaskbarManager taskbar = TaskbarManager.Instance;
         #endif
@@ -218,26 +223,51 @@ namespace Kit
         //        }
         //    }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+        static void M1()
+            {
+
+            }
+
         [MTAThread]
         internal static void Main(String[] args) {
             try
                 {
+                logger.Log(LogLevel.Information, $"START");
+                logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
+                logger.Log(LogLevel.Debug, $"CommandLine:{Environment.CommandLine}");
+                //if (!PlatformContext.IsRunningAsAdministrator) {
+                //    PlatformContext.Invoke(ContextFlags.Thread, delegate {
+                //        logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
+                //        var principal = WindowsIdentity.GetCurrent(TokenAccessLevels.AllAccess);
+                //        if (principal != null)
+                //            {
+                //            logger.Log(LogLevel.Debug, $"Impersonate");
+                //            principal.Impersonate();
+                //            logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
+                //            }
+                //        });
+                //    }
                 Int32 exitcode;
                 using (var client = PlatformContext.IsRunningUnderServiceControl
                         ? (ILocalClient)(new LocalService())
-                        : (ILocalClient)(new LocalClient()))
+                        : (ILocalClient )(new LocalClient()))
                     {
                     exitcode = client.Main(args);
                     }
                 Environment.ExitCode = exitcode;
+                Console.WriteLine("press [ENTER] to exit....");
+                Console.ReadLine();
                 }
             catch (Exception e)
                 {
-                logger.Log(LogLevel.Error, $"{Utilities.FormatException(e)}");
+                Console.WriteLine(e);
+                logger.Log(LogLevel.Error, $"\n{Exceptions.ToString(e)}");
                 Environment.ExitCode = -1;
                 }
             finally
                 {
+                logger.Log(LogLevel.Information, $"EXIT");
                 }
             }
 
@@ -289,6 +319,7 @@ namespace Kit
         #endregion
 
         [DllImport("kernel32.dll")] private static extern IntPtr GetConsoleWindow();
+        
 
         public static IntPtr WindowHandle { get {
             var r = GetConsoleWindow();

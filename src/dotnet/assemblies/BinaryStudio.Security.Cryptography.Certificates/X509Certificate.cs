@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -114,6 +115,39 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }}
 
         public String Country { get { return Source.Country; }}
+
+        protected unsafe X509Certificate(SerializationInfo info, StreamingContext context)
+            :base(info, context)
+            {
+            var source = (IntPtr)info.GetInt64(nameof(Handle));
+            if (source != IntPtr.Zero) {
+                using (new TraceScope()) {
+                    this.context = CertDuplicateCertificateContext(source);
+                    Source = Load(this.context);
+                    Version = Source.Version;
+                    SerialNumber = Source.SerialNumber.ToString();
+                    Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
+                    Subject = new X509RelativeDistinguishedNameSequence(Source.Subject);
+                    NotAfter  = Source.NotAfter;
+                    NotBefore = Source.NotBefore;
+                    SignatureAlgorithm = new Oid(Source.SignatureAlgorithm.SignatureAlgorithm.ToString());
+                    HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
+                        ? new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString())
+                        : null;
+                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
+                    var r = GetProperty(CERT_KEY_PROV_INFO_PROP_ID, false);
+                    if (r.Length > 0) {
+                        fixed (Byte* bytes = r) {
+                            var pi = (CRYPT_KEY_PROV_INFO*)bytes;
+                            KeySpec = (X509KeySpec)pi->KeySpec;
+                            Container = (pi->ContainerName != null)
+                                ? Marshal.PtrToStringUni((IntPtr)(pi->ContainerName))
+                                : null;
+                            }
+                        }
+                    }
+                }
+            }
 
         public unsafe X509Certificate(IntPtr source)
             {
@@ -956,5 +990,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             return publickey;
             }}
+
+        /// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
+            info.AddValue(nameof(Handle), (Int64)Handle);
+            }
         }
     }

@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Threading;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
+using log4net;
 using Operations;
 using Options;
+using Process = BinaryStudio.PlatformComponents.Win32.Process;
 
 public class LocalClient : ILocalClient
     {
-    private static readonly ILogger Logger = new ConsoleLogger();
+    private static readonly ILogger Logger = new ClientLogger(LogManager.GetLogger(nameof(LocalClient)));
     private Service service;
     private ServiceManager sc;
     private ServiceEndPoint<ICryptographicOperations> co;
@@ -31,9 +37,11 @@ public class LocalClient : ILocalClient
         {
         try
             {
+            PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
+            return 0;
             Operation operation = new UsageOperation(Console.Out, Console.Error, options);
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
@@ -54,11 +62,31 @@ public class LocalClient : ILocalClient
             GC.Collect();
             return 0;
             }
+        catch (PrincipalPermissionException e)
+            {
+            return Elevate();
+            }
         catch (Exception e)
             {
             Logger.Log(LogLevel.Critical, $"{e}");
             return -1;
             }
+        }
+
+    private static Int32 Elevate()
+        {
+        var assembly = Assembly.GetEntryAssembly();
+        var pi = new ProcessStartInfo
+            {
+            UseShellExecute = true,
+            WorkingDirectory = Environment.CurrentDirectory,
+            FileName = assembly.Location,
+            Verb = "runas",
+            //Arguments = Environment.CommandLine
+            };
+        var r = System.Diagnostics.Process.Start(pi);
+        r.WaitForExit();
+        return r.ExitCode;
         }
 
     private static Boolean HasOption(IList<OperationOption> source, Type type) {
@@ -111,4 +139,6 @@ public class LocalClient : ILocalClient
         Operation.LocalClient = null;
         Operation.Logger = null;
         }
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto)] private static extern String GetCommandLine();
     }

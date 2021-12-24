@@ -21,7 +21,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <param name="flags">Provider flags.</param>
         public OpenSSLCryptographicContext(ILogger logger, CryptographicContextFlags flags)
             {
-            Logger = logger ?? EmptyLogger;
+            Logger = logger ?? DefaultLogger;
             this.flags = flags;
             }
 

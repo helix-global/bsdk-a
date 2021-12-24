@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using Microsoft.Win32;
@@ -14,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     using CRYPT_INTEGER_BLOB = CRYPT_BLOB;
     using CERT_NAME_BLOB = CRYPT_BLOB;
 
-    public abstract class X509Object : IX509Object, IDisposable, ICustomTypeDescriptor
+    public abstract class X509Object : IX509Object, IDisposable, ICustomTypeDescriptor, ISerializable
         {
         private LocalMemoryManager manager;
         public abstract X509ObjectType ObjectType { get; }
@@ -27,6 +28,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         static X509Object()
             {
+            }
+
+        protected X509Object()
+            {
+            }
+
+        protected X509Object(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
             }
 
         #region M:Dispose(Boolean)
@@ -293,6 +303,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             EnsureMemoryManager();
             return manager.Alloc(size);
+            }
+
+        /// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
             }
         }
     }

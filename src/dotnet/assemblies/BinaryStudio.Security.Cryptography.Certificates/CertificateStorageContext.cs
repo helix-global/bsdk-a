@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Security;
 using System.Security.Cryptography;
+using System.Security.Permissions;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    [Serializable]
     internal class CertificateStorageContext : CertificateStorage
         {
         public override X509StoreLocation Location { get; }
@@ -61,6 +66,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             Name = name;
             }
         #endregion
+
+        protected CertificateStorageContext(SerializationInfo info, StreamingContext context)
+            :base(info, context)
+            {
+            var r = (IntPtr)info.GetInt64(nameof(Handle));
+            if (r != IntPtr.Zero)
+                {
+                store = CertDuplicateStore(r);
+                }
+            }
+
         #region M:EnsureCore
         protected override void EnsureCore() {
             if (store == IntPtr.Zero) {
@@ -118,9 +134,31 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             EnsureCore();
             if (store != IntPtr.Zero) {
                 if (!CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero)) {
-                    var hr = (HRESULT)(Marshal.GetHRForLastWin32Error());
-                    throw new COMException($"{FormatMessage((Int32)hr)} [HRESULT:{hr}]");
+                    var e = Marshal.GetLastWin32Error();
+                    if ((e >= 0) && (e <= 0xffff)) {
+                        if ((Win32ErrorCode)e == Win32ErrorCode.ERROR_ACCESS_DENIED) {
+                            AddAdm(o);
+                            }
+                        }
                     }
+                }
+            }
+        #endregion
+        [PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
+        private void AddX(IX509Certificate o)
+            {
+            Validate(CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
+            }
+        #region M:IX509CertificateStorage.Add(IX509Certificate)
+        //[PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
+        private void AddAdm(IX509Certificate o)
+            {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            EnsureCore();
+            if (store != IntPtr.Zero) {
+                var permissions = new PermissionSet(PermissionState.Unrestricted);
+                permissions.AddPermission(new PrincipalPermission(null, "Administrators"));
+                PlatformContext.Invoke(null,permissions, AddX,o);
                 }
             }
         #endregion
@@ -130,10 +168,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
             if (store != IntPtr.Zero) {
-                if (!CertAddCRLContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero)) {
-                    var hr = (HRESULT)(Marshal.GetHRForLastWin32Error());
-                    throw new COMException($"{FormatMessage((Int32)hr)} [HRESULT:{hr}]");
-                    }
+                Validate(CertAddCRLContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
                 }
             }
         #endregion
@@ -143,7 +178,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             EnsureCore();
             if (store != IntPtr.Zero) {
                 CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, out var r);
-                CertDeleteCertificateFromStore(r);
+                Validate(CertDeleteCertificateFromStore(r));
                 }
             }
         #endregion
@@ -153,8 +188,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
             if (store != IntPtr.Zero) {
-                var status = CertAddCRLContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, out var r);
-                status = CertDeleteCRLFromStore(r);
+                CertAddCRLContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, out var r);
+                Validate(CertDeleteCRLFromStore(r));
                 }
             }
         #endregion
@@ -167,6 +202,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
 
         [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern bool CertControlStore([In] IntPtr hCertStore, [In] uint dwFlags, [In] uint dwCtrlType, [In] IntPtr pvCtrlPara);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern IntPtr CertDuplicateStore([In] IntPtr store);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, out IntPtr r);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern Boolean CertAddCRLContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
@@ -262,5 +298,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 i = CertEnumCertificatesInStore(store, i);
                 }
             }}
+
+        /// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
+            info.AddValue(nameof(Handle), (Int64)Handle);
+            }
         }
     }

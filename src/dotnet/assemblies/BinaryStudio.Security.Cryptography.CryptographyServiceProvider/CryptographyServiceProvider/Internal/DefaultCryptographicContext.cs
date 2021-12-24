@@ -21,7 +21,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public DefaultCryptographicContext(ILogger logger, CryptographicContextFlags flags)
             {
-            Logger = logger ?? EmptyLogger;
+            Logger = logger ?? DefaultLogger;
             this.flags = flags;
             }
 

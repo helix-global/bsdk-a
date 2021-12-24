@@ -10,4 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+  </ItemGroup>
 </Project>

@@ -1,18 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using BinaryStudio.Diagnostics.Logging;
+using Kit;
 using log4net;
 
-namespace srv
+namespace kit
     {
-    public class ServiceLogger : DefaultLogger
+    internal class ClientLogger : DefaultLogger
         {
         private readonly ILog log;
-        public ServiceLogger(ILog log)
+        private static readonly IDictionary<LogLevel,ConsoleColor?> colors = new Dictionary<LogLevel, ConsoleColor?>{
+            { LogLevel.Debug,       ConsoleColor.Gray    },
+            { LogLevel.Critical,    ConsoleColor.Red     },
+            { LogLevel.Error,       ConsoleColor.DarkRed },
+            { LogLevel.Trace,       ConsoleColor.Gray    },
+            { LogLevel.Warning,     ConsoleColor.Yellow  },
+            { LogLevel.Information, null },
+            { LogLevel.None,        null }
+            };
+
+        public ClientLogger(ILog log)
             {
             this.log = log;
             }
 
-        public override Boolean IsEnabled(LogLevel loglevel) {
+        public override Boolean IsEnabled(LogLevel loglevel)
+            {
             switch (loglevel)
                 {
                 case LogLevel.Trace:       return log.IsDebugEnabled;
@@ -27,7 +40,8 @@ namespace srv
             return false;
             }
 
-        public override void Log(LogLevel loglevel, String message) {
+        public override void Log(LogLevel loglevel, String message)
+            {
             base.Log(loglevel, message);
             switch (loglevel)
                 {
@@ -39,6 +53,13 @@ namespace srv
                 case LogLevel.Critical:    log.Fatal(message); break;
                 case LogLevel.None: break;
                 default: throw new ArgumentOutOfRangeException(nameof(loglevel), loglevel, null);
+                }
+            var color = colors[loglevel];
+            using ((color != null)
+                ? new ConsoleColorScope(color.Value)
+                : null)
+                {
+                Console.WriteLine(message);
                 }
             }
         }

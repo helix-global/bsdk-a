@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
@@ -231,7 +232,7 @@ namespace Operations
                         }
                     catch(Exception e)
                         {
-                        Debug.Print($"Exception:{e.Message}");
+                        Logger.Log(LogLevel.Debug, e);
                         F = 2;
                         }
                     }

@@ -48,7 +48,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <param name="providertype">Type of provider (<see cref="CRYPT_PROVIDER_TYPE"/>).</param>
         /// <param name="flags">Provider flags.</param>
         public CryptographicContext(ILogger logger, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
-            Logger = logger ?? EmptyLogger;
+            Logger = logger ?? DefaultLogger;
             switch (providertype) {
                 case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(Logger, flags); break;
                 case  0: UnderlyingObject = new DefaultCryptographicContext(Logger, flags); break;
