@@ -68,6 +68,12 @@ namespace Kit
                 }
             }
         #endregion
+        protected static void Validate(Boolean status) {
+            if (!status) {
+                throw PlatformContext.GetExceptionForHR(Marshal.GetLastWin32Error());
+                }
+            }
+
         internal static void InternalLoad(String[] args)
             {
             try
@@ -231,23 +237,16 @@ namespace Kit
 
         [MTAThread]
         internal static void Main(String[] args) {
+            
             try
                 {
-                logger.Log(LogLevel.Information, $"START");
-                logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
-                logger.Log(LogLevel.Debug, $"CommandLine:{Environment.CommandLine}");
-                //if (!PlatformContext.IsRunningAsAdministrator) {
-                //    PlatformContext.Invoke(ContextFlags.Thread, delegate {
-                //        logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
-                //        var principal = WindowsIdentity.GetCurrent(TokenAccessLevels.AllAccess);
-                //        if (principal != null)
-                //            {
-                //            logger.Log(LogLevel.Debug, $"Impersonate");
-                //            principal.Impersonate();
-                //            logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
-                //            }
-                //        });
-                //    }
+                if (PlatformContext.IsParentProcess("kit.exe")) {
+                    FreeConsole();
+                    Validate(AttachConsole(-1));
+                    }
+                //logger.Log(LogLevel.Information, $"START");
+                //logger.Log(LogLevel.Debug, $"IsRunningAsAdministrator:{PlatformContext.IsRunningAsAdministrator}");
+                //logger.Log(LogLevel.Debug, $"CommandLine:{Environment.CommandLine}");
                 Int32 exitcode;
                 using (var client = PlatformContext.IsRunningUnderServiceControl
                         ? (ILocalClient)(new LocalService())
@@ -256,8 +255,8 @@ namespace Kit
                     exitcode = client.Main(args);
                     }
                 Environment.ExitCode = exitcode;
-                Console.WriteLine("press [ENTER] to exit....");
-                Console.ReadLine();
+                //Console.WriteLine("press [ENTER] to exit....");
+                //Console.ReadLine();
                 }
             catch (Exception e)
                 {
@@ -267,7 +266,7 @@ namespace Kit
                 }
             finally
                 {
-                logger.Log(LogLevel.Information, $"EXIT");
+                //logger.Log(LogLevel.Information, $"EXIT");
                 }
             }
 
@@ -376,6 +375,8 @@ namespace Kit
         [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Ansi)] private static extern IntPtr GetProcAddress(IntPtr module, String procedure);
         [DllImport("kernel32.dll")] private static extern Int32 GetProcessId(IntPtr handle);
         [DllImport("kernel32.dll")] private static extern IntPtr GetCurrentProcess();
+        [DllImport("kernel32.dll")] private static extern Boolean AttachConsole(Int32 process);
+        [DllImport("kernel32.dll")] private static extern Boolean FreeConsole();
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe UInt32 NtQueryInformationProcess(IntPtr process, Int32 iclass, void* pi, UInt32 pisz, out UInt32 r);
 
         private const Int32 ProcessBasicInformation = 0;

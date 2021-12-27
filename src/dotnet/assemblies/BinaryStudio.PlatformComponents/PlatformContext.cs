@@ -78,11 +78,18 @@ namespace BinaryStudio.PlatformComponents
         public static Boolean IsRunningAsAdministrator { get {
             var r = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             return r.IsInRole(WindowsBuiltInRole.Administrator);
-            return false;
             }}
         #endregion
 
         public static event EventHandler DefaultCultureChanged;
+        public static Boolean IsParentProcess(String processname) {
+            var processes = new Dictionary<Int64, Process>();
+            foreach (var process in Process.Processes) { processes[process.UniqueProcessId] = process; }
+            var
+            i = processes[GetCurrentProcessId()];
+            i = processes[i.UniqueParentProcessId];
+            return String.Equals(i.ImageName, processname, StringComparison.OrdinalIgnoreCase);
+            }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)] private static extern Int32 GetCurrentProcessId();
         [DllImport("user32.dll")] private static extern Int32 GetSystemMetrics(Int32 index);

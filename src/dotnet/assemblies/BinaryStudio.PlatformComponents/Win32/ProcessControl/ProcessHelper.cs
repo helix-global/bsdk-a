@@ -9,7 +9,7 @@ namespace BinaryStudio.PlatformComponents.Win32
     {
     public static class ProcessHelper
         {
-        [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe NTSTATUS NtQueryInformationProcess(IntPtr process, Int32 @class, out PROCESS_BASIC_INFORMATION pi, Int32 pisz, out Int32 r);
+        [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe NTSTATUS NtQueryInformationProcess(IntPtr process, Int32 @class, out ProcessBasicInformation pi, Int32 pisz, out Int32 r);
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe NTSTATUS NtQueryInformationProcess(IntPtr process, Int32 @class, void* pi, Int32 pisz, out Int32 r);
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe NTSTATUS NtQuerySystemInformation(SystemInformationType query, void* dataPtr, Int32 size, IntPtr r);
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe NTSTATUS NtOpenProcess(out IntPtr r, Int32 desiredaccess, ref OBJECT_ATTRIBUTES objectattributes, ref CLIENT_ID client);
@@ -89,9 +89,9 @@ namespace BinaryStudio.PlatformComponents.Win32
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private unsafe delegate UInt32 NtWow64ReadVirtualMemory64(IntPtr process, UInt64 baseaddress, void* buffer, UInt64 count, UInt64* r);
 
         #region M:NtQueryInformationProcess(IntPtr,[out]PROCESS_BASIC_INFORMATION):NTSTATUS
-        private static unsafe NTSTATUS NtQueryInformationProcess(IntPtr process, out PROCESS_BASIC_INFORMATION r) {
+        private static unsafe NTSTATUS NtQueryInformationProcess(IntPtr process, out ProcessBasicInformation r) {
             return NtQueryInformationProcess(process, ProcessBasicInformation,
-                out r, sizeof(PROCESS_BASIC_INFORMATION), out var rsz);
+                out r, sizeof(ProcessBasicInformation), out var rsz);
             }
         #endregion
         #region M:QueryFullProcessImageName(IntPtr):String
@@ -257,7 +257,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         #region M:GetParentProcessIdentifier(Int32):Int32
         private static Int32 GetParentProcessIdentifier(Int32 identifer) {
             if (identifer == 0) { throw new ArgumentOutOfRangeException(nameof(identifer)); }
-            Validate(NtQueryInformationProcess((IntPtr)identifer, out PROCESS_BASIC_INFORMATION r));
+            Validate(NtQueryInformationProcess((IntPtr)identifer, out ProcessBasicInformation r));
             return (Int32)r.InheritedFromUniqueProcessId;
             }
         #endregion

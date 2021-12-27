@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
@@ -611,9 +613,15 @@ namespace Operations
             }
         #region M:Execute(TextWriter)
         public override void Execute(TextWriter output) {
+            var location = StoreLocation.GetValueOrDefault(X509StoreLocation.CurrentUser);
+            if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
+                if (location == X509StoreLocation.LocalMachine) {
+                    PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
+                    }
+                }
             var so = new Object();
             using (var connection = CreateConnection(TargetConnectionString))
-            using (var store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), StoreLocation.GetValueOrDefault(X509StoreLocation.CurrentUser))) {
+            using (var store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location)) {
                 using (var scope = new MetadataScope()) {
                     foreach (var fileitem in InputFileName) {
                         var fi = fileitem;

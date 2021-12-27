@@ -37,11 +37,9 @@ public class LocalClient : ILocalClient
         {
         try
             {
-            PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
-            return 0;
             Operation operation = new UsageOperation(Console.Out, Console.Error, options);
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
@@ -57,6 +55,7 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation = new InfrastructureOperation(Console.Out, Console.Error, options); }
             else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
+            operation.ValidatePermission();
             operation.Execute(Console.Out);
             operation = null;
             GC.Collect();
@@ -64,7 +63,7 @@ public class LocalClient : ILocalClient
             }
         catch (PrincipalPermissionException e)
             {
-            return Elevate();
+            return Elevate(args);
             }
         catch (Exception e)
             {
@@ -73,7 +72,7 @@ public class LocalClient : ILocalClient
             }
         }
 
-    private static Int32 Elevate()
+    private static Int32 Elevate(String[] args)
         {
         var assembly = Assembly.GetEntryAssembly();
         var pi = new ProcessStartInfo
@@ -82,7 +81,7 @@ public class LocalClient : ILocalClient
             WorkingDirectory = Environment.CurrentDirectory,
             FileName = assembly.Location,
             Verb = "runas",
-            //Arguments = Environment.CommandLine
+            Arguments = String.Join(" ", args.Select(i => $@"""{i}"""))
             };
         var r = System.Diagnostics.Process.Start(pi);
         r.WaitForExit();
