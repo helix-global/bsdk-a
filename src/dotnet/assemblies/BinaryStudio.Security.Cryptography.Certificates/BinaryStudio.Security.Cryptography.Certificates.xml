@@ -131,6 +131,11 @@
               Looks up a localized string similar to Container.
             </summary>
         </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.AggregateException">
+            <summary>
+              Looks up a localized string similar to {0}{1}---&amp;gt; (Внутреннее исключение #{2}) {3}{4}{5}.
+            </summary>
+        </member>
         <member name="P:BinaryStudio.Security.Cryptography.Certificates.Properties.Resources.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID">
             <summary>
               Looks up a localized string similar to A CTL used to create this chain did not have a valid signature..
@@ -641,12 +646,6 @@
             <filterpriority>2</filterpriority>
             
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityKeyIdentifierExtension.ToString">
-            <summary>Returns a string that represents the current object.</summary>
-            <returns>A string that represents the current object.</returns>
-            <filterpriority>2</filterpriority>
-            
-        </member>
         <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateBasicConstraintsExtension">
              {joint-iso-itu-t(2) ds(5) certificateExtension(29) basicConstraints(19)}
              {2.5.29.19}
@@ -765,6 +764,12 @@
             {/ISO/Identified-Organization/6/1/4/1/311/21/2}
             szOID_CERTSRV_PREVIOUS_CERT_HASH
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateAuthorityKeyIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateKeyUsage.ToString">
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
@@ -840,6 +845,278 @@
             <summary>Returns whether this object supports properties, using the specified context.</summary>
             <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
             <returns><see langword="true"/> if <see cref="M:System.ComponentModel.TypeConverter.GetProperties(System.Object)"/> should be called to find the properties of this object; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateExcludedNameConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateExcludedNameConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateExcludedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateExcludedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsCyclicException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsCyclicException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsCyclicException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsCyclicException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsRevokedException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsRevokedException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsRevokedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsRevokedException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateMissingException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateMissingException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePartialChainException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePartialChainException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePartialChainException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePartialChainException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePrivateKeyExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePrivateKeyExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlInvalidSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlInvalidSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlInvalidTimeException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlInvalidTimeException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CrlMissingException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CrlMissingException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidTimeException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidTimeException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidTimeException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidTimeException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidUsageException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidUsageException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidUsageException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidUsageException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.SecurityException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.SecurityException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.SecurityException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.SecurityException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.SecurityException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.SecurityException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+            <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> parameter is not <see langword="null"/>, the current exception is raised in a <see langword="catch"/> block that handles the inner exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerException"/> argument is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.SecurityException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.SecurityException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.SecurityException.ToString">
+            <summary>Creates and returns a string representation of the current <see cref="T:BinaryStudio.Security.Cryptography.SecurityException"/>.</summary>
+            <returns>A string representation of the current exception.</returns>
         </member>
     </members>
 </doc>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using Microsoft.Win32;
 
@@ -7,7 +6,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
     internal class IcaoCertificateChainPolicy : X509CertificateChainPolicy
         {
-        public override unsafe Boolean Verify(ISet<Exception> target, ICryptographicContext context,
+        public override unsafe void Verify(ICryptographicContext context,
             OidCollection applicationpolicy, OidCollection certificatepolicy,
             TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags, ref CERT_CHAIN_CONTEXT chaincontext) {
@@ -24,11 +23,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                                 var subject = new X509Certificate((IntPtr)S->CertContext);
                                 var issuer  = new X509Certificate((IntPtr)I->CertContext);
                                 if (context != null) {
-                                    if (!context.VerifyCertificateSignature(out var e,
-                                        subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE))
-                                        {
-                                        target.Add(e);
-                                        }
+                                    context.VerifyCertificateSignature(
+                                        subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE);
                                     }
                                 }
                             else
@@ -36,35 +32,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                                 var I = chain->ElementArray[1];
                                 var subject = new X509Certificate((IntPtr)S->CertContext);
                                 var issuer  = new X509Certificate((IntPtr)I->CertContext);
-                                if (!issuer.Verify(out var e, context,
+                                issuer.Verify(context,
                                     store,applicationpolicy,certificatepolicy,
-                                    timeout,datetime, flags, this))
-                                    {
-                                    if (e is AggregateException a)
-                                        {
-                                        target.UnionWith(a.InnerExceptions);
-                                        }
-                                    else
-                                        {
-                                        target.Add(e);
-                                        }
-                                    }
-                                if (context != null)
-                                    {
-                                    if (!context.VerifyCertificateSignature(out e,
+                                    timeout,datetime, flags, this);
+                                if (context != null) {
+                                    context.VerifyCertificateSignature(
                                         subject, issuer,
-                                        CRYPT_VERIFY_CERT_SIGN.NONE))
-                                        {
-                                        target.Add(e);
-                                        }
+                                        CRYPT_VERIFY_CERT_SIGN.NONE);
                                     }
                                 }
                             }
                         }
                     }
-                
                 }
-            return true;
             }
         }
     }

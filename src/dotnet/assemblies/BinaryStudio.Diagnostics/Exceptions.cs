@@ -60,6 +60,21 @@ namespace BinaryStudio.Diagnostics
                 }
             }
 
+
+        private static void WriteTo(Int32 indent, AggregateException e, IColorTextWriter writer) {
+            if (writer != null) {
+                if (e.InnerExceptions.Count > 0) {
+                    writer.WriteLine($"{new String(' ', indent)}   --- Начало трассировки агрегированных исключений (Count = {e.InnerExceptions.Count}) --- ");
+                    var indentstr = new String(' ', indent + 2);
+                    foreach (var i in e.InnerExceptions) {
+                        writer.WriteLine($"{indentstr}   {{");
+                        WriteTo(indent + 2, i, writer);
+                        writer.WriteLine($"{indentstr}   }}");
+                        }
+                    }
+                }
+            }
+
         private static void WriteTo(Int32 indent, Exception source, IColorTextWriter target)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }

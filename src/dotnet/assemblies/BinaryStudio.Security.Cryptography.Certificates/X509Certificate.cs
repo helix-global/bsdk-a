@@ -11,6 +11,8 @@ using System.Runtime.Serialization;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -22,11 +24,9 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.Properties;
 using BinaryStudio.Serialization;
-using Newtonsoft.Json;
-using System.Security;
-using System.Text;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
+using Newtonsoft.Json;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
@@ -478,7 +478,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                             break;
                             }
                         var crl = new X509CertificateRevocationList(hcrl);
-                        var aki = ((Asn1CertificateAuthorityKeyIdentifierExtension)crl.UnderlyingObject.Extensions.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("X");
+                        var aki = ((CertificateAuthorityKeyIdentifier)crl.UnderlyingObject.Extensions.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("X");
                         if (aki == ski) {
                             if (crl.EffectiveDate <= datetime) {
                                 if (crl.NextUpdate != null) {
@@ -501,6 +501,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         private unsafe IList<Exception> VerifyCertificateChain(ICryptographicContext context, IntPtr chainengine, OidCollection applicationpolicy, OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, IX509CertificateStorage store, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
             {
+            policy = policy ?? X509CertificateChainPolicy.POLICY_BASE;
             var chainpara = new CERT_CHAIN_PARA {
                 Size = sizeof(CERT_CHAIN_PARA),
                 };
@@ -526,18 +527,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
                 chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
                 #endif
-                Validate(GetCertificateChain(chainengine, this.context, datetime,
-                    (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
-                var status = chaincontext->TrustStatus.ErrorStatus;
-                if (policy != null) {
-                    policy.Verify(target, context,
+                try
+                    {
+                    Validate(GetCertificateChain(chainengine, this.context, datetime, (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
+                    policy.Verify(context,
                         applicationpolicy, certificatepolicy,
                         timeout, datetime, store, flags: 0,
                         chaincontext: ref *chaincontext);
                     }
-                if (status != CertificateChainErrorStatus.CERT_TRUST_NO_ERROR)
+                 catch (Exception e)
                     {
-                    target.UnionWith(GetExceptionForChainErrorStatus(chaincontext->TrustStatus.ErrorStatus, PlatformContext.DefaultCulture));
+                    target.Add(e);
                     }
                 }
             finally
@@ -548,37 +548,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return target.ToArray();
             }
 
-        #region M:Verify(ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy)
-        public void Verify(ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime,CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy) {
-            if (!Verify(out var e, context, store, applicationpolicy, certificatepolicy, timeout, datetime, flags, policy)) {
-                throw e;
-                }
-            }
-        #endregion
-        #region M:Verify(ICryptographicContext,IX509CertificateStorage)
-        public void Verify(ICryptographicContext context, IX509CertificateStorage store)
+        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy)
+        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy)
             {
-            Verify(context, store, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
+            Verify(context, null, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: null);
-            }
-        #endregion
-        #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage):Boolean
-        public Boolean Verify(out Exception e, ICryptographicContext context, IX509CertificateStorage store)
-            {
-            return Verify(out e,context, store, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: null);
+                policy: policy);
             }
         #endregion
         #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy):Boolean
-        public Boolean Verify(out Exception e, ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
+        public void Verify(ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
             {
-            e = null;
             using (new TraceScope())
                 {
                 var target = new List<Exception>();
@@ -589,12 +571,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     store,flags,policy
                     ));
                 if (target.Count > 0) {
-                    e = (target.Count == 0)
+                    throw (target.Count == 0)
                         ? target[0]
                         : new AggregateException(target);
-                    return false;
                     }
-                return true;
                 }
             }
         #endregion

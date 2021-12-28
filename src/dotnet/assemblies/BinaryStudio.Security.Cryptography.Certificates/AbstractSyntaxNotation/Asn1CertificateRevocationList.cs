@@ -97,7 +97,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #endregion
 
         public String FriendlyName { get {
-            var K = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var K = ((CertificateAuthorityKeyIdentifier)Extensions.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if (String.IsNullOrWhiteSpace(K))
                 {
                 return (NextUpdate != null)

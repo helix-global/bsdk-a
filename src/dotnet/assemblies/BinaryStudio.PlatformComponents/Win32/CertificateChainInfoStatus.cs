@@ -3,7 +3,7 @@
 namespace Microsoft.Win32
     {
     [Flags]
-    public enum CertificateChainInfoStatus : uint
+    public enum CertificateChainInfoStatus
         {
         HasExactMatchIssuer         = 0x00000001,
         HasKeyMatchIssuer           = 0x00000002,

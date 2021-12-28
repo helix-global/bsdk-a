@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Security;
 using System.Security.Cryptography;
-using System.Security.Permissions;
-using BinaryStudio.PlatformComponents;
-using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
@@ -133,32 +129,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
             if (store != IntPtr.Zero) {
-                if (!CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero)) {
-                    var e = Marshal.GetLastWin32Error();
-                    if ((e >= 0) && (e <= 0xffff)) {
-                        if ((Win32ErrorCode)e == Win32ErrorCode.ERROR_ACCESS_DENIED) {
-                            AddAdm(o);
-                            }
-                        }
-                    }
-                }
-            }
-        #endregion
-        [PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
-        private void AddX(IX509Certificate o)
-            {
-            Validate(CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
-            }
-        #region M:IX509CertificateStorage.Add(IX509Certificate)
-        //[PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
-        private void AddAdm(IX509Certificate o)
-            {
-            if (o == null) {throw new ArgumentNullException(nameof(o)); }
-            EnsureCore();
-            if (store != IntPtr.Zero) {
-                var permissions = new PermissionSet(PermissionState.Unrestricted);
-                permissions.AddPermission(new PrincipalPermission(null, "Administrators"));
-                PlatformContext.Invoke(null,permissions, AddX,o);
+                Validate(CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
                 }
             }
         #endregion
@@ -182,7 +153,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:IX509CertificateStorage.Remove(IX509Certificate)
+        #region M:IX509CertificateStorage.Remove(IX509CertificateRevocationList)
         public override void Remove(IX509CertificateRevocationList o)
             {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
@@ -193,6 +164,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
         public override void Commit()
             {
             EnsureCore();

@@ -277,6 +277,12 @@ namespace Operations
                 }
             }
 
+        private void Verify(Asn1Certificate source)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            var certificate = new X509Certificate(source);
+            }
+
         #region M:Get<E,T>(IDbSet<E>,[ref]Boolean,T):E
         private static E Get<E,T>(IDbSet<E> set, ref Boolean flag, T value)
             where E: class, IDInstance<T>, new()
@@ -396,7 +402,7 @@ namespace Operations
             }
         #endregion
         #region M:Get(Asn1CertificateAuthorityKeyIdentifierExtension):Extension
-        private static DExtension Get(Entities context, LocalCache cache, Asn1CertificateAuthorityKeyIdentifierExtension source) {
+        private static DExtension Get(Entities context, LocalCache cache, CertificateAuthorityKeyIdentifier source) {
             var r = context.AuthorityKeyIdentifiers.Add(new DAuthorityKeyIdentifier {
                 LongKey = source.KeyIdentifier.ToString("X"),
                 ShortKey = GetShortKey(source.KeyIdentifier),
@@ -549,7 +555,7 @@ namespace Operations
                             break;
                         case "2.5.29.35":
                             {
-                            target.Object.Extension.Add(Get(context, cache, (Asn1CertificateAuthorityKeyIdentifierExtension)extension));
+                            target.Object.Extension.Add(Get(context, cache, (CertificateAuthorityKeyIdentifier)extension));
                             }
                             break;
                         case "2.5.29.14":
@@ -597,7 +603,7 @@ namespace Operations
                             break;
                         case "2.5.29.35":
                             {
-                            target.Object.Extension.Add(Get(context, cache, (Asn1CertificateAuthorityKeyIdentifierExtension)extension));
+                            target.Object.Extension.Add(Get(context, cache, (CertificateAuthorityKeyIdentifier)extension));
                             }
                             break;
                         case "2.5.29.14":

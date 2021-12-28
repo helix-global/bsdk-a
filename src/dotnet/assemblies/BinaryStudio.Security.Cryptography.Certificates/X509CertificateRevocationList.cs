@@ -59,8 +59,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         private static unsafe Asn1CertificateRevocationList ConstructFromBinary(CRL_CONTEXT* source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            var size  = source->cbCrlEncoded;
-            var bytes = source->pbCrlEncoded;
+            var size  = source->CrlEncodedSize;
+            var bytes = source->CrlEncodedData;
             var buffer = new Byte[size];
             for (var i = 0U; i < size; ++i) {
                 buffer[i] = bytes[i];

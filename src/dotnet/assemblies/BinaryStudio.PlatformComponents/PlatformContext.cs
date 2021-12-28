@@ -21,7 +21,7 @@ namespace BinaryStudio.PlatformComponents
     [Serializable]
     public class PlatformContext
         {
-        private static CultureInfo culture = CultureInfo.InstalledUICulture;
+        private static CultureInfo culture = CultureInfo.CurrentUICulture;
         private static Boolean? sc;
 
         #region P:DefaultCulture:CultureInfo
@@ -29,7 +29,7 @@ namespace BinaryStudio.PlatformComponents
             get { return culture; }
             set
                 {
-                value = value ?? CultureInfo.InstalledUICulture;
+                value = value ?? CultureInfo.CurrentUICulture;
                 culture = value;
                 DefaultCultureChanged?.Invoke(null, EventArgs.Empty);
                 }

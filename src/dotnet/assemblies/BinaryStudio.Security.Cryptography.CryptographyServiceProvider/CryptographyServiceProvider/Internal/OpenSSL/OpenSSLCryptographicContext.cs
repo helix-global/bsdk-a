@@ -41,7 +41,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             throw new NotImplementedException();
             }

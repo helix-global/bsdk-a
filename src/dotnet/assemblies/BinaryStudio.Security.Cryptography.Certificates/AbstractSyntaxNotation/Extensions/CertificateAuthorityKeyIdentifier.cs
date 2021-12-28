@@ -18,13 +18,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1SpecificObject("2.5.29.35")]
-    public sealed class Asn1CertificateAuthorityKeyIdentifierExtension : Asn1CertificateExtension
+    public sealed class CertificateAuthorityKeyIdentifier : Asn1CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
         public String SerialNumber { get; }
         public IX509GeneralName CertificateIssuer { get; }
 
-        public Asn1CertificateAuthorityKeyIdentifierExtension(Asn1CertificateExtension source)
+        public CertificateAuthorityKeyIdentifier(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;

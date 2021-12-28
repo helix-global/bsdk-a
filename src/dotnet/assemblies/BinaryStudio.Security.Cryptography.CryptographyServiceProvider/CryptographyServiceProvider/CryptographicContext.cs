@@ -66,9 +66,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.CreateMessageSignature(inputstream, output, certificates, flags, requesthandler);
             }
 
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
-            return UnderlyingObject.VerifyCertificateSignature(out e, subject, issuer, flags);
+            UnderlyingObject.VerifyCertificateSignature(subject, issuer, flags);
             }
 
         public void EncryptMessageBER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)

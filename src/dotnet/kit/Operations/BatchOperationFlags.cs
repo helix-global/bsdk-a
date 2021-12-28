@@ -12,6 +12,7 @@ namespace Operations
         Group     = 0x08,
         Install   = 0x10,
         Uninstall = 0x20,
-        AbstractSyntaxNotation = 0x40
+        AbstractSyntaxNotation = 0x40,
+        Verify    = 0x80
         }
     }

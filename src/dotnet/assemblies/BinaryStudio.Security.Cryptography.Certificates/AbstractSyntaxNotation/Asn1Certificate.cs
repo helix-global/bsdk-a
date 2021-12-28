@@ -184,7 +184,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Browsable(false)]
         public String FriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
-            var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {
                 return ((String.IsNullOrWhiteSpace(AK)))
@@ -200,7 +200,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Browsable(false)]
         public String AlternativeFriendlyName { get {
             var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
-            var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {
                 return ((String.IsNullOrWhiteSpace(AK)))

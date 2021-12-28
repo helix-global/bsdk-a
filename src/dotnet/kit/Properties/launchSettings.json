@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:C:\\TFS\\icao\\repo\\ae\\*.cer batch:install storelocation:LocalMachine storename:Root"
+      "commandLineArgs": "verify input:efsod0053.cer"
     }
   }
 }
