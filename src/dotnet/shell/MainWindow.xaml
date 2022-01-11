@@ -35,6 +35,7 @@
       <MenuItem Header="FILE">
         <MenuItem Header="Open..." Command="Open"/>
         <MenuItem Header="Convert to BASE64..." Command="{x:Static shell:DocumentCommands.ConvertToBase64}"/>
+        <MenuItem Header="Open from BASE64..."  Command="{x:Static shell:DocumentCommands.OpenBase64}"/>
       </MenuItem>
       <MenuItem Header="HELP">
         <MenuItem Header="About..."/>

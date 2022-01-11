@@ -30,7 +30,7 @@ namespace BinaryStudio.Diagnostics.Logging
 
         void ILogger.Log(LogLevel loglevel, Exception e)
             {
-            Log(loglevel, Exceptions.ToString(e));
+            Log(loglevel, $"{Environment.NewLine}{Exceptions.ToString(e)}");
             }
         }
     }

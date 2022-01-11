@@ -235,11 +235,123 @@ namespace Kit
 
             }
 
+        private static void F1()
+            {
+            try
+                {
+                try
+                    {
+                    F2();
+                    }
+                catch (Exception e)
+                    {
+                    e.Data["Item1"] = "Item1";
+                    throw new InvalidDataException(e.Message, e);
+                    }
+                }
+            catch (Exception e)
+                {
+                e.Data["Item3"] = "Item3";
+                throw new ArgumentException(e.Message, e);
+                }
+            }
+
+        private static void F2()
+            {
+            try
+                {
+                F3();
+                }
+            catch (Exception e)
+                {
+                e.Data["Item2"] = "Item2";
+                throw new InvalidOperationException("Message2", e);
+                }
+            }
+        private static void F3()
+            {
+            F4();
+            }
+        private static void F4() {
+            var x = new List<Exception>();
+            for (var i = 0; i < 2; i++) {
+                try
+                    {
+                    //F5();
+                    }
+                catch (Exception e)
+                    {
+                    x.Add(e);
+                    }
+                try
+                    {
+                    F8();
+                    }
+                catch (Exception e)
+                    {
+                    x.Add(e);
+                    }
+                try
+                    {
+                    F8();
+                    }
+                catch (Exception e)
+                    {
+                    x.Add(e);
+                    }
+                try
+                    {
+                    F5();
+                    }
+                catch (Exception e)
+                    {
+                    x.Add(e);
+                    }
+                }
+            throw new AggregateException(x);
+            }
+
+        private static void F5()
+            {
+            try
+                {
+                F6();
+                }
+            catch(Exception e)
+                {
+                e.Data["Item5"] = "Item5";
+                throw;
+                }
+            }
+
+        private static void F8()
+            {
+            try
+                {
+                F7();
+                }
+            catch(Exception e)
+                {
+                throw new Exception(e.Message , e);
+                }
+            }
+
+        private static void F6()
+            {
+            throw new Exception("Message6");
+            }
+
+        private static void F7()
+            {
+            throw new Exception("Message7");
+            }
+
         [MTAThread]
         internal static void Main(String[] args) {
             
             try
                 {
+                //F1();
                 if (PlatformContext.IsParentProcess("kit.exe")) {
                     FreeConsole();
                     Validate(AttachConsole(-1));
@@ -261,7 +373,7 @@ namespace Kit
             catch (Exception e)
                 {
                 Console.WriteLine(e);
-                logger.Log(LogLevel.Error, $"\n{Exceptions.ToString(e)}");
+                logger.Log(LogLevel.Error, e);
                 Environment.ExitCode = -1;
                 }
             finally

@@ -149,6 +149,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
+        /// <summary>Initializes a new instance of the <see cref="X509Certificate"/> class from specified source.</summary>
+        /// <param name="source">Source of certificate context.</param>
         public unsafe X509Certificate(IntPtr source)
             {
             if (source == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(source)); }
@@ -237,27 +239,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        //internal X509Certificate(IntPtr source)
-        //    {
-        //    if (source == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(source)); }
-        //    using (TraceManager.Instance.Trace()) {
-        //        context = source;
-        //        Source = Load(source);
-        //        Version = Source.Version;
-        //        SerialNumber = Source.SerialNumber.ToString();
-        //        Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
-        //        Subject = new X509RelativeDistinguishedNameSequence(Source.Subject);
-        //        NotAfter  = Source.NotAfter;
-        //        NotBefore = Source.NotBefore;
-        //        SignatureAlgorithm = new Oid(Source.SignatureAlgorithm.SignatureAlgorithm.ToString());
-        //        HashAlgorithm = new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString());
-        //        Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
-        //        }
-        //    }
         #region M:Initialize
-        private static unsafe Asn1Certificate Load(IntPtr source)
+        private static unsafe Asn1Certificate Load(IntPtr context)
             {
-            var context = (CERT_CONTEXT*)(IntPtr)source;
+            if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
+            return Load((CERT_CONTEXT*)context);
+            }
+        private static Asn1Certificate Load(Byte[] source)
+            {
+            return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(source)).FirstOrDefault());
+            }
+        private static unsafe Asn1Certificate Load(CERT_CONTEXT* context)
+            {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
             var size  = context->CertEncodedSize;
             var bytes = context->CertEncoded;
             var buffer = new Byte[size];
@@ -266,11 +260,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(buffer)).FirstOrDefault());
             }
-        private static Asn1Certificate Load(Byte[] source)
-            {
-            return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(source)).FirstOrDefault());
-            }
         #endregion
+
+        /// <summary>Initializes a new instance of the <see cref="X509Certificate"/> class from specified source.</summary>
+        /// <param name="source">Source of certificate context.</param>
+        public unsafe X509Certificate(CERT_CONTEXT* source)
+            :this((IntPtr)source)
+            {
+            }
 
         public X509Certificate(Asn1Certificate source)
             {

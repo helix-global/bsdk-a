@@ -5,10 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
-using BinaryStudio.Serialization;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
@@ -94,87 +91,41 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 ref policypara,
                 ref policystatus));
             if (chaincontext.TrustStatus.ErrorStatus != 0) {
+                var source = new X509CertificateChainContext(ref chaincontext);
                 var target = new HashSet<Exception>();
-                if ((chaincontext.ChainCount > 0) && (chaincontext.ChainArray != null)) {
-                    for (var i = 0; i < chaincontext.ChainCount; i++) {
-                        var chain = chaincontext.ChainArray[i];
-                        if (chain != null) {
+                foreach (var chain in source) {
+                    try
+                        {
+                        var exceptions = new List<Exception>();
+                        foreach (var chainE in chain) {
                             try
                                 {
-                                var exceptions = new List<Exception>();
-                                if ((chain->ElementCount > 0) && (chain->ElementArray != null)) {
-                                    for (var j = 0; j < chain->ElementCount; j++) {
-                                        var chainE = chain->ElementArray[j];
-                                        if (chainE != null) {
-                                            try
-                                                {
-                                                RaiseExceptionForStatus(chainE->TrustStatus.ErrorStatus, 0xffffffff);
-                                                }
-                                            catch (Exception e)
-                                                {
-                                                e.Data["ChainIndex"       ] = i;
-                                                e.Data["ChainElementIndex"] = j;
-                                                e.Data["ChainStatusError" ] = chainE->TrustStatus.ErrorStatus;
-                                                e.Data["ChainStatusInfo"  ] = chainE->TrustStatus.InfoStatus;
-                                                if (chainE->CertContext != null) { e.Data["ChainCertContext"] = ToString(ref *(chainE->CertContext)); }
-                                                if (chainE->RevocationInfo != null) {
-                                                    e.Data["ChainRevocationResult"] = ToString((HRESULT)chainE->RevocationInfo->RevocationResult);
-                                                    if (chainE->RevocationInfo->CrlInfo != null) {
-                                                        e.Data["ChainCrlInfo"] = ToString(ref *(chainE->RevocationInfo->CrlInfo->BaseCrlContext));
-                                                        }
-                                                    }
-                                                exceptions.Add(e);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                try
-                                    {
-                                    RaiseExceptionForStatus(chain->TrustStatus.ErrorStatus, 0x000f0000);
-                                    }
-                                catch (Exception e)
-                                    {
-                                    exceptions.Add(e);
-                                    }
-                                if (exceptions.Count > 0) {
-                                    throw ((exceptions.Count == 1)
-                                        ? exceptions[0]
-                                        : new AggregateException(exceptions));
-                                    }
+                                RaiseExceptionForStatus(chainE.ErrorStatus, 0xffffffff);
                                 }
                             catch (Exception e)
                                 {
-                                e.Data["ChainIndex"       ] = i;
-                                e.Data["ChainStatusError" ] = chain->TrustStatus.ErrorStatus;
-                                e.Data["ChainStatusInfo"  ] = chain->TrustStatus.InfoStatus;
-                                if ((chain->ElementCount > 0) && (chain->ElementArray != null)) {
-                                    var chaindetails = new List<String>();
-                                    var c = chain->ElementCount;
-                                    for (var j = 0; j < c; j++) {
-                                        var chainE = chain->ElementArray[j];
-                                        if (chainE != null) {
-                                            var o = BuildCertificate(ref *(chainE->CertContext));
-                                            chaindetails.Add($"Order:{{ {j}}}:SerialNumber:{{{o.SerialNumber.ToString().ToLowerInvariant()}}},Subject:{{{o.Subject}}},Issuer:{{{o.Issuer}}}");
-                                            if ((j == c - 1) && (chain->TrustStatus.ErrorStatus.HasFlag(CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN))) {
-                                                var a = o.Extensions.OfType<CertificateAuthorityKeyIdentifier>().FirstOrDefault();
-                                                var r = new StringBuilder();
-                                                r.Append($"Order:{{*{j + 1}}}:");
-                                                if (a != null)
-                                                    {
-                                                    r.Append((a.SerialNumber != null)
-                                                        ? $"SerialNumber:{{{a.SerialNumber.ToLowerInvariant()}}},"
-                                                        : $"SubjectKeyIdentifier:{{{a.KeyIdentifier.ToString("x")}}},");
-                                                    }
-                                                chaindetails.Add($"{r}Subject:{{{o.Issuer}}}");
-                                                }
-                                            }
-                                        }
-                                    e.Data["ChainInfo"] = $"\n{String.Join("\n", chaindetails)}";
-                                    }
-                                target.Add(e);
+                                e.Data["ChainElement"] = chainE;
+                                exceptions.Add(e);
                                 }
                             }
+                        try
+                            {
+                            RaiseExceptionForStatus(chain.ErrorStatus, 0x000f0000);
+                            }
+                        catch (Exception e)
+                            {
+                            exceptions.Add(e);
+                            }
+                        if (exceptions.Count > 0) {
+                            throw ((exceptions.Count == 1)
+                                ? exceptions[0]
+                                : new AggregateException(exceptions));
+                            }
+                        }
+                    catch (Exception e)
+                        {
+                        e.Data["Chain"] = chain;
+                        target.Add(e);
                         }
                     }
                 if (target.Any())

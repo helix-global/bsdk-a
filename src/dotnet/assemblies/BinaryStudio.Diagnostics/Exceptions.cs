@@ -14,15 +14,8 @@ namespace BinaryStudio.Diagnostics
         public static void WriteTo(Exception source, TextWriter target) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (target == null) { throw new ArgumentNullException(nameof(target)); }
-            using (var writer = new InternalTextWriter(target)) {
-                WriteTo(source, (IColorTextWriter)writer);
-                }
-            }
-
-        public static void WriteTo(Exception source, IColorTextWriter target) {
-            if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            if (target == null) { throw new ArgumentNullException(nameof(target)); }
-            WriteTo(0, source, target);
+            var index = 0;
+            WriteTo(ref index, String.Empty, source, target);
             }
 
         public static void WriteTo(Exception source, StringBuilder target) {
@@ -41,48 +34,157 @@ namespace BinaryStudio.Diagnostics
             return r.ToString();
             }
 
-        private class Block
+        private static String GetHRForException(Exception e) {
+            return Marshal.GetHRForException(e).ToString("x8");
+            }
+
+        private class Block<T1>
             {
-            public readonly String Message;
-            public readonly String Type;
-            public readonly Int32 Scode;
-            public Block(String message, String type, Int32 scode)
+            public T1 Item1 { get;set; }
+            public Block(T1 item1)
                 {
-                Message = message;
-                Type = type;
-                Scode = scode;
-                }
-            public Block(String message, Type type, Int32 scode)
-                {
-                Message = message;
-                Type = type.FullName;
-                Scode = scode;
+                Item1 = item1;
                 }
             }
 
+        private class Block<T1,T2> : Block<T1>
+            {
+            public T2 Item2 { get;set; }
+            public Block(T1 item1, T2 item2)
+                :base(item1)
+                {
+                Item2 = item2;
+                }
+            }
 
-        private static void WriteTo(Int32 indent, AggregateException e, IColorTextWriter writer) {
-            if (writer != null) {
-                if (e.InnerExceptions.Count > 0) {
-                    writer.WriteLine($"{new String(' ', indent)}   --- Начало трассировки агрегированных исключений (Count = {e.InnerExceptions.Count}) --- ");
-                    var indentstr = new String(' ', indent + 2);
-                    foreach (var i in e.InnerExceptions) {
-                        writer.WriteLine($"{indentstr}   {{");
-                        WriteTo(indent + 2, i, writer);
-                        writer.WriteLine($"{indentstr}   }}");
+        private class ExceptionBlock
+            {
+            public String Message { get; }
+            public Int32? ExceptionIndex { get; }
+            public IDictionary<Object,Object> ExceptionData { get; }
+            public IList<Exception> Exceptions { get; }
+            public ExceptionBlock(String message, Int32? index)
+                {
+                Message = message;
+                ExceptionIndex = index;
+                ExceptionData = new Dictionary<Object, Object>();
+                Exceptions = new List<Exception>();
+                }
+            }
+
+        private static void WriteTo(ref Int32 index, String left, Exception source, TextWriter target) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            AggregateException a = null;
+            var messages = new List<Block<String,Int32>>();
+            var blocks = new LinkedList<ExceptionBlock>();
+            var e = source;
+            while (e != null) {
+                messages.Add(new Block<String,Int32>($"{{{e.GetType().FullName}}}:{{{GetHRForException(e)}}}:{e.Message?.Trim()}", index));
+                a = e as AggregateException;
+                if (e.StackTrace != null) {
+                    var lineindex = 0;
+                    var lines = e.StackTrace.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var c = lines.Length;
+                    foreach (var line in lines.Reverse()) {
+                        var regex = new Regex(@"(\p{Zs}{3}(\p{L}+)\p{Zs}(?<S>.+)\p{Zs}(\p{L}+)\p{Zs}(?<N>.+):(\p{L}+)\p{Zs}(?<L>\p{Nd}+))+");
+                        var matches = regex.Matches(line);
+                        if (matches.Count > 0) {
+                            for (var i = matches.Count - 1; i >= 0; i--) {
+                                ExceptionBlock block;
+                                var m = matches[i];
+                                var s = $"at {m.Groups["S"]} in {Path.GetFileName(m.Groups["N"].Value)}:line {m.Groups["L"]}";
+                                blocks.AddFirst(block = (lineindex == c - 1)
+                                    ? new ExceptionBlock(s, index)
+                                    : new ExceptionBlock(s, null));
+                                if (lineindex == 0) {
+                                    if (e.Data.Count > 0) {
+                                        foreach (DictionaryEntry data in e.Data) {
+                                            block.ExceptionData.Add(
+                                                data.Key,
+                                                data.Value);
+                                            }
+                                        }
+                                    if ((a != null) && (a.InnerExceptions.Count > 0)) {
+                                        foreach (var exception in a.InnerExceptions) {
+                                            block.Exceptions.Add(exception);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        else
+                            {
+                            regex = new Regex(@"(\p{Zs}{3}(\p{L}+)\p{Zs}(?<S>.+))");
+                            matches = regex.Matches(line);
+                            if (matches.Count > 0) {
+                                ExceptionBlock block;
+                                var s = $"at {matches[0].Groups["S"]}";
+                                blocks.AddFirst(block = (lineindex == c - 1)
+                                    ? new ExceptionBlock(s, index)
+                                    : new ExceptionBlock(s, null));
+                                if (lineindex == 0) {
+                                    if (e.Data.Count > 0) {
+                                        foreach (DictionaryEntry data in e.Data) {
+                                            block.ExceptionData.Add(
+                                                data.Key,
+                                                data.Value);
+                                            }
+                                        }
+                                    if ((a != null) && (a.InnerExceptions.Count > 0)) {
+                                        foreach (var exception in a.InnerExceptions) {
+                                            block.Exceptions.Add(exception);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        lineindex++;
+                        }
+                    }
+                index++;
+                if (a != null)
+                    {
+                    break;
+                    }
+                e = e.InnerException;
+                }
+            var d = (index - 1).ToString().Length;
+            var offset = new String(' ', d - 1); 
+            target.WriteLine(String.Join("\n", messages.Select(i =>{
+                return $"{left} {{{i.Item2.ToString($"D{d}")}}} {i.Item1}";
+                })));
+            target.WriteLine($"{left}{offset}        # Exception stack trace:");
+            foreach (var block in blocks) {
+                target.WriteLine((block.ExceptionIndex != null)
+                    ? $"{left}    {{{block.ExceptionIndex.Value.ToString($"D{d}")}}} {block.Message}"
+                    : $"{left}{offset}        {block.Message}");
+                if (block.ExceptionData.Count > 0) {
+                    target.WriteLine($"{left}{offset}        # Exception data:");
+                    foreach (var data in block.ExceptionData) {
+                        target.Write($@"{left}{offset}          ""{data.Key}"":");
+                        var j = 0;
+                        foreach (var line in Serialize(data.Value)) {
+                            if (j > 0) { target.Write($"{left}{offset}          "); }
+                            target.WriteLine(line);
+                            j++;
+                            }
+                        }
+                    }
+                if (block.Exceptions.Count > 0) {
+                    target.WriteLine($"{left}        # Inner exceptions {{Count={block.Exceptions.Count}}}:");
+                    var j = 1;
+                    foreach (var exception in block.Exceptions) {
+                        target.WriteLine($"{left}        # Inner exception {{Order={j}}}:");
+                        WriteTo(ref index, $"{left}        ", exception, target);
+                        j++;
                         }
                     }
                 }
-            }
-
-        private static void WriteTo(Int32 indent, Exception source, IColorTextWriter target)
-            {
-            if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            if (target == null) { throw new ArgumentNullException(nameof(target)); }
-            var identstr = new String(' ', indent);
+            /*
             var messages = new LinkedList<Block>();
             var lines = new List<String>();
-            var data = new HashSet<Tuple<String,Object>>();
+            var data = new HashSet<Tuple<String,String>>();
             #region Formatting exception output
             while (source != null)
                 {
@@ -96,8 +198,8 @@ namespace BinaryStudio.Diagnostics
                             for (var i = matches.Count - 1; i >= 0; i--) {
                                 var m = matches[i];
                                 var s = String.Format(
-                                    "{3}   at {0} in {1}:line {2}", m.Groups["S"],
-                                    Path.GetFileName(m.Groups["N"].Value), m.Groups["L"], identstr);
+                                    "   at {0} in {1}:line {2}", m.Groups["S"],
+                                    Path.GetFileName(m.Groups["N"].Value), m.Groups["L"]);
                                 if (!block.Contains(s)) { block.AddLast(s); }
                                 }
                             }
@@ -106,81 +208,101 @@ namespace BinaryStudio.Diagnostics
                             regex = new Regex(@"(\p{Zs}{3}(at|в)\p{Zs}(?<S>.+))");
                             matches = regex.Matches(line);
                             if (matches.Count > 0) {
-                                var s = String.Format("{1}   at {0}", matches[0].Groups["S"], identstr);
+                                var s = String.Format("   at {0}", matches[0].Groups["S"]);
                                 if (!block.Contains(s)) { block.AddLast(s); }
                                 }
                             }
                         }
                     }
-                block.AddFirst($@"{identstr}   {{{source.GetType()}}}:{{{Marshal.GetHRForException(source).ToString("x8")}}}:""{source.Message.Trim()}""");
+                block.AddFirst($@"   {{{source.GetType()}}}:{{{Marshal.GetHRForException(source).ToString("x8")}}}:""{source.Message.Trim()}""");
                 lines.AddRange(block);
                 var c = source.Data.Count;
                 if (c > 0) {
-                    data.UnionWith(source.Data.OfType<DictionaryEntry>().Select(i => Tuple.Create(i.Key.ToString(), i.Value)));
+                    data.UnionWith(source.Data.OfType<DictionaryEntry>().Select(i =>{
+                        var value = i.Value;
+                        if (value is IExceptionSerializable e) {
+                            var j = 0;
+                            var b = new StringBuilder();
+                            foreach (var line in Serialize(e)) {
+                                if (j > 0) { b.Append($"   "); }
+                                b.AppendLine(line);
+                                j++;
+                                }
+                            value = b;
+                            }
+                        else
+                            {
+                            value = $@"""{value}""";
+                            }
+                        return Tuple.Create(i.Key.ToString(), value.ToString());
+                        }));
                     }
                 if (source is AggregateException) { break; }
                 source = source.InnerException;
                 if (source != null)
                     {
-                    lines.Add($"{identstr}   --- Начало трассировки внутреннего стека исключений ---");
+                    lines.Add($"   --- Начало трассировки внутреннего стека исключений ---");
                     }
                 }
             #endregion
-            foreach (var i in messages) { target.WriteLine($@"{identstr}   {{{i.Type}}}:{{{i.Scode.ToString("x8")}}}:""{i.Message}"""); }
-            target.WriteLine($"{identstr}   --- Начало трассировки стека исключений ---");
+            foreach (var i in messages) { target.WriteLine($@"   {{{i.Type}}}:{{{i.Scode.ToString("x8")}}}:""{i.Message}"""); }
+            target.WriteLine($"   --- Начало трассировки стека исключений ---");
             foreach (var i in lines) { target.WriteLine(i); }
             if (source is AggregateException exception) {
-                WriteTo(indent, exception, target);
+                WriteTo(exception, target);
                 }
             if (data.Count > 0) {
-                target.WriteLine($"{identstr}   --- Дополнительная информация ---");
+                target.WriteLine($"   --- Дополнительная информация ---");
                 foreach (var i in data) {
-                    target.WriteLine($"{identstr}   {i.Item1}=\"{i.Item2}\"");
+                    target.WriteLine($"   {i.Item1}={i.Item2}");
+                    }
+                }
+            */
+            }
+
+        private static IEnumerable<String> Serialize(Object source) {
+                 if (source == null) { yield return "null"; }
+            else if (source is IExceptionSerializable e)
+                {
+                var target = new StringBuilder();
+                using (var writer = new StringWriter(target)) { e.WriteTo(writer); }
+                using (var reader = new StringReader(target.ToString())) {
+                    while (true)
+                        {
+                        var r = reader.ReadLine();
+                        if (r == null) { break; }
+                        yield return r;
+                        }
+                    }
+                }
+            else
+                {
+                var type = source.GetType();
+                if ((type == typeof(Byte))  || (type == typeof(SByte))  || (type == typeof(Decimal)) ||
+                    (type == typeof(Int16)) || (type == typeof(UInt16)) || (type == typeof(Double))  ||
+                    (type == typeof(Int32)) || (type == typeof(UInt32)) || (type == typeof(Single))  ||
+                    (type == typeof(Int64)) || (type == typeof(UInt64)))
+                    {
+                    yield return source.ToString();
+                    }
+                else
+                    {
+                    yield return $@"""{source}""";
                     }
                 }
             }
 
-        private class InternalTextWriter : TextWriter, IColorTextWriter
-            {
-            public override Encoding Encoding { get; }
-            public InternalTextWriter(TextWriter source)
-                {
-                if (source == null) { throw new ArgumentNullException(nameof(source)); }
-                Encoding = source.Encoding;
-                this.source = source;
+        private static IEnumerable<String> Serialize(IExceptionSerializable source) {
+            var target = new StringBuilder();
+            using (var writer = new StringWriter(target)) { source.WriteTo(writer); }
+            using (var reader = new StringReader(target.ToString())) {
+                while (true)
+                    {
+                    var r = reader.ReadLine();
+                    if (r == null) { break; }
+                    yield return r;
+                    }
                 }
-
-            /// <summary>Writes a line terminator to the text string or stream.</summary>
-            /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed.</exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
-            public override void WriteLine()
-                {
-                source.WriteLine();
-                }
-
-            /// <summary>Writes a string followed by a line terminator to the text string or stream.</summary>
-            /// <param name="value">The string to write. If <paramref name="value"/> is <see langword="null"/>, only the line terminator is written.</param>
-            /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed.</exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
-            public override void WriteLine(String value)
-                {
-                source.WriteLine(value);
-                }
-
-            /// <summary>Writes out a formatted string and a new line, using the same semantics as <see cref="M:System.String.Format(System.String,System.Object)" />.</summary>
-            /// <param name="format">A composite format string.</param>
-            /// <param name="args">An object array that contains zero or more objects to format and write.</param>
-            /// <exception cref="T:System.ArgumentNullException">A string or object is passed in as <see langword="null"/>.</exception>
-            /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed.</exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
-            /// <exception cref="T:System.FormatException"><paramref name="format"/> is not a valid composite format string. -or-
-            /// The index of a format item is less than 0 (zero), or greater than or equal to the length of the <paramref name="args"/> array.</exception>
-            public override void WriteLine(String format, params Object[] args)
-                {
-                source.WriteLine(format, args);
-                }
-
-            private readonly TextWriter source;
             }
         }
     }

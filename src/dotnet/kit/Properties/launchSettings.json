@@ -2,7 +2,8 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "verify input:efsod0053.cer"
+      "commandLineArgs": "verify input:crt0053.cer",
+      "remoteDebugEnabled": false
     }
   }
 }

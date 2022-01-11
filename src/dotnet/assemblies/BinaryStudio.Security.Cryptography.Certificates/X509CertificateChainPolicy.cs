@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -12,6 +11,9 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    /// <summary>
+    /// <see cref="X509CertificateChainPolicy"/> class represents a certificate chain verification policy.
+    /// </summary>
     public abstract class X509CertificateChainPolicy : IX509CertificateChainPolicy
         {
         public static readonly IX509CertificateChainPolicy POLICY_BASE              = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_BASE);

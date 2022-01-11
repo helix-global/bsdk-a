@@ -35,8 +35,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public unsafe X509CertificateRevocationList(IntPtr handle)
             {
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
-            Handle = handle;
+            Handle = CertDuplicateCRLContext(handle);
             UnderlyingObject = ConstructFromBinary((CRL_CONTEXT*)handle);
+            }
+
+        public unsafe X509CertificateRevocationList(CRL_CONTEXT* context)
+            {
+            if (context == null) { throw new ArgumentOutOfRangeException(nameof(context)); }
+            Handle = CertDuplicateCRLContext((IntPtr)context);
+            UnderlyingObject = ConstructFromBinary(context);
             }
 
         #region M:ConstructFromBinary(ReadOnlyMemoryMappingStream):Asn1CertificateRevocationList
@@ -122,5 +129,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public override IntPtr Handle { get; }
 
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertDuplicateCRLContext(IntPtr context);
         }
     }

@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Microsoft.Win32;
 using Path=System.IO.Path;
 
@@ -69,7 +71,18 @@ namespace shell
 
         private void UpdateCommandBindings() {
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));;
+            }
+
+        private void OpenBase64Executed(Object sender, ExecutedRoutedEventArgs e)
+            {
+            var dialog = new OpenFromBase64Dialog();
+            if (dialog.ShowDialog() == true)
+                {
+                var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.Bytes)).FirstOrDefault());
+                docmanager.Add(o, "?");
+                }
             }
 
         private void ConvertToBase64Executed(Object sender, ExecutedRoutedEventArgs e)
