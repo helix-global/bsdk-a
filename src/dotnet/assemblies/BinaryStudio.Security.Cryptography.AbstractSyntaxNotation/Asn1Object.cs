@@ -44,8 +44,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal ReadOnlyMappingStream content;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private readonly List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
-        protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
-        [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
         [Browsable(false)] public virtual Boolean IsExplicitConstructed { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsImplicitConstructed { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsIndefiniteLength    { get { return state.HasFlag(ObjectState.Indefinite); }}
@@ -53,6 +53,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public virtual Int64 Offset { get{ return offset; }}
 
         #region M:Body:Byte[]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public virtual Byte[] Body { get {
             using (var target = new MemoryStream())
                 {
@@ -62,6 +63,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }}
         #endregion
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         protected internal virtual ObjectState State {
             get { return state; }
             set

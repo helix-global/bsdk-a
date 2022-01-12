@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Security.Cryptography.Certificates;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -13,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// <summary>
     /// Represents a <see langword="OBJECT IDENTIFIER"/> type.
     /// </summary>
-    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>
+    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>, IObjectIdentifier
         {
         /// <summary>
         /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.ObjectIdentifier"/>.

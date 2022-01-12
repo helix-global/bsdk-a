@@ -12,6 +12,7 @@ using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -20,22 +21,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [DebuggerDisplay(@"\{{" + nameof(ToString) + @"(),nq}\}")]
     [TypeConverter(typeof(ObjectTypeConverter))]
     [XmlRoot("Extension")]
-    public class Asn1CertificateExtension : Asn1LinkObject
+    public class Asn1CertificateExtension : Asn1LinkObject, IX509CertificateExtension
         {
         [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(Identifier))] public Asn1ObjectIdentifier Identifier { get; }
         [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(IsCritical))][TypeConverter(typeof(X509BooleanConverter))] public Boolean IsCritical { get; }
 
-        [Browsable(false)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
-        [Browsable(false)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
-        [Browsable(false)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
-        [Browsable(false)] public override Int32 Count { get { return base.Count; }}
-        [Browsable(false)] public override Int64 Size { get { return base.Size; }}
-        [Browsable(false)] public override Int64 Length { get { return base.Length; }}
-        [Browsable(false)] public override Int64 Offset { get { return base.Offset; }}
-        [Browsable(false)] public override Asn1ObjectClass Class { get { return base.Class; } }
-        [Browsable(false)] public override ReadOnlyMappingStream Content { get { return base.Content; }}
-        [Browsable(false)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
-        [Browsable(false)] public Asn1OctetString Body { get; }
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int32 Count { get { return base.Count; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Size { get { return base.Size; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Length { get { return base.Length; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Offset { get { return base.Offset; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1ObjectClass Class { get { return base.Class; } }
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override ReadOnlyMappingStream Content { get { return base.Content; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IObjectIdentifier IX509CertificateExtension.Identifier { get { return Identifier; }}
 
         protected internal Asn1CertificateExtension(Asn1Object source)
             : base(source)

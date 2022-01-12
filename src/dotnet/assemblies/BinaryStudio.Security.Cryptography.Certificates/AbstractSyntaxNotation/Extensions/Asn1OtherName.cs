@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions

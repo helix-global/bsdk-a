@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "verify \"input:O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,SKI=[9E16],AKI=[0C47],SN=[0118].cer\" policy:icao",
+      "commandLineArgs": "verify \"input:O=ФГУП НТЦ Атлас,OU=ЦС,C=RU,L=Москва,CN=Центр Сертификации эмиссии и контроля ГС ПВДНП,SKI=[9E16],AKI=[0C47],SN=[0118].cer\" policy:icao datetime:2021-05-01T12:00:00",
       "remoteDebugEnabled": false
     }
   }

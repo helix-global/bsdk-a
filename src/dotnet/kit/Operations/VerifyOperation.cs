@@ -15,6 +15,7 @@ namespace Operations
         public CRYPT_PROVIDER_TYPE ProviderType { get; }
         public String Policy { get; }
         public String InputFileName { get; }
+        public DateTime DateTime { get; }
         private IX509CertificateChainPolicy CertificateChainPolicy { get; }
 
         public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
@@ -24,6 +25,7 @@ namespace Operations
             ProviderType  = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
             Policy        = args.OfType<PolicyOption>().FirstOrDefault()?.Value;
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values.FirstOrDefault();
+            DateTime      = args.OfType<DateTimeOption>().First().Value;
             if (Policy != null) {
                 switch (Policy) {
                     case "base"    : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASE;                break;
@@ -72,7 +74,7 @@ namespace Operations
                     var certificate = new X509Certificate(File.ReadAllBytes(filename));
                     try
                         {
-                        certificate.Verify(context, CertificateChainPolicy);
+                        certificate.Verify(context, CertificateChainPolicy, DateTime);
                         Write(ConsoleColor.Green, "{ok}");
                         WriteLine(ConsoleColor.Gray, $":{filename}");
                         }

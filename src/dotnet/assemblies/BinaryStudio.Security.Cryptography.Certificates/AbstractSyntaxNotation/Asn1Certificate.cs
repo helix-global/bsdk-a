@@ -213,7 +213,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }}
 
-        private static Boolean FilterGeneral(KeyValuePair<Asn1ObjectIdentifier, Object> source) {
+        private static Boolean FilterGeneral(KeyValuePair<Asn1ObjectIdentifier, String> source) {
             switch (source.Key.ToString()) {
                 case "2.5.4.20":
                 case "2.5.4.9":
@@ -248,7 +248,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region M:Make(Asn1Object):Asn1RelativeDistinguishedNameSequence
         internal static Asn1RelativeDistinguishedNameSequence Make(Asn1Object source) {
             return new Asn1RelativeDistinguishedNameSequence(source.
-                Select(i => new KeyValuePair<Asn1ObjectIdentifier, Object>(
+                Select(i => new KeyValuePair<Asn1ObjectIdentifier, String>(
                     (Asn1ObjectIdentifier)i[0][0], i[0][1].ToString())));
             }
         #endregion

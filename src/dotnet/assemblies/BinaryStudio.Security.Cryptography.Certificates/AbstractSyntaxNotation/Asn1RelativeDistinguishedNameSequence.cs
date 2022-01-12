@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     public sealed class Asn1RelativeDistinguishedNameSequence :
-        Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>,
+        Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, String>>,
         IJsonSerializable,
         IX509GeneralName
         {
-        public Asn1RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, Object>> source)
+        public Asn1RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, String>> source)
             : base(source)
             {
             }

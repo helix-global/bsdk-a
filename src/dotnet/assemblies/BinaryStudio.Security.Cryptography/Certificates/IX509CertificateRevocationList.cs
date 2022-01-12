@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
@@ -10,6 +11,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         DateTime  EffectiveDate { get; }
         DateTime? NextUpdate { get; }
         IX509RelativeDistinguishedNameSequence Issuer { get; }
+        IList<IX509CertificateExtension> Extensions { get; }
         Byte[] SignatureValue { get; }
         Stream GetSigningStream();
         }

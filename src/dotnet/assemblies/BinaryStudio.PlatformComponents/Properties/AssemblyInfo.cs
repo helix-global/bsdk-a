@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -16,3 +17,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d000c340-348b-45ec-af25-e94919cd7c4f")]
+[assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography.Certificates")]

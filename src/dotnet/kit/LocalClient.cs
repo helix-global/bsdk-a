@@ -46,6 +46,7 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
             if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
+            if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
             if (HasOption(options, typeof(MessageGroupOption))) {
                         if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Out, Console.Error, options);  }
                 else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
@@ -67,7 +68,7 @@ public class LocalClient : ILocalClient
             }
         catch (Exception e)
             {
-            Logger.Log(LogLevel.Critical, $"{e}");
+            Logger.Log(LogLevel.Critical, e);
             return -1;
             }
         }

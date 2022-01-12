@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {

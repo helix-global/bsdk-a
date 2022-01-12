@@ -21,6 +21,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Thumbprint       { get { return UnderlyingObject.Thumbprint;    }}
         public String Country          { get { return UnderlyingObject.Country;       }}
         public X509RelativeDistinguishedNameSequence Issuer { get { return new X509RelativeDistinguishedNameSequence(UnderlyingObject.Issuer); }}
+        public IList<IX509CertificateExtension> Extensions { get { return UnderlyingObject.Extensions; }}
 
         public Byte[] SignatureValue { get {
             return UnderlyingObject[2].Content.ToArray();

@@ -52,7 +52,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         Version = (Int32)(Asn1Integer)u[0][0];
                         SignatureAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)o[0][1]);
                         Issuer = new Asn1RelativeDistinguishedNameSequence(o[0][2].
-                            Select(j => new KeyValuePair<Asn1ObjectIdentifier, Object>(
+                            Select(j => new KeyValuePair<Asn1ObjectIdentifier, String>(
                                 (Asn1ObjectIdentifier)j[0][0], j[0][1].ToString())));
                         EffectiveDate = (Asn1Time)o[0][3];
                         var i = 4;

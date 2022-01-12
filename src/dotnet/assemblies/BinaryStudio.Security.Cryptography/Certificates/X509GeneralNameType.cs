@@ -1,4 +1,4 @@
-﻿namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
+﻿namespace BinaryStudio.Security.Cryptography.Certificates
     {
     public enum X509GeneralNameType
         {

@@ -555,6 +555,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 policy: policy);
             }
         #endregion
+        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy,DateTime)
+        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy, DateTime datetime)
+            {
+            Verify(context, null, null, null, TimeSpan.FromSeconds(0), datetime,
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
+                policy: policy);
+            }
+        #endregion
         #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy):Boolean
         public void Verify(ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
             {

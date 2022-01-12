@@ -1,6 +1,6 @@
 ﻿using System;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography.Interchange
     {

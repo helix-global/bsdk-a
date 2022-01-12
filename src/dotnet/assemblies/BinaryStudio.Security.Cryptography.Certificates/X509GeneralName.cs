@@ -1,7 +1,6 @@
 ﻿using System;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {

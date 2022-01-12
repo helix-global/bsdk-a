@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
@@ -46,44 +48,20 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                         if (chain.ErrorStatus.HasFlag(CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN)) { RaiseExceptionForStatus(chain.ErrorStatus, 0x000f0000); }
                         var c = chain.Count;
                         if (c > 1) {
+                            var exceptions = new List<Exception>();
                             for (var i = 0; i < c - 1; i++) {
-                                if (chain[i].ErrorStatus != 0) {
-                                    var subject = chain[i    ].Certificate;
-                                    var issuer  = chain[i + 1].Certificate;
-                                    context.VerifySignature(subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE);
-                                    if (chain[i].ErrorStatus.HasFlag(CertificateChainErrorStatus.CERT_TRUST_IS_OFFLINE_REVOCATION)) {
-                                        var crls = new List<String>();
-                                        var country = issuer.Country;
-                                        issuer.Issuer.TryGetValue("2.5.4.10", out var isr_o);
-                                        foreach (var crl in storage.CertificateRevocationLists.Where(o =>
-                                             (o.Country == country)
-                                            && o.Issuer.TryGetValue("2.5.4.10", out var crl_o)
-                                            && String.Equals(crl_o, isr_o, StringComparison.OrdinalIgnoreCase)))
-                                            {
-                                            crls.Add(ToString(crl));
-                                            var status = new List<String>();
-                                            if (crl.EffectiveDate >= datetime) {
-                                                status.Add("actual");
-                                                if (context.VerifySignature(out var e, crl, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
-                                                    status.Add("valid");
-                                                    }
-                                                else
-                                                    {
-                                                    status.Add("invalid");
-                                                    }
-                                                }
-                                            else
-                                                {
-                                                status.Add("expired");
-                                                }
-                                            Console.WriteLine($"crl:{String.Join(",", status)}:{ToString(crl)}");
-                                            }
-                                        }
-                                    //RaiseExceptionForStatus(chain[i].ErrorStatus, 0xffffffff);
-                                    //if (chain[i].CertificateRevocationList == null) {
-                                    //    throw new InvalidDataException("no crl");
-                                    //    }
+                                try
+                                    {
+                                    Verify(chain, i, storage, datetime, context);
                                     }
+                                catch (Exception e)
+                                    {
+                                    exceptions.Add(e);
+                                    }
+                                }
+                            if (exceptions.Any())
+                                {
+                                throw new SecurityException("Certificate chain verification error.", exceptions);
                                 }
                             }
                         }
@@ -101,5 +79,104 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                     }
                 }
             }
+
+        private void Verify(X509CertificateChain chain, Int32 index, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
+            {
+            if (chain[index].ErrorStatus != 0) {
+                try
+                    {
+                    var subject = chain[index    ].Certificate;
+                    var issuer  = chain[index + 1].Certificate;
+                    if (chain[index].ErrorStatus.HasFlag(CertificateChainErrorStatus.CERT_TRUST_IS_OFFLINE_REVOCATION)) {
+                        VerifyCRL(subject, issuer, store, datetime, context);
+                        }
+                    else
+                        {
+                        RaiseExceptionForStatus(chain[index].ErrorStatus, 0xffffffff);
+                        }
+                    }
+                catch (Exception e)
+                    {
+                    e.Data["ChainElement"] = chain[index];
+                    throw;
+                    }
+                }
+            }
+
+        private void VerifyCRL(X509Certificate subject, X509Certificate issuer, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
+            {
+            var exceptions = new List<Exception>();
+            var country = issuer.Country;
+            var isr_o = GetO(issuer.Subject);
+            foreach (var i in store.CertificateRevocationLists.Where(i => (i.Country == country) && String.Equals(GetO(i.Issuer), isr_o, StringComparison.OrdinalIgnoreCase))) {
+                var descriptor = ToString(i);
+                var status = new List<String>();
+                try
+                    {
+                    if (i.EffectiveDate <= datetime) {
+                        if (i.NextUpdate != null) {
+                            if (i.NextUpdate.Value >= datetime) {
+                                status.Add("actual");
+                                if (context.VerifySignature(out var e, i, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
+                                    status.Add("valid");
+                                    throw new NotImplementedException();
+                                    }
+                                else
+                                    {
+                                    if ((HRESULT)Marshal.GetHRForException(e) == HRESULT.NTE_BAD_SIGNATURE) {
+                                        /* issuer is not same */
+                                        var a = i.Extensions.OfType<CertificateAuthorityKeyIdentifier>().FirstOrDefault();
+                                        if (a != null) {
+                                            var certificate = store.Certificates.FirstOrDefault(j => {
+                                                if (j.Issuer.Equals(a.CertificateIssuer)) {
+
+                                                    }
+                                                return false;
+                                                });
+                                            }
+                                        }
+                                    status.Add("invalid");
+                                    throw e;
+                                    }
+                                }
+                            else
+                                {
+                                status.Add("expired");
+                                throw (new CrlExpiredException("This certificate revocation list has expired.")).
+                                    Add("NextUpdate", i.NextUpdate.Value.ToString("O"));
+                                }
+                            }
+                        else
+                            {
+                            status.Add("skip");
+                            }
+                        }
+                    else
+                        {
+                        status.Add("expired");
+                        throw (new CrlInvalidTimeException("This certificate revocation list is invalid due effective date.")).
+                            Add("EffectiveDate", i.EffectiveDate.ToString("O"));
+                        }
+                    }
+                catch (Exception e)
+                    {
+                    e.Data["CRL"] = descriptor;
+                    exceptions.Add(e);
+                    }
+                Console.WriteLine($"crl:{String.Join(",", status)}:{ToString(i)}");
+                }
+            if (exceptions.Any())
+                {
+                var e = new SecurityException("Certificate revocation list verification error.", exceptions);
+                throw e;
+                }
+            }
+
+        #region M:GetO(IX509RelativeDistinguishedNameSequence):String
+        private static String GetO(IX509RelativeDistinguishedNameSequence source) {
+            source.TryGetValue("2.5.4.10", out var r);
+            return r;
+            }
+        #endregion
         }
     }

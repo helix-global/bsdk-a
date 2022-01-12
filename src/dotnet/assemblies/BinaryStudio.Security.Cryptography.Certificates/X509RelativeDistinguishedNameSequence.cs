@@ -18,7 +18,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     #if USE_WINFORMS
     [Editor(typeof(NoEditor), typeof(UITypeEditor))]
     #endif
-    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IXmlSerializable, IX509RelativeDistinguishedNameSequence
+    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, String>>, IXmlSerializable, IX509RelativeDistinguishedNameSequence
         {
         private class X509RelativeDistinguishedNamePropertyDescriptor : PropertyDescriptor
             {
@@ -102,18 +102,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, Object>> source)
+        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, String>> source)
             : base(source)
             {
             }
 
-        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, String>> source)
-            : base(source.Select(i => new KeyValuePair<Asn1ObjectIdentifier, Object>(i.Key, i.Value)))
-            {
-            }
-
         public X509RelativeDistinguishedNameSequence()
-            : base(new Dictionary<Asn1ObjectIdentifier, Object>())
+            : base(new Dictionary<Asn1ObjectIdentifier, String>())
             {
             }
 
@@ -251,6 +246,22 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             WriteRaw(writer, "<![CDATA[");
             writer.WriteCData("!!!!");
             writer.WriteEndElement();
+            }
+
+        Boolean IX509GeneralName.IsEmpty { get {
+            return Count == 0;
+            }}
+
+        public X509GeneralNameType Type { get { return X509GeneralNameType.Directory; }}
+        public Boolean Equals(IX509GeneralName other)
+            {
+            if (other == null) { return false; }
+            if (other.Type == X509GeneralNameType.Directory) {
+                if (other is IX509RelativeDistinguishedNameSequence sequence) {
+
+                    }
+                }
+            return false;
             }
         }
     }

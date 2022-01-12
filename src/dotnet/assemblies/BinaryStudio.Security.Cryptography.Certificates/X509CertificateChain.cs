@@ -154,6 +154,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                                     }
                                 writer.WriteValue($"{r}Subject:{{{certificate.Issuer}}}");
                                 }
+                            j++;
                             }
                         }
                     }

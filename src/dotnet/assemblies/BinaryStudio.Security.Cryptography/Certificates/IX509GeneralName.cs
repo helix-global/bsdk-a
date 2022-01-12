@@ -1,7 +1,6 @@
 ﻿using System;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 
-namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
+namespace BinaryStudio.Security.Cryptography.Certificates
     {
     public interface IX509GeneralName
         {
