@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -13,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     #if USE_WINFORMS
     [Editor(typeof(NoEditor), typeof(UITypeEditor))]
     #endif
-    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IJsonSerializable
+    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IJsonSerializable, IX509RelativeDistinguishedNameSequence
         {
         private class X509RelativeDistinguishedNamePropertyDescriptor : PropertyDescriptor
             {
@@ -161,12 +162,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             throw new ArgumentOutOfRangeException(nameof(key));
             }}
 
-        public Boolean TryGetValue(String key, out Object r) {
+        public Boolean TryGetValue(String key, out String r) {
             r = null;
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
             foreach (var item in Items) {
                 if (item.Key.Equals(key)) {
-                    r = item.Value;
+                    r = item.Value?.ToString();
                     return true;
                     }
                 }

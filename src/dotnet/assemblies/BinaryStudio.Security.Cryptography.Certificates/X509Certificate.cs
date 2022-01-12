@@ -95,7 +95,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String FullQualifiedContainerName { get; }
         public String FriendlyName { get { return Source.ToString(); }}
 
-        String IX509Certificate.Issuer  { get { return Issuer.ToString();  }}
+        IX509RelativeDistinguishedNameSequence IX509Certificate.Issuer  { get { return Issuer;  }}
         String IX509Certificate.Subject { get { return Subject.ToString(); }}
         [Browsable(false)] public RawSecurityDescriptor SecurityDescriptor { get; }
         [Browsable(false)]

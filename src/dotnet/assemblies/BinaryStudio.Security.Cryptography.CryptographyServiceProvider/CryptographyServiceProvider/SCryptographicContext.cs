@@ -340,40 +340,85 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return context;
             }
         #endregion
-        #region M:VerifyCertificateSignature(IX509Certificate,IX509Certificate)
-        private void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer)
+        #region M:VerifySignature(IX509Certificate,IX509Certificate)
+        private void VerifySignature(IX509Certificate subject, IX509Certificate issuer)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
-            if (!VerifyCertificateSignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
+            if (!VerifySignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
                 throw e;
                 }
             }
         #endregion
-        #region M:VerifyObjectSignature(IX509Object,IX509Certificate)
-        public void VerifyObjectSignature(IX509Object source, IX509Certificate signer)
+        #region M:VerifySignature(IX509CertificateRevocationList,IX509Certificate)
+        private void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            if (!VerifySignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
+                throw e;
+                }
+            }
+        #endregion
+        #region M:VerifySignature(IX509Object,IX509Certificate)
+        public void VerifySignature(IX509Object source, IX509Certificate signer)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (signer == null) { throw new ArgumentNullException(nameof(signer)); }
             switch (source.ObjectType)
                 {
-                case X509ObjectType.Certificate: { VerifyCertificateSignature((IX509Certificate)source, signer); } break;
+                case X509ObjectType.Certificate: { VerifySignature((IX509Certificate)source, signer); } break;
+                case X509ObjectType.Crl:         { VerifySignature((IX509CertificateRevocationList)source, signer); } break;
                 default: { throw new ArgumentOutOfRangeException(nameof(source)); }
                 }
             }
         #endregion
-        #region M:VerifyCertificateSignature(IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
-        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        #region M:VerifySignature(IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
-            if (!VerifyCertificateSignature(out var e, subject, issuer, flags)) {
+            if (!VerifySignature(out var e, subject, issuer, flags)) {
                 throw e;
                 }
             }
         #endregion
-        #region M:VerifyCertificateSignature([Out]Exception,IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        #region M:VerifySignature(IX509CertificateRevocationList,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            if (!VerifySignature(out var e, subject, issuer, flags)) {
+                throw e;
+                }
+            }
+        #endregion
+        #region M:VerifySignature([Out]Exception,IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
+        public Boolean VerifySignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            #if FEATURE_CRYPT_VERIFY_CERTIFICATE_SIGNATURE_EX
+            return Validate(out e, EntryPoint.CryptVerifyCertificateSignatureEx(handle,
+                X509_ASN_ENCODING,
+                CRYPT_VERIFY_CERT_SIGN_SUBJECT.CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT, subject.Handle,
+                CRYPT_VERIFY_CERT_SIGN_ISSUER.CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, issuer.Handle,
+                flags, IntPtr.Zero));
+            #else
+            using (var key = ImportPublicKey(out e, issuer.Handle)) {
+                if ((e != null) || (key == null)) { return false; }
+                using (var engine = (CryptHashAlgorithm)CreateHashAlgorithm(issuer.HashAlgorithm)) {
+                    engine.HashCore(subject.GetSigningStream());
+                    return engine.VerifySignature(out e,
+                        subject.SignatureValue,
+                        key);
+                    }
+                }
+            #endif
+            }
+        #endregion
+        #region M:VerifySignature([Out]Exception,IX509CertificateRevocationList,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
@@ -950,12 +995,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
-        //#region M:OnPercentageChanged(Double)
-        //protected void OnPercentageChanged(Double value, ProgressState state)
-        //    {
-        //    PercentageChanged?.Invoke(this, new PercentageChangedEventArgs(value, state));
-        //    }
-        //#endregion
 
         #if UBUNTU
         #if CAPILITE

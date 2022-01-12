@@ -25,6 +25,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         public abstract X509StoreLocation Location { get; }
         public abstract String Name { get; }
+        public abstract Boolean IsReadOnly { get; }
         public abstract IntPtr Handle { get; }
 
         #region M:Dispose(Boolean)
@@ -56,6 +57,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         protected abstract void EnsureCore();
         public abstract unsafe X509Certificate Find(CERT_INFO* value, out Exception e);
         public abstract IEnumerable<X509Certificate> Certificates { get; }
+
+        /// <summary>
+        /// Enums all certificate revocation lists in storage.
+        /// </summary>
+        public abstract IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get; }
         public abstract void Add(IX509Certificate o);
         public abstract void Add(IX509CertificateRevocationList o);
         public abstract void Remove(IX509Certificate o);
@@ -64,8 +70,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public abstract void Commit();
 
         IEnumerable<IX509Certificate> IX509CertificateStorage.Certificates { get {
-            foreach (var certificate in Certificates) {
-                yield return certificate;
+            foreach (var i in Certificates) {
+                yield return i;
+                }
+            }}
+
+        /// <summary>
+        /// Enums all certificate revocation lists in storage.
+        /// </summary>
+        IEnumerable<IX509CertificateRevocationList> IX509CertificateStorage.CertificateRevocationLists { get {
+            foreach (var i in CertificateRevocationLists) {
+                yield return i;
                 }
             }}
 

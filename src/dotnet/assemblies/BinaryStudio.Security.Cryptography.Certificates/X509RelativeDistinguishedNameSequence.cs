@@ -18,7 +18,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     #if USE_WINFORMS
     [Editor(typeof(NoEditor), typeof(UITypeEditor))]
     #endif
-    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IXmlSerializable
+    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IXmlSerializable, IX509RelativeDistinguishedNameSequence
         {
         private class X509RelativeDistinguishedNamePropertyDescriptor : PropertyDescriptor
             {
@@ -171,12 +171,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             throw new ArgumentOutOfRangeException(nameof(key));
             }}
 
-        public Boolean TryGetValue(String key, out Object r) {
+        public Boolean TryGetValue(String key, out String r) {
             r = null;
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
             foreach (var item in Items) {
                 if (item.Key.Equals(key)) {
-                    r = item.Value;
+                    r = item.Value?.ToString();
                     return true;
                     }
                 }

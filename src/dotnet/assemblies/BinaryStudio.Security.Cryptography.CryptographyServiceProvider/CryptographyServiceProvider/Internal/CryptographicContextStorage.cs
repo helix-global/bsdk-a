@@ -6,12 +6,14 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     internal class CryptographicContextStorage : CryptographicObject, IX509CertificateStorage
         {
+        public Boolean IsReadOnly { get { return true; }}
         public override IntPtr Handle { get { return storage.Handle; }}
 
         #region M:IX509CertificateStorage.Add(IX509Certificate)
@@ -128,5 +130,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     }
                 }
             }}
+
+        /// <summary>
+        /// Enums all certificate revocation lists in storage.
+        /// </summary>
+        IEnumerable<IX509CertificateRevocationList> IX509CertificateStorage.CertificateRevocationLists { get { return EmptyArray<IX509CertificateRevocationList>.Value; }}
         }
     }

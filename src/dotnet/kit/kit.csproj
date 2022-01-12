@@ -8,6 +8,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>

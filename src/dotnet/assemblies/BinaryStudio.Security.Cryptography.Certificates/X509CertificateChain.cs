@@ -88,9 +88,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
             {
             if (info == null) { throw new ArgumentNullException(nameof(info)); }
+            var c = Count;
             info.AddValue(nameof(ChainIndex),  ChainIndex);
             info.AddValue(nameof(ErrorStatus), (Int32)ErrorStatus);
             info.AddValue(nameof(InfoStatus),  (Int32)InfoStatus);
+            info.AddValue(nameof(Count),       c);
+            var j = 0;
+            foreach (var i in source) {
+                info.AddValue($"Item_{j}", i);
+                j++;
+                }
             }
 
         /// <summary>The special constructor is used to deserialize values.</summary>
@@ -102,6 +109,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             ChainIndex = info.GetInt32(nameof(ChainIndex));
             ErrorStatus = (CertificateChainErrorStatus)info.GetInt32(nameof(ErrorStatus));
             InfoStatus  = (CertificateChainInfoStatus)info.GetInt32(nameof(InfoStatus));
+            var c = info.GetInt32(nameof(Count));
+            for (var i = 0; i < c; i++) {
+                source.Add((X509CertificateChainElement)info.GetValue(
+                    $"Item_{i}",
+                    typeof(X509CertificateChainElement)));
+                }
             }
 
         void IExceptionSerializable.WriteTo(TextWriter target)

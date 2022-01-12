@@ -75,6 +75,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             info.AddValue(nameof(ElementIndex), ElementIndex);
             info.AddValue(nameof(ErrorStatus),  (Int32)ErrorStatus);
             info.AddValue(nameof(InfoStatus),   (Int32)InfoStatus);
+            info.AddValue(nameof(Certificate),  (Certificate != null) ? (Int64)Certificate.Handle : 0);
+            info.AddValue(nameof(CertificateRevocationList),  (CertificateRevocationList != null) ? (Int64)CertificateRevocationList.Handle : 0);
             }
 
         /// <summary>The special constructor is used to deserialize values.</summary>
@@ -86,6 +88,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             ElementIndex = info.GetInt32(nameof(ElementIndex));
             ErrorStatus = (CertificateChainErrorStatus)info.GetInt32(nameof(ErrorStatus));
             InfoStatus  = (CertificateChainInfoStatus)info.GetInt32(nameof(InfoStatus));
+            var cer = info.GetInt64(nameof(Certificate));
+            var crl = info.GetInt64(nameof(CertificateRevocationList));
+            if (cer != 0) { Certificate = new X509Certificate((IntPtr)cer); }
+            if (crl != 0) { CertificateRevocationList = new X509CertificateRevocationList((IntPtr)crl); }
             }
 
         void IExceptionSerializable.WriteTo(TextWriter target)
@@ -106,10 +112,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 writer.WriteValue(serializer, nameof(ElementIndex), ElementIndex);
                 writer.WriteValue(serializer, nameof(ErrorStatus),  ErrorStatus);
                 writer.WriteValue(serializer, nameof(InfoStatus),   InfoStatus);
-                var certificate = Certificate;
+                var cer = Certificate;
                 var crl = CertificateRevocationList;
-                if (certificate != null) {
-                    writer.WriteValue(serializer, nameof(Certificate), $"SerialNumber:{{{certificate.SerialNumber.ToLowerInvariant()}}},Subject:{{{certificate.Subject}}},Issuer:{{{certificate.Issuer}}}");
+                if (cer != null) {
+                    writer.WriteValue(serializer, nameof(Certificate), $"SerialNumber:{{{cer.SerialNumber.ToLowerInvariant()}}},Subject:{{{cer.Subject}}},Issuer:{{{cer.Issuer}}}");
                     }
                 if (crl != null) {
                     var r = new StringBuilder();

@@ -20,7 +20,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("policy:{value}");
+            output.Write("policy[:base|auth|authts|ssl|basic|ntauth|msroot|ev|ssl_f12|ssl_hpkp|third|ssl_key|icao]");
             }
         }
     }

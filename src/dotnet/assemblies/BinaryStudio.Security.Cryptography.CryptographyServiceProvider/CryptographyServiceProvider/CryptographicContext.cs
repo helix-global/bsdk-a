@@ -66,9 +66,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.CreateMessageSignature(inputstream, output, certificates, flags, requesthandler);
             }
 
-        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
-            UnderlyingObject.VerifyCertificateSignature(subject, issuer, flags);
+            UnderlyingObject.VerifySignature(subject, issuer, flags);
+            }
+
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            UnderlyingObject.VerifySignature(subject, issuer, flags);
             }
 
         public void EncryptMessageBER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)
@@ -91,6 +96,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             UnderlyingObject.VerifyDetachedMessageSignature(
                 input, inputdata, out certificates, finder);
+            }
+
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            return UnderlyingObject.VerifySignature(out e, subject, issuer, flags);
             }
 
         public IEnumerable<ICryptKey> Keys { get { return UnderlyingObject.Keys; }}

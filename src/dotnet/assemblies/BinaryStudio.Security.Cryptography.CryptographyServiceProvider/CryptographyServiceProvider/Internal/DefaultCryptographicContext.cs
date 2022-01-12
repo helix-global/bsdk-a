@@ -44,7 +44,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
-        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer,CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer,CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            throw new NotImplementedException();
+            }
+
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             throw new NotImplementedException();
             }
@@ -83,6 +88,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates,IX509CertificateResolver finder)
+            {
+            throw new NotImplementedException();
+            }
+
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             throw new NotImplementedException();
             }

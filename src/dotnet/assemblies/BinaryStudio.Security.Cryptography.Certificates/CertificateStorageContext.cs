@@ -12,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         {
         public override X509StoreLocation Location { get; }
         public override String Name { get; }
+        public override Boolean IsReadOnly { get; }
         public override IntPtr Handle { get { return store; }}
 
         #region M:CertificateStorageContext(IntPtr)
@@ -40,6 +41,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #endregion
         #region M:CertificateStorageContext(X509StoreName,X509StoreLocation)
         public CertificateStorageContext(X509StoreName name, X509StoreLocation location) {
+            IsReadOnly = false;
             Location = location;
             switch (name)
                 {
@@ -183,8 +185,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern Boolean CertDeleteCRLFromStore(IntPtr context);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] String pvPara);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] IntPtr pvPara);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr hCertStore, UInt32 dwMsgAndCertEncodingType, CERT_INFO* CertId);
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern IntPtr CertEnumCertificatesInStore(IntPtr hCertStore, IntPtr pPrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] protected static extern unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr CertStore, UInt32 MsgAndCertEncodingType, CERT_INFO* CertId);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
 
         protected IntPtr store;
 
@@ -268,6 +271,18 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             while (i != IntPtr.Zero) {
                 yield return new X509Certificate(i);
                 i = CertEnumCertificatesInStore(store, i);
+                }
+            }}
+
+        /// <summary>
+        /// Enums all certificate revocation lists in storage.
+        /// </summary>
+        public override IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+            EnsureCore();
+            var i = CertEnumCRLsInStore(store, IntPtr.Zero);
+            while (i != IntPtr.Zero) {
+                yield return new X509CertificateRevocationList(i);
+                i = CertEnumCRLsInStore(store, i);
                 }
             }}
 

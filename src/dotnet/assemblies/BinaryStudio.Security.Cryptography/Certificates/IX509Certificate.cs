@@ -10,7 +10,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         Int32 Version { get; }
         String SerialNumber { get; }
         String Container { get; }
-        String Issuer { get; }
+        IX509RelativeDistinguishedNameSequence Issuer { get; }
         String Subject { get; }
         String Thumbprint { get; }
         String FriendlyName { get; }

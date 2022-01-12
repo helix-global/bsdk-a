@@ -12,6 +12,7 @@
     <ProjectReference Include="..\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
     <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -15,13 +15,33 @@ namespace Operations
         public CRYPT_PROVIDER_TYPE ProviderType { get; }
         public String Policy { get; }
         public String InputFileName { get; }
+        private IX509CertificateChainPolicy CertificateChainPolicy { get; }
 
         public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
             : base(output, error, args)
             {
+            CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASE;
             ProviderType  = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
             Policy        = args.OfType<PolicyOption>().FirstOrDefault()?.Value;
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values.FirstOrDefault();
+            if (Policy != null) {
+                switch (Policy) {
+                    case "base"    : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASE;                break;
+                    case "auth"    : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_AUTHENTICODE;        break;
+                    case "authts"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_AUTHENTICODE_TS;     break;
+                    case "ssl"     : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL;                 break;
+                    case "basic"   : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASIC_CONSTRAINTS;   break;
+                    case "ntauth"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_NT_AUTH;             break;
+                    case "msroot"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_MICROSOFT_ROOT;      break;
+                    case "ev"      : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_EV;                  break;
+                    case "ssl_f12" : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_F12;             break;
+                    case "ssl_hpkp": CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_HPKP_HEADER;     break;
+                    case "third"   : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_THIRD_PARTY_ROOT;    break;
+                    case "ssl_key" : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_KEY_PIN;         break;
+                    case "icao"    : CertificateChainPolicy = X509CertificateChainPolicy.IcaoCertificateChainPolicy; break;
+                    default: throw new NotSupportedException();
+                    }
+                }
             }
 
         #region M:Execute(TextWriter)
@@ -52,10 +72,14 @@ namespace Operations
                     var certificate = new X509Certificate(File.ReadAllBytes(filename));
                     try
                         {
-                        certificate.Verify(context, X509CertificateChainPolicy.POLICY_BASE);
+                        certificate.Verify(context, CertificateChainPolicy);
+                        Write(ConsoleColor.Green, "{ok}");
+                        WriteLine(ConsoleColor.Gray, $":{filename}");
                         }
                     catch (Exception e)
                         {
+                        Write(ConsoleColor.Red, "{error}");
+                        WriteLine(ConsoleColor.Gray, $":{filename}");
                         Logger.Log(LogLevel.Warning, e);
                         }
                     }

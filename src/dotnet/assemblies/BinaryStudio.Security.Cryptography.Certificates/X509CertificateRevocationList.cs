@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using BinaryStudio.IO;
@@ -15,8 +17,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public DateTime  EffectiveDate { get { return UnderlyingObject.EffectiveDate; }}
         public DateTime? NextUpdate    { get { return UnderlyingObject.NextUpdate;    }}
         public Int32 Version           { get { return UnderlyingObject.Version;       }}
+        public String FriendlyName     { get { return UnderlyingObject.FriendlyName;  }}
+        public String Thumbprint       { get { return UnderlyingObject.Thumbprint;    }}
+        public String Country          { get { return UnderlyingObject.Country;       }}
         public X509RelativeDistinguishedNameSequence Issuer { get { return new X509RelativeDistinguishedNameSequence(UnderlyingObject.Issuer); }}
-        public String FriendlyName { get { return UnderlyingObject.FriendlyName; }}
+
+        public Byte[] SignatureValue { get {
+            return UnderlyingObject[2].Content.ToArray();
+            }}
+
+        IX509RelativeDistinguishedNameSequence IX509CertificateRevocationList.Issuer { get { return Issuer; }}
 
         public X509CertificateRevocationList(Byte[] source)
             {
@@ -130,5 +140,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertDuplicateCRLContext(IntPtr context);
+
+        #region M:GetSigningStreamInternal:IEnumerable<Byte>
+        private IEnumerable<Byte> GetSigningStreamInternal() {
+            return UnderlyingObject[0].Body;
+            }
+        #endregion
+        #region M:GetSigningStream:Stream
+        public Stream GetSigningStream()
+            {
+            return new ForwardOnlyByteStream(GetSigningStreamInternal);
+            }
+        #endregion
         }
     }
