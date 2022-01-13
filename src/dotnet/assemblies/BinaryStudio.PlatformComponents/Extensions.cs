@@ -7,7 +7,10 @@ namespace BinaryStudio.PlatformComponents
         internal static T Add<T>(this T e, String key, Object value)
             where T: Exception
             {
-            e.Data[key] = value;
+            if (value != null)
+                {
+                e.Data[key] = value;
+                }
             return e;
             }
         }

@@ -230,11 +230,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
         [DllImport("crypt32.dll", ExactSpelling = true, SetLastError = true)] protected static extern Boolean CertVerifyCertificateChainPolicy([In] IntPtr policy, [In] ref CERT_CHAIN_CONTEXT chaincontext, [In] ref CERT_CHAIN_POLICY_PARA policypara, [In][Out] ref CERT_CHAIN_POLICY_STATUS policystatus);
+        [DllImport("crypt32.dll", ExactSpelling = true, SetLastError = true)] protected static extern unsafe Boolean CertVerifyCRLRevocation(UInt32 CertEncodingType, IntPtr CertId,Int32 CrlInfoCount,CRL_INFO** CrlInfoArray);
 
         private   const UInt32 FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100;
         private   const UInt32 FORMAT_MESSAGE_FROM_SYSTEM     = 0x00001000;
         private   const UInt32 FORMAT_MESSAGE_FROM_HMODULE    = 0x00000800;
         private   const UInt32 LANG_NEUTRAL                   = 0x00;
         private   const UInt32 SUBLANG_DEFAULT                = 0x01;
+        protected const UInt32 X509_ASN_ENCODING              = 0x00000001;
+        protected const UInt32 PKCS_7_ASN_ENCODING            = 0x00010000;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using BinaryStudio.Diagnostics.Logging;
@@ -68,6 +69,8 @@ namespace Operations
         private void Execute(CryptographicContext context, String filename) {
             if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
             var E = Path.GetExtension(filename).ToLower();
+            var timer = new Stopwatch();
+            timer.Start();
             switch (E) {
                 case ".cer":
                     {
@@ -75,12 +78,18 @@ namespace Operations
                     try
                         {
                         certificate.Verify(context, CertificateChainPolicy, DateTime);
+                        timer.Stop();
                         Write(ConsoleColor.Green, "{ok}");
+                        Write(ConsoleColor.Gray, ":");
+                        Write(ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
                         WriteLine(ConsoleColor.Gray, $":{filename}");
                         }
                     catch (Exception e)
                         {
+                        timer.Stop();
                         Write(ConsoleColor.Red, "{error}");
+                        Write(ConsoleColor.Gray, ":");
+                        Write(ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
                         WriteLine(ConsoleColor.Gray, $":{filename}");
                         Logger.Log(LogLevel.Warning, e);
                         }

@@ -105,6 +105,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
+            Extensions = new Asn1CertificateExtensionCollection();
             SubjectPublicKeyInfo = new X509NoCertificateSubjectPublicKeyInfo();
             State |= ObjectState.Failed;
             if (o is Asn1Sequence u)
@@ -183,7 +184,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         [Browsable(false)]
         public String FriendlyName { get {
-            var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
+            var SK = ((CertificateSubjectKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {
@@ -199,7 +200,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         [Browsable(false)]
         public String AlternativeFriendlyName { get {
-            var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
+            var SK = ((CertificateSubjectKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {

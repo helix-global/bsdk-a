@@ -253,13 +253,39 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }}
 
         public X509GeneralNameType Type { get { return X509GeneralNameType.Directory; }}
-        public Boolean Equals(IX509GeneralName other)
-            {
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns> <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(IX509GeneralName other) {
             if (other == null) { return false; }
             if (other.Type == X509GeneralNameType.Directory) {
-                if (other is IX509RelativeDistinguishedNameSequence sequence) {
-
+                if (other is IList<KeyValuePair<Asn1ObjectIdentifier,String>> sequence) {
+                    return Equals(sequence);
                     }
+                }
+            return false;
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns> <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(IList<KeyValuePair<Asn1ObjectIdentifier,String>> other) {
+            if (other == null) { return false; }
+            var x = this;
+            var y = other;
+            if (x.Count == y.Count) {
+                using (IEnumerator<KeyValuePair<Asn1ObjectIdentifier,String>>
+                    l = x.OrderBy(i => i.Key).GetEnumerator(),
+                    r = y.OrderBy(i => i.Key).GetEnumerator()) {
+                    while (l.MoveNext() && r.MoveNext()) {
+                        if (!l.Current.Key.Equals(r.Current.Key) ||
+                            !l.Current.Value.Equals(r.Current.Value)) {
+                            return false;
+                            }
+                        }
+                    }
+                return true;
                 }
             return false;
             }

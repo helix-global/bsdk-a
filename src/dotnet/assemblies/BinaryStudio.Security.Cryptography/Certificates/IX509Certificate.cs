@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -11,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         String SerialNumber { get; }
         String Container { get; }
         IX509RelativeDistinguishedNameSequence Issuer { get; }
+        IList<IX509CertificateExtension> Extensions { get; }
         String Subject { get; }
         String Thumbprint { get; }
         String FriendlyName { get; }

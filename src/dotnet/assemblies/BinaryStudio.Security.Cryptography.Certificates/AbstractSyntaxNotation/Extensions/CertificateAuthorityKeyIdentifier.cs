@@ -61,7 +61,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public override String ToString()
             {
             return (KeyIdentifier != null)
-                ? KeyIdentifier.ToString()
+                ? KeyIdentifier.ToString("x")
                 : base.ToString();
             }
 

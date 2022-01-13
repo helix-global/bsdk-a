@@ -96,6 +96,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String FriendlyName { get { return Source.ToString(); }}
 
         IX509RelativeDistinguishedNameSequence IX509Certificate.Issuer  { get { return Issuer;  }}
+        IList<IX509CertificateExtension> IX509Certificate.Extensions { get { return Source.Extensions; }}
+
         String IX509Certificate.Subject { get { return Subject.ToString(); }}
         [Browsable(false)] public RawSecurityDescriptor SecurityDescriptor { get; }
         [Browsable(false)]
@@ -464,7 +466,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         //#region M:VerifySignature(List<Exception>,ICryptographicContext)
         private static Boolean VerifyCRL(X509Certificate certificate, HashSet<Exception> target, ICryptographicContext context, IntPtr store, ref CertificateChainErrorStatus status, DateTime datetime) {
             if ((store != IntPtr.Zero) && (status != CertificateChainErrorStatus.CERT_TRUST_NO_ERROR)) {
-                var ski = ((Asn1CertificateSubjectKeyIdentifierExtension)certificate.Source.Extensions.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("X");
+                var ski = ((CertificateSubjectKeyIdentifier)certificate.Source.Extensions.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("X");
                 var exceptions = new List<Exception>();
                 var hcrl = IntPtr.Zero;
                 if (!String.IsNullOrWhiteSpace(ski)) {

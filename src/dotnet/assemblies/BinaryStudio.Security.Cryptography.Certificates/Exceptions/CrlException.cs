@@ -7,7 +7,7 @@ namespace BinaryStudio.Security.Cryptography
         {
         /// <summary>Initializes a new instance of the <see cref="CrlException"/> class with a specified message that describes the error.</summary>
         /// <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
-        protected CrlException(String message)
+        public CrlException(String message)
             :base(message)
             {
             }
@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography
         /// <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
         /// <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
-        protected CrlException(String message, IEnumerable<Exception> innerExceptions)
+        public CrlException(String message, IEnumerable<Exception> innerExceptions)
             :base(message, innerExceptions)
             {
             }

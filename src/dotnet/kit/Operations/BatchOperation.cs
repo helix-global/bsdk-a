@@ -417,10 +417,10 @@ namespace Operations
             }
         #endregion
         #region M:Get(Asn1CertificateSubjectKeyIdentifierExtension):DExtension
-        private static DExtension Get(Entities context, LocalCache cache, Asn1CertificateSubjectKeyIdentifierExtension source) {
+        private static DExtension Get(Entities context, LocalCache cache, CertificateSubjectKeyIdentifier source) {
             var r = context.SubjectKeyIdentifiers.Add(new DSubjectKeyIdentifier {
-                LongKey = source.Value.ToString("X"),
-                ShortKey = GetShortKey(source.Value),
+                LongKey = source.KeyIdentifier.ToString("X"),
+                ShortKey = GetShortKey(source.KeyIdentifier),
                 Extension = context.Extensions.Add(new DExtension {
                     IsCritical = source.IsCritical,
                     ObjectIdentifier = Get(cache.ObjectIdentifiers, context.ObjectIdentifiers, source.Identifier.ToString()),
@@ -560,7 +560,7 @@ namespace Operations
                             break;
                         case "2.5.29.14":
                             {
-                            target.Object.Extension.Add(Get(context, cache, (Asn1CertificateSubjectKeyIdentifierExtension)extension));
+                            target.Object.Extension.Add(Get(context, cache, (CertificateSubjectKeyIdentifier)extension));
                             }
                             break;
                         }
@@ -608,7 +608,7 @@ namespace Operations
                             break;
                         case "2.5.29.14":
                             {
-                            target.Object.Extension.Add(Get(context, cache, (Asn1CertificateSubjectKeyIdentifierExtension)extension));
+                            target.Object.Extension.Add(Get(context, cache, (CertificateSubjectKeyIdentifier)extension));
                             }
                             break;
                         }

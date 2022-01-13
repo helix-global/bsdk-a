@@ -14,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// <summary>
     /// Represents a <see langword="OBJECT IDENTIFIER"/> type.
     /// </summary>
-    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>, IObjectIdentifier
+    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>, IObjectIdentifier, IComparable<Asn1ObjectIdentifier>
         {
         /// <summary>
         /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.ObjectIdentifier"/>.
@@ -109,6 +109,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             #endif
             }
         #endregion
+
+        public Int32 CompareTo(Asn1ObjectIdentifier other)
+            {
+            if (other == null) { return +1; }
+            return ToString().CompareTo(other.ToString());
+            }
 
         /**
          * <summary>Indicates whether the current object is equal to another string object.</summary>
