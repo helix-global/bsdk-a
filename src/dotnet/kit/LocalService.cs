@@ -14,6 +14,10 @@ public class LocalService : ILocalClient
         return 0;
         }
 
+    void ILocalClient.OnCancelKeyPress(Object sender, ConsoleCancelEventArgs e)
+        {
+        }
+
     void IDisposable.Dispose()
         {
         }

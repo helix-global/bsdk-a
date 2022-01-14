@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Threading;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents;
@@ -16,7 +15,6 @@ using kit;
 using log4net;
 using Operations;
 using Options;
-using Process = BinaryStudio.PlatformComponents.Win32.Process;
 
 public class LocalClient : ILocalClient
     {
@@ -57,7 +55,13 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
             operation.ValidatePermission();
+            GC.Collect();
+            //Console.WriteLine("press [ENTER] to begin...");
+            //Console.ReadLine();
             operation.Execute(Console.Out);
+            GC.Collect();
+            //Console.WriteLine("press [ENTER] to exit...");
+            //Console.ReadLine();
             operation = null;
             GC.Collect();
             return 0;
@@ -71,6 +75,14 @@ public class LocalClient : ILocalClient
             Logger.Log(LogLevel.Critical, e);
             return -1;
             }
+        finally
+            {
+            }
+        }
+
+    void ILocalClient.OnCancelKeyPress(Object sender, ConsoleCancelEventArgs e)
+        {
+        throw new ControlBreakException();
         }
 
     private static Int32 Elevate(String[] args)

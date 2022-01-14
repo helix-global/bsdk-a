@@ -6,8 +6,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     public class X509CombinedCertificateStorage : IX509CertificateStorage
         {
         private IList<IX509CertificateStorage> storages = new List<IX509CertificateStorage>();
-        public X509CombinedCertificateStorage(params IX509CertificateStorage[] storages)
+        private readonly Boolean flags;
+        public X509CombinedCertificateStorage(Boolean flags, params IX509CertificateStorage[] storages)
             {
+            this.flags = flags;
             foreach (var storage in storages) {
                 if (storage != null) {
                     this.storages.Add(storage);
@@ -15,13 +17,32 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose() {
+        #region M:Dispose(Boolean)
+        protected virtual void Dispose(Boolean disposing) {
             if (storages != null) {
+                if (flags) {
+                    foreach (var storage in storages) { storage.Dispose(); }
+                    }
                 storages.Clear();
                 storages = null;
                 }
             }
+        #endregion
+        #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+            {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            }
+        #endregion
+        #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        ~X509CombinedCertificateStorage()
+            {
+            Dispose(false);
+            }
+        #endregion
 
         public Boolean IsReadOnly { get { return true; }}
         public IntPtr Handle { get { return IntPtr.Zero; }}
@@ -35,6 +56,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                         }
                     }
                 }
+            r.Clear();
             }}
 
         /// <summary>
@@ -49,6 +71,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                         }
                     }
                 }
+            r.Clear();
             }}
 
         void IX509CertificateStorage.Add(IX509Certificate o)

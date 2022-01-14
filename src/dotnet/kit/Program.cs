@@ -348,7 +348,7 @@ namespace Kit
 
         [MTAThread]
         internal static void Main(String[] args) {
-            
+            var color = Console.ForegroundColor;
             try
                 {
                 if (PlatformContext.IsParentProcess("kit.exe")) {
@@ -361,9 +361,16 @@ namespace Kit
                         ? (ILocalClient)(new LocalService())
                         : (ILocalClient )(new LocalClient()))
                     {
+                    Console.CancelKeyPress += client.OnCancelKeyPress;
                     exitcode = client.Main(args);
+                    Console.CancelKeyPress -= client.OnCancelKeyPress;
                     }
                 Environment.ExitCode = exitcode;
+                }
+            catch (ControlBreakException)
+                {
+                Console.WriteLine("[Ctrl+Break]");
+                Environment.ExitCode = -1;
                 }
             catch (Exception e)
                 {
@@ -373,6 +380,7 @@ namespace Kit
                 }
             finally
                 {
+                Console.ForegroundColor = color;
                 }
             }
 

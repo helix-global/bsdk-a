@@ -59,7 +59,7 @@ namespace kit
                 ? new ConsoleColorScope(color.Value)
                 : null)
                 {
-                Console.WriteLine(message);
+                Console.Error.WriteLine(message);
                 }
             }
         }

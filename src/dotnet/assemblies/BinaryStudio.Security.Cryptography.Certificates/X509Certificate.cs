@@ -38,8 +38,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         {
         IntPtr context;
         private PublicKey publickey;
+        private Asn1Certificate source;
 
-        public Asn1Certificate Source { get; }
+        public Asn1Certificate Source { get { return source; }}
         [Browsable(false)] public override IntPtr Handle { get { return context; }}
         [Browsable(false)] public override X509ObjectType ObjectType { get { return X509ObjectType.Certificate; }}
 
@@ -125,7 +126,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (source != IntPtr.Zero) {
                 using (new TraceScope()) {
                     this.context = CertDuplicateCertificateContext(source);
-                    Source = Load(this.context);
+                    this.source = Load(this.context);
                     Version = Source.Version;
                     SerialNumber = Source.SerialNumber.ToString();
                     Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
@@ -158,7 +159,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (source == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(source)); }
             using (new TraceScope()) {
                 context = CertDuplicateCertificateContext(source);
-                Source = Load(context);
+                this.source = Load(context);
                 Version = Source.Version;
                 SerialNumber = Source.SerialNumber.ToString();
                 Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
@@ -274,7 +275,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509Certificate(Asn1Certificate source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            Source = source;
+            this.source = source;
             var body = source.UnderlyingObject.Body;
             var handle = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, body, body.Length);
             if (handle == IntPtr.Zero)
@@ -309,7 +310,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     Marshal.ThrowExceptionForHR((Int32)hr);
                     }
                 context = handle;
-                Source = Load(source);
+                this.source = Load(source);
                 Version = Source.Version;
                 SerialNumber = Source.SerialNumber.ToString();
                 Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
@@ -561,6 +562,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy, DateTime datetime)
             {
             Verify(context, null, null, null, TimeSpan.FromSeconds(0), datetime,
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
+                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
+                policy: policy);
+            }
+        #endregion
+        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy,IX509CertificateStorage,DateTime)
+        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy, IX509CertificateStorage store, DateTime datetime)
+            {
+            Verify(context, store, null, null, TimeSpan.FromSeconds(0), datetime,
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
                 CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
@@ -942,6 +953,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:Dispose(Boolean)
         protected override void Dispose(Boolean disposing) {
             using (new TraceScope()) {
+                publickey = null;
+                source = null;
                 base.Dispose(disposing);
                 if (context != IntPtr.Zero) {
                     CertFreeCertificateContext(context);

@@ -38,9 +38,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             if (chaincontext.TrustStatus.ErrorStatus != 0) {
                 var source = new X509CertificateChainContext(ref chaincontext);
                 var target = new HashSet<Exception>();
-                var storage = new X509CombinedCertificateStorage(store,
-                    new CertificateStorageContext(X509StoreName.Root, X509StoreLocation.LocalMachine),
-                    new CertificateStorageContext(X509StoreName.CertificateAuthority, X509StoreLocation.LocalMachine));
                 foreach (var chain in source) {
                     try
                         {
@@ -51,7 +48,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                             for (var i = 0; i < c - 1; i++) {
                                 try
                                     {
-                                    Verify(chain, i, storage, datetime, context);
+                                    Verify(chain, i, store, datetime, context);
                                     }
                                 catch (Exception e)
                                     {

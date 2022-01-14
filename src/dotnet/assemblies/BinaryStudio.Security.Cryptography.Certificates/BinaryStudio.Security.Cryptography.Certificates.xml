@@ -556,6 +556,9 @@
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CombinedCertificateStorage.Dispose">
             <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CombinedCertificateStorage.Finalize">
+            <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        </member>
         <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509CombinedCertificateStorage.CertificateRevocationLists">
             <summary>
             Enums all certificate revocation lists in storage.

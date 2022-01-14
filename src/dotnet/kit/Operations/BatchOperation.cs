@@ -66,7 +66,7 @@ namespace Operations
             }
 
 
-        private void ProcessFile(Object so, MetadataScope scope, String filename, TextWriter output, X509CertificateStorage store, Entities connection)
+        private void Execute(Object so, MetadataScope scope, String filename, TextWriter output, X509CertificateStorage store, Entities connection)
             {
             if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
             var E = Path.GetExtension(filename).ToLower();
@@ -641,13 +641,13 @@ namespace Operations
                             var folder = Path.GetDirectoryName(fi);
                             var pattern = Path.GetFileName(fi);
                             if (String.IsNullOrEmpty(folder)) { folder = ".\\"; }
-                            foreach (var filename in Directory.GetFiles(folder, pattern, flags)) {
-                                ProcessFile(so, scope, filename, output, store, connection);
-                                }
+                            Directory.GetFiles(folder, pattern, flags).AsParallel().ForAll(i => {
+                                Execute(so, scope, i, output, store, connection);
+                                });
                             }
                         else
                             {
-                            ProcessFile(so, scope, fileitem, output, store, connection);
+                            Execute(so, scope, fileitem, output, store, connection);
                             }
                         }
                     }

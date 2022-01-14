@@ -66,23 +66,23 @@ namespace Operations
             }
 
         #region M:WriteLine(ConsoleColor,String,Object[])
-        protected void WriteLine(ConsoleColor color, String format, params Object[] args) {
+        protected void WriteLine(TextWriter writer, ConsoleColor color, String format, params Object[] args) {
             using (new ConsoleColorScope(color)) {
-                Out.WriteLine(format, args);
+                writer.WriteLine(format, args);
                 }
             }
         #endregion
         #region M:WriteLine(ConsoleColor,String)
-        protected void WriteLine(ConsoleColor color, String message) {
+        protected void WriteLine(TextWriter writer, ConsoleColor color, String message) {
             using (new ConsoleColorScope(color)) {
-                Out.WriteLine(message);
+                writer.WriteLine(message);
                 }
             }
         #endregion
         #region M:Write(ConsoleColor,String)
-        protected void Write(ConsoleColor color, String message) {
+        protected void Write(TextWriter writer, ConsoleColor color, String message) {
             using (new ConsoleColorScope(color)) {
-                Out.Write(message);
+                writer.Write(message);
                 }
             }
         #endregion
