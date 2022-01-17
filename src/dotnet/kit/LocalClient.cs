@@ -82,6 +82,9 @@ public class LocalClient : ILocalClient
                     WriteLine(Console.Out, ConsoleColor.Magenta, "{break}");
                     return -1;
                     }
+                if (e.InnerExceptions[0] is PrincipalPermissionException) {
+                    return Elevate(args);
+                    }
                 }
             Logger.Log(LogLevel.Critical, e);
             return -1;

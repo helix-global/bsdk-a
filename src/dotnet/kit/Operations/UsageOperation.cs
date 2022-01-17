@@ -34,12 +34,14 @@ namespace Operations
             output.WriteLine(@"
   input:{file-name}.ldif output:{folder} batch:extract
   input:{file-name}.ldif output:{folder} batch:extract,group
-  input:{file-name}.ldif filter:*.cer batch:install   storelocation:LocalMachine storename:Root
-  input:{file-name}.ldif filter:*.cer batch:uninstall storelocation:LocalMachine storename:Root
-  input:{file-name}.ldif filter:*.crl batch:install storelocation:LocalMachine storename:CA
+  input:{file-name}.ldif filter:*.cer batch:{un}install storelocation:LocalMachine storename:Root
+  input:{file-name}.ldif filter:*.crl batch:{un}install storelocation:LocalMachine storename:CA
+  input:*.cer batch:{un}install storelocation:LocalMachine storename:Root
+  input:*.crl batch:{un}install storelocation:LocalMachine storename:CA
   input:{file-name} hash algid:{algid}
   input:{file-name} hash algid:{algid} providertype:{number}
-  input:{file-name} message verify");
+  input:{file-name} message verify
+  input:*.cer verify policy:icao datetime:{datetime}");
             }
         }
     }

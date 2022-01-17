@@ -16,6 +16,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
@@ -446,22 +447,41 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
 
-        #region M:VerifyNotAfter(List<Exception>,DateTime)
-        private void VerifyNotAfter(List<Exception> target, DateTime datetime)
-            {
-            if (NotAfter < datetime)
+        #region M:VerifyNotAfter([Out]Exception,DateTime):Boolean
+        private Boolean VerifyNotAfter(out Exception e, DateTime datetime) {
+            e = null;
+            try
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformContext.DefaultCulture)));
+                if (NotAfter < datetime) {
+                    throw new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformContext.DefaultCulture));
+                    }
                 }
+            catch (Exception exception)
+                {
+                exception.Data["NotAfter"] = NotAfter.ToString("s");
+                e = exception;
+                return false;
+                }
+            return true;
             }
         #endregion
-        #region M:VerifyNotBefore(List<Exception>,DateTime)
-        private void VerifyNotBefore(List<Exception> target, DateTime datetime)
+        #region M:VerifyNotBefore([Out]Exception,DateTime):Boolean
+        private Boolean VerifyNotBefore(out Exception e, DateTime datetime)
             {
-            if (datetime < NotBefore)
+            e = null;
+            try
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformContext.DefaultCulture)));
+                if (datetime < NotBefore) {
+                    throw new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformContext.DefaultCulture));
+                    }
                 }
+            catch (Exception exception)
+                {
+                exception.Data["NotBefore"] = NotBefore.ToString("s");
+                e = exception;
+                return false;
+                }
+            return true;
             }
         #endregion
         //#region M:VerifySignature(List<Exception>,ICryptographicContext)
@@ -583,9 +603,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             using (new TraceScope())
                 {
-                var target = new List<Exception>();
-                VerifyNotAfter(target,  datetime);
-                VerifyNotBefore(target, datetime);
+                Exception e;
+                var target = new List<Exception> {
+                    {!VerifyNotAfter (out e, datetime), e},
+                    {!VerifyNotBefore(out e, datetime), e}
+                    };
                 target.AddRange(VerifyCertificateChain(context, IntPtr.Zero,
                     applicationpolicy, certificatepolicy, timeout, datetime,
                     store,flags,policy
