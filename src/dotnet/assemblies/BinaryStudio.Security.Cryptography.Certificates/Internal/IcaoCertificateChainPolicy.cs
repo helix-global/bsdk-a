@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Threading;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
@@ -39,6 +40,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 var source = new X509CertificateChainContext(ref chaincontext);
                 var target = new HashSet<Exception>();
                 foreach (var chain in source) {
+                    Thread.Sleep(0);
                     try
                         {
                         if (chain.ErrorStatus.HasFlag(CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN)) { RaiseExceptionForStatus(chain.ErrorStatus, 0x000f0000); }
@@ -48,6 +50,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                             for (var i = 0; i < c - 1; i++) {
                                 try
                                     {
+                                    Thread.Sleep(0);
                                     Verify(chain, i, store, datetime, context);
                                     }
                                 catch (Exception e)
@@ -109,6 +112,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             var country = issuer.Country;
             var isr_o = GetO(issuer.Subject);
             foreach (var i in store.CertificateRevocationLists.Where(i => (i.Country == country) && String.Equals(GetO(i.Issuer), isr_o, StringComparison.OrdinalIgnoreCase))) {
+                Thread.Sleep(0);
                 var descriptor = ToString(i);
                 try
                     {
@@ -124,6 +128,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                                     var aki = i.Extensions.OfType<CertificateAuthorityKeyIdentifier>().FirstOrDefault();
                                     if (aki != null) {
                                         var certificate = store.Certificates.FirstOrDefault(j => {
+                                            Thread.Sleep(0);
                                             if ((aki.CertificateIssuer != null) && (aki.SerialNumber != null)) {
                                                 return (j.SerialNumber == aki.SerialNumber) &&
                                                     j.Issuer.Equals(aki.CertificateIssuer);

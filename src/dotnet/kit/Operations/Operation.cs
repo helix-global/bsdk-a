@@ -49,6 +49,10 @@ namespace Operations
             {
             }
 
+        public virtual void Break()
+            {
+            }
+
         public abstract void Execute(TextWriter output);
         protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
             return (value == null) || (value.Count == 0);

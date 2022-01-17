@@ -367,9 +367,9 @@ namespace Kit
                     }
                 Environment.ExitCode = exitcode;
                 }
-            catch (ControlBreakException)
+            catch (ThreadInterruptedException)
                 {
-                Console.WriteLine("[Ctrl+Break]");
+                Console.WriteLine("{Break}");
                 Environment.ExitCode = -1;
                 }
             catch (Exception e)

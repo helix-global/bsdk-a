@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "verify \"input:C=RU,L=Moscow,O=НТЦ Атлас,OU=УЗИС,CN=Document Signer 2,E=camail@stcnet.ru,SKI=[94EE],AKI=[FA40],SN=[00B80E9D29000000000078].cer\" policy:icao datetime:2021-05-01T12:00:00",
+      "commandLineArgs": "verify input:C:\\TFS\\icao\\repo\\*.cer policy:icao datetime:2021-05-01T12:00:00 2>.nul",
       "remoteDebugEnabled": false
     }
   }

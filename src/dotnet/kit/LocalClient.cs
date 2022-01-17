@@ -6,12 +6,14 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
+using Kit;
 using log4net;
 using Operations;
 using Options;
@@ -22,6 +24,8 @@ public class LocalClient : ILocalClient
     private Service service;
     private ServiceManager sc;
     private ServiceEndPoint<ICryptographicOperations> co;
+    private InterlockedInternal<Operation> operation = new InterlockedInternal<Operation>();
+    private ManualResetEvent B = new ManualResetEvent(false);
 
     public ICryptographicOperations CryptographicOperations { get {
         if (co == null) {
@@ -31,14 +35,14 @@ public class LocalClient : ILocalClient
         return co.Channel;
         }}
 
-    public Int32 Main(String[] args)
+    Int32 ILocalClient.Main(String[] args)
         {
         try
             {
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
-            Operation operation = new UsageOperation(Console.Out, Console.Error, options);
+            operation.Value = new UsageOperation(Console.Out, Console.Error, options);
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
             if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
@@ -46,29 +50,41 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
             if (HasOption(options, typeof(MessageGroupOption))) {
-                        if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(EncryptOption))) { operation = new EncryptMessageOperation(Console.Out, Console.Error, options); }
+                        if (HasOption(options, typeof(CreateOption)))  { operation.Value = new CreateMessageOperation(Console.Out, Console.Error, options);  }
+                else if (HasOption(options, typeof(VerifyOption)))     { operation.Value = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
+                else if (HasOption(options, typeof(EncryptOption)))    { operation.Value = new EncryptMessageOperation(Console.Out, Console.Error, options); }
                 }
-            else if (HasOption(options, typeof(VerifyOption)))            { operation = new VerifyOperation(Console.Out, Console.Error, options);         }
-            else if (HasOption(options, typeof(InfrastructureOption)))    { operation = new InfrastructureOperation(Console.Out, Console.Error, options); }
-            else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
-            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
-            operation.ValidatePermission();
-            GC.Collect();
-            //Console.WriteLine("press [ENTER] to begin...");
-            //Console.ReadLine();
-            operation.Execute(Console.Out);
-            GC.Collect();
-            //Console.WriteLine("press [ENTER] to exit...");
-            //Console.ReadLine();
-            operation = null;
-            GC.Collect();
+            else if (HasOption(options, typeof(VerifyOption)))            { operation.Value = new VerifyOperation(Console.Out, Console.Error, options);         }
+            else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
+            else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
+            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
+            operation.Value.ValidatePermission();
+            Task.Factory.StartNew(()=>{
+                try
+                    {
+                    operation.Value.Execute(Console.Out);
+                    }
+                finally
+                    {
+                    }
+                }).Wait();
             return 0;
             }
-        catch (PrincipalPermissionException e)
+        catch (PrincipalPermissionException)
             {
             return Elevate(args);
+            }
+        catch (ThreadInterruptedException) { WriteLine(Console.Out, ConsoleColor.Magenta, "{break}"); return -1; }
+        catch (OperationCanceledException) { WriteLine(Console.Out, ConsoleColor.Magenta, "{break}"); return -1; }
+        catch (AggregateException e) {
+            if (e.InnerExceptions.Count == 1) {
+                if (e.InnerExceptions[0] is OperationCanceledException) {
+                    WriteLine(Console.Out, ConsoleColor.Magenta, "{break}");
+                    return -1;
+                    }
+                }
+            Logger.Log(LogLevel.Critical, e);
+            return -1;
             }
         catch (Exception e)
             {
@@ -77,15 +93,26 @@ public class LocalClient : ILocalClient
             }
         finally
             {
+            B.Set();
+            operation.Value = null;
+            operation = null;
             }
         }
 
-    void ILocalClient.OnCancelKeyPress(Object sender, ConsoleCancelEventArgs e)
-        {
-        throw new ControlBreakException();
+    void ILocalClient.OnCancelKeyPress(Object sender, ConsoleCancelEventArgs e) {
+        e.Cancel = true;
+        var r = operation.Value;
+        if (r != null) {
+            r.Break();
+            B.WaitOne();
+            }
+        else
+            {
+            throw new OperationCanceledException();
+            }
         }
 
-    private static Int32 Elevate(String[] args)
+    private static Int32 Elevate(IEnumerable<String> args)
         {
         var assembly = Assembly.GetEntryAssembly();
         var pi = new ProcessStartInfo
@@ -137,6 +164,27 @@ public class LocalClient : ILocalClient
         if (o != null) {
             o.Dispose();
             o = default(T);
+            }
+        }
+    #endregion
+    #region M:WriteLine(ConsoleColor,String,Object[])
+    protected void WriteLine(TextWriter writer, ConsoleColor color, String format, params Object[] args) {
+        using (new ConsoleColorScope(color)) {
+            writer.WriteLine(format, args);
+            }
+        }
+    #endregion
+    #region M:WriteLine(ConsoleColor,String)
+    protected void WriteLine(TextWriter writer, ConsoleColor color, String message) {
+        using (new ConsoleColorScope(color)) {
+            writer.WriteLine(message);
+            }
+        }
+    #endregion
+    #region M:Write(ConsoleColor,String)
+    protected void Write(TextWriter writer, ConsoleColor color, String message) {
+        using (new ConsoleColorScope(color)) {
+            writer.Write(message);
             }
         }
     #endregion
