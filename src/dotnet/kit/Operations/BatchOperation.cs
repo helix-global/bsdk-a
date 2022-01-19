@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO.Compression;
@@ -42,6 +43,7 @@ namespace Operations
         private String StoreName { get; }
         private String Filter { get; }
         private readonly Object FolderObject = new Object();
+        private readonly Object console = new Object();
 
         public BatchOperation(TextWriter output, TextWriter error, IList<OperationOption> args) 
             : base(output, error, args)
@@ -68,12 +70,14 @@ namespace Operations
                 }
             }
 
-        private void Execute(MetadataScope scope, IFileService fileservice, TextWriter output, X509CertificateStorage store, Entities connection)
+        private Int32 Execute(MetadataScope scope, IFileService fileservice, TextWriter output, X509CertificateStorage store, Entities connection)
             {
             if (fileservice == null) { throw new ArgumentNullException(nameof(fileservice)); }
             var E = Path.GetExtension(fileservice.FileName).ToLower();
             var targetfolder = (TargetFolder ?? Path.GetDirectoryName(fileservice.FileName)) ?? String.Empty;
-            var F = 0;
+            var F = SUCCESS;
+            var timer = new Stopwatch();
+            timer.Start();
             switch (E) {
                 case ".obj":
                     {
@@ -232,12 +236,12 @@ namespace Operations
                             }
                             #endregion
                             }
-                        F = 1;
+                        F = WARNING;
                         }
                     catch(Exception e)
                         {
                         Logger.Log(LogLevel.Debug, e);
-                        F = 2;
+                        F = ERROR;
                         }
                     }
                     break;
@@ -256,42 +260,61 @@ namespace Operations
                     break;
                 default:
                     {
+                    F = SKIP;
                     if (DirectoryService.GetService<IDirectoryService>(fileservice, out var folder)) {
-                        Execute(scope, folder, output,
+                        F = Execute(scope, folder, output,
                             store, connection,
-                            DirectoryServiceSearchOptions.Recursive, Filter);
+                            DirectoryServiceSearchOptions.Recursive, Filter) > 0
+                            ? SUCCESS
+                            : SKIP;
                         }
                     }
                     break;
                 }
-            switch (F)
-                {
-                case 0: { Console.Error.WriteLine($"FILE:{fileservice.FileName}:[OK]"); } break;
-                case 1: { Console.Error.WriteLine($"FILE:{fileservice.FileName}:[SKIP]"); } break;
+            timer.Stop();
+            switch (F) {
+                case 0:
+                    {
+                    lock(console) {
+                        Write(Out,ConsoleColor.Green, "{ok}");
+                        Write(Out,ConsoleColor.Gray, ":");
+                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                        }
+                    }
+                    return 1;
+                case 3:
+                    {
+                    lock(console) {
+                        Write(Out,ConsoleColor.Yellow, "{skip}");
+                        Write(Out,ConsoleColor.Gray, ":");
+                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                        }
+                    }
+                    return 1;
                 case 2:
                     {
-                    using (new ConsoleColorScope(ConsoleColor.Red)) {
-                        Console.Error.WriteLine($"FILE:{fileservice.FileName}:[FAILED]");
-                        if (!String.IsNullOrWhiteSpace(QuarantineFolder)) {
-                            try
-                                {
-                                var targetfilename = Path.Combine(QuarantineFolder, Path.GetFileName(fileservice.FileName));
-                                fileservice.MoveTo(targetfilename);
-                                }
-                            catch
-                                {
-                                }
+                    lock(console) {
+                        Write(Out,ConsoleColor.Red, "{error}");
+                        Write(Out,ConsoleColor.Gray, ":");
+                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                        }
+                    if (!String.IsNullOrWhiteSpace(QuarantineFolder)) {
+                        try
+                            {
+                            var targetfilename = Path.Combine(QuarantineFolder, Path.GetFileName(fileservice.FileName));
+                            fileservice.MoveTo(targetfilename);
+                            }
+                        catch
+                            {
                             }
                         }
                     }
-                    break;
+                    return 1;
                 }
-            }
-
-        private void Verify(Asn1Certificate source)
-            {
-            if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            var certificate = new X509Certificate(source);
+            return 0;
             }
 
         #region M:Get<E,T>(IDbSet<E>,[ref]Boolean,T):E
@@ -309,7 +332,7 @@ namespace Operations
             return r;
             }
         #endregion
-
+        #region M:Get<E>(ISet<E>,IDbSet<E>,String):E
         private static E Get<E>(ISet<E> cache, IDbSet<E> set, String value)
             where E: class, IDInstance<String>, new()
             {
@@ -324,7 +347,8 @@ namespace Operations
                 }
             return r;
             }
-
+        #endregion
+        #region M:Get(ISet<DObjectIdentifier>,IDbSet<DObjectIdentifier>,String):DObjectIdentifier
         private static DObjectIdentifier Get(ISet<DObjectIdentifier> cache, IDbSet<DObjectIdentifier> set, String value)
             {
             var r = cache.FirstOrDefault(i => i.Value == value)?? 
@@ -339,7 +363,8 @@ namespace Operations
                 }
             return r;
             }
-
+        #endregion
+        #region M:Get<E,T>(IDbSet<E>,T):E
         private static E Get<E,T>(IDbSet<E> set, T value)
             where E: class, IDInstance<T>, new()
             where T: class
@@ -353,11 +378,7 @@ namespace Operations
                 }
             return r;
             }
-
-        private static String GetShortKey(Byte[] source) {
-            return $"{source[0]:X2}{source[source.Length-1]:X2}";
-            }
-
+        #endregion
         #region M:Get:RelativeDistinguishedName
         private static DRelativeDistinguishedName Get(Entities context, LocalCache cache, IDbSet<DRelativeDistinguishedName> set, Oid oid, String value) {
             var type = oid.Value;
@@ -487,6 +508,10 @@ namespace Operations
                 }
             }
         #endregion
+
+        private static String GetShortKey(Byte[] source) {
+            return $"{source[0]:X2}{source[source.Length-1]:X2}";
+            }
 
         private static DbQuery<T> SQL<T>(DbQuery<T> source) {
             //Console.WriteLine($"\nSQL:{{{source.Sql}}}");
@@ -629,13 +654,21 @@ namespace Operations
                 }
             }
 
-        private void Execute(MetadataScope scope, IDirectoryService service, TextWriter output, X509CertificateStorage store, Entities connection, DirectoryServiceSearchOptions flags, String pattern) {
+        private Int32 Execute(MetadataScope scope, IDirectoryService service, TextWriter output, X509CertificateStorage store, Entities connection, DirectoryServiceSearchOptions flags, String pattern) {
+            var r = 0;
+            #if DEBUG
+            foreach (var i in service.GetFiles(pattern, flags)) {
+                Interlocked.Add(ref r, Execute(scope, i, output, store, connection));
+                }
+            #else
             service
                 .GetFiles(pattern, flags)
                 .AsParallel()
                 .ForAll(i =>{
-                    Execute(scope, i, output, store, connection);
+                    Interlocked.Add(ref r, Execute(scope, i, output, store, connection));
                     });
+            #endif
+            return r;
             }
 
         #region M:Execute(TextWriter)
@@ -741,5 +774,10 @@ namespace Operations
                 Metadata = @"res://*/CertificateEntityDataModel.csdl|res://*/CertificateEntityDataModel.ssdl|res://*/CertificateEntityDataModel.msl"
                 }.ConnectionString);
             }
+
+        private const Int32 SUCCESS = 0;
+        private const Int32 SKIP    = 1;
+        private const Int32 ERROR   = 2;
+        private const Int32 WARNING = 3;
         }
     }

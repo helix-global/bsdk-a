@@ -49,9 +49,23 @@ namespace BinaryStudio.DirectoryServices.Internal
             return File.OpenRead(TemporalFileName);
             }
 
-        public void MoveTo(String target)
-            {
-            throw new NotImplementedException();
+        public void MoveTo(String target) {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = OpenRead()) {
+                var folder = Path.GetDirectoryName(target);
+                var filename = Path.GetTempFileName();
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                if (File.Exists(filename)) { File.Delete(filename); }
+                var block = new Byte[1024];
+                using (var output = File.OpenWrite(target)) {
+                    for (;;) {
+                        var blockcount = block.Length;
+                        var sourcecount = sourcestream.Read(block, 0, blockcount);
+                        if (sourcecount == 0) { break; }
+                        output.Write(block, 0, sourcecount);
+                        }
+                    }
+                }
             }
         }
     }

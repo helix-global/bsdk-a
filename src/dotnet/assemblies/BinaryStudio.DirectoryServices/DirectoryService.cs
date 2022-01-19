@@ -13,20 +13,23 @@ namespace BinaryStudio.DirectoryServices
             if (source == null) { return null; }
             if (service == typeof(IDirectoryService)) {
                 if (source is Uri uri) {
-                    if (uri.Scheme == "file") { return new LocalFolder(uri.LocalPath); }
-                    }
-                else if (source is IFileService file) {
-                    switch (Path.GetExtension(file.FileName).ToLower()) {
-                        case ".rar":
-                            {
-                            return new ArchiveService(file.FileName, RarArchive.Open(file.FileName));
-                            }
-                        default:
-                            {
-                            return null;
+                    if (uri.Scheme == "file") {
+                        if (Directory.Exists(uri.LocalPath)) return new LocalFolder(uri.LocalPath);
+                        if (File.Exists(uri.LocalPath)) {
+                            switch (Path.GetExtension(uri.LocalPath).ToLower()) {
+                                case ".rar":
+                                    {
+                                    return new ArchiveService(uri.LocalPath, RarArchive.Open(uri.LocalPath));
+                                    }
+                                default:
+                                    {
+                                    return null;
+                                    }
+                                }
                             }
                         }
                     }
+                else if (source is IFileService file) { return GetService(new Uri($"file://{file.FileName}"), service); }
                 }
             else if (service == typeof(IFileService))
                 {

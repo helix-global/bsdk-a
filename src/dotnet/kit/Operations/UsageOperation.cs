@@ -42,6 +42,11 @@ namespace Operations
   input:{file-name} hash algid:{algid}
   input:{file-name} hash algid:{algid} providertype:{number}
   input:{file-name} message verify
+  input:*.crl [output:{folder}] batch:rename,group
+  input:*.rar [output:{folder}] batch:rename,group filter:*.crl
+  input:{file-name}.rar output:{folder} batch:extract,group
+  input:{file-name}.rar output:{folder} batch:extract,group filter:*.crl
+  input:{file-name}.rar\*.crl output:{folder} batch:extract,group
   input:*.cer verify policy:icao datetime:{datetime}");
             }
         }
