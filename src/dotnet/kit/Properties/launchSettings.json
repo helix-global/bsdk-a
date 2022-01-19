@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "verify input:C:\\TFS\\icao\\repo\\*.cer policy:icao datetime:2021-05-01T12:00:00 2>.nul",
+      "commandLineArgs": "input:C:\\Temp5\\*.rar output:c:\\temp6 batch:extract,group",
       "remoteDebugEnabled": false
     }
   }

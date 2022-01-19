@@ -82,7 +82,26 @@ namespace BinaryStudio.IO
                 source.Seek(offset, SeekOrigin.Begin);
                 return new ReadOnlyFileMappingStream(filename, true);
                 }
-            throw new NotImplementedException();
+            else
+                {
+                var assembly = Assembly.GetEntryAssembly();
+                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
+                var filename = Path.GetTempFileName();
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                if (File.Exists(filename)) { File.Delete(filename); }
+                var block = new Byte[BlockSize];
+                using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
+                    {
+                    while (length > 0) {
+                        var blockcount = (Int32)Math.Min(block.Length, length);
+                        var sourcecount = source.Read(block, 0, blockcount);
+                        if (sourcecount == 0) { break; }
+                        output.Write(block, 0, sourcecount);
+                        length -= sourcecount;
+                        }
+                    }
+                return new ReadOnlyFileMappingStream(filename, true);
+                }
             }
 
         public override Boolean CanSeek { get { return source.CanSeek; }}

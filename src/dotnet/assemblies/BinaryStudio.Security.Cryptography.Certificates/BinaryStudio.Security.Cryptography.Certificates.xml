@@ -576,6 +576,12 @@
             <summary>Converts an object into its XML representation.</summary>
             <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.Dispose">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.Finalize">
+            <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Object.System#ComponentModel#ICustomTypeDescriptor#GetAttributes">
             <summary>Returns a collection of custom attributes for this instance of a component.</summary>
             <returns>An <see cref="T:System.ComponentModel.AttributeCollection"/> containing the attributes for this object.</returns>

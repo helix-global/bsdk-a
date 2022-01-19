@@ -55,6 +55,27 @@ namespace BinaryStudio.IO
                 }
             }
 
+        public FileMapping(SafeFileHandle file)
+            {
+            if (file == null) { throw new ArgumentNullException(nameof(file)); }
+            if (file.IsInvalid || file.IsClosed) { throw new ArgumentOutOfRangeException(nameof(file)); }
+            var security = new SecurityAttributes();
+            try
+                {
+                var i = default(LargeInteger);
+                if (!GetFileSizeEx(file, ref i)) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
+                var sz = i.QuadPart;
+                if (sz == 0L) { throw new IOException(); }
+                Mapping = CreateFileMapping(file, security, PageProtection.ReadOnly, 0u, 0u, null);
+                if (Mapping.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
+                Size = sz;
+                }
+            finally
+                {
+                security.Release();
+                }
+            }
+
         #region M:Dispose(Boolean)
         protected virtual void Dispose(Boolean disposing) {
             if (disposing) {

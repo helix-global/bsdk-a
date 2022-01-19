@@ -45,6 +45,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
             {
             Dispose(true);
@@ -52,6 +53,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         ~X509Object()
             {
             Dispose(false);

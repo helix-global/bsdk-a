@@ -3,10 +3,10 @@ using System.IO;
 
 namespace BinaryStudio.DirectoryServices
     {
-    public class FileItem : IFileService
+    internal class LocalFile : IFileService
         {
         public String FileName { get; }
-        public FileItem(String filename) {
+        public LocalFile(String filename) {
             FileName = filename;
             }
 
@@ -18,6 +18,11 @@ namespace BinaryStudio.DirectoryServices
         public Stream OpenRead()
             {
             return File.OpenRead(FileName);
+            }
+
+        public void MoveTo(String target)
+            {
+            File.Move(FileName, target);
             }
         }
     }

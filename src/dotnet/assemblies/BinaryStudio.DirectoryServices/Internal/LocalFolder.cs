@@ -4,15 +4,16 @@ using System.IO;
 
 namespace BinaryStudio.DirectoryServices
     {
-    public class FileSystemDirectoryService : IDirectoryService
+    internal class LocalFolder : IDirectoryService
         {
         public String Folder { get; }
-        public FileSystemDirectoryService(String folder) {
-            if (folder == null) { throw new ArgumentNullException(nameof(folder)); }
+        public LocalFolder(String folder)
+            {
             Folder = folder;
             }
 
-        public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption) {
+        public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption)
+            {
             if (searchpattern == null) { throw new ArgumentNullException(nameof(searchpattern)); }
             foreach (var file in Directory.GetFiles(Folder,searchpattern,
                 searchoption.HasFlag(DirectoryServiceSearchOptions.Recursive)

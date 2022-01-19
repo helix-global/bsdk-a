@@ -24,7 +24,7 @@ namespace BinaryStudio.DirectoryServices.Internal
                             }
                         else if (File.Exists(entry))
                             {
-                            yield return new FileItem(entry);
+                            yield return new LocalFile(entry);
                             }
                         else if (Directory.Exists(entry))
                             {

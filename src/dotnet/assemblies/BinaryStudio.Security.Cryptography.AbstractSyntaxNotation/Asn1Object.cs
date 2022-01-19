@@ -1025,12 +1025,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// Loads ASN.1 structure from specified read-only stream and by specified flags.
         /// </summary>
         /// <param name="source">Read only stream.</param>
-        /// <param name="flags">Load flags.</param>
         /// <returns>Returns sequence of ASN.1 objects.</returns>
-        public static IEnumerable<Asn1Object> Load(Stream source, Asn1ReadFlags flags = 0) {
+        public static IEnumerable<Asn1Object> Load(Stream source) {
             if (source == null)  { throw new ArgumentNullException(nameof(source));       }
             if (!source.CanRead) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            return Load(new ReadOnlyStream(source), flags);
+            return Load(new ReadOnlyStream(source));
             }
 
         public virtual void Write(Stream target) {

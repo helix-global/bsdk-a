@@ -25,7 +25,7 @@ public class LocalClient : ILocalClient
     private ServiceManager sc;
     private ServiceEndPoint<ICryptographicOperations> co;
     private InterlockedInternal<Operation> operation = new InterlockedInternal<Operation>();
-    private ManualResetEvent B = new ManualResetEvent(false);
+    private readonly ManualResetEvent B = new ManualResetEvent(false);
 
     public ICryptographicOperations CryptographicOperations { get {
         if (co == null) {

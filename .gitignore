@@ -76,3 +76,5 @@
 /src/dotnet/srv/obj/Debug
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Services/bin/Debug/net40
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Services/obj
+/src/dotnet/assemblies/BinaryStudio.IO.Compression/bin/Debug/net40
+/src/dotnet/assemblies/BinaryStudio.IO.Compression/obj

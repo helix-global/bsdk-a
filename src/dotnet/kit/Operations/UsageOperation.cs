@@ -20,6 +20,7 @@ namespace Operations
                 (new DateTime(2000, 1, 1).
                     AddDays(version.Build).
                     AddSeconds(version.Revision * 2)).ToString("s"));
+            output.WriteLine($"# Is64BitProcess:{Environment.Is64BitProcess}");
             output.WriteLine("# Available options:");
             foreach (var descriptor in descriptors) { 
                 if (i > 0)

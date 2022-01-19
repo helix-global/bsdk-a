@@ -8,5 +8,6 @@ namespace BinaryStudio.DirectoryServices
         String FileName { get; }
         Byte[] ReadAllBytes();
         Stream OpenRead();
+        void MoveTo(String target);
         }
     }

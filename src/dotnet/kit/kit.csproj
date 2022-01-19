@@ -10,11 +10,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon />
     <StartupObject />
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>DEBUG;TRACE;</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Operations\Internal\**" />
@@ -38,6 +40,8 @@
     <PackageReference Include="Microsoft.SqlServer.Types" Version="11.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\assemblies\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+    <ProjectReference Include="..\assemblies\BinaryStudio.IO.Compression\BinaryStudio.IO.Compression.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
@@ -62,9 +66,7 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Installer.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Installer.cs" />
     <None Include="..\..\..\scripts\fintech_icao_extract.ps1" Link="fintech_icao_extract.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
