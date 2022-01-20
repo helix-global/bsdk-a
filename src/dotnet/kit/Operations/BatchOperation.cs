@@ -12,18 +12,16 @@ using System.Text;
 using System.Threading;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.DirectoryServices;
-using BinaryStudio.IO.Compression;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
+using BinaryStudio.Security.Cryptography.DataInterchangeFormat;
 using BinaryStudio.Security.Cryptography.Interchange;
 using BinaryStudio.Serialization;
 using kit;
-using Kit;
 using Newtonsoft.Json;
 using Options;
 using DRelativeDistinguishedName = BinaryStudio.Security.Cryptography.Interchange.DRelativeDistinguishedName;
@@ -70,249 +68,267 @@ namespace Operations
                 }
             }
 
-        private Int32 Execute(MetadataScope scope, IFileService fileservice, TextWriter output, X509CertificateStorage store, Entities connection)
-            {
+        private Int32 Execute(MetadataScope scope, IFileService fileservice, TextWriter output, X509CertificateStorage store, Entities connection) {
             if (fileservice == null) { throw new ArgumentNullException(nameof(fileservice)); }
             var E = Path.GetExtension(fileservice.FileName).ToLower();
             var targetfolder = (TargetFolder ?? Path.GetDirectoryName(fileservice.FileName)) ?? String.Empty;
             var F = SUCCESS;
             var timer = new Stopwatch();
             timer.Start();
-            switch (E) {
-                case ".obj":
-                    {
-                    var o = scope.LoadObject(fileservice.FileName);
-                    if (OutputType.IsJson) { JsonSerialize(o, output); }
-                    }
-                    break;
-                #region asn1
-                case ".crl":
-                case ".cer":
-                case ".der":
-                case ".ber":
-                case ".p7b":
-                    {
-                    var r = fileservice.ReadAllBytes();
-                    try
+            try
+                {
+                switch (E) {
+                    case ".obj":
                         {
-                        #region BASE64
-                        if (r.Length > 0) {
-                            if (r[0] == '-') {
-                                /* -----BEGIN CERTIFICATE----- */
-                                var builder = new StringBuilder();
-                                using (var reader = new StreamReader(new MemoryStream(r), Encoding.UTF8)) {
-                                    while (!reader.EndOfStream) {
-                                        var L = reader.ReadLine();
-                                        if (!String.IsNullOrWhiteSpace(L)) {
-                                            if (!L.StartsWith("-----BEGIN CERTIFICATE-----") &&
-                                                !L.StartsWith("-----END CERTIFICATE-----")) {
+                        var o = scope.LoadObject(fileservice.FileName);
+                        if (OutputType.IsJson) { JsonSerialize(o, output); }
+                        }
+                        break;
+                    #region asn1
+                    case ".crl":
+                    case ".cer":
+                    case ".der":
+                    case ".ber":
+                    case ".p7b":
+                        {
+                        var r = fileservice.ReadAllBytes();
+                        try
+                            {
+                            #region BASE64
+                            if (r.Length > 0) {
+                                if (r[0] == '-') {
+                                    /* -----BEGIN CERTIFICATE----- */
+                                    var builder = new StringBuilder();
+                                    using (var reader = new StreamReader(new MemoryStream(r), Encoding.UTF8)) {
+                                        while (!reader.EndOfStream) {
+                                            var L = reader.ReadLine();
+                                            if (!String.IsNullOrWhiteSpace(L)) {
+                                                if (!L.StartsWith("-----BEGIN CERTIFICATE-----") &&
+                                                    !L.StartsWith("-----END CERTIFICATE-----")) {
+                                                    builder.AppendLine(L);
+                                                    }
+                                                }
+                                            else
+                                                {
                                                 builder.AppendLine(L);
                                                 }
                                             }
-                                        else
-                                            {
-                                            builder.AppendLine(L);
-                                            }
                                         }
+                                    r = Encoding.UTF8.GetBytes(builder.ToString());
                                     }
-                                r = Encoding.UTF8.GetBytes(builder.ToString());
-                                }
-                            else
-                                {
+                                else
+                                    {
                                 
+                                    }
                                 }
+                            var n = Convert.FromBase64String(Encoding.ASCII.GetString(r));
+                            r = n;
+                            #endregion
                             }
-                        var n = Convert.FromBase64String(Encoding.ASCII.GetString(r));
-                        r = n;
-                        #endregion
-                        }
-                    catch
-                        {
-                        /* do nothing */
-                        }
-                    try
-                        {
-                        var o = Asn1Object.Load(fileservice.OpenRead()).FirstOrDefault();
-                        if (o != null) {
-                            #region certificate
+                        catch
                             {
-                            var σ = (o is Asn1ApplicationObject)
-                                ? o.FindAll(i => i is Asn1Sequence).FirstOrDefault()??o
-                                : o;
-                            var target = new Asn1Certificate(σ);
-                            if (!target.IsFailed) {
-                                var country = Flags.HasFlag(BatchOperationFlags.Group)
-                                    ? GetCountry(target.Subject)??GetCountry(target.Issuer)
-                                    : null;
-                                if (Flags.HasFlag(BatchOperationFlags.Rename)) {
-                                    var targetfilename = Path.Combine(Combine(targetfolder,country), target.FriendlyName + ".cer");
-                                    if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
-                                        if (!String.IsNullOrEmpty(country)) {
-                                            lock (FolderObject) {
-                                                if (!Directory.Exists(Combine(targetfolder,country))) {
-                                                    Directory.CreateDirectory(Combine(targetfolder,country));
+                            /* do nothing */
+                            }
+                        try
+                            {
+                            var o = Asn1Object.Load(fileservice.OpenRead()).FirstOrDefault();
+                            if (o != null) {
+                                #region certificate
+                                {
+                                var σ = (o is Asn1ApplicationObject)
+                                    ? o.FindAll(i => i is Asn1Sequence).FirstOrDefault()??o
+                                    : o;
+                                var target = new Asn1Certificate(σ);
+                                if (!target.IsFailed) {
+                                    var country = Flags.HasFlag(BatchOperationFlags.Group)
+                                        ? GetCountry(target.Subject)??GetCountry(target.Issuer)
+                                        : null;
+                                    if (Flags.HasFlag(BatchOperationFlags.Rename)) {
+                                        var targetfilename = Path.Combine(Combine(targetfolder,country), target.FriendlyName + ".cer");
+                                        if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
+                                            if (!String.IsNullOrEmpty(country)) {
+                                                lock (FolderObject) {
+                                                    if (!Directory.Exists(Combine(targetfolder,country))) {
+                                                        Directory.CreateDirectory(Combine(targetfolder,country));
+                                                        }
                                                     }
                                                 }
+                                            fileservice.MoveTo(targetfilename);
+                                            File.SetCreationTime(targetfilename, target.NotBefore);
+                                            File.SetLastWriteTime(targetfilename, target.NotBefore);
+                                            File.SetLastAccessTime(targetfilename, target.NotBefore);
                                             }
-                                        fileservice.MoveTo(targetfilename);
-                                        File.SetCreationTime(targetfilename, target.NotBefore);
-                                        File.SetLastWriteTime(targetfilename, target.NotBefore);
-                                        File.SetLastAccessTime(targetfilename, target.NotBefore);
                                         }
+                                    if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
+                                        if (connection != null) {
+                                            Update(connection, target);
+                                            }
+                                        else
+                                            {
+                                            var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
+                                            using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
+                                                JsonSerialize(target, writer);
+                                                }
+                                            }
+                                        }
+                                         if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509Certificate(target));    }
+                                    else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509Certificate(target)); }
+                                    break;
                                     }
-                                if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                                    if (connection != null) {
-                                        Update(connection, target);
+                                }
+                                #endregion
+                                #region certificate revocation list
+                                {
+                                var target = new Asn1CertificateRevocationList(o);
+                                if (!target.IsFailed) {
+                                    var country = Flags.HasFlag(BatchOperationFlags.Group)
+                                        ? GetCountry(target.Issuer)
+                                        : null;
+                                    if (Flags.HasFlag(BatchOperationFlags.Rename)) {
+                                        var targetfilename = Path.Combine(Combine(targetfolder,country), target.FriendlyName + ".crl");
+                                        if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
+                                            if (!String.IsNullOrEmpty(country)) {
+                                                lock (FolderObject) {
+                                                    if (!Directory.Exists(Combine(targetfolder,country))) {
+                                                        Directory.CreateDirectory(Combine(targetfolder,country));
+                                                        }
+                                                    }
+                                                }
+                                            fileservice.MoveTo(targetfilename);
+                                            File.SetCreationTime(targetfilename, target.EffectiveDate);
+                                            File.SetLastWriteTime(targetfilename, target.EffectiveDate);
+                                            File.SetLastAccessTime(targetfilename, target.EffectiveDate);
+                                            }
                                         }
-                                    else
-                                        {
+                                    if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
+                                        if (connection != null) {
+                                            Update(connection, target);
+                                            }
+                                        else
+                                            {
+                                            var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
+                                            using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
+                                                JsonSerialize((Flags.HasFlag(BatchOperationFlags.AbstractSyntaxNotation))
+                                                    ? o
+                                                    : target, writer);
+                                                }
+                                            }
+                                        }
+                                         if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509CertificateRevocationList(target));    }
+                                    else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509CertificateRevocationList(target)); }
+                                    break;
+                                    }
+                                }
+                                #endregion
+                                #region cms
+                                {
+                                var target = new CmsMessage(o);
+                                if (!target.IsFailed) {
+                                    if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
                                         var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
                                         using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
                                             JsonSerialize(target, writer);
                                             }
                                         }
+                                    break;
                                     }
-                                     if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509Certificate(target));    }
-                                else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509Certificate(target)); }
-                                break;
                                 }
+                                #endregion
+                                }
+                            F = WARNING;
                             }
-                            #endregion
-                            #region certificate revocation list
+                        catch(Exception e)
                             {
-                            var target = new Asn1CertificateRevocationList(o);
-                            if (!target.IsFailed) {
-                                var country = Flags.HasFlag(BatchOperationFlags.Group)
-                                    ? GetCountry(target.Issuer)
-                                    : null;
-                                if (Flags.HasFlag(BatchOperationFlags.Rename)) {
-                                    var targetfilename = Path.Combine(Combine(targetfolder,country), target.FriendlyName + ".crl");
-                                    if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
-                                        if (!String.IsNullOrEmpty(country)) {
-                                            lock (FolderObject) {
-                                                if (!Directory.Exists(Combine(targetfolder,country))) {
-                                                    Directory.CreateDirectory(Combine(targetfolder,country));
-                                                    }
-                                                }
-                                            }
-                                        fileservice.MoveTo(targetfilename);
-                                        File.SetCreationTime(targetfilename, target.EffectiveDate);
-                                        File.SetLastWriteTime(targetfilename, target.EffectiveDate);
-                                        File.SetLastAccessTime(targetfilename, target.EffectiveDate);
-                                        }
-                                    }
-                                if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                                    if (connection != null) {
-                                        Update(connection, target);
-                                        }
-                                    else
-                                        {
-                                        var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
-                                        using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
-                                            JsonSerialize((Flags.HasFlag(BatchOperationFlags.AbstractSyntaxNotation))
-                                                ? o
-                                                : target, writer);
-                                            }
-                                        }
-                                    }
-                                     if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509CertificateRevocationList(target));    }
-                                else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509CertificateRevocationList(target)); }
-                                break;
-                                }
+                            e.Data["FileName"] = fileservice.FileName;
+                            Logger.Log(LogLevel.Debug, e);
+                            F = ERROR;
                             }
-                            #endregion
-                            #region cms
-                            {
-                            var target = new CmsMessage(o);
-                            if (!target.IsFailed) {
-                                if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                                    var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
-                                    using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
-                                        JsonSerialize(target, writer);
-                                        }
-                                    }
-                                break;
-                                }
-                            }
-                            #endregion
-                            }
-                        F = WARNING;
                         }
-                    catch(Exception e)
+                        break;
+                    #endregion
+                    case ".ldif":
                         {
-                        Logger.Log(LogLevel.Debug, e);
-                        F = ERROR;
-                        }
-                    }
-                    break;
-                #endregion
-                case ".ldif":
-                    {
-                    LDIF.ExtractFromLDIF(fileservice.FileName, targetfolder, Flags, store, Filter);
-                    }
-                    break;
-                case ".ml" :
-                    {
-                    var r = new CmsMessage(fileservice.ReadAllBytes());
-                    var masterList = (CSCAMasterList)r.ContentInfo.GetService(typeof(CSCAMasterList));
-                    LDIF.ExtractFromLDIF(FolderObject, masterList, targetfolder, Flags, store, Filter);
-                    }
-                    break;
-                default:
-                    {
-                    F = SKIP;
-                    if (DirectoryService.GetService<IDirectoryService>(fileservice, out var folder)) {
-                        F = Execute(scope, folder, output,
+                        F = Execute(scope, new LDIFFile(fileservice), output,
                             store, connection,
                             DirectoryServiceSearchOptions.Recursive, Filter) > 0
                             ? SUCCESS
                             : SKIP;
                         }
+                        break;
+                    case ".ml" :
+                        {
+                        var r = new CmsMessage(fileservice.ReadAllBytes());
+                        var masterList = (CSCAMasterList)r.ContentInfo.GetService(typeof(CSCAMasterList));
+                        LDIF.ExtractFromLDIF(FolderObject, masterList, targetfolder, Flags, store, Filter);
+                        }
+                        break;
+                    default:
+                        {
+                        F = SKIP;
+                        if (DirectoryService.GetService<IDirectoryService>(fileservice, out var folder)) {
+                            F = Execute(scope, folder, output,
+                                store, connection,
+                                DirectoryServiceSearchOptions.Recursive, Filter) > 0
+                                ? SUCCESS
+                                : SKIP;
+                            }
+                        }
+                        break;
                     }
-                    break;
+                timer.Stop();
+                switch (F) {
+                    case 0:
+                        {
+                        lock(console) {
+                            Write(Out,ConsoleColor.Green, "{ok}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                            }
+                        }
+                        return 1;
+                    case 3:
+                        {
+                        lock(console) {
+                            Write(Out,ConsoleColor.Yellow, "{skip}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                            }
+                        }
+                        return 1;
+                    case 2:
+                        {
+                        lock(console) {
+                            Write(Out,ConsoleColor.Red, "{error}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
+                            }
+                        if (!String.IsNullOrWhiteSpace(QuarantineFolder)) {
+                            try
+                                {
+                                var targetfilename = Path.Combine(QuarantineFolder, Path.GetFileName(fileservice.FileName));
+                                fileservice.MoveTo(targetfilename);
+                                }
+                            catch
+                                {
+                                }
+                            }
+                        }
+                        return 1;
+                    }
                 }
-            timer.Stop();
-            switch (F) {
-                case 0:
-                    {
-                    lock(console) {
-                        Write(Out,ConsoleColor.Green, "{ok}");
-                        Write(Out,ConsoleColor.Gray, ":");
-                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                        }
+            catch (Exception e)
+                {
+                //e.Data["FileName"] = fileservice.FileName;
+                lock(console) {
+                    Write(Out,ConsoleColor.Red, "{error}");
+                    Write(Out,ConsoleColor.Gray, ":");
+                    Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                    WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
                     }
-                    return 1;
-                case 3:
-                    {
-                    lock(console) {
-                        Write(Out,ConsoleColor.Yellow, "{skip}");
-                        Write(Out,ConsoleColor.Gray, ":");
-                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                        }
-                    }
-                    return 1;
-                case 2:
-                    {
-                    lock(console) {
-                        Write(Out,ConsoleColor.Red, "{error}");
-                        Write(Out,ConsoleColor.Gray, ":");
-                        Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                        WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                        }
-                    if (!String.IsNullOrWhiteSpace(QuarantineFolder)) {
-                        try
-                            {
-                            var targetfilename = Path.Combine(QuarantineFolder, Path.GetFileName(fileservice.FileName));
-                            fileservice.MoveTo(targetfilename);
-                            }
-                        catch
-                            {
-                            }
-                        }
-                    }
-                    return 1;
+                throw;
                 }
             return 0;
             }
@@ -658,7 +674,15 @@ namespace Operations
             var r = 0;
             #if DEBUG
             foreach (var i in service.GetFiles(pattern, flags)) {
-                Interlocked.Add(ref r, Execute(scope, i, output, store, connection));
+                try
+                    {
+                    Interlocked.Add(ref r, Execute(scope, i, output, store, connection));
+                    }
+                catch (Exception e)
+                    {
+                    e.Data["FileName"] = i.FileName;
+                    throw;
+                    }
                 }
             #else
             service

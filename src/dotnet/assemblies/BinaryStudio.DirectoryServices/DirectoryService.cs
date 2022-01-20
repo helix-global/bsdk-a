@@ -2,6 +2,8 @@
 using System.IO;
 using BinaryStudio.DirectoryServices.Internal;
 using SharpCompress.Archives.Rar;
+using SharpCompress.Archives.SevenZip;
+using SharpCompress.Archives.Zip;
 
 namespace BinaryStudio.DirectoryServices
     {
@@ -12,14 +14,18 @@ namespace BinaryStudio.DirectoryServices
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             if (source == null) { return null; }
             if (service == typeof(IDirectoryService)) {
+                if (source is IDirectoryService folder) { return folder; }
                 if (source is Uri uri) {
                     if (uri.Scheme == "file") {
                         if (Directory.Exists(uri.LocalPath)) return new LocalFolder(uri.LocalPath);
                         if (File.Exists(uri.LocalPath)) {
                             switch (Path.GetExtension(uri.LocalPath).ToLower()) {
-                                case ".rar":
+                                case ".rar": { return new ArchiveService(uri.LocalPath, RarArchive.Open(uri.LocalPath)); }
+                                case ".jar":
+                                case ".zip": { return new ArchiveService(uri.LocalPath, ZipArchive.Open(uri.LocalPath)); }
+                                case ".7z":
                                     {
-                                    return new ArchiveService(uri.LocalPath, RarArchive.Open(uri.LocalPath));
+                                    return new ArchiveService(uri.LocalPath, SevenZipArchive.Open(uri.LocalPath));
                                     }
                                 default:
                                     {
@@ -29,16 +35,26 @@ namespace BinaryStudio.DirectoryServices
                             }
                         }
                     }
-                else if (source is IFileService file) { return GetService(new Uri($"file://{file.FileName}"), service); }
+                else if (source is IFileService file) {
+                    var filename = file.FileName;
+                    if (!Uri.TryCreate($"file://{filename}", UriKind.Absolute, out uri))
+                        {
+
+                        }
+                    return GetService(new Uri($"file://{filename}", true), service);
+                    }
+                return (source as IServiceProvider)?.GetService(service);
                 }
             else if (service == typeof(IFileService))
                 {
+                if (source is IFileService file) { return file; }
                 if (source is Uri uri) {
                     if (uri.Scheme == "file") { return new LocalFile(uri.LocalPath); }
                     }
+                return (source as IServiceProvider)?.GetService(service);
                 }
             else throw new ArgumentOutOfRangeException(nameof(service));
-            return null;
+            return (source as IServiceProvider)?.GetService(service);
             }
 
         public static T GetService<T>(Object source)

@@ -5,66 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
-using Microsoft.Win32;
 
 namespace Kit
     {
-    public class Utilities
+    internal class Utilities
         {
-        #region M:ToStoreName(String):X509StoreName?
-        private static X509StoreName? ToStoreName(String source) {
-            if (source == null) { return X509StoreName.My; }
-            switch (source.ToUpper())
-                {
-                case "ADDRESSBOOK"          : { return X509StoreName.AddressBook;          }
-                case "AUTHROOT"             : { return X509StoreName.AuthRoot;             }
-                case "CERTIFICATEAUTHORITY" : { return X509StoreName.CertificateAuthority; }
-                case "DISALLOWED"           : { return X509StoreName.Disallowed;           }
-                case "MY"                   : { return X509StoreName.My;                   }
-                case "ROOT"                 : { return X509StoreName.Root;                 }
-                case "TRUSTEDPEOPLE"        : { return X509StoreName.TrustedPeople;        }
-                case "TRUSTEDPUBLISHER"     : { return X509StoreName.TrustedPublisher;     }
-                case "TRUSTEDDEVICES"       : { return X509StoreName.TrustedDevices;       }
-                case "NTAUTH"               : { return X509StoreName.NTAuth;               }
-                }
-            return null;
-            }
-        #endregion
-
-        internal static IX509CertificateStorage BuildCertificateList(X509StoreLocation location, String storename, String certificates, CRYPT_PROVIDER_TYPE providertype) {
-            if (storename == "device") {
-                using (var context = new SCryptographicContext(providertype, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                    var storage = (IX509CertificateStorage)context.GetService(typeof(IX509CertificateStorage));
-                    if (String.IsNullOrWhiteSpace(certificates)) { return storage; }
-                    var values = certificates.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().ToUpper().Replace(" ", "")).ToList();
-                    var r = new X509CertificateStorage();
-                    foreach (var certificate in storage.Certificates) {
-                        if (values.Contains(certificate.Thumbprint.ToUpper())) {
-                            r.Add(certificate);
-                            }
-                        }
-                    return r;
-                    }
-                }
-            else
-                {
-                var storage = Directory.Exists(storename)
-                    ? new X509CertificateStorage(new Uri(storename))
-                    : new X509CertificateStorage(ToStoreName(storename).GetValueOrDefault(), location);
-                if (String.IsNullOrWhiteSpace(certificates)) { return storage; }
-                var values = certificates.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim().ToUpper().Replace(" ", "")).ToList();
-                var r = new X509CertificateStorage();
-                foreach (var certificate in storage.Certificates) {
-                    if (values.Contains(certificate.Thumbprint.ToUpper())) {
-                        r.Add(certificate);
-                        }
-                    }
-                return r;
-                }
-            }
-
         #region M:Hex(Byte[],TextWriter):String
         public static void Hex(Byte[] source, TextWriter writer) {
             if (source == null) {
@@ -132,91 +77,6 @@ namespace Kit
             }
         }
 
-        #region M:FormatException(Exception):String
-        private static IList<String> FormatExceptionInternal(Exception e)
-            {
-            if (e == null) { return new String[0]; }
-            var messages = new LinkedList<ExceptionItem>();
-            var lines = new List<String>();
-            var alt = String.Empty;
-#if FEATURE_EXCEPTION_DETAIL
-            if (e is FaultException)
-            {
-                var pi = e.GetType().GetProperty("Detail");
-                if (pi != null)
-                {
-                    var detail = pi.GetValue(e, null) as ExceptionDetail;
-                    if (detail != null)
-                    {
-                        alt = FormatException(detail);
-                    }
-                }
-            }
-#endif
-            #region Formatting exception output
-            while (e != null)
-                {
-                var block = new LinkedList<String>();
-                messages.AddFirst(new ExceptionItem(e.Message, e.GetType()));
-                if (e.StackTrace != null)
-                    {
-                    foreach (var line in e.StackTrace.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries))
-                        {
-                        var regex = new Regex(@"(\p{Zs}{3}(at|в)\p{Zs}(?<S>.+)\p{Zs}(in|в)\p{Zs}(?<N>.+):(line|строка)\p{Zs}(?<L>\p{Nd}+))+");
-                        var matches = regex.Matches(line);
-                        if (matches.Count > 0)
-                            {
-                            for (var i = matches.Count - 1; i >= 0; i--)
-                                {
-                                var m = matches[i];
-                                var s = String.Format(
-                                    "   at {0} in {1}:line {2}", m.Groups["S"],
-                                    Path.GetFileName(m.Groups["N"].Value), m.Groups["L"]);
-                                if (!block.Contains(s)) { block.AddLast(s); }
-                                }
-                            }
-                        else
-                            {
-                            regex = new Regex(@"(\p{Zs}{3}(at|в)\p{Zs}(?<S>.+))");
-                            matches = regex.Matches(line);
-                            if (matches.Count > 0)
-                                {
-                                var s = String.Format("   at {0}", matches[0].Groups["S"]);
-                                if (!block.Contains(s)) { block.AddLast(s); }
-                                }
-                            }
-                        }
-                    }
-                block.AddFirst(String.Format(@"   [{1}]:""{0}""", e.Message, e.GetType()));
-                lines.AddRange(block);
-                var c = e.Data.Count;
-                if (c > 0)
-                    {
-                    lines.Add("Дополнительная информация:");
-                    lines.AddRange(e.Data.OfType<DictionaryEntry>().Select(i => String.Format("{0}=\"{1}\"", i.Key, i.Value)));
-                    }
-                e = e.InnerException;
-                if (e != null)
-                    {
-                    lines.Add("   --- Начало трассировки внутреннего стека исключений ---");
-                    }
-                }
-            #endregion
-            var r = new List<String>();
-            r.Add("Обнаружено исключение: ");
-            r.AddRange(messages.Select(i =>
-                        String.Format(@"   [{0}]: ""{1}""", i.Type.FullName, i.Message)).
-                        ToArray());
-            r.Add("   --- Начало трассировки стека исключений ---");
-            r.AddRange(lines.ToArray());
-            if (!String.IsNullOrWhiteSpace(alt))
-                {
-                r.Add("Дополнительная информация:");
-                r.Add(alt);
-                }
-            return r;
-            }
-        #endregion
         #region M:FormatException(ExceptionDetail):String
 #if FEATURE_EXCEPTION_DETAIL
         public static String FormatException(ExceptionDetail e)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.Diagnostics
     {
@@ -61,14 +62,21 @@ namespace BinaryStudio.Diagnostics
             {
             public String Message { get; }
             public Int32? ExceptionIndex { get; }
-            public IDictionary<Object,Object> ExceptionData { get; }
+            public IDictionary<Object,ISet<Object>> ExceptionData { get; }
             public IList<Exception> Exceptions { get; }
             public ExceptionBlock(String message, Int32? index)
                 {
                 Message = message;
                 ExceptionIndex = index;
-                ExceptionData = new Dictionary<Object, Object>();
+                ExceptionData = new Dictionary<Object, ISet<Object>>();
                 Exceptions = new List<Exception>();
+                }
+
+            public void UpdateExceptionData(Object key, Object value) {
+                if (!ExceptionData.TryGetValue(key, out var r)) {
+                    ExceptionData.Add(key, r = new HashSet<Object>());
+                    }
+                r.Add(value);
                 }
             }
 
@@ -100,7 +108,7 @@ namespace BinaryStudio.Diagnostics
                                 if (lineindex == 0) {
                                     if (e.Data.Count > 0) {
                                         foreach (DictionaryEntry data in e.Data) {
-                                            block.ExceptionData.Add(
+                                            block.UpdateExceptionData(
                                                 data.Key,
                                                 data.Value);
                                             }
@@ -126,7 +134,7 @@ namespace BinaryStudio.Diagnostics
                                 if (lineindex == 0) {
                                     if (e.Data.Count > 0) {
                                         foreach (DictionaryEntry data in e.Data) {
-                                            block.ExceptionData.Add(
+                                            block.UpdateExceptionData(
                                                 data.Key,
                                                 data.Value);
                                             }
@@ -262,17 +270,9 @@ namespace BinaryStudio.Diagnostics
 
         private static IEnumerable<String> Serialize(Object source) {
                  if (source == null) { yield return "null"; }
-            else if (source is IExceptionSerializable e)
-                {
-                var target = new StringBuilder();
-                using (var writer = new StringWriter(target)) { e.WriteTo(writer); }
-                using (var reader = new StringReader(target.ToString())) {
-                    while (true)
-                        {
-                        var r = reader.ReadLine();
-                        if (r == null) { break; }
-                        yield return r;
-                        }
+            else if (source is IExceptionSerializable e) {
+                foreach (var i in Serialize(e)) {
+                    yield return i;
                     }
                 }
             else
@@ -284,6 +284,12 @@ namespace BinaryStudio.Diagnostics
                     (type == typeof(Int64)) || (type == typeof(UInt64)))
                     {
                     yield return source.ToString();
+                    }
+                else if (type == typeof(String)) { yield return $@"""{source}"""; }
+                else if (source is IEnumerable values) {
+                    foreach (var i in Serialize(values)) {
+                        yield return i;
+                        }
                     }
                 else
                     {
@@ -302,6 +308,49 @@ namespace BinaryStudio.Diagnostics
                     if (r == null) { break; }
                     yield return r;
                     }
+                }
+            }
+
+        private static IEnumerable<String> Serialize(IEnumerable source) {
+            var values = source.OfType<Object>().ToArray();
+            if (values.Length == 1) {
+                foreach (var i in Serialize(values[0])) {
+                    yield return i;
+                    }
+                yield break;
+                }
+            var target = new StringBuilder();
+            using (var writer = new StringWriter(target)) { WriteTo(writer, source); }
+            using (var reader = new StringReader(target.ToString())) {
+                while (true)
+                    {
+                    var r = reader.ReadLine();
+                    if (r == null) { break; }
+                    yield return r;
+                    }
+                }
+            }
+
+        private static void WriteTo(TextWriter target, IEnumerable source) {
+            using (var writer = new JsonTextWriter(target){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    }) {
+                var serializer = new JsonSerializer();
+                writer.WriteStartArray();
+                foreach (var value in source) {
+                    if (value is IExceptionSerializable S)
+                        {
+                        S.WriteTo(writer, serializer);
+                        }
+                    else
+                        {
+                        writer.WriteValue(value);
+                        }
+                    }
+                writer.WriteEnd();
+                writer.Flush();
                 }
             }
         }
