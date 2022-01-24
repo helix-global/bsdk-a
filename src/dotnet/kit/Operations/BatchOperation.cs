@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable;
@@ -17,7 +15,6 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
-using BinaryStudio.Security.Cryptography.DataInterchangeFormat;
 using BinaryStudio.Security.Cryptography.Interchange;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -39,7 +36,6 @@ namespace Operations
         private String StoreName { get; }
         private String Filter { get; }
         private readonly Object FolderObject = new Object();
-        private readonly Object console = new Object();
         private Entities connection;
         private MetadataScope scope;
         private X509CertificateStorage store;
@@ -72,16 +68,8 @@ namespace Operations
                 }
             }
 
-        private enum Status
-            {
-            Success,
-            Error,
-            Skip,
-            Warning
-            }
-
-        #region M:Execute(String,IFileService,Byte[],Boolean):Status
-        private Status Execute(String targetfolder, IFileService fileservice, Byte[] file, Boolean checkbase64) {
+        #region M:Execute(String,IFileService,Byte[],Boolean):FileOperationStatus
+        private FileOperationStatus Execute(String targetfolder, IFileService fileservice, Byte[] file, Boolean checkbase64) {
             if (checkbase64) {
                 if (file.Length > 0) {
                     if (file[0] == '-') {
@@ -116,18 +104,18 @@ namespace Operations
             using (var sourcestream = new MemoryStream(file)) { return Execute(targetfolder,fileservice,sourcestream); }
             }
         #endregion
-        #region M:Execute(String,IFileService,Stream):Status
-        private Status Execute(String targetfolder, IFileService fileservice, Stream sourcestream) {
+        #region M:Execute(String,IFileService,Stream):FileOperationStatus
+        private FileOperationStatus Execute(String targetfolder, IFileService fileservice, Stream sourcestream) {
             using (var o = Asn1Object.Load(sourcestream).FirstOrDefault()) {
                 using (var cer = new Asn1Certificate(o))               if (!cer.IsFailed) { return Execute(targetfolder, fileservice, cer); }
                 using (var crl = new Asn1CertificateRevocationList(o)) if (!crl.IsFailed) { return Execute(targetfolder, fileservice, crl); }
                 using (var cms = new CmsMessage(o))                    if (!cms.IsFailed) { return Execute(targetfolder, fileservice, cms); }
-                return Status.Skip;
+                return FileOperationStatus.Skip;
                 }
             }
         #endregion
-        #region M:Execute(String,IFileService,Asn1Certificate):Int32
-        private Status Execute(String targetfolder, IFileService fileservice, Asn1Certificate source) {
+        #region M:Execute(String,IFileService,Asn1Certificate):FileOperationStatus
+        private FileOperationStatus Execute(String targetfolder, IFileService fileservice, Asn1Certificate source) {
             var country = Flags.HasFlag(BatchOperationFlags.Group)
                 ? GetCountry(source.Subject)??GetCountry(source.Issuer)
                 : null;
@@ -161,11 +149,11 @@ namespace Operations
                 }
                     if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509Certificate(source));    }
             else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509Certificate(source)); }
-            return Status.Success;
+            return FileOperationStatus.Success;
             }
         #endregion
-        #region M:Execute(String,IFileService,Asn1CertificateRevocationList):Status
-        private Status Execute(String targetfolder, IFileService fileservice, Asn1CertificateRevocationList source) {
+        #region M:Execute(String,IFileService,Asn1CertificateRevocationList):FileOperationStatus
+        private FileOperationStatus Execute(String targetfolder, IFileService fileservice, Asn1CertificateRevocationList source) {
             var country = Flags.HasFlag(BatchOperationFlags.Group)
                 ? GetCountry(source.Issuer)
                 : null;
@@ -199,141 +187,72 @@ namespace Operations
                 }
                     if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509CertificateRevocationList(source));    }
             else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509CertificateRevocationList(source)); }
-            return Status.Success;
+            return FileOperationStatus.Success;
             }
         #endregion
-        #region M:Execute(String,IFileService,CmsMessage):Int32
-        private Status Execute(String targetfolder, IFileService fileservice, CmsMessage source) {
+        #region M:Execute(String,IFileService,CmsMessage):FileOperationStatus
+        private FileOperationStatus Execute(String targetfolder, IFileService fileservice, CmsMessage source) {
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
                 var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
                 using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
                     JsonSerialize(source, writer);
                     }
                 }
-            return Status.Success;
+            return FileOperationStatus.Success;
             }
         #endregion
-
-        private Int32 Execute(IFileService fileservice, TextWriter output) {
-            if (fileservice == null) { throw new ArgumentNullException(nameof(fileservice)); }
-            var E = Path.GetExtension(fileservice.FileName).ToLower();
-            var targetfolder = (TargetFolder ?? Path.GetDirectoryName(fileservice.FileName)) ?? String.Empty;
-            var status = Status.Skip;
-            var timer = new Stopwatch();
-            timer.Start();
+        #region M:Execute(IFileService,DirectoryServiceSearchOptions,FileOperationArgs):FileOperationStatus
+        private FileOperationStatus Execute(IFileService service,DirectoryServiceSearchOptions flags,FileOperationArgs e) {
+            var status = FileOperationStatus.Skip;
+            switch (Path.GetExtension(service.FileName).ToLower()) {
+                case ".crl":
+                case ".cer":
+                case ".der":
+                case ".ber":
+                case ".p7b":
+                    using (var sourcestream = service.OpenRead())
+                        {
+                        status = Execute(e.TargetFolder, service, sourcestream);
+                        }
+                    break;
+                }
+            return status;
+            }
+        #endregion
+        #region M:Execute(TextWriter)
+        public override void Execute(TextWriter output) {
+            var location = StoreLocation.GetValueOrDefault(X509StoreLocation.CurrentUser);
+            if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
+                if (location == X509StoreLocation.LocalMachine) {
+                    PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
+                    }
+                }
+            scope = new MetadataScope();
+            connection = CreateConnection(TargetConnectionString);
+            store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location);
             try
                 {
-                switch (E) {
-                    case ".obj":
-                        {
-                        var o = scope.LoadObject(fileservice.FileName);
-                        if (OutputType.IsJson) { JsonSerialize(o, output); }
-                        }
-                        break;
-                    #region asn1
-                    case ".crl":
-                    case ".cer":
-                    case ".der":
-                    case ".ber":
-                    case ".p7b":
-                        {
-                        //var r = fileservice.ReadAllBytes();
-                        //status = Execute(targetfolder, fileservice, r, true);
-                        using (var sourcestream = fileservice.OpenRead())
-                            {
-                            status = Execute(targetfolder, fileservice, sourcestream);
-                            }
-                        }
-                        break;
-                    #endregion
-                    case ".ldif":
-                        {
-                        status = Execute(new LDIFFile(fileservice), output,
-                            DirectoryServiceSearchOptions.Recursive, Filter) > 0
-                            ? Status.Success
-                            : Status.Skip;
-                        }
-                        break;
-                    case ".ml" :
-                        {
-                        var r = new CmsMessage(fileservice.ReadAllBytes());
-                        var masterList = (CSCAMasterList)r.ContentInfo.GetService(typeof(CSCAMasterList));
-                        if (masterList != null) {
-                            status = Execute(masterList, output,
-                                DirectoryServiceSearchOptions.Recursive, Filter) > 0
-                                ? Status.Success
-                                : Status.Skip;
-                            }
-                        }
-                        break;
-                    default:
-                        {
-                        status = Status.Skip;
-                        if (DirectoryService.GetService<IDirectoryService>(fileservice, out var folder)) {
-                            status = Execute(folder, output,
-                                DirectoryServiceSearchOptions.Recursive, Filter) > 0
-                                ? Status.Success
-                                : Status.Skip;
-                            }
-                        }
-                        break;
-                    }
-                timer.Stop();
-                switch (status) {
-                    case Status.Success:
-                        {
-                        lock(console) {
-                            Write(Out,ConsoleColor.Green, "{ok}");
-                            Write(Out,ConsoleColor.Gray, ":");
-                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                            }
-                        }
-                        return 1;
-                    case Status.Warning:
-                        {
-                        lock(console) {
-                            Write(Out,ConsoleColor.Yellow, "{skip}");
-                            Write(Out,ConsoleColor.Gray, ":");
-                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                            }
-                        }
-                        return 1;
-                    case Status.Error:
-                        {
-                        lock(console) {
-                            Write(Out,ConsoleColor.Red, "{error}");
-                            Write(Out,ConsoleColor.Gray, ":");
-                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                            WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                            }
-                        if (!String.IsNullOrWhiteSpace(QuarantineFolder)) {
-                            try
-                                {
-                                var targetfilename = Path.Combine(QuarantineFolder, Path.GetFileName(fileservice.FileName));
-                                fileservice.MoveTo(targetfilename);
-                                }
-                            catch
-                                {
-                                }
-                            }
-                        }
-                        return 1;
+                var core = new FileOperation<FileOperationArgs>(Out,Error) {
+                    TargetFolder = TargetFolder,
+                    Pattern = Filter,
+                    Options = DirectoryServiceSearchOptions.Recursive|DirectoryServiceSearchOptions.Containers,
+                    ExecuteAction = Execute
+                    };
+                core.Execute(InputFileName);
+                if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
+                    store.Commit();
                     }
                 }
-            catch (Exception)
+            finally
                 {
-                lock(console) {
-                    Write(Out,ConsoleColor.Red, "{error}");
-                    Write(Out,ConsoleColor.Gray, ":");
-                    Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
-                    WriteLine(Out,ConsoleColor.Gray, $":{fileservice.FileName}");
-                    }
-                throw;
+                Dispose(ref scope);
+                Dispose(ref connection);
+                Dispose(ref store);
                 }
-            return 0;
+            GC.Collect();
+            GC.Collect();
             }
+        #endregion
 
         #region M:Get<E,T>(IDbSet<E>,[ref]Boolean,T):E
         private static E Get<E,T>(IDbSet<E> set, ref Boolean flag, T value)
@@ -526,16 +445,7 @@ namespace Operations
                 }
             }
         #endregion
-
-        private static String GetShortKey(Byte[] source) {
-            return $"{source[0]:X2}{source[source.Length-1]:X2}";
-            }
-
-        private static DbQuery<T> SQL<T>(DbQuery<T> source) {
-            //Console.WriteLine($"\nSQL:{{{source.Sql}}}");
-            return source;
-            }
-
+        #region M:Get(Entities,LocalCache,Asn1RelativeDistinguishedNameSequence):DRelativeDistinguishedNameSequence
         private static DRelativeDistinguishedNameSequence Get(Entities context, LocalCache cache, Asn1RelativeDistinguishedNameSequence source) {
             var r = cache.RelativeDistinguishedNameSequences.FirstOrDefault(i => i.Equals(source));
             if (r == null) {
@@ -572,7 +482,9 @@ namespace Operations
                 }
             return r;
             }
+        #endregion
 
+        #region M:Update(Entities,Asn1Certificate)
         private static void Update(Entities context, Asn1Certificate source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -623,7 +535,8 @@ namespace Operations
                 context.SaveChanges();
                 }
             }
-
+        #endregion
+        #region M:Update(Entities,Asn1CertificateRevocationList)
         private static void Update(Entities context, Asn1CertificateRevocationList source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -671,88 +584,8 @@ namespace Operations
                 context.SaveChanges();
                 }
             }
-
-        private Int32 Execute(IDirectoryService service, TextWriter output, DirectoryServiceSearchOptions flags, String pattern) {
-            var r = 0;
-            #if DEBUG
-            foreach (var i in service.GetFiles(pattern, flags)) {
-                try
-                    {
-                    Interlocked.Add(ref r, Execute(i, output));
-                    }
-                catch (Exception e)
-                    {
-                    e.Data["FileName"] = i.FileName;
-                    throw;
-                    }
-                }
-            #else
-            service
-                .GetFiles(pattern, flags)
-                .AsParallel()
-                .ForAll(i =>{
-                    try
-                        {
-                        Interlocked.Add(ref r, Execute(i, output));
-                        }
-                    catch (Exception e)
-                        {
-                        e.Data["FileName"] = i.FileName;
-                        throw;
-                        }
-                    });
-            #endif
-            GC.Collect();
-            return r;
-            }
-
-        #region M:Execute(TextWriter)
-        public override void Execute(TextWriter output) {
-            var location = StoreLocation.GetValueOrDefault(X509StoreLocation.CurrentUser);
-            if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
-                if (location == X509StoreLocation.LocalMachine) {
-                    PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
-                    }
-                }
-            scope = new MetadataScope();
-            connection = CreateConnection(TargetConnectionString);
-            store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location);
-            try
-                {
-                foreach (var fileitem in InputFileName) {
-                    var fi = fileitem;
-                    if (Path.GetFileNameWithoutExtension(fi).Contains("*")) {
-                        var flags = fi.StartsWith(":")
-                            ? DirectoryServiceSearchOptions.None
-                            : DirectoryServiceSearchOptions.Recursive|DirectoryServiceSearchOptions.Containers;
-                        fi = fi.StartsWith(":")
-                            ? fi.Substring(1)
-                            : fi;
-                        var folder = Path.GetDirectoryName(fi);
-                        var pattern = Path.GetFileName(fi);
-                        if (String.IsNullOrEmpty(folder)) { folder = ".\\"; }
-                        Execute(DirectoryService.GetService<IDirectoryService>(new Uri($"file://{folder}")),
-                            output, flags, pattern);
-                        }
-                    else
-                        {
-                        Execute(DirectoryService.GetService<IFileService>(new Uri($"file://{fileitem}")), output);
-                        }
-                    }
-                    if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
-                        store.Commit();
-                        }
-                }
-            finally
-                {
-                Dispose(ref scope);
-                Dispose(ref connection);
-                Dispose(ref store);
-                }
-            GC.Collect();
-            GC.Collect();
-            }
         #endregion
+
         #region M:JsonSerialize(Object,TextWriter)
         private static void JsonSerialize(Object value, TextWriter output) {
             using (var writer = new JsonTextWriter(output){
@@ -773,6 +606,15 @@ namespace Operations
                 }
             }
         #endregion
+
+        private static String GetShortKey(Byte[] source) {
+            return $"{source[0]:X2}{source[source.Length-1]:X2}";
+            }
+
+        private static DbQuery<T> SQL<T>(DbQuery<T> source) {
+            //Console.WriteLine($"\nSQL:{{{source.Sql}}}");
+            return source;
+            }
 
         private static String GetCountry(Asn1RelativeDistinguishedNameSequence source) {
             return source.TryGetValue("2.5.4.6", out var r)
@@ -816,10 +658,5 @@ namespace Operations
                 Metadata = @"res://*/CertificateEntityDataModel.csdl|res://*/CertificateEntityDataModel.ssdl|res://*/CertificateEntityDataModel.msl"
                 }.ConnectionString);
             }
-
-        private const Int32 SUCCESS = 0;
-        private const Int32 SKIP    = 1;
-        private const Int32 ERROR   = 2;
-        private const Int32 WARNING = 3;
         }
     }
