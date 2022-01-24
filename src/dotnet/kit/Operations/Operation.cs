@@ -91,6 +91,15 @@ namespace Operations
             }
         #endregion
 
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
+
         protected static void RequestWindowSecureStringEventHandler(Object sender, RequestSecureStringEventArgs e)
             {
             e.SecureString = new SecureString();

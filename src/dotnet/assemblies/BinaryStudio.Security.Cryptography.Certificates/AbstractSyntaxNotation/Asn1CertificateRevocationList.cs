@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
@@ -13,15 +15,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public sealed class Asn1CertificateRevocationList : Asn1LinkObject
         {
         private String _thumbprint;
+        private static Int32 gref;
+        private Asn1CertificateRevocationListEntry[] entries = EmptyArray<Asn1CertificateRevocationListEntry>.Value;
+        private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
 
         public DateTime  EffectiveDate { get; }
         public DateTime? NextUpdate { get; }
-        public Asn1RelativeDistinguishedNameSequence Issuer { get; }
-        public X509AlgorithmIdentifier SignatureAlgorithm { get; }
+        public Asn1RelativeDistinguishedNameSequence Issuer { get;private set; }
+        public X509AlgorithmIdentifier SignatureAlgorithm { get;private set; }
         public Int32 Version { get; }
-        public IList<Asn1CertificateRevocationListEntry> Entries { get; }
-        public Asn1CertificateExtensionCollection Extensions { get; }
-        public Asn1BitString Signature { get; }
+        public IList<Asn1CertificateRevocationListEntry> Entries { get { return entries; }}
+        public Asn1CertificateExtensionCollection Extensions { get { return new Asn1CertificateExtensionCollection(extensions); }}
+        public Asn1BitString Signature { get;private set; }
         public String Country { get; }
 
         public String Thumbprint { get {
@@ -39,7 +44,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1CertificateRevocationList(Asn1Object o)
             : base(o)
             {
+            Interlocked.Increment(ref gref);
             State |= ObjectState.Failed;
+            State &= ~ObjectState.DisposeUnderlyingObject;
             if (o is Asn1Sequence u)
                 {
                 if (u.Count == 3)
@@ -48,7 +55,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         (u[1] is Asn1Sequence) &&
                         (u[2] is Asn1BitString))
                         {
-                        Extensions = new Asn1CertificateExtensionCollection();
                         Version = (Int32)(Asn1Integer)u[0][0];
                         SignatureAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)o[0][1]);
                         Issuer = new Asn1RelativeDistinguishedNameSequence(o[0][2].
@@ -60,24 +66,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             NextUpdate = (Asn1Time)o[0][4];
                             i++;
                             }
-                        Entries = new Asn1CertificateRevocationListEntry[0];
                         if (o[0][i] is Asn1Sequence) {
                             var r = new List<Asn1CertificateRevocationListEntry>();
                             foreach (var e in o[0][i]) {
                                 r.Add(new Asn1CertificateRevocationListEntry(e));
                                 }
-                            Entries = r;
+                            entries = r.ToArray();
                             i++;
                             }
                         if (o[0][i] is Asn1ContextSpecificObject) {
                             var specific = (Asn1ContextSpecificObject)o[0][i];
                             if (specific.Type == 0) {
-                                Extensions = new Asn1CertificateExtensionCollection(o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToList());
+                                extensions = o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToArray();
                                 }
                             }
                         Signature = (Asn1BitString)o[2];
                         Country = GetCountry(Issuer);
                         State &= ~ObjectState.Failed;
+                        State |= ObjectState.DisposeUnderlyingObject;
                         }
                     }
                 }
@@ -143,6 +149,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return source.TryGetValue("2.5.4.6", out var r)
                 ? r.ToString().ToLower()
                 : null;
+            }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Interlocked.Decrement(ref gref);
+                lock (this)
+                    {
+                    Dispose(ref entries);
+                    Dispose(ref extensions);
+                    Issuer = null;
+                    Signature = null;
+                    SignatureAlgorithm = null;
+                    }
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
+                }
             }
         }
     }

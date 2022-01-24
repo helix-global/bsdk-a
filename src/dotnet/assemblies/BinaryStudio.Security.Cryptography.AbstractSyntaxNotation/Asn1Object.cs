@@ -21,20 +21,22 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     [TypeConverter(typeof(Asn1ObjectConverter))]
     public abstract class Asn1Object : IList<Asn1Object>, IEquatable<Asn1Object>,
         IJsonSerializable, IXmlSerializable, IAsn1Object, IServiceProvider,
-        ICustomTypeDescriptor
+        ICustomTypeDescriptor, IDisposable
         {
         [Flags]
-        protected internal enum ObjectState : byte
+        protected internal enum ObjectState : ushort
             {
-            None = 0,
-            ExplicitConstructed = 1,
-            ImplicitConstructed = 2,
-            Failed = 4,
-            Indefinite = 8,
-            Decoded = 16,
-            Building = 32,
-            SealedLength = 64,
-            SealedSize = 128
+            None                    = 0x000,
+            ExplicitConstructed     = 0x001,
+            ImplicitConstructed     = 0x002,
+            Failed                  = 0x004,
+            Indefinite              = 0x008,
+            Decoded                 = 0x010,
+            Disposed                = 0x020,
+            SealedLength            = 0x040,
+            SealedSize              = 0x080,
+            DisposeUnderlyingObject = 0x100,
+            DisposeContent          = 0x200,
             }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private ObjectState state;
@@ -42,15 +44,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 size;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 length;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal ReadOnlyMappingStream content;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private readonly List<Asn1Object> sequence = new List<Asn1Object>();
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength    { get { return state.HasFlag(ObjectState.Indefinite); }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return state.HasFlag(ObjectState.Indefinite);          }}
+        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return state.HasFlag(ObjectState.Disposed);            }}
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
+        private static Int32 gref;
 
         #region M:Body:Byte[]
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -495,6 +499,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }}
 
         protected Asn1Object(ReadOnlyMappingStream source, Int64 forceoffset)
+            :this()
             {
             state |= ObjectState.SealedLength | ObjectState.SealedSize;
             offset = source.Position - 1;
@@ -517,19 +522,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     }
                 offset += forceoffset;
                 content = source.Clone(length);
+                state |= ObjectState.DisposeContent;
                 source.Seek(length, SeekOrigin.Current);
                 }
             }
 
         internal Asn1Object()
             {
+            Interlocked.Increment(ref gref);
             }
 
         #region M:Decode(IEnumerable<Asn1Object>):Boolean
         private static Boolean Decode(IEnumerable<Asn1Object> items)
             {
             #if TRACE
-            using (TraceManager.Instance.Trace())
             #endif
                 {
                 #if FEATURE_MULTI_THREAD_PROCESSING
@@ -550,7 +556,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal virtual Boolean Decode()
             {
             #if TRACE
-            using (TraceManager.Instance.Trace())
             #endif
                 {
                 if (IsDecoded) { return true;  }
@@ -588,6 +593,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             size   = sz;
                             length = ln;
                             content = content.Clone(offset, length);
+                            state |= ObjectState.DisposeContent;
                             if (Decode(r))
                                 {
                                 sequence.AddRange(r);
@@ -1127,5 +1133,65 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             if (IsIndefiniteLength) { yield return new Byte[4]; }
             }}
+
+        #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected virtual void Dispose(Boolean disposing) {
+            if (!IsDisposed) {
+                lock(this) {
+                    if (sequence != null) {
+                        for (var i = 0; i < sequence.Count; i++) {
+                            sequence[i].Dispose();
+                            sequence[i] = null;
+                            }
+                        sequence.Clear();
+                        sequence = null;
+                        }
+                    if (state.HasFlag(ObjectState.DisposeContent)) { Dispose(ref content); }
+                    content = null;
+                    state |= ObjectState.Disposed;
+                    Interlocked.Decrement(ref gref);
+                    }
+                }
+            }
+        #endregion
+        #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+            {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            }
+        #endregion
+        #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        ~Asn1Object()
+            {
+            Dispose(false);
+            }
+        #endregion
+
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
+
+        protected static void Dispose<T>(ref T[] o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                for (var i = 0; i < o.Length; i++) {
+                    Dispose(ref o[i]);
+                    }
+                o = default;
+                }
+            }
         }
     }

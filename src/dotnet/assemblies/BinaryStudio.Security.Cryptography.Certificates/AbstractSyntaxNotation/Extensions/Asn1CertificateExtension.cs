@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading;
 using System.Xml.Serialization;
 using BinaryStudio.DataProcessing;
-using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -23,20 +22,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [XmlRoot("Extension")]
     public class Asn1CertificateExtension : Asn1LinkObject, IX509CertificateExtension
         {
-        [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(Identifier))] public Asn1ObjectIdentifier Identifier { get; }
+        [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(Identifier))] public Asn1ObjectIdentifier Identifier { get;private set; }
         [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(IsCritical))][TypeConverter(typeof(X509BooleanConverter))] public Boolean IsCritical { get; }
 
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int32 Count { get { return base.Count; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Size { get { return base.Size; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Length { get { return base.Length; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Int64 Offset { get { return base.Offset; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1ObjectClass Class { get { return base.Class; } }
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override ReadOnlyMappingStream Content { get { return base.Content; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get; }
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get;private set; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IObjectIdentifier IX509CertificateExtension.Identifier { get { return Identifier; }}
 
@@ -116,6 +109,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(serializer, nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(serializer, nameof(IsCritical), IsCritical);
+                }
+            }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Identifier = null;
+                Body = null;
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
                 }
             }
         }

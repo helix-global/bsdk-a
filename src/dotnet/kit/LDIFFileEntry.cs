@@ -145,6 +145,8 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
         public Boolean IsFile { get {
             foreach (var fieldname in properties.Keys) {
                 if (fieldname == "CscaMasterListData") { return true; }
+                if (fieldname == "certificateRevocationList") { return true; }
+                if (fieldname == "userCertificate") { return true; }
                 var values = fieldname.Split(new []{ ';' }, StringSplitOptions.RemoveEmptyEntries);
                 if (values.Contains("binary")) {
                     return true;
@@ -163,6 +165,8 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
                  if (properties.ContainsKey("userCertificate;binary"))           { r.Append(".cer"); }
             else if (properties.ContainsKey("certificateRevocationList;binary")) { r.Append(".crl"); }
             else if (properties.ContainsKey("CscaMasterListData"))               { r.Append(".ml");  }
+            else if (properties.ContainsKey("userCertificate"))                  { r.Append(".cer"); }
+            else if (properties.ContainsKey("certificateRevocationList"))        { r.Append(".crl"); }
             return r.ToString();
             }}
 
@@ -172,6 +176,8 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
             if (TryGetFieldValue("userCertificate;binary", out r))           { return (Byte[])r; }
             if (TryGetFieldValue("certificateRevocationList;binary", out r)) { return (Byte[])r; }
             if (TryGetFieldValue("CscaMasterListData", out r))               { return (Byte[])r; }
+            if (TryGetFieldValue("userCertificate", out r))                  { return (Byte[])r; }
+            if (TryGetFieldValue("certificateRevocationList", out r))        { return (Byte[])r; }
             throw new NotSupportedException();
             }
 
@@ -182,20 +188,21 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
 
         public void MoveTo(String target)
             {
+            MoveTo(target, false);
+            }
+
+        public void MoveTo(String target, Boolean overwrite)
+            {
             if (target == null) { throw new ArgumentNullException(nameof(target)); }
             using (var sourcestream = OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
                 var folder = Path.GetDirectoryName(target);
-                var filename = Path.GetTempFileName();
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
-                if (File.Exists(filename)) { File.Delete(filename); }
-                var block = new Byte[1024];
-                using (var output = File.OpenWrite(target)) {
-                    for (;;) {
-                        var blockcount = block.Length;
-                        var sourcecount = sourcestream.Read(block, 0, blockcount);
-                        if (sourcecount == 0) { break; }
-                        output.Write(block, 0, sourcecount);
-                        }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
                     }
                 }
             }

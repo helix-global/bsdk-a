@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
@@ -11,9 +12,10 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    public class X509CertificateRevocationList : X509Object, IJsonSerializable, IX509CertificateRevocationList
+    public class X509CertificateRevocationList : X509Object, IJsonSerializable, IX509CertificateRevocationList, IFileService
         {
-        internal Asn1CertificateRevocationList UnderlyingObject { get; }
+        internal Asn1CertificateRevocationList UnderlyingObject;
+        private IntPtr InternalHandle;
         public DateTime  EffectiveDate { get { return UnderlyingObject.EffectiveDate; }}
         public DateTime? NextUpdate    { get { return UnderlyingObject.NextUpdate;    }}
         public Int32 Version           { get { return UnderlyingObject.Version;       }}
@@ -32,7 +34,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509CertificateRevocationList(Byte[] source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            Handle = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, source, source.Length);
+            InternalHandle = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, source, source.Length);
             UnderlyingObject = ConstructFromBinary(source);
             }
 
@@ -40,20 +42,20 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             UnderlyingObject = source;
-            Handle = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, source.Body, source.Body.Length);
+            InternalHandle = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, source.Body, source.Body.Length);
             }
 
         public unsafe X509CertificateRevocationList(IntPtr handle)
             {
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
-            Handle = CertDuplicateCRLContext(handle);
+            InternalHandle = CertDuplicateCRLContext(handle);
             UnderlyingObject = ConstructFromBinary((CRL_CONTEXT*)handle);
             }
 
         public unsafe X509CertificateRevocationList(CRL_CONTEXT* context)
             {
             if (context == null) { throw new ArgumentOutOfRangeException(nameof(context)); }
-            Handle = CertDuplicateCRLContext((IntPtr)context);
+            InternalHandle = CertDuplicateCRLContext((IntPtr)context);
             UnderlyingObject = ConstructFromBinary(context);
             }
 
@@ -87,41 +89,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
 
-        ///// <summary>This method is reserved and should not be used. When implementing the IXmlSerializable interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" /> to the class.</summary>
-        ///// <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> that describes the XML representation of the object that is produced by the <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" /> method and consumed by the <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)" /> method.</returns>
-        //XmlSchema IXmlSerializable.GetSchema()
-        //    {
-        //    throw new NotImplementedException();
-        //    }
-
-        ///// <summary>Generates an object from its XML representation.</summary>
-        ///// <param name="reader">The <see cref="T:System.Xml.XmlReader" /> stream from which the object is deserialized. </param>
-        //void IXmlSerializable.ReadXml(XmlReader reader)
-        //    {
-        //    throw new NotImplementedException();
-        //    }
-
-        ///// <summary>Converts an object into its XML representation.</summary>
-        ///// <param name="writer">The <see cref="T:System.Xml.XmlWriter" /> stream to which the object is serialized. </param>
-        //void IXmlSerializable.WriteXml(XmlWriter writer)
-        //    {
-        //    if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-        //    writer.WriteStartElement("CertificateRevocationList");
-        //    writer.WriteAttributeString(nameof(Version), Version.ToString());
-        //    writer.WriteAttributeString(nameof(EffectiveDate), EffectiveDate.ToString("O"));
-        //    if (NextUpdate != null) {
-        //        writer.WriteAttributeString(nameof(NextUpdate), NextUpdate.Value.ToString("O"));
-        //        }
-        //    var issuer = Issuer;
-        //    if (issuer != null) {
-        //        writer.WriteStartElement("CertificateRevocationList.Issuer");
-        //        ((IXmlSerializable)issuer).WriteXml(writer);
-        //        writer.WriteEndElement();
-        //        }
-        //    writer.WriteEndElement();
-        //    writer.Flush();
-        //    }
-
         public void WriteJson(JsonWriter writer, JsonSerializer serializer)
             {
             UnderlyingObject.WriteJson(writer, serializer);
@@ -137,10 +104,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
 
         public override X509ObjectType ObjectType { get { return X509ObjectType.Crl; }}
-        public override IntPtr Handle { get; }
+        public override IntPtr Handle { get { return InternalHandle; }}
 
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertDuplicateCRLContext(IntPtr context);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CertFreeCRLContext(IntPtr context);
 
         #region M:GetSigningStreamInternal:IEnumerable<Byte>
         private IEnumerable<Byte> GetSigningStreamInternal() {
@@ -153,5 +121,61 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return new ForwardOnlyByteStream(GetSigningStreamInternal);
             }
         #endregion
+
+        String IFileService.FileName { get { return $"{FriendlyName}.crl"; }}
+
+        unsafe Byte[] IFileService.ReadAllBytes()
+            {
+            var src   = (CRL_CONTEXT*)Handle;
+            var size  = src->CrlEncodedSize;
+            var bytes = src->CrlEncodedData;
+            var r = new Byte[size];
+            for (var i = 0U; i < size; ++i) {
+                r[i] = bytes[i];
+                }
+            return r;
+            }
+
+        Stream IFileService.OpenRead()
+            {
+            return new MemoryStream(((IFileService)this).ReadAllBytes());
+            }
+
+        void IFileService.MoveTo(String target)
+            {
+            MoveTo(target, false);
+            }
+
+        public void MoveTo(String target, Boolean overwrite)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = ((IFileService)this).OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
+                var folder = Path.GetDirectoryName(target);
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
+                    }
+                }
+            }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            lock (this) {
+                Dispose(ref UnderlyingObject);
+                if (InternalHandle != IntPtr.Zero)
+                    {
+                    CertFreeCRLContext(InternalHandle);
+                    InternalHandle = IntPtr.Zero;
+                    }
+                }
+            base.Dispose(disposing);
+            }
         }
     }

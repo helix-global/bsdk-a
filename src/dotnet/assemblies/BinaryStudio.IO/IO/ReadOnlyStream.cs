@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
+using BinaryStudio.DirectoryServices;
 
 namespace BinaryStudio.IO
     {
@@ -65,8 +65,8 @@ namespace BinaryStudio.IO
                 var offset = Position;
                 var assembly = Assembly.GetEntryAssembly();
                 var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
-                var filename = Path.GetTempFileName();
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                var filename = PathUtils.GetTempFileName(folder, "str");
                 if (File.Exists(filename)) { File.Delete(filename); }
                 var block = new Byte[BlockSize];
                 using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
@@ -86,8 +86,8 @@ namespace BinaryStudio.IO
                 {
                 var assembly = Assembly.GetEntryAssembly();
                 var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
-                var filename = Path.GetTempFileName();
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                var filename = PathUtils.GetTempFileName(folder, "str");
                 if (File.Exists(filename)) { File.Delete(filename); }
                 var block = new Byte[BlockSize];
                 using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
@@ -109,16 +109,18 @@ namespace BinaryStudio.IO
         /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            if (disposing) {
-                if (source != null) {
-                    if (closable)
-                        {
-                        source.Dispose();
+            if (!IsDisposed) {
+                lock(this) {
+                    if (source != null) {
+                        if (closable)
+                            {
+                            source.Dispose();
+                            }
+                        source = null;
                         }
-                    source = null;
                     }
+                base.Dispose(disposing);
                 }
-            base.Dispose(disposing);
             }
         }
     }

@@ -9,5 +9,6 @@ namespace BinaryStudio.DirectoryServices
         Byte[] ReadAllBytes();
         Stream OpenRead();
         void MoveTo(String target);
+        void MoveTo(String target, Boolean overwrite);
         }
     }

@@ -59,6 +59,10 @@ namespace BinaryStudio.IO
         public override Int32 ReadTimeout  { get { return 0; }}
         public override Int32 WriteTimeout { get { return 0; }}
 
+        protected ReadOnlyMappingStream()
+            {
+            }
+
         #region M:Flush
         /**
          * <summary>
@@ -141,10 +145,11 @@ namespace BinaryStudio.IO
          * </summary>
          * <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
          * */
-        protected override void Dispose(Boolean disposing)
-            {
-            IsDisposed = true;
-            base.Dispose(disposing);
+        protected override void Dispose(Boolean disposing) {
+            if (!IsDisposed) {
+                base.Dispose(disposing);
+                IsDisposed = true;
+                }
             }
         #endregion
         #region M:ToArray:Byte[]

@@ -99,6 +99,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             : base(source)
             {
             State |= ObjectState.Failed;
+            State &= ~ObjectState.DisposeUnderlyingObject;
             if (source is null) { throw new ArgumentNullException(nameof(source)); }
             if ((source.Class == Asn1ObjectClass.Universal) && (source is Asn1Sequence)) {
                 using (new TraceScope()) {
@@ -119,6 +120,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                         }
                     }
                 State &= ~ObjectState.Failed;
+                State |= ObjectState.DisposeUnderlyingObject;
                 }
             }
 

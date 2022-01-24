@@ -28,6 +28,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (IsIndefiniteLength) { return base.Decode(); }
             UnusedBits = Content.ReadByte();
             content = Content.Clone(Length - 1);
+            State |= ObjectState.DisposeContent;
             length = Length - 1;
             State |= ObjectState.Decoded;
             return true;

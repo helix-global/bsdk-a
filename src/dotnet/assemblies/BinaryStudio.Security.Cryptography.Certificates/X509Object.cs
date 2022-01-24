@@ -40,6 +40,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
 
         #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing)
             {
             }
@@ -139,6 +143,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
 
         #if CAPILITE
         [DllImport("capi20", EntryPoint = "GetLastError")]   private static extern Int32 GetLastError();

@@ -20,6 +20,7 @@ using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates.Converters;
@@ -35,11 +36,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
     [Serializable]
     [TypeConverter(typeof(X509CertificateTypeConverter))]
-    public class X509Certificate : X509Object, IX509Certificate, IXmlSerializable, IJsonSerializable
+    public class X509Certificate : X509Object, IX509Certificate, IXmlSerializable, IJsonSerializable, IFileService
         {
         IntPtr context;
         private PublicKey publickey;
         private Asn1Certificate source;
+        private Boolean disposed;
+        private String _fileName;
 
         public Asn1Certificate Source { get { return source; }}
         [Browsable(false)] public override IntPtr Handle { get { return context; }}
@@ -972,19 +975,21 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
             using (new TraceScope()) {
                 publickey = null;
-                source = null;
-                base.Dispose(disposing);
+                Dispose(ref source);
                 if (context != IntPtr.Zero) {
                     CertFreeCertificateContext(context);
                     context = IntPtr.Zero;
                     }
+                base.Dispose(disposing);
                 }
             }
-        #endregion
 
         public unsafe PublicKey PublicKey { get {
             if (publickey == null) {
@@ -1023,6 +1028,45 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (info == null) { throw new ArgumentNullException(nameof(info)); }
             info.AddValue(nameof(Handle), (Int64)Handle);
+            }
+
+        String IFileService.FileName { get { return $"{FriendlyName}.cer"; }}
+
+        unsafe Byte[] IFileService.ReadAllBytes()
+            {
+            var src   = (CERT_CONTEXT*)Handle;
+            var size  = src->CertEncodedSize;
+            var bytes = src->CertEncoded;
+            var r = new Byte[size];
+            for (var i = 0U; i < size; ++i) {
+                r[i] = bytes[i];
+                }
+            return r;
+            }
+
+        Stream IFileService.OpenRead()
+            {
+            return new MemoryStream(((IFileService)this).ReadAllBytes());
+            }
+
+        void IFileService.MoveTo(String target) {
+            MoveTo(target, false);
+            }
+
+        public void MoveTo(String target, Boolean overwrite)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = ((IFileService)this).OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
+                var folder = Path.GetDirectoryName(target);
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
+                    }
+                }
             }
         }
     }

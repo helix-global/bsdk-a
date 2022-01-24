@@ -2,12 +2,12 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;FEATURE_MULTI_THREAD_PROCESSING;FEATURE_CRYPT_CERTIFICATE_HANDLE</DefineConstants>
+    <DefineConstants>CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;FEATURE_MULTI_THREAD_PROCESSING;FEATURE_CRYPT_CERTIFICATE_HANDLE;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <DefineConstants>FEATURE_WPF_VALUE_CONVERTER;USE_WINFORMS;USE_WPF</DefineConstants>
+    <DefineConstants>FEATURE_WPF_VALUE_CONVERTER;USE_WINFORMS;USE_WPF;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
     <DocumentationFile>C:\TFS\bsdk\src\dotnet\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.xml</DocumentationFile>
@@ -19,6 +19,7 @@
     <None Remove="CryptographyServiceProvider\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
     <ProjectReference Include="..\BinaryStudio.Numeric\BinaryStudio.Numeric.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />

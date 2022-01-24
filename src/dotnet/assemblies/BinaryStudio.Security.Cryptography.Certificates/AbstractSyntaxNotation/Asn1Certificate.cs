@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
@@ -78,6 +79,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
         {
         private String _thumbprint;
+        private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
 
         [Order( 1)] public Int32 Version { get; }
         [Order( 2)] public Asn1ByteArray SerialNumber { get; }
@@ -88,7 +90,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Order( 7)][TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime NotAfter  { get; }
         [Order( 8)] public IAsn1CertificateSubjectPublicKeyInfo SubjectPublicKeyInfo { get; }
         [Order( 9)] public String Country { get; }
-        [Order(10)] public Asn1CertificateExtensionCollection Extensions { get; }
+        [Order(10)] public Asn1CertificateExtensionCollection Extensions { get { return new Asn1CertificateExtensionCollection(extensions); }}
         [Order(11)] 
         public String Thumbprint { get {
             if (_thumbprint == null) {
@@ -105,9 +107,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
-            Extensions = new Asn1CertificateExtensionCollection();
             SubjectPublicKeyInfo = new X509NoCertificateSubjectPublicKeyInfo();
             State |= ObjectState.Failed;
+            State &= ~ObjectState.DisposeUnderlyingObject;
             if (o is Asn1Sequence u)
                 {
                 if ((u[0] is Asn1Sequence) &&
@@ -160,12 +162,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             #region Extensions
                             var specific = contextspecifics.FirstOrDefault(i => ((Asn1ContextSpecificObject)i).Type == 3);
                             if (!ReferenceEquals(specific, null)) {
-                                Extensions = new Asn1CertificateExtensionCollection(specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))).ToList());
+                                extensions = specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))).ToArray();
                                 }
                             #endregion
                             Country = GetCountry(Subject) ?? GetCountry(Issuer);
                             EnsureExtendedProperties();
                             State &= ~ObjectState.Failed;
+                            State |= ObjectState.DisposeUnderlyingObject;
                             }
                         catch (Exception)
                             {
@@ -264,38 +267,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValue(serializer, nameof(Subject), Subject);
                 writer.WriteValue(serializer, nameof(NotBefore), NotBefore);
                 writer.WriteValue(serializer, nameof(NotAfter), NotAfter);
-                var extensions = Extensions;
                 if (!IsNullOrEmpty(extensions)) {
                     WriteValue(writer, serializer, nameof(Extensions), extensions);
                     }
-                //var array = PublicKey;
-                //writer.WritePropertyName(nameof(PublicKey));
-                //if (array.Length > 50) {
-                //    using (writer.ArrayScope(serializer)) {
-                //        foreach (var value in Convert.ToBase64String(array, Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
-                //            writer.WriteValue(value);
-                //            }
-                //        }
-                //    }
-                //else
-                //    {
-                //    writer.WriteValue(array);
-                //    }
-                //array = PublicKeyParameters;
-                //writer.WritePropertyName(nameof(PublicKeyParameters));
-                //if (array.Length > 50)
-                //    {
-                //    writer.WriteRaw(" \"");
-                //    foreach (var value in Convert.ToBase64String(Content.ToArray(), Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
-                //        writer.WriteIndent();
-                //        writer.WriteRaw($"         {value}");
-                //        }
-                //    writer.WriteRawValue("\"");
-                //    }
-                //else
-                //    {
-                //    writer.WriteValue(array);
-                //    }
                 var icao = (IIcaoCertificate)this;
                 if (icao.Type != IcaoCertificateType.None) {
                     writer.WritePropertyName("ICAO");
@@ -325,5 +299,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         IcaoCertificateType IIcaoCertificate.Type { get; }
         [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Dispose(ref extensions);
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
+                }
+            }
         }
     }

@@ -258,6 +258,12 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignedDataContentInfo.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignerInfo">
              [RFC5652]
              SignerInfo ::= SEQUENCE
@@ -346,6 +352,12 @@
             <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
             <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType" /> parameter is <see langword="null" />.</exception>
             <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CSCAMasterList.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.OidTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
             <summary>Returns whether this object supports properties, using the specified context.</summary>

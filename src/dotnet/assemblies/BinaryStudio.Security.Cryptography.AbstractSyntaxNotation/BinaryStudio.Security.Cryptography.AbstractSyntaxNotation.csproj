@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>FEATURE_MULTI_THREAD_PROCESSING</DefineConstants>
+    <DefineConstants>FEATURE_MULTI_THREAD_PROCESSING;TRACE</DefineConstants>
     <DocumentationFile>BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">

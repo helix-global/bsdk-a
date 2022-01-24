@@ -20,8 +20,20 @@ namespace BinaryStudio.DirectoryServices
             return File.OpenRead(FileName);
             }
 
+        /// <summary>
+        /// Moves a local file to a new location with new name.
+        /// </summary>
+        /// <param name="target">The new path and name for the file.</param>
         public void MoveTo(String target)
             {
+            MoveTo(target, false);
+            }
+
+        public void MoveTo(String target, Boolean overwrite) {
+            if (File.Exists(target)) {
+                if (!overwrite) { throw new IOException(); }
+                File.Delete(target);
+                }
             File.Move(FileName, target);
             }
         }

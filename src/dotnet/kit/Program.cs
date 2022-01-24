@@ -239,9 +239,9 @@ namespace Kit
                         ? (ILocalClient)(new LocalService())
                         : (ILocalClient )(new LocalClient()))
                     {
-                    Console.CancelKeyPress += client.OnCancelKeyPress;
+                    //Console.CancelKeyPress += client.OnCancelKeyPress;
                     exitcode = client.Main(args);
-                    Console.CancelKeyPress -= client.OnCancelKeyPress;
+                    //Console.CancelKeyPress -= client.OnCancelKeyPress;
                     }
                 Environment.ExitCode = exitcode;
                 }

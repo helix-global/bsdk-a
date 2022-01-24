@@ -137,6 +137,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                 : base.GetService(service);
             }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            if ((Certificates != null) && (Certificates.Count > 0)) {
+                foreach (var certificate in Certificates) {
+                    certificate.Dispose();
+                    }
+                Certificates.Clear();
+                }
+            base.Dispose(disposing);
+            }
+
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer)
             {
             writer.WriteStartObject();

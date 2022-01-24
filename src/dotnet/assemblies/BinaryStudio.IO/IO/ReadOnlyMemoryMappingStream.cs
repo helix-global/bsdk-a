@@ -84,11 +84,10 @@ namespace BinaryStudio.IO
          * <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
          * */
         protected override void Dispose(Boolean disposing) {
-            if (disposing)
-                {
+            if (!IsDisposed) {
                 source = null;
+                base.Dispose(disposing);
                 }
-            base.Dispose(disposing);
             }
 
         public override Int64 Length { get; }
