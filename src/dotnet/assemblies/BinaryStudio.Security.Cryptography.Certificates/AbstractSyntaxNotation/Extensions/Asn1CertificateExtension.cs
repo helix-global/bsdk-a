@@ -73,16 +73,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         public static Asn1CertificateExtension From(Asn1CertificateExtension source) {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
-            EnsureFactory();
-            using (ReadLock(syncobject)) {
-                if (types.TryGetValue(source.Identifier.ToString(), out var type)) {
-                    if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
-                        var r = (Asn1CertificateExtension)Activator.CreateInstance(type, source);
-                        return r;
+            try
+                {
+                EnsureFactory();
+                using (ReadLock(syncobject)) {
+                    if (types.TryGetValue(source.Identifier.ToString(), out var type)) {
+                        if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
+                            var r = (Asn1CertificateExtension)Activator.CreateInstance(type, source);
+                            return r;
+                            }
                         }
                     }
+                return source;
                 }
-            return source;
+            catch (Exception e)
+                {
+                e.Data["Identifier"] = source.Identifier.ToString();
+                e.Data["IsCritical"] = source.IsCritical;
+                throw;
+                }
             }
 
         #region M:EnsureFactory

@@ -233,6 +233,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal override Boolean Decode()
             {
             if (IsDecoded) { return true; }
+            if (IsIndefiniteLength) { return false; }
             var r = new Byte[Length];
             Content.Read(r, 0, r.Length);
             Value = new BigInteger(r.Reverse().ToArray());

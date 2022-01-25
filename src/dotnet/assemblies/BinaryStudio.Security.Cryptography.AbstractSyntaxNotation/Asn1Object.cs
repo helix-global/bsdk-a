@@ -61,7 +61,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public virtual Byte[] Body { get {
             using (var target = new MemoryStream())
                 {
-                Write(target);
+                WriteTo(target);
                 return target.ToArray();
                 }
             }}
@@ -1010,10 +1010,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             for (;;)
                 {
+                var offset = source.Position;
                 var i = ReadNext(source, source.Position);
                 if (i == null) { break; }
                 i.Decode();
                 yield return i;
+                source.Position = offset + i.Size;
                 }
             }
 
@@ -1038,10 +1040,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return Load(new ReadOnlyStream(source));
             }
 
-        public virtual void Write(Stream target) {
+        public virtual void WriteTo(Stream target) {
             WriteHeader(target);
             WriteContent(target);
             }
+
         protected virtual void WriteContent(Stream target) {
             Content.Seek(0, SeekOrigin.Begin);
             Content.CopyTo(target);

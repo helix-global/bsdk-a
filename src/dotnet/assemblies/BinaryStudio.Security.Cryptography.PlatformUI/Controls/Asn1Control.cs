@@ -325,7 +325,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
                 };
             if (dialog.ShowDialog(null) == true) {
                 using (var output = File.Create(dialog.FileName)) {
-                    o.Write(output);
+                    o.WriteTo(output);
                     }
                 }
             }
@@ -342,7 +342,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
             if (type == "BASE64") {
                 Clipboard.Clear();
                 using (var output = new MemoryStream()) {
-                    o.Write(output);
+                    o.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
                     Clipboard.SetText(Convert.ToBase64String(output.ToArray()), TextDataFormat.UnicodeText);
                     }

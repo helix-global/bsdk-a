@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
@@ -76,7 +77,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </pre>
     /// </remarks>
     [TypeConverter(typeof(ObjectTypeConverter))]
-    public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
+    public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate, IFileService
         {
         private String _thumbprint;
         private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
@@ -96,7 +97,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (_thumbprint == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
-                    UnderlyingObject.Write(output);
+                    UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
                     _thumbprint = engine.ComputeHash(output).ToString("X");
                     }
@@ -170,13 +171,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             State &= ~ObjectState.Failed;
                             State |= ObjectState.DisposeUnderlyingObject;
                             }
-                        catch (Exception)
+                        catch (Exception e)
                             {
                             #if DEBUG
                             var filename = Path.Combine(@"C:\Failed", Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + ".cer");
                             using (var writer = File.OpenWrite(filename)) {
-                                u.Write(writer);
+                                u.WriteTo(writer);
                                 }
+                            e.Add("FailedFileName", filename);
                             #endif
                             throw;
                             }
@@ -251,9 +253,35 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         #region M:Make(Asn1Object):Asn1RelativeDistinguishedNameSequence
         internal static Asn1RelativeDistinguishedNameSequence Make(Asn1Object source) {
-            return new Asn1RelativeDistinguishedNameSequence(source.
-                Select(i => new KeyValuePair<Asn1ObjectIdentifier, String>(
-                    (Asn1ObjectIdentifier)i[0][0], i[0][1].ToString())));
+            var r = new List<KeyValuePair<Asn1ObjectIdentifier, String>>();
+            foreach (var i in source) {
+                if (i.Count > 0) {
+                    var j = i[0];
+                    if (j.Count > 1) {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j[0],
+                            j[1].ToString()));
+                        continue;
+                        }
+                    else if (j.Count == 1)
+                        {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j[0],
+                            String.Empty));
+                        continue;
+                        }
+                    if (j is Asn1ObjectIdentifier) {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j,
+                            i[1].ToString()));
+                        }
+                    }
+                else
+                    {
+                    break;
+                    }
+                }
+            return new Asn1RelativeDistinguishedNameSequence(r);
             }
         #endregion
 
@@ -310,6 +338,67 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 Dispose(ref extensions);
                 base.Dispose(disposing);
                 State |= ObjectState.Disposed;
+                }
+            }
+
+        String IFileService.FileName { get { return $"{FriendlyName}.cer"; }}
+        String IFileService.FullName { get { return ((IFileService)this).FileName; }}
+
+        Byte[] IFileService.ReadAllBytes() {
+            using (var r = new MemoryStream()) {
+                WriteTo(r);
+                return r.ToArray();
+                }
+            }
+
+        Stream IFileService.OpenRead()
+            {
+            return new MemoryStream(((IFileService)this).ReadAllBytes());
+            }
+
+        void IFileService.MoveTo(String target)
+            {
+            ((IFileService)this).MoveTo(target, false);
+            }
+
+        /// <summary>Move an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        void IFileService.MoveTo(String target, Boolean overwrite)
+            {
+            ((IFileService)this).CopyTo(target, overwrite);
+            }
+
+        /// <summary>Copies an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        void IFileService.CopyTo(String target, Boolean overwrite)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = ((IFileService)this).OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
+                var folder = Path.GetDirectoryName(target);
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
+                    }
                 }
             }
         }

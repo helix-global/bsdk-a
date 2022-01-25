@@ -151,6 +151,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal override Boolean Decode()
             {
             if (IsDecoded) { return true; }
+            if (IsIndefiniteLength) { return false; }
             Content.Seek(0, SeekOrigin.Begin);
             var r = new Byte[Length];
             Content.Read(r, 0, r.Length);

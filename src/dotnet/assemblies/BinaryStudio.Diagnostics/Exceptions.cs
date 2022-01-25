@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
@@ -12,6 +13,24 @@ namespace BinaryStudio.Diagnostics
     {
     public static class Exceptions
         {
+        public static T Add<T>(this T e, String key, Object value)
+            where T: Exception
+            {
+            if (value != null) {
+                var type = value.GetType();
+                if ((value is ISerializable) ||
+                    (type.GetCustomAttributes(typeof(SerializableAttribute),true).Any()))
+                    {
+                    e.Data[key] = value;
+                    }
+                else
+                    {
+                    e.Data[key] = new ExceptionObjectDecorator(value);
+                    }
+                }
+            return e;
+            }
+
         public static void WriteTo(Exception source, TextWriter target) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (target == null) { throw new ArgumentNullException(nameof(target)); }

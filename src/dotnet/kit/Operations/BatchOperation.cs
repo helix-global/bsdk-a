@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using BinaryStudio.DirectoryServices;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -35,7 +36,7 @@ namespace Operations
         private X509StoreLocation? StoreLocation { get; }
         private String StoreName { get; }
         private String Filter { get; }
-        private readonly Object FolderObject = new Object();
+        private readonly Object FolderLock = new Object();
         private Entities connection;
         private MetadataScope scope;
         private X509CertificateStorage store;
@@ -123,7 +124,7 @@ namespace Operations
                 var targetfilename = Path.Combine(Combine(targetfolder,country), source.FriendlyName + ".cer");
                 if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
                     if (!String.IsNullOrEmpty(country)) {
-                        lock (FolderObject) {
+                        lock (FolderLock) {
                             if (!Directory.Exists(Combine(targetfolder,country))) {
                                 Directory.CreateDirectory(Combine(targetfolder,country));
                                 }
@@ -161,7 +162,7 @@ namespace Operations
                 var targetfilename = Path.Combine(Combine(targetfolder,country), source.FriendlyName + ".crl");
                 if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
                     if (!String.IsNullOrEmpty(country)) {
-                        lock (FolderObject) {
+                        lock (FolderLock) {
                             if (!Directory.Exists(Combine(targetfolder,country))) {
                                 Directory.CreateDirectory(Combine(targetfolder,country));
                                 }
@@ -212,7 +213,17 @@ namespace Operations
                 case ".p7b":
                     using (var sourcestream = service.OpenRead())
                         {
-                        status = Execute(e.TargetFolder, service, sourcestream);
+                        status = Execute(
+                            e.TargetFolder,
+                            service, sourcestream);
+                        }
+                    break;
+                case ".hex":
+                    using (var sourcestream = service.OpenRead())
+                        {
+                        status = ExecuteHex(
+                            e.TargetFolder,
+                            service, sourcestream);
                         }
                     break;
                 }
@@ -232,12 +243,13 @@ namespace Operations
             store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location);
             try
                 {
-                var core = new FileOperation<FileOperationArgs>(Out,Error) {
+                var core = new FileOperation(Out,Error) {
                     TargetFolder = TargetFolder,
                     Pattern = Filter,
                     Options = DirectoryServiceSearchOptions.Recursive|DirectoryServiceSearchOptions.Containers,
-                    ExecuteAction = Execute
+                    ExecuteAction = Execute,
                     };
+                core.DirectoryServiceRequest += OnDirectoryServiceRequest;
                 core.Execute(InputFileName);
                 if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
                     store.Commit();
@@ -252,7 +264,46 @@ namespace Operations
             GC.Collect();
             GC.Collect();
             }
+
+        private void OnDirectoryServiceRequest(Object sender, DirectoryServiceRequestEventArgs e) {
+            switch (Path.GetExtension(e.Source.FileName).ToLower()) {
+                case ".hexgroup":
+                    e.Service = new HexGroupService(e.Source);
+                    e.Handled = true;
+                    break;
+                }
+            }
         #endregion
+        private FileOperationStatus ExecuteHex(String targetfolder, IFileService service, Stream sourcestream) {
+            var index = 0;
+            var status = FileOperationStatus.Skip;
+            foreach (var o in Asn1Object.Load(new ReadOnlyMemoryMappingStream(service.ReadAllBytes()))) {
+                if (o.IsDecoded && !o.IsFailed) {
+                    if (o.Count == 1) {
+                        if ((o.Class == Asn1ObjectClass.Application) && (((IAsn1Object)o).Type == 23)) {
+                            var cms = new CmsMessage(o[0]);
+                            if (!cms.IsFailed && (cms.ContentInfo is CmsSignedDataContentInfo signedData)) {
+                                var certificates = signedData.Certificates.ToArray();
+                                if (certificates.Length > 0) {
+                                    var country = certificates[0].Country ?? String.Empty;
+                                    if (Flags.HasFlag(BatchOperationFlags.Group)) { targetfolder = Path.Combine(targetfolder, country); }
+                                    MakeDir(targetfolder);
+                                    service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
+                                    ((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
+                                    status = FileOperation.Max(status, FileOperationStatus.Success);
+                                    }
+                                }
+                            else
+                                {
+                                status = FileOperation.Max(status, FileOperationStatus.Warning);
+                                }
+                            }
+                        }
+                    }
+                index++;
+                }
+            return status;
+            }
 
         #region M:Get<E,T>(IDbSet<E>,[ref]Boolean,T):E
         private static E Get<E,T>(IDbSet<E> set, ref Boolean flag, T value)
@@ -658,5 +709,17 @@ namespace Operations
                 Metadata = @"res://*/CertificateEntityDataModel.csdl|res://*/CertificateEntityDataModel.ssdl|res://*/CertificateEntityDataModel.msl"
                 }.ConnectionString);
             }
+
+        #region M:MakeDir(String)
+        private void MakeDir(String folder) {
+            if (!String.IsNullOrWhiteSpace(folder)) {
+                lock (FolderLock) {
+                    if (!Directory.Exists(folder)) {
+                        Directory.CreateDirectory(folder);
+                        }
+                    }
+                }
+            }
+        #endregion
         }
     }

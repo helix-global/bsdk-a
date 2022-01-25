@@ -33,7 +33,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (_thumbprint == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
-                    UnderlyingObject.Write(output);
+                    UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
                     _thumbprint = engine.ComputeHash(output).ToString("X");
                     }

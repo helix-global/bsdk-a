@@ -1,10 +1,18 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
 internal class InterlockedInternal<T>
     {
     private T r;
     private readonly ReaderWriterLockSlim o = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+    public InterlockedInternal()
+        {
+        }
+
+    public InterlockedInternal(T source)
+        {
+        Value = source;
+        }
 
     public T Value
         {

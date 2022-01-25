@@ -44,6 +44,17 @@ namespace BinaryStudio.IO
             }
 
         public override Int64 Length { get { return source.Length; }}
+
+        /// <summary>When overridden in a derived class, gets or sets the position within the current stream.</summary>
+        /// <returns>The current position within the stream.</returns>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.NotSupportedException">The stream does not support seeking.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        public override Int64 Position {
+            get { return source.Position;  }
+            set { source.Position = value; }
+            }
+
         protected override Int64 Offset { get; }
 
         public override ReadOnlyMappingStream Clone() {

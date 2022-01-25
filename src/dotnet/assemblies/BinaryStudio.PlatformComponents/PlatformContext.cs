@@ -13,6 +13,7 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using System.Security.Principal;
 using System.Threading;
+using BinaryStudio.Diagnostics;
 using BinaryStudio.PlatformComponents.Win32;
 using Process = BinaryStudio.PlatformComponents.Win32.Process;
 

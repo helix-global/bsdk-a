@@ -26,9 +26,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State = source.State | ObjectState.DisposeUnderlyingObject;
             }
 
-        public override void Write(Stream target)
+        public override void WriteTo(Stream target)
             {
-            UnderlyingObject.Write(target);
+            UnderlyingObject.WriteTo(target);
             }
 
         #region P:IList<Asn1Object>.this[Int32]:Asn1Object
