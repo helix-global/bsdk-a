@@ -57,7 +57,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         private static Int32 gref;
 
         #region M:Body:Byte[]
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
         public virtual Byte[] Body { get {
             using (var target = new MemoryStream())
                 {

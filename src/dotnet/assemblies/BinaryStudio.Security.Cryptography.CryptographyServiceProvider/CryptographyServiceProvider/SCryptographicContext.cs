@@ -1,5 +1,6 @@
 ﻿//#define FEATURE_CRYPT_VERIFY_CERTIFICATE_SIGNATURE_EX
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
@@ -1052,6 +1054,21 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgGetParam(IntPtr msg, CMSG_PARAM parameter, Int32 signerindex, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, IntPtr ctrlpara);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, ref CMSG_CTRL_DECRYPT_PARA ctrlpara);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] IntPtr context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
+
+        #region M:GetCertificateChain([In]IntPtr,[In]IntPtr,DateTime,IntPtr,[Ref]CERT_CHAIN_PARA,CERT_CHAIN_FLAGS,CERT_CHAIN_CONTEXT**):Boolean
+        private static unsafe Boolean GetCertificateChain([In] IntPtr chainengine,
+            [In] IntPtr context, DateTime time, IntPtr additionalStore,
+            [In] ref CERT_CHAIN_PARA chainPara, CERT_CHAIN_FLAGS flags,
+            CERT_CHAIN_CONTEXT** chainContext)
+            {
+            var ft = default(FILETIME);
+            *(long*)(&ft) = time.ToFileTime();
+            return CertGetCertificateChain(chainengine,
+                context, ref ft, additionalStore, ref chainPara, flags,
+                IntPtr.Zero, chainContext);
+            }
+        #endregion
         #endif
 
         private const Int32 CRYPT_FIRST = 1;
@@ -1395,5 +1412,95 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }}
 
         IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
+
+        /// <summary>
+        /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
+        /// </summary>
+        /// <param name="certificate">Certificate to verify.</param>
+        /// <param name="store">Certificate store.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="policy">Certificate policy.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        public unsafe void Verify(IX509Certificate certificate, IX509CertificateStorage store, OidCollection applicationpolicy,
+            OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
+            CertificateChainPolicy policy, IntPtr chainengine)
+            {
+            var chainpara = new CERT_CHAIN_PARA {
+                Size = sizeof(CERT_CHAIN_PARA)
+                };
+
+            CERT_CHAIN_CONTEXT* chaincontext = null;
+            var applicationpolicyhandle = LocalMemoryHandle.InvalidHandle;
+            var certificatepolicyhandle = LocalMemoryHandle.InvalidHandle;
+            try
+                {
+                if (!IsNullOrEmpty(applicationpolicy)) {
+                    chainpara.RequestedUsage.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierCount = applicationpolicy.Count;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierArray = applicationpolicyhandle = CopyToMemory(applicationpolicy);
+                    }
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                if (!IsNullOrEmpty(certificatepolicy)) {
+                    chainpara.RequestedIssuancePolicy.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierCount = certificatepolicy.Count;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierArray = certificatepolicyhandle = CopyToMemory(certificatepolicy);
+                    }
+                #endif
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
+                #endif
+                try
+                    {
+                    Validate(GetCertificateChain(chainengine, certificate.Handle, datetime, (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
+                    ((ICryptographicContext)this).GetChainPolicy(policy)?.Verify(this,
+                        datetime, store, flags: 0,
+                        chaincontext: ref *chaincontext);
+                    }
+                 catch (Exception e)
+                    {
+                    throw;
+                    }
+                }
+            finally
+                {
+                certificatepolicyhandle.Dispose();
+                applicationpolicyhandle.Dispose();
+                }
+            }
+
+        #region M:IsNullOrEmpty(ICollection):Boolean
+        private static Boolean IsNullOrEmpty(ICollection source)
+            {
+            return (source == null) || (source.Count == 0);
+            }
+        #endregion
+        #region M:CopyToMemory(OidCollection):LocalMemoryHandle
+        private static unsafe LocalMemoryHandle CopyToMemory(OidCollection values) {
+            var items = values.OfType<Oid>().Select(i => i.Value).ToArray();
+            var n = items.Length*IntPtr.Size;
+            var offset = n;
+            foreach (var i in items) {
+                n += i.Length + 1;
+                }
+            var r = LocalMemoryHandle.Alloc(n);
+            var p = (IntPtr)r;
+            var c = p;
+            for (var i = 0; i < items.Length; i++) {
+                *(IntPtr*)(void*)c = p + offset;
+                for (var j = 0; j < items[i].Length; j++) {
+                    *(Byte*)(p + offset) = (Byte)items[i][j];
+                    ++offset;
+                    }
+                *(Byte*)(p + offset) = 0;
+                ++offset;
+                c += IntPtr.Size;
+                }
+            return r;
+            }
+        #endregion
         }
     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32;
 
@@ -20,8 +19,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }
 
         public override unsafe void Verify(ICryptographicContext context,
-            OidCollection applicationpolicy, OidCollection certificatepolicy,
-            TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
+            DateTime datetime, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags, ref CERT_CHAIN_CONTEXT chaincontext)
             {
             var policypara = new CERT_CHAIN_POLICY_PARA {

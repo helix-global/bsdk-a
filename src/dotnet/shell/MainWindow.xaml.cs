@@ -61,7 +61,7 @@ namespace shell
 
         private void Initialize()
             {
-            LoadFrom(@"C:\TFS\icao\rfid\unsorted\efsod047.p7b");
+            //LoadFrom(@"C:\TFS\icao\rfid\unsorted\efsod047.p7b");
             }
 
         private void LoadFrom(String filename) {

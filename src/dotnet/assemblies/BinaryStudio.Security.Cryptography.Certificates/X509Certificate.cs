@@ -16,7 +16,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
@@ -31,9 +30,11 @@ using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 
+// ReSharper disable LocalVariableHidesMember
+// ReSharper disable ParameterHidesMember
+
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
     [Serializable]
     [TypeConverter(typeof(X509CertificateTypeConverter))]
     public class X509Certificate : X509Object, IX509Certificate, IXmlSerializable, IJsonSerializable, IFileService
@@ -358,7 +359,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("capi20")] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] CertificateContextHandle context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
         #endif
 
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] IntPtr context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty([In] IntPtr context, [In] Int32 property, [In][Out][MarshalAs(UnmanagedType.LPArray)] Byte[] data, [In][Out] ref Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, ref CRYPT_KEY_PROV_INFO data);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, IntPtr data);
@@ -366,20 +366,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCertificateContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertFindCRLInStore(IntPtr store, UInt32 CertEncodingType, Int32 FindFlags, Int32 FindType, IntPtr FindPara, IntPtr PrevCrlContext);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
-
-        #region M:GetCertificateChain([In]IntPtr,[In]IntPtr,DateTime,IntPtr,[Ref]CERT_CHAIN_PARA,CERT_CHAIN_FLAGS,CERT_CHAIN_CONTEXT**):Boolean
-        private static unsafe Boolean GetCertificateChain([In] IntPtr chainengine,
-            [In] IntPtr context, DateTime time, IntPtr additionalStore,
-            [In] ref CERT_CHAIN_PARA chainPara, CERT_CHAIN_FLAGS flags,
-            CERT_CHAIN_CONTEXT** chainContext)
-            {
-            var ft = default(FILETIME);
-            *(long*)(&ft) = time.ToFileTime();
-            return CertGetCertificateChain(chainengine,
-                context, ref ft, additionalStore, ref chainPara, flags,
-                IntPtr.Zero, chainContext);
-            }
-        #endregion
 
         private const Int32 CERT_KEY_PROV_INFO_PROP_ID = 2;
         private const Int32 CERT_SHA1_HASH_PROP_ID     = 3;
@@ -522,107 +508,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         //#endregion
 
-        private unsafe IList<Exception> VerifyCertificateChain(ICryptographicContext context, IntPtr chainengine, OidCollection applicationpolicy, OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, IX509CertificateStorage store, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
-            {
-            policy = policy ?? X509CertificateChainPolicy.POLICY_BASE;
-            var chainpara = new CERT_CHAIN_PARA {
-                Size = sizeof(CERT_CHAIN_PARA),
-                };
-
-            CERT_CHAIN_CONTEXT* chaincontext = null;
-            var target = new HashSet<Exception>();
-            var applicationpolicyhandle = LocalMemoryHandle.InvalidHandle;
-            var certificatepolicyhandle = LocalMemoryHandle.InvalidHandle;
-            try
-                {
-                if (!IsNullOrEmpty(applicationpolicy)) {
-                    chainpara.RequestedUsage.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
-                    chainpara.RequestedUsage.Usage.UsageIdentifierCount = applicationpolicy.Count;
-                    chainpara.RequestedUsage.Usage.UsageIdentifierArray = applicationpolicyhandle = CopyToMemory(applicationpolicy);
-                    }
-                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
-                if (!IsNullOrEmpty(certificatepolicy)) {
-                    chainpara.RequestedIssuancePolicy.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
-                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierCount = certificatepolicy.Count;
-                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierArray = certificatepolicyhandle = CopyToMemory(certificatepolicy);
-                    }
-                #endif
-                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
-                chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
-                #endif
-                try
-                    {
-                    Validate(GetCertificateChain(chainengine, this.context, datetime, (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
-                    policy.Verify(context,
-                        applicationpolicy, certificatepolicy,
-                        timeout, datetime, store, flags: 0,
-                        chaincontext: ref *chaincontext);
-                    }
-                 catch (Exception e)
-                    {
-                    target.Add(e);
-                    }
-                }
-            finally
-                {
-                certificatepolicyhandle.Dispose();
-                applicationpolicyhandle.Dispose();
-                }
-            return target.ToArray();
-            }
-
-        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy)
-        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy)
-            {
-            Verify(context, null, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: policy);
-            }
-        #endregion
-        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy,DateTime)
-        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy, DateTime datetime)
-            {
-            Verify(context, null, null, null, TimeSpan.FromSeconds(0), datetime,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: policy);
-            }
-        #endregion
-        #region M:Verify(ICryptographicContext,IX509CertificateChainPolicy,IX509CertificateStorage,DateTime)
-        public void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy, IX509CertificateStorage store, DateTime datetime)
-            {
-            Verify(context, store, null, null, TimeSpan.FromSeconds(0), datetime,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: policy);
-            }
-        #endregion
-        #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy):Boolean
-        public void Verify(ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
-            {
-            using (new TraceScope())
-                {
-                Exception e;
-                var target = new List<Exception> {
-                    {!VerifyNotAfter (out e, datetime), e},
-                    {!VerifyNotBefore(out e, datetime), e}
-                    };
-                target.AddRange(VerifyCertificateChain(context, IntPtr.Zero,
-                    applicationpolicy, certificatepolicy, timeout, datetime,
-                    store,flags,policy
-                    ));
-                if (target.Count > 0) {
-                    throw (target.Count == 0)
-                        ? target[0]
-                        : new AggregateException(target);
-                    }
-                }
-            }
-        #endregion
         #region M:VerifyPrivateKeyUsagePeriod([Out]Exception):Boolean
         public Boolean VerifyPrivateKeyUsagePeriod(out Exception e)
             {

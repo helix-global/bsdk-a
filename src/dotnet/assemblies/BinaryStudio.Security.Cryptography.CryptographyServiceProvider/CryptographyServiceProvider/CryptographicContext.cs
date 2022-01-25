@@ -129,6 +129,29 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return r;
             }
 
+        /// <summary>
+        /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
+        /// </summary>
+        /// <param name="certificate">Certificate to verify.</param>
+        /// <param name="store">Certificate store.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="policy">Certificate policy.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        public void Verify(IX509Certificate certificate, IX509CertificateStorage store, OidCollection applicationpolicy,
+            OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
+            CertificateChainPolicy policy, IntPtr chainengine)
+            {
+            UnderlyingObject.Verify(
+                certificate,store,
+                applicationpolicy,issuancepolicy,
+                timeout,datetime,flags,
+                policy,chainengine);
+            }
+
         static CryptographicContext()
             {
             CryptoConfig.AddAlgorithm(typeof(Gost3410_12_256_SignatureDescription), URN_GOST_SIGN_2012_256);

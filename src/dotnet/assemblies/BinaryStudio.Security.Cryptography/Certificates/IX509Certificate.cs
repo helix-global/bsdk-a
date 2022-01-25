@@ -26,7 +26,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         Byte[] SignatureValue { get; }
         String Country { get; }
         PublicKey PublicKey { get; }
-        void Verify(ICryptographicContext context, IX509CertificateChainPolicy policy);
         void VerifyPrivateKeyUsagePeriod();
         Stream GetSigningStream();
         }

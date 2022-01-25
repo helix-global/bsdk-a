@@ -155,7 +155,11 @@ namespace Operations
                         try
                             {
                             B.Token.ThrowIfCancellationRequested();
-                            certificate.Verify(context, context.GetChainPolicy(CertificateChainPolicy), store, DateTime);
+                            context.Verify(
+                                certificate, store, null, null,
+                                TimeSpan.Zero, DateTime,
+                                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN|CERT_CHAIN_FLAGS.CERT_CHAIN_TIMESTAMP_TIME,
+                                CertificateChainPolicy,IntPtr.Zero);
                             timer.Stop();
                             lock(so)
                                 {

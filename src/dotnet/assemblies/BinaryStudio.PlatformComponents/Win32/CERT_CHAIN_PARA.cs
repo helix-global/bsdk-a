@@ -11,7 +11,7 @@ namespace Microsoft.Win32
         public CERT_USAGE_MATCH RequestedUsage;
         #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
         public CERT_USAGE_MATCH RequestedIssuancePolicy;
-        public Int32 UrlRetrievalTimeout;
+        public UInt32 UrlRetrievalTimeout;
         public Boolean CheckRevocationFreshnessTime;
         public Int32 RevocationFreshnessTime;
         public unsafe FILETIME* CacheResync;

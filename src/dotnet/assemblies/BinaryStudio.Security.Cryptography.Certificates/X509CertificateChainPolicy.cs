@@ -35,8 +35,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public abstract CertificateChainPolicy Policy { get; }
 
         public abstract void Verify(ICryptographicContext context,
-            OidCollection applicationpolicy, OidCollection certificatepolicy,
-            TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
+            DateTime datetime, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags, ref CERT_CHAIN_CONTEXT chaincontext);
 
         #region M:Validate([Out]Exception,Boolean)

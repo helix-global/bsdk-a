@@ -5,8 +5,9 @@ using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal class FintechLibrary
+    internal class FintechLibrary : IFintechLibrary
         {
+        private readonly IFintechLibrary UnderlyingObject;
         private static String fullpath;
         public static String LibraryFullPath { get {
             if (fullpath == null) {
@@ -44,6 +45,22 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             if (!File.Exists(LibraryFullPath)) { throw new FileNotFoundException(); }
             var version = Library.GetVersion(LibraryFullPath);
+            if ((version.CompareTo(new Version(1, 0, 123, 26)) >= 0) && (version.CompareTo(new Version(1,1)) < 0)) {
+                UnderlyingObject = new FintechLibraryA(LibraryFullPath);
+                return;
+                }
+            if ((version.CompareTo(new Version(1, 1)) > 0) && (version.CompareTo(new Version(1,2)) < 0)) {
+                UnderlyingObject = new FintechLibraryB(LibraryFullPath);
+                return;
+                }
+            throw new NotSupportedException();
+            }
+
+        /// <summary>Verifies certificate using ICAO policy.</summary>
+        /// <param name="handle">Certificate handle to verify.</param>
+        void IFintechLibrary.VerifyMrtdCertificate(IntPtr handle)
+            {
+            UnderlyingObject.VerifyMrtdCertificate(handle);
             }
         }
     }

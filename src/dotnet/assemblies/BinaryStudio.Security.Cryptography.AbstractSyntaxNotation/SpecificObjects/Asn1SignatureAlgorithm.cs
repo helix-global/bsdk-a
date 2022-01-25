@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Serialization;
@@ -16,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public class Asn1SignatureAlgorithm : Asn1LinkObject
         {
         [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public Asn1ObjectIdentifier SignatureAlgorithm { get; }
-        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public virtual Asn1ObjectIdentifier HashAlgorithm { get; }
+        [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))] public virtual Oid HashAlgorithm { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal override Boolean IsDecoded { get { return base.IsDecoded; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsFailed  { get { return base.IsFailed;  }}
@@ -75,12 +76,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         #region M:GetHashAlgorithm(String):Oid
-        public static Asn1ObjectIdentifier GetHashAlgorithm(String oid) {
+        public static Oid GetHashAlgorithm(String oid) {
             switch (oid) {
                 #region ГОСТ Р 34.11-94
                 case szOID_CP_GOST_R3411_R3410EL:
                     {
-                    return new Asn1ObjectIdentifier(szOID_CP_GOST_R3411);
+                    return new Oid(szOID_CP_GOST_R3411);
                     }
                 #endregion
                 #region SHA1
@@ -91,8 +92,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_OIWSEC_dsaCommSHA1:
                 case szOID_OIWSEC_sha1RSASign:
                 case szOID_ECDSA_SHA1:
+                case szOID_RSA_SSA_PSS:
                     {
-                    return new Asn1ObjectIdentifier(szOID_OIWSEC_sha1);
+                    return new Oid(szOID_OIWSEC_sha1);
                     }
                 #endregion
                 #region SHA256
@@ -100,7 +102,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_DH_SINGLE_PASS_STDDH_SHA256_KDF:
                 case szOID_RSA_SHA256RSA:
                     {
-                    return new Asn1ObjectIdentifier(szOID_NIST_sha256);
+                    return new Oid(szOID_NIST_sha256);
                     }
                 #endregion
                 #region ГОСТ Р 34.11-2012-256
@@ -108,7 +110,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_tc26_gost_3410_12_256_paramSetA:
                 case szOID_CP_GOST_R3411_12_256_R3410:
                     {
-                    return new Asn1ObjectIdentifier(szOID_CP_GOST_R3411_12_256);
+                    return new Oid(szOID_CP_GOST_R3411_12_256);
                     }
                 #endregion
                 #region ГОСТ Р 34.11-2012-512
@@ -118,7 +120,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_CP_GOST_R3410_12_512:
                 case szOID_CP_GOST_R3411_12_512_R3410:
                     {
-                    return new Asn1ObjectIdentifier(szOID_CP_GOST_R3411_12_512);
+                    return new Oid(szOID_CP_GOST_R3411_12_512);
                     }
                 #endregion
                 #region SHA384
@@ -126,14 +128,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_DH_SINGLE_PASS_STDDH_SHA384_KDF:
                 case szOID_RSA_SHA384RSA:
                     {
-                    return new Asn1ObjectIdentifier(szOID_NIST_sha384);
+                    return new Oid(szOID_NIST_sha384);
                     }
                 #endregion
                 #region SHA512
                 case szOID_ECDSA_SHA512:
                 case szOID_RSA_SHA512RSA:
                     {
-                    return new Asn1ObjectIdentifier(szOID_NIST_sha512);
+                    return new Oid(szOID_NIST_sha512);
                     }
                 #endregion
                 #region MD2
@@ -142,7 +144,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_OIWDIR_md2RSA:
                 case szOID_OIWSEC_md2RSASign:
                     {
-                    return new Asn1ObjectIdentifier(szOID_RSA_MD2);
+                    return new Oid(szOID_RSA_MD2);
                     }
                 #endregion
                 #region MD4
@@ -150,7 +152,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_OIWSEC_md4RSA2:
                 case szOID_RSA_MD4RSA :
                     {
-                    return new Asn1ObjectIdentifier(szOID_RSA_MD4);
+                    return new Oid(szOID_RSA_MD4);
                     }
                 #endregion
                 #region MD5
@@ -158,7 +160,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 case szOID_OIWSEC_md5RSASign:
                 case szOID_RSA_MD5RSA :
                     {
-                    return new Asn1ObjectIdentifier(szOID_RSA_MD5);
+                    return new Oid(szOID_RSA_MD5);
                     }
                 #endregion
                 }

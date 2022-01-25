@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Threading;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.PlatformComponents.Win32;
@@ -16,8 +15,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         {
         public override CertificateChainPolicy Policy { get { return CertificateChainPolicy.Icao; }}
         public override unsafe void Verify(ICryptographicContext context,
-            OidCollection applicationpolicy, OidCollection certificatepolicy,
-            TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
+            DateTime datetime, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags, ref CERT_CHAIN_CONTEXT chaincontext) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             var policypara = new CERT_CHAIN_POLICY_PARA {
