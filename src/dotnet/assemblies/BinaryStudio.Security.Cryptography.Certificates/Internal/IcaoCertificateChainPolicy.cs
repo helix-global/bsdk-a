@@ -14,6 +14,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
     internal class IcaoCertificateChainPolicy : X509CertificateChainPolicy
         {
+        public override CertificateChainPolicy Policy { get { return CertificateChainPolicy.Icao; }}
         public override unsafe void Verify(ICryptographicContext context,
             OidCollection applicationpolicy, OidCollection certificatepolicy,
             TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
@@ -32,7 +33,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 ExtraPolicyStatus = IntPtr.Zero
                 };
             Validate(CertVerifyCertificateChainPolicy(
-                new IntPtr((Int32)CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_BASE),
+                new IntPtr((Int32)CertificateChainPolicy.CERT_CHAIN_POLICY_BASE),
                 ref chaincontext,
                 ref policypara,
                 ref policystatus));

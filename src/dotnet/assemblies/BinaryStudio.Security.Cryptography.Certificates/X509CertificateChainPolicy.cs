@@ -18,19 +18,21 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     /// </summary>
     public abstract class X509CertificateChainPolicy : IX509CertificateChainPolicy
         {
-        public static readonly IX509CertificateChainPolicy POLICY_BASE              = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_BASE);
-        public static readonly IX509CertificateChainPolicy POLICY_AUTHENTICODE      = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_AUTHENTICODE);
-        public static readonly IX509CertificateChainPolicy POLICY_AUTHENTICODE_TS   = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_AUTHENTICODE_TS);
-        public static readonly IX509CertificateChainPolicy POLICY_SSL               = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_SSL);
-        public static readonly IX509CertificateChainPolicy POLICY_BASIC_CONSTRAINTS = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_BASIC_CONSTRAINTS);
-        public static readonly IX509CertificateChainPolicy POLICY_NT_AUTH           = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_NT_AUTH);
-        public static readonly IX509CertificateChainPolicy POLICY_MICROSOFT_ROOT    = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_MICROSOFT_ROOT);
-        public static readonly IX509CertificateChainPolicy POLICY_EV                = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_EV);
-        public static readonly IX509CertificateChainPolicy POLICY_SSL_F12           = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_SSL_F12);
-        public static readonly IX509CertificateChainPolicy POLICY_SSL_HPKP_HEADER   = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_SSL_HPKP_HEADER);
-        public static readonly IX509CertificateChainPolicy POLICY_THIRD_PARTY_ROOT  = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_THIRD_PARTY_ROOT);
-        public static readonly IX509CertificateChainPolicy POLICY_SSL_KEY_PIN       = new DefaultCertificateChainPolicy(CERT_CHAIN_POLICY.CERT_CHAIN_POLICY_SSL_KEY_PIN);
+        public static readonly IX509CertificateChainPolicy POLICY_BASE              = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_BASE);
+        public static readonly IX509CertificateChainPolicy POLICY_AUTHENTICODE      = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE);
+        public static readonly IX509CertificateChainPolicy POLICY_AUTHENTICODE_TS   = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE_TS);
+        public static readonly IX509CertificateChainPolicy POLICY_SSL               = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_SSL);
+        public static readonly IX509CertificateChainPolicy POLICY_BASIC_CONSTRAINTS = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_BASIC_CONSTRAINTS);
+        public static readonly IX509CertificateChainPolicy POLICY_NT_AUTH           = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_NT_AUTH);
+        public static readonly IX509CertificateChainPolicy POLICY_MICROSOFT_ROOT    = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_MICROSOFT_ROOT);
+        public static readonly IX509CertificateChainPolicy POLICY_EV                = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_EV);
+        public static readonly IX509CertificateChainPolicy POLICY_SSL_F12           = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_F12);
+        public static readonly IX509CertificateChainPolicy POLICY_SSL_HPKP_HEADER   = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_HPKP_HEADER);
+        public static readonly IX509CertificateChainPolicy POLICY_THIRD_PARTY_ROOT  = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_THIRD_PARTY_ROOT);
+        public static readonly IX509CertificateChainPolicy POLICY_SSL_KEY_PIN       = new DefaultCertificateChainPolicy(CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_KEY_PIN);
         public static readonly IX509CertificateChainPolicy IcaoCertificateChainPolicy = new IcaoCertificateChainPolicy();
+
+        public abstract CertificateChainPolicy Policy { get; }
 
         public abstract void Verify(ICryptographicContext context,
             OidCollection applicationpolicy, OidCollection certificatepolicy,

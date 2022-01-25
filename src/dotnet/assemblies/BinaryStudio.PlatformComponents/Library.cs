@@ -16,7 +16,7 @@ namespace BinaryStudio.PlatformComponents
         protected IDictionary<String, IntPtr> Entries { get; }
         protected SharedObject SharedObject { get;private set; }
 
-        private String FilePath { get; }
+        protected virtual String FilePath { get; }
         public  String FileName { get; }
 
         #region M:Dispose(Boolean)
@@ -39,13 +39,18 @@ namespace BinaryStudio.PlatformComponents
             }
         #endregion
 
+        protected Library()
+            {
+            Entries = new Dictionary<String, IntPtr>();
+            }
+
         protected Library(String filepath)
+            :this()
             {
             if (filepath == null) { throw new ArgumentNullException(nameof(filepath)); }
             if (String.IsNullOrWhiteSpace(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
             FilePath = filepath;
             FileName = Path.GetFileName(FilePath);
-            Entries = new Dictionary<String, IntPtr>();
             }
 
         [DllImport("version.dll",  CharSet = CharSet.Auto,    SetLastError = true)] private static extern Int32 GetFileVersionInfoSize(String filename, out IntPtr handle);
@@ -53,7 +58,7 @@ namespace BinaryStudio.PlatformComponents
         [DllImport("version.dll",  CharSet = CharSet.Auto,    SetLastError = true)] private static extern unsafe Boolean VerQueryValue([MarshalAs(UnmanagedType.LPArray)] Byte[] block, String query, out VS_FIXEDFILEINFO* fileinfo, out Int32 size);
 
         #region M:EnsureCore
-        private void EnsureCore() {
+        protected virtual void EnsureCore() {
             if (SharedObject == null) {
                 SharedObject = SharedObject.Create(FilePath);
                 }
@@ -284,7 +289,7 @@ namespace BinaryStudio.PlatformComponents
             }
         #endregion
         #region M:GetVersion(String)
-        private static unsafe Version GetVersion(String filepath) {
+        public static unsafe Version GetVersion(String filepath) {
             switch (Environment.OSVersion.Platform)
                 {
                 case PlatformID.Win32S:

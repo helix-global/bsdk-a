@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
@@ -100,6 +101,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public IEnumerable<ICryptKey> Keys { get {
             yield break;
             }}
+
+        IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
 
         private class HashEngine : HashAlgorithm, IHashAlgorithm
             {

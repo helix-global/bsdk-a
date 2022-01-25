@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32;
@@ -13,10 +11,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     [DebuggerDisplay(@"\{{Policy}\}")]
     internal class DefaultCertificateChainPolicy : X509CertificateChainPolicy
         {
-        private CERT_CHAIN_POLICY Policy { get; }
+        public override CertificateChainPolicy Policy { get; }
         protected CERT_CHAIN_POLICY_FLAGS Flags { get; }
 
-        public DefaultCertificateChainPolicy(CERT_CHAIN_POLICY policy, CERT_CHAIN_POLICY_FLAGS flags = 0) {
+        public DefaultCertificateChainPolicy(CertificateChainPolicy policy, CERT_CHAIN_POLICY_FLAGS flags = 0) {
             Policy = policy;
             Flags = flags;
             }

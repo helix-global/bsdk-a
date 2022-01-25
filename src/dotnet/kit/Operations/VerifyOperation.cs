@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using Microsoft.Win32;
@@ -19,7 +20,7 @@ namespace Operations
         public String Policy { get; }
         public String InputFileName { get; }
         public DateTime DateTime { get; }
-        private IX509CertificateChainPolicy CertificateChainPolicy { get; }
+        private CertificateChainPolicy CertificateChainPolicy { get; }
         private readonly Object so = new Object();
         private readonly Object bo = new Object();
         private const Int32 PURGE = 1000000;
@@ -32,26 +33,26 @@ namespace Operations
         public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
             : base(output, error, args)
             {
-            CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASE;
+            CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_BASE;
             ProviderType  = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
             Policy        = args.OfType<PolicyOption>().FirstOrDefault()?.Value;
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values.FirstOrDefault();
             DateTime      = args.OfType<DateTimeOption>().First().Value;
             if (Policy != null) {
                 switch (Policy) {
-                    case "base"    : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASE;                break;
-                    case "auth"    : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_AUTHENTICODE;        break;
-                    case "authts"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_AUTHENTICODE_TS;     break;
-                    case "ssl"     : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL;                 break;
-                    case "basic"   : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_BASIC_CONSTRAINTS;   break;
-                    case "ntauth"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_NT_AUTH;             break;
-                    case "msroot"  : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_MICROSOFT_ROOT;      break;
-                    case "ev"      : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_EV;                  break;
-                    case "ssl_f12" : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_F12;             break;
-                    case "ssl_hpkp": CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_HPKP_HEADER;     break;
-                    case "third"   : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_THIRD_PARTY_ROOT;    break;
-                    case "ssl_key" : CertificateChainPolicy = X509CertificateChainPolicy.POLICY_SSL_KEY_PIN;         break;
-                    case "icao"    : CertificateChainPolicy = X509CertificateChainPolicy.IcaoCertificateChainPolicy; break;
+                    case "base"    : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_BASE;                break;
+                    case "auth"    : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE;        break;
+                    case "authts"  : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE_TS;     break;
+                    case "ssl"     : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_SSL;                 break;
+                    case "basic"   : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_BASIC_CONSTRAINTS;   break;
+                    case "ntauth"  : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_NT_AUTH;             break;
+                    case "msroot"  : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_MICROSOFT_ROOT;      break;
+                    case "ev"      : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_EV;                  break;
+                    case "ssl_f12" : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_F12;             break;
+                    case "ssl_hpkp": CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_HPKP_HEADER;     break;
+                    case "third"   : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_THIRD_PARTY_ROOT;    break;
+                    case "ssl_key" : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_KEY_PIN;         break;
+                    case "icao"    : CertificateChainPolicy = CertificateChainPolicy.Icao;                                  break;
                     default: throw new NotSupportedException();
                     }
                 }
@@ -73,8 +74,8 @@ namespace Operations
         public override void Execute(TextWriter output) {
             try
                 {
-                using (var context = new CryptographicContext(Logger, ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var store = new X509CombinedCertificateStorage(true,
+                using (var context = new CryptographicContext(Logger, ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT))
+                using (var store = new X509CombinedCertificateStorage(true,
                         new X509CertificateStorage(X509StoreName.Root, X509StoreLocation.LocalMachine),
                         new X509CertificateStorage(X509StoreName.CertificateAuthority, X509StoreLocation.LocalMachine))) {
                         if (Path.GetFileNameWithoutExtension(InputFileName).Contains("*")) {
@@ -118,7 +119,6 @@ namespace Operations
                             Execute(context, store, InputFileName);
                             }
                         }
-                    }
                 Write(Out,ConsoleColor.Gray,  "Min:");Write(Out,ConsoleColor.Cyan, $"{{{MinElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Max:");Write(Out,ConsoleColor.Cyan, $"{{{MaxElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Avg:");Write(Out,ConsoleColor.Cyan, $"{{{AvgElapsedTicks}}}");
@@ -155,7 +155,7 @@ namespace Operations
                         try
                             {
                             B.Token.ThrowIfCancellationRequested();
-                            certificate.Verify(context, CertificateChainPolicy, store, DateTime);
+                            certificate.Verify(context, context.GetChainPolicy(CertificateChainPolicy), store, DateTime);
                             timer.Stop();
                             lock(so)
                                 {

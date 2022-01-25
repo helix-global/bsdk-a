@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -24,5 +25,6 @@ namespace BinaryStudio.Security.Cryptography
         void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates, IX509CertificateResolver finder);
         Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags);
         IEnumerable<ICryptKey> Keys { get; }
+        IX509CertificateChainPolicy GetChainPolicy(CertificateChainPolicy policy);
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -79,6 +80,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public IEnumerable<ICryptKey> Keys { get {
             yield break;
             }}
+
+        IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
 
         private static readonly Object o = new Object();
         private static IOpenSSLLibrary core;

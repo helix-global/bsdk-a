@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:*.hexgroup output:c:\\temp6 batch:extract,group",
+      "commandLineArgs": "input:c:\\temp6\\*.cer verify policy:icao datetime:now  providertype:-2",
       "remoteDebugEnabled": false
     }
   }

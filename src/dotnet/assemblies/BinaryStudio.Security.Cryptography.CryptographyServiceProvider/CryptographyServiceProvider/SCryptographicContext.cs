@@ -1393,5 +1393,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 yield return i;
                 }
             }}
+
+        IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
         }
     }

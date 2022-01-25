@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -51,6 +52,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Logger = logger ?? DefaultLogger;
             switch (providertype) {
                 case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(Logger, flags); break;
+                case CRYPT_PROVIDER_TYPE.FINTECH: UnderlyingObject = new FintechCryptographicContext(Logger, flags); break;
                 case  0: UnderlyingObject = new DefaultCryptographicContext(Logger, flags); break;
                 default: UnderlyingObject = new SCryptographicContext(Logger, providertype, flags); break;
                 }
@@ -104,6 +106,28 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public IEnumerable<ICryptKey> Keys { get { return UnderlyingObject.Keys; }}
+        public IX509CertificateChainPolicy GetChainPolicy(CertificateChainPolicy policy) {
+            var r = UnderlyingObject?.GetChainPolicy(policy);
+            if (r == null) {
+                switch (policy) {
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_BASE:              r = X509CertificateChainPolicy.POLICY_BASE;                break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE:      r = X509CertificateChainPolicy.POLICY_AUTHENTICODE;        break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE_TS:   r = X509CertificateChainPolicy.POLICY_AUTHENTICODE_TS;     break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL:               r = X509CertificateChainPolicy.POLICY_SSL;                 break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_BASIC_CONSTRAINTS: r = X509CertificateChainPolicy.POLICY_BASIC_CONSTRAINTS;   break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_NT_AUTH:           r = X509CertificateChainPolicy.POLICY_NT_AUTH;             break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_MICROSOFT_ROOT:    r = X509CertificateChainPolicy.POLICY_MICROSOFT_ROOT;      break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_EV:                r = X509CertificateChainPolicy.POLICY_EV;                  break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_F12:           r = X509CertificateChainPolicy.POLICY_SSL_F12;             break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_HPKP_HEADER:   r = X509CertificateChainPolicy.POLICY_SSL_HPKP_HEADER;     break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_THIRD_PARTY_ROOT:  r = X509CertificateChainPolicy.POLICY_THIRD_PARTY_ROOT;    break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_KEY_PIN:       r = X509CertificateChainPolicy.POLICY_SSL_KEY_PIN;         break;
+                    case CertificateChainPolicy.Icao:                                r = X509CertificateChainPolicy.IcaoCertificateChainPolicy; break;
+                    default: throw new ArgumentOutOfRangeException(nameof(policy), policy, null);
+                    }
+                }
+            return r;
+            }
 
         static CryptographicContext()
             {
