@@ -35,6 +35,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #region M:Make(String):Exception
         private static Exception Make(String message, IList<Exception> exceptions, String stacktrace, HRESULT? scode, Type basetype, String source) {
             SecurityException e = null;
+            message = String.Join(" ", (message ?? String.Empty).Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()));
             if (scode != null) {
                 Type type = null;
                 switch(scode.Value) {
@@ -96,7 +97,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     : new SecurityException(message);
                 }
             e.InternalHResult = scode;
-            e.InternalStackTrace = stacktrace;
+            e.InternalStackTrace = String.Join(Environment.NewLine, stacktrace.Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries).Reverse());
             return e;
             }
         #endregion
