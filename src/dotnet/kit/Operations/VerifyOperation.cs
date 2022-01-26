@@ -83,7 +83,7 @@ namespace Operations
                             var pattern = Path.GetFileName(InputFileName);
                             if (String.IsNullOrEmpty(folder)) { folder = ".\\"; }
                             var j = 0;
-                            #if DEBUG2
+                            #if DEBUG
                             foreach (var i in Directory.GetFiles(folder, pattern, SearchOption.AllDirectories)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)

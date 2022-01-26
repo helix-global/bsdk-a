@@ -197,7 +197,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             var i = ((Int32)status) & mask;
             if (i == 0) { return; }
             var exceptions = new List<Exception>();
-            if ((i & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID)                 != 0) { exceptions.Add(GetExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID));                 i &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID;                 }
+            if ((i & (Int32)CertificateChainErrorStatus.TrustIsNotTimeValid)                 != 0) { exceptions.Add(GetExceptionForStatus(CertificateChainErrorStatus.TrustIsNotTimeValid));                 i &= ~(Int32)CertificateChainErrorStatus.TrustIsNotTimeValid;                 }
             if ((i & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED)                != 0) { exceptions.Add(GetExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED));                i &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED;                }
             if ((i & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED)                        != 0) { exceptions.Add(GetExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED));                        i &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED;                        }
             if ((i & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID)            != 0) { exceptions.Add(GetExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID));            i &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID;            }

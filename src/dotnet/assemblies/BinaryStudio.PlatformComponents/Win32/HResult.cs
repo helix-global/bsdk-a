@@ -3062,5 +3062,15 @@ namespace BinaryStudio.PlatformComponents.Win32
         COR_E_CUSTOMATTRIBUTEFORMAT                                           = unchecked((Int32)0x80131605), /* System.Reflection.CustomAttributeFormatException                       */
         COR_E_IO                                                              = unchecked((Int32)0x80131620), /* System.IO.IOException                                                  */
         COR_E_FILELOAD                                                        = unchecked((Int32)0x80131621), /* System.IO.FileLoadException                                            */
+        FINTECH_E_CERT_WRONG_EKU                                              = unchecked((Int32)0xd4460001),
+        FINTECH_E_CERT_STORE_NOT_FOUND                                        = unchecked((Int32)0xd4460002),
+        FINTECH_E_CERT_DECODE                                                 = unchecked((Int32)0xd4460003),
+        FINTECH_E_CERT_PRIVATE_KEY_EXPIRED                                    = unchecked((Int32)0xd4460004),
+        FINTECH_E_CERT_SIGNATURE                                              = unchecked((Int32)0xd4460005),
+        FINTECH_E_CERT_MISSING                                                = unchecked((Int32)0xd4460006),
+        FINTECH_E_CERT_EXPIRED                                                = unchecked((Int32)0xd4460007),
+        FINTECH_E_CRL_SIGNATURE                                               = unchecked((Int32)0xd4460008),
+        FINTECH_E_CRL_MISSING                                                 = unchecked((Int32)0xd4460009),
+        FINTECH_E_CRL_EXPIRED                                                 = unchecked((Int32)0xd446000a),
         }
     }

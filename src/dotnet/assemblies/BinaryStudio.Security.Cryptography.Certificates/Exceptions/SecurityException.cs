@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Properties;
 
 namespace BinaryStudio.Security.Cryptography
@@ -120,9 +121,9 @@ namespace BinaryStudio.Security.Cryptography
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] internal String InternalStackTrace { get; set; }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal UInt32? InternalHResult
+        internal HRESULT? InternalHResult
             {
-            get { return unchecked((UInt32)HResult); }
+            get { return unchecked((HRESULT)HResult); }
             set
                 {
                 if (value != null)

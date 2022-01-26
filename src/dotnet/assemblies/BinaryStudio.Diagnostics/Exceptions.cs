@@ -109,6 +109,7 @@ namespace BinaryStudio.Diagnostics
             while (e != null) {
                 messages.Add(new Block<String,Int32>($"{{{e.GetType().FullName}}}:{{{GetHRForException(e)}}}:{e.Message?.Trim()}", index));
                 a = e as AggregateException;
+                if ((a != null) && (a.InnerExceptions.Count < 2)) { a = null; }
                 if (e.StackTrace != null) {
                     var lineindex = 0;
                     var lines = e.StackTrace.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);

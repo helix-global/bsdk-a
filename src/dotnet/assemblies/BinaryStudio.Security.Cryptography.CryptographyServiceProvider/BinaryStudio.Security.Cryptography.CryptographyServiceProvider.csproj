@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
     <DefineConstants>TRACE;CODE_ANALYSIS,FEATURE_ROTATE_SIGNATURE2;FEATURE_OPENSSL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
