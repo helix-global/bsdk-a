@@ -19,7 +19,8 @@ namespace BinaryStudio.Diagnostics
             if (value != null) {
                 var type = value.GetType();
                 if ((value is ISerializable) ||
-                    (type.GetCustomAttributes(typeof(SerializableAttribute),true).Any()))
+                    (type.GetCustomAttributes(typeof(SerializableAttribute),true).Any()) ||
+                    (type.IsEnum))
                     {
                     e.Data[key] = value;
                     }

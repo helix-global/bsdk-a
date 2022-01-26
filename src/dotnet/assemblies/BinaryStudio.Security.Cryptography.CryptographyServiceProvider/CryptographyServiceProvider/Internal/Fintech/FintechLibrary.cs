@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using BinaryStudio.Diagnostics;
 using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
@@ -45,22 +46,48 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {
             if (!File.Exists(LibraryFullPath)) { throw new FileNotFoundException(); }
             var version = Library.GetVersion(LibraryFullPath);
+            Version = version;
             if ((version.CompareTo(new Version(1, 0, 123, 26)) >= 0) && (version.CompareTo(new Version(1,1)) < 0)) {
-                UnderlyingObject = new FintechLibraryA(LibraryFullPath);
+                UnderlyingObject = new FintechLibraryA(LibraryFullPath, version);
                 return;
                 }
             if ((version.CompareTo(new Version(1, 1)) > 0) && (version.CompareTo(new Version(1,2)) < 0)) {
-                UnderlyingObject = new FintechLibraryB(LibraryFullPath);
+                UnderlyingObject = new FintechLibraryB(LibraryFullPath, version);
                 return;
                 }
             throw new NotSupportedException();
             }
 
+        public Version Version { get; }
+
         /// <summary>Verifies certificate using ICAO policy.</summary>
         /// <param name="handle">Certificate handle to verify.</param>
         void IFintechLibrary.VerifyMrtdCertificate(IntPtr handle)
             {
-            UnderlyingObject.VerifyMrtdCertificate(handle);
+            try
+                {
+                UnderlyingObject.VerifyMrtdCertificate(handle);
+                }
+            catch (Exception e)
+                {
+                e.Add("Version", Version.ToString());
+                throw;
+                }
+            }
+
+        /// <summary>Verifies CMS using ICAO policy.</summary>
+        /// <param name="stream">Input stream containing MRTD CMS.</param>
+        void IFintechLibrary.VerifyMrtdMessage(Stream stream)
+            {
+            try
+                {
+                UnderlyingObject.VerifyMrtdMessage(stream);
+                }
+            catch (Exception e)
+                {
+                e.Add("Version", Version.ToString());
+                throw;
+                }
             }
         }
     }

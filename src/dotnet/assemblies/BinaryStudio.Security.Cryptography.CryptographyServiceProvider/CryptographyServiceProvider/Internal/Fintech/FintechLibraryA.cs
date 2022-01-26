@@ -8,10 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Permissions;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 
@@ -19,15 +18,16 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     internal class FintechLibraryA : Library, IFintechLibrary
         {
-        public FintechLibraryA(String filepath)
+        public FintechLibraryA(String filepath, Version version)
             : base(filepath)
             {
+            Version = version;
             EnsureProcedure("DllOpenCertificateStore", ref FDllOpenCertificateStore);
             EnsureProcedure("DllVerifyMRTDCertificate", ref FDllVerifyMRTDCertificate);
             }
 
-        #region M:CreateInstance(Type,params Object[]):T
-        private static Object CreateInstance(Type type, params Object[] args)
+        #region M:Make(Type,params Object[]):T
+        private static Object Make(Type type, params Object[] args)
             {
             return Activator.CreateInstance(type, BindingFlags.CreateInstance, null, args, CultureInfo.CurrentCulture);
             }
@@ -35,7 +35,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #region M:Make(String):Exception
         private static Exception Make(String message, IList<Exception> exceptions, String stacktrace, HRESULT? scode, Type basetype, String source) {
             SecurityException e = null;
-            message = String.Join(" ", (message ?? String.Empty).Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()));
+            message = TrimDup(String.Join(" ", (message ?? String.Empty).Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim())));
             if (scode != null) {
                 Type type = null;
                 switch(scode.Value) {
@@ -73,10 +73,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 if (basetype != null)
                     {
                     return ((exceptions == null) || (exceptions.Count == 0))
-                            ? (Exception)CreateInstance(basetype, message)
+                            ? (Exception)Make(basetype, message)
                             : (exceptions.Count == 1)
-                                ? (Exception)CreateInstance(basetype, message, exceptions[0])
-                                : (Exception)CreateInstance(basetype, message,
+                                ? (Exception)Make(basetype, message, exceptions[0])
+                                : (Exception)Make(basetype, message,
                                     new SecurityException(message, exceptions)
                                         {
                                         InternalStackTrace = stacktrace,
@@ -86,8 +86,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 if (type != null)
                     {
                     e = (exceptions != null)
-                        ? (SecurityException)CreateInstance(type, message, exceptions)
-                        : (SecurityException)CreateInstance(type, message);
+                        ? (SecurityException)Make(type, message, exceptions)
+                        : (SecurityException)Make(type, message);
                     }
                 }
             if (e == null)
@@ -196,16 +196,46 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
-        #region M:Validate(HRESULT,[Out]Exception):Boolean
-        private static Boolean Validate(HRESULT r, out Exception e) {
-            e = null;
-            if (r != HRESULT.S_OK) {
-                IErrorInfo i = null;
-                GetErrorInfo(0, ref i);
-                e = From(i, r) ?? Marshal.GetExceptionForHR((Int32)r);
-                return false;
+        #region M:TrimDup(String)
+        private static String TrimDup(String source) {
+            return (source == null)
+                ? source
+                : String.Join(" ",
+                    TrimDup(source.Split(new []{' ' },
+                    StringSplitOptions.RemoveEmptyEntries)));
+            }
+        #endregion
+        #region M:TrimDup(String[]):String[]
+        private static String[] TrimDup(String[] source) {
+            if ((source == null) || (source.Length < 2)) { return source; }
+            var offset = source.Length - 2;
+            while (offset >= 0) {
+                var index = FindLast(source, offset);
+                if (index == -2) { return source; }
+                if (index == -1)
+                    {
+                    offset--;
+                    continue;
+                    }
+                var target = new String[offset];
+                Array.Copy(source, 0, target, 0, offset);
+                source = target;
+                offset = source.Length - 2;
                 }
-            return true;
+            return source;
+            }
+        #endregion
+        #region M:FindLast(String[],Int32):Int32
+        private static Int32 FindLast(String[] source, Int32 offset) {
+            var count = source.Length - offset;
+            var first = offset - count;
+            if (first < 0) { return -2; }
+            for (var i = 0; i < count; i++) {
+                if (source[first + i] != source[offset + i]) {
+                    return -1;
+                    }
+                }
+            return first;
             }
         #endregion
 
@@ -291,6 +321,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllVerifyMRTDCertificate([In] ICertificate inputstream);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllOpenCertificateStore(StoreName protocol, StoreLocation location, out ICertificateStore r);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllVerifyMRTD([In] IStream inputstream);
+
+        public Version Version { get; }
 
         /// <summary>Verifies certificate using ICAO policy.</summary>
         /// <param name="handle">Certificate handle to verify.</param>
@@ -301,7 +334,16 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Validate(EnsureProcedure("DllVerifyMRTDCertificate", ref FDllVerifyMRTDCertificate)(certificate));
             }
 
+        /// <summary>Verifies CMS using ICAO policy.</summary>
+        /// <param name="stream">Input stream containing MRTD CMS.</param>
+        void IFintechLibrary.VerifyMrtdMessage(Stream stream) {
+            using (var inputstream = new ComStream(stream)) {
+                Validate(EnsureProcedure("DllVerifyMRTD", ref FDllVerifyMRTD)(inputstream));
+                }
+            }
+
         private DDllVerifyMRTDCertificate FDllVerifyMRTDCertificate;
         private DDllOpenCertificateStore  FDllOpenCertificateStore;
+        private DDllVerifyMRTD            FDllVerifyMRTD;
         }
     }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -189,6 +190,8 @@ namespace Operations
                             }
                         catch (Exception e)
                             {
+                            e.Add("Service", filename);
+                            e.Add("Policy" , CertificateChainPolicy);
                             timer.Stop();
                             lock(so)
                                 {
