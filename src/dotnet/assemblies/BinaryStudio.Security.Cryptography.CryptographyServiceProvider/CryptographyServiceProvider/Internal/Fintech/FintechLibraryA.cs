@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using BinaryStudio.Diagnostics;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
@@ -58,11 +59,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     case HRESULT.NTE_BAD_SIGNATURE:                  type = typeof(CertificateInvalidSignatureException); break;
                     case HRESULT.NTE_BAD_HASH:                       type = typeof(CertificateInvalidHashException); break;
                     case HRESULT.NTE_BAD_DATA:
-                    case HRESULT.CRYPT_E_ASN1_BADTAG:
-                        type = typeof(InvalidDataException); break;
+                    case HRESULT.CRYPT_E_ASN1_BADTAG:                type = typeof(SecurityInvalidDataException); break;
                     case HRESULT.NTE_BAD_KEYSET:
-                    case HRESULT.NTE_NO_KEY:
-                        type = typeof(CertificatePrivateKeyMissingException); break;
+                    case HRESULT.NTE_NO_KEY:                         type = typeof(CertificatePrivateKeyMissingException); break;
                     case HRESULT.COR_E_ARGUMENTOUTOFRANGE:           basetype = typeof(ArgumentOutOfRangeException); break;
                     case HRESULT.COR_E_NOTSUPPORTED:                 basetype = typeof(NotSupportedException); break;
                     case HRESULT.COR_E_NULLREFERENCE:                basetype = basetype ?? typeof(NullReferenceException); break;
@@ -180,7 +179,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             foreach (var i in data)
                 {
-                r.Data.Add(i.Key, i.Value);
+                r.Add(i.Key.ToString(), i.Value);
                 }
             if (!String.IsNullOrEmpty(source)) { r.Source = source; }
             return r;

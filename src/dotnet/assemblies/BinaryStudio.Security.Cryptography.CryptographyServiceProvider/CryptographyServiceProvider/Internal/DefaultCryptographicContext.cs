@@ -65,7 +65,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
-        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,IX509CertificateResolver finder)
+        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,IX509CertificateResolver finder, VerificationPolicy policy)
             {
             certificates = EmptyArray<IX509Certificate>.Value;
             if (input == null) { throw new ArgumentNullException(nameof(input)); }

@@ -64,8 +64,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         void ICryptographicContext.VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,
-            IX509CertificateResolver finder)
-            {
+            IX509CertificateResolver finder, VerificationPolicy policy) {
+            certificates = null;
+            if (policy == VerificationPolicy.Icao) {
+                Core.VerifyMrtdMessage(input);
+                return;
+                }
             throw new NotImplementedException();
             }
 

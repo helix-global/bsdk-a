@@ -2,8 +2,9 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:c:\\temp6\\*.cer verify policy:icao datetime:now  providertype:-2",
-      "remoteDebugEnabled": false
+      "commandLineArgs": "input:c:\\temp6\\0000002433.hex verify policy:icao datetime:now  providertype:-2",
+      "remoteDebugEnabled": false,
+      "nativeDebugging": true
     }
   }
 }

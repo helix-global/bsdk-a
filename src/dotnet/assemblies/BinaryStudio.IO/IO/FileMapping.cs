@@ -39,7 +39,7 @@ namespace BinaryStudio.IO
                 Size = output.Size;
                 #else
                 FileHandle = CreateFile(filename, FileGenericAccess.Read, FileShare.Read|FileShare.Delete, null,
-                    FileMode.Open, flags: FILE_ATTRIBUTE_TEMPORARY|FILE_FLAG_DELETE_ON_CLOSE, templatefile: IntPtr.Zero);
+                    FileMode.Open, flags: FILE_ATTRIBUTE_TEMPORARY, templatefile: IntPtr.Zero);
                 if (FileHandle.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error(), filename); }
                 var i = default(LargeInteger);
                 if (!GetFileSizeEx(FileHandle, ref i)) { throw new Win32Exception(Marshal.GetLastWin32Error()); }

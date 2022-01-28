@@ -631,7 +631,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:VerifyAttachedMessageSignature(Stream,Stream,[Out]IList<IX509Certificate>,IX509CertificateResolver)
-        public unsafe void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+        public unsafe void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder, VerificationPolicy policy)
             {
             if (input == null) { throw new ArgumentNullException(nameof(input));   }
             certificates = new List<IX509Certificate>();
@@ -753,7 +753,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             Asn1Object.DecodeLength(input);
                             try
                                 {
-                                VerifyAttachedMessageSignature(input, output, out certificates, finder);
+                                VerifyAttachedMessageSignature(input, output, out certificates, finder, policy);
                                 }
                             catch (Exception z)
                                 {
@@ -788,7 +788,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (input   == null) { throw new ArgumentNullException(nameof(input)); }
             using (new TraceScope()) {
                 using (var inputstream = new MemoryStream(input)) {
-                    VerifyAttachedMessageSignature(inputstream, null, out signers, finder);
+                    VerifyAttachedMessageSignature(inputstream, null,
+                        out signers, finder, VerificationPolicy.Default);
                     }
                 }
             }

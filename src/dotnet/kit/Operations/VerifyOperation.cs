@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using Microsoft.Win32;
@@ -30,6 +31,7 @@ namespace Operations
         private TimeSpan? AvgElapsedTicks;
         private readonly EventWaitHandle E = new AutoResetEvent(false);
         private readonly CancellationTokenSource B = new CancellationTokenSource();
+        private volatile Int32 NumberOfErrors = 0;
 
         public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
             : base(output, error, args)
@@ -123,6 +125,7 @@ namespace Operations
                 Write(Out,ConsoleColor.Gray,  "Min:");Write(Out,ConsoleColor.Cyan, $"{{{MinElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Max:");Write(Out,ConsoleColor.Cyan, $"{{{MaxElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Avg:");Write(Out,ConsoleColor.Cyan, $"{{{AvgElapsedTicks}}}");
+                Write(Out,ConsoleColor.Gray, ":Errors:");Write(Out,ConsoleColor.Red, $"{{{NumberOfErrors}}}");
                 Out.WriteLine();
                 }
             catch(OperationCanceledException)
@@ -190,6 +193,7 @@ namespace Operations
                             }
                         catch (Exception e)
                             {
+                            Interlocked.Increment(ref NumberOfErrors);
                             e.Add("Service", filename);
                             e.Add("Policy" , CertificateChainPolicy);
                             timer.Stop();
@@ -204,6 +208,67 @@ namespace Operations
                                 AvgElapsedTicks = Avg(AvgElapsedTicks, timer.ElapsedTicks);
                                 Logger.Log(LogLevel.Warning, e);
                                 }
+                            }
+                        }
+                    }
+                    break;
+                case ".hex":
+                    {
+                    var policy = (CertificateChainPolicy == CertificateChainPolicy.Icao)
+                            ? VerificationPolicy.Icao
+                            : VerificationPolicy.Default;
+                    try
+                        {
+                        B.Token.ThrowIfCancellationRequested();
+                        using (var sourcestream = File.OpenRead(filename)) {
+                            context.VerifyAttachedMessageSignature(
+                                sourcestream, null,
+                                out var certificates,
+                                null, policy);
+                            }
+                        timer.Stop();
+                        lock(so)
+                            {
+                            Write(Out,ConsoleColor.Green, "{ok}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{filename}");
+                            MaxElapsedTicks = Max(MaxElapsedTicks, timer.ElapsedTicks);
+                            MinElapsedTicks = Min(MinElapsedTicks, timer.ElapsedTicks);
+                            AvgElapsedTicks = Avg(AvgElapsedTicks, timer.ElapsedTicks);
+                            }
+                        }
+                    catch (OperationCanceledException)
+                        {
+                        timer.Stop();
+                        lock(so)
+                            {
+                            Write(Out,ConsoleColor.Yellow, "{break}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{filename}");
+                            MaxElapsedTicks = Max(MaxElapsedTicks, timer.ElapsedTicks);
+                            MinElapsedTicks = Min(MinElapsedTicks, timer.ElapsedTicks);
+                            AvgElapsedTicks = Avg(AvgElapsedTicks, timer.ElapsedTicks);
+                            }
+                        throw;
+                        }
+                    catch (Exception e)
+                        {
+                        Interlocked.Increment(ref NumberOfErrors);
+                        e.Add("Service", filename);
+                        e.Add("Policy" , policy);
+                        timer.Stop();
+                        lock(so)
+                            {
+                            Write(Out,ConsoleColor.Red, "{error}");
+                            Write(Out,ConsoleColor.Gray, ":");
+                            Write(Out,ConsoleColor.Cyan, $"{{{timer.Elapsed}}}");
+                            WriteLine(Out,ConsoleColor.Gray, $":{filename}");
+                            MaxElapsedTicks = Max(MaxElapsedTicks, timer.ElapsedTicks);
+                            MinElapsedTicks = Min(MinElapsedTicks, timer.ElapsedTicks);
+                            AvgElapsedTicks = Avg(AvgElapsedTicks, timer.ElapsedTicks);
+                            Logger.Log(LogLevel.Warning, e);
                             }
                         }
                     }

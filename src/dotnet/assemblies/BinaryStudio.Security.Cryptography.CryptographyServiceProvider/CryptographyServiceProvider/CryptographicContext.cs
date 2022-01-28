@@ -88,10 +88,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.EncryptMessageDER(algid, recipients, inputstream, outputstream);
             }
 
-        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder, VerificationPolicy policy)
             {
             UnderlyingObject.VerifyAttachedMessageSignature(
-                input, output, out certificates, finder);
+                input, output, out certificates,
+                finder, policy);
             }
 
         public void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)

@@ -24,12 +24,31 @@ namespace BinaryStudio.Diagnostics
                     {
                     e.Data[key] = value;
                     }
+                else if (value is Byte[]) {
+                    var r = (Byte[])value;
+                    e.Data[key] = (r.Length <= 64)
+                        ? "{base32}:" + String.Join(String.Empty, r.Select(i => i.ToString("x2")))
+                        : "{base64}:" + LineBefore(Convert.ToBase64String(r, Base64FormattingOptions.InsertLineBreaks));
+                    }
                 else
                     {
                     e.Data[key] = new ExceptionObjectDecorator(value);
                     }
                 }
             return e;
+            }
+
+        private static String LineBefore(String source) {
+            var o = source.Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries);
+            if (o.Length > 1) {
+                var r = new StringBuilder();
+                r.AppendLine();
+                foreach (var i in o) {
+                    r.AppendLine(i);
+                    }
+                return r.ToString().TrimEnd('\r', '\n');
+                }
+            return source;
             }
 
         public static void WriteTo(Exception source, TextWriter target) {
