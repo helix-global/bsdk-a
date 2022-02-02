@@ -33,7 +33,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                     LocalFree(r);
                     }
                 }
-            return null;
+            return NTStatusException.FormatMessage(source);
             }
         #endregion
 
@@ -41,6 +41,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         private const UInt32 FORMAT_MESSAGE_FROM_SYSTEM     = 0x00001000;
         private const UInt32 LANG_NEUTRAL                   = 0x00;
         private const UInt32 SUBLANG_DEFAULT                = 0x01;
+        private const Int32  FACILITY_NT_BIT                = 0x10000000;
 
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);

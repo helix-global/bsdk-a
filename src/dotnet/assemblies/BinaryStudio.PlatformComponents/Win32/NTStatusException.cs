@@ -27,14 +27,14 @@ namespace BinaryStudio.PlatformComponents.Win32
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr LoadLibrary(String filename);
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         #region M:FormatMessage(Int32):String
-        private static unsafe String FormatMessage(Int32 source) {
+        internal static unsafe String FormatMessage(Int32 source) {
             void* r;
             if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_HMODULE, LibraryHandle, source,
                 ((((UInt32)(SUBLANG_DEFAULT)) << 10) | (UInt32)(LANG_NEUTRAL)),
                 &r, 0, new IntPtr[0])) {
                 try
                     {
-                    return new String((char*)r);
+                    return String.Join(" ", (new String((char*)r)).Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries));
                     }
                 finally
                     {

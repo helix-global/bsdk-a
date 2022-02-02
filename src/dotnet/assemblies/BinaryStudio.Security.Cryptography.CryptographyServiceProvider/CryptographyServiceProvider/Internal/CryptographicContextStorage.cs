@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
+using BinaryStudio.PlatformComponents;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider

@@ -87,7 +87,7 @@ namespace Operations
                             if (String.IsNullOrEmpty(folder)) { folder = ".\\"; }
                             var j = 0;
                             #if DEBUG
-                            foreach (var i in Directory.GetFiles(folder, pattern, SearchOption.AllDirectories)) {
+                            foreach (var i in Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).OrderBy(i => i)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)
                                     {
@@ -236,6 +236,7 @@ namespace Operations
                             MaxElapsedTicks = Max(MaxElapsedTicks, timer.ElapsedTicks);
                             MinElapsedTicks = Min(MinElapsedTicks, timer.ElapsedTicks);
                             AvgElapsedTicks = Avg(AvgElapsedTicks, timer.ElapsedTicks);
+                            //File.Move(filename, Path.Combine(@"C:\Success", Path.GetFileName(filename)));
                             }
                         }
                     catch (OperationCanceledException)

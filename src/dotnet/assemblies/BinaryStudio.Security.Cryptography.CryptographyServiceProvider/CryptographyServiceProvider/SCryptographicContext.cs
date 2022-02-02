@@ -23,7 +23,6 @@ using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal.Fintech;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties;
-using BinaryStudio.Security.Cryptography.Win32;
 using BinaryStudio.Serialization;
 using Microsoft.Win32;
 #if NET40

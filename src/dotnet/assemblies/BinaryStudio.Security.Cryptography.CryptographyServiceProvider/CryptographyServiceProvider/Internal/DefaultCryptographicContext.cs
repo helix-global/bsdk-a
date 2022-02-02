@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using BinaryStudio.Serialization;
 using Microsoft.Win32;
 

@@ -82,8 +82,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                         InternalHResult = scode
                                         });
                     }
-                if (type != null)
-                    {
+                if (type != null) {
+                    if (String.IsNullOrWhiteSpace(message)) { message = HResultException.FormatMessage((Int32)scode); }
                     e = (exceptions != null)
                         ? (SecurityException)Make(type, message, exceptions)
                         : (SecurityException)Make(type, message);
@@ -91,6 +91,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             if (e == null)
                 {
+                if ((scode != null) && String.IsNullOrWhiteSpace(message)) { message = HResultException.FormatMessage((Int32)scode); }
                 e = (exceptions != null)
                     ? new SecurityException(message, exceptions)
                     : new SecurityException(message);

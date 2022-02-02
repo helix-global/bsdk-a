@@ -6,8 +6,8 @@ using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
