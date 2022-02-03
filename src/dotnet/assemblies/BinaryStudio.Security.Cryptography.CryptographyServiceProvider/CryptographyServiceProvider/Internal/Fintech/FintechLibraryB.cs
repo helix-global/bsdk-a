@@ -1,14 +1,17 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     internal class FintechLibraryB : Library, IFintechLibrary
         {
-        public FintechLibraryB(String filepath, Version version)
+        private readonly ILogger logger;
+        public FintechLibraryB(String filepath, Version version, ILogger logger)
             : base(filepath)
             {
+            this.logger = logger;
             Version = version;
             }
 

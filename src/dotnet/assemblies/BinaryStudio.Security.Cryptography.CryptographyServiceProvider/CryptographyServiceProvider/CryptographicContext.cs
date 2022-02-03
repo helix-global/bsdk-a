@@ -40,7 +40,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
-        private readonly ICryptographicContext UnderlyingObject;
+        private ICryptographicContext UnderlyingObject;
 
         /// <summary>
         /// Constructs <see cref="CryptographicContext"/> using specified <paramref name="providertype"/> and flags.
@@ -187,5 +187,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             //yield return new RegisteredProviderInfo(CRYPT_PROVIDER_TYPE.OPENSSL);
             //#endif
             }}
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            Dispose(ref UnderlyingObject);
+            base.Dispose(disposing);
+            }
         }
     }

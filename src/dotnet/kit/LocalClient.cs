@@ -68,8 +68,8 @@ public class LocalClient : ILocalClient
                     {
                     }
                 }).Wait();
-            Console.WriteLine("Press [ENTER] to exit...");
-            Console.ReadLine();
+            //Console.WriteLine("Press [ENTER] to exit...");
+            //Console.ReadLine();
             return 0;
             }
         catch (PrincipalPermissionException)

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal interface IFintechLibrary
+    internal interface IFintechLibrary : IDisposable
         {
         Version Version { get; }
 

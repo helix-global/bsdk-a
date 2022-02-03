@@ -34,8 +34,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing) {
-            /*Debug.Print($"{GetType().Name}.Dispose({disposing})");*/
             if (disposing) {
                 if (manager != null) {
                     manager.Dispose();
@@ -45,6 +48,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
             {
             Dispose(true);
@@ -52,6 +56,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         ~CryptographicObject()
             {
             Dispose(false);

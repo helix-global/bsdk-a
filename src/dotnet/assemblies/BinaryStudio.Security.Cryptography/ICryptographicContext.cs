@@ -8,7 +8,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    public interface ICryptographicContext
+    public interface ICryptographicContext : IDisposable
         {
         /// <summary>
         /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
@@ -19,9 +22,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     internal class FintechLibraryA : Library, IFintechLibrary
         {
-        public FintechLibraryA(String filepath, Version version)
+        private readonly ILogger logger;
+        private Boolean Disposed;
+        public FintechLibraryA(String filepath, Version version, ILogger logger)
             : base(filepath)
             {
+            this.logger = logger;
             Version = version;
             EnsureProcedure("DllOpenCertificateStore", ref FDllOpenCertificateStore);
             EnsureProcedure("DllVerifyMRTDCertificate", ref FDllVerifyMRTDCertificate);
@@ -192,6 +198,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 IErrorInfo i = null;
                 GetErrorInfo(0, ref i);
                 var e = From(i, r);
+                if (i != null) {
+                    Dispose(ref i);
+                    }
+                SetErrorInfo(0, i);
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
             }
@@ -239,7 +249,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
 
-        [DllImport("oleaut32.dll", PreserveSig = false)] public static extern void GetErrorInfo(Int32 i, [In][Out] ref IErrorInfo r);
+        [DllImport("oleaut32.dll", PreserveSig = true)] private static extern HRESULT GetErrorInfo(Int32 i, [In][Out] ref IErrorInfo r);
+        [DllImport("oleaut32.dll", PreserveSig = true)] private static extern HRESULT SetErrorInfo(Int32 i, [In] IErrorInfo r);
         [DllImport("kernel32.dll", BestFitMapping = false)] private static extern HRESULT GetLastError();
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -319,9 +330,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             [PreserveSig] HRESULT get_Certificates([MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_UNKNOWN)][Out] out ICertificate[] certificates);
             }
 
+        #if TRACE
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        [ComImport, Guid("73D2E14E-12CB-424A-A9D5-480C3BA132E1")]
+        private interface IStatRow
+	        {
+            Boolean IsError { get; }
+            String SignerSignatureAlgorithm { get; }
+            String SignerDigestAlgorithm { get; }
+            String Country { get; }
+            String CertificateSignatureAlgorithm { get; }
+            String CertificateDigestAlgorithm { get; }
+            String Organization { get; }
+            String Source { get; }
+	        }
+
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        [ComImport, Guid("8964EDA1-5327-4F5F-9932-91613A69C5CB")]
+        private interface IStatTable
+	        {
+            Int32 Count { get; }
+            IStatRow this[Int32 index] { get; }
+	        }
+        #endif
+
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllVerifyMRTDCertificate([In] ICertificate inputstream);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllOpenCertificateStore(StoreName protocol, StoreLocation location, out ICertificateStore r);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllVerifyMRTD([In] IStream inputstream);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)] private delegate HRESULT DDllGetClassObject(ref Guid rclsid, ref Guid riid, [MarshalAs(UnmanagedType.LPWStr)] String parameters, out IntPtr r);
 
         public Version Version { get; }
 
@@ -342,8 +378,221 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
 
+        private void GetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
+            {
+            Validate(EnsureProcedure("DllGetClassObject", ref FDllGetClassObject)(ref rclsid, ref riid, null, out r));
+            }
+
+        private void GetClassObject<T>(out T r)
+            where T : class
+            {
+            var type = typeof(T);
+            if (!type.IsImport) { throw new ArgumentOutOfRangeException(nameof(T)); }
+            r = null;
+            var rclsid = type.GUID;
+            var riid = new Guid("00000000-0000-0000-C000-000000000046");
+            GetClassObject(ref rclsid, ref riid, out var o);
+            var i = Marshal.GetObjectForIUnknown(o);
+            var c = Marshal.AddRef(o);
+            while (c > 1)
+                {
+                c = Marshal.Release(o);
+                }
+            r =  i as T;
+            }
+
+        private static void Dispose<T>(T r)
+            where T: class
+            {
+            if (r != null) {
+                var i = r as IDisposable;
+                if (i != null)
+                    {
+                    i.Dispose();
+                    }
+                else
+                    {
+                    var adapter = r as ICustomAdapter;
+                    if (adapter != null)
+                        {
+                        Dispose(adapter.GetUnderlyingObject());
+                        }
+                    else
+                        {
+                        Release(r);
+                        }
+                    }
+                }
+            }
+
+        private static void Dispose<T>(ref T r)
+            where T: class
+            {
+            Dispose(r);
+            r = null;
+            }
+
+        private static void Release(Object r)
+            {
+            if (r != null)
+                {
+                Marshal.ReleaseComObject(r);
+                }
+            }
+
+        private static void Release<T>(ref T r)
+            where T: class
+            {
+            Release(r);
+            r = null;
+            }
+
         private DDllVerifyMRTDCertificate FDllVerifyMRTDCertificate;
         private DDllOpenCertificateStore  FDllOpenCertificateStore;
         private DDllVerifyMRTD            FDllVerifyMRTD;
+        private DDllGetClassObject        FDllGetClassObject;
+
+        #if TRACE
+        private class StatRecord
+            {
+            public Boolean IsError;
+            public String SignerSignatureAlgorithm;
+            public String SignerDigestAlgorithm;
+            public String Country;
+            public String CertificateSignatureAlgorithm;
+            public String CertificateDigestAlgorithm;
+            public String Organization;
+            public String Source;
+            }
+
+        private static String FormatOID(String oid) {
+            if (oid == null) { return "{none}"; }
+            if (oid == szOID_NIST_sha224) { return "sha224"; }
+            if (oid == szOID_ECDSA_SHA224) { return "sha224ECDSA"; }
+            var r = new Oid(oid);
+            var o = (r.FriendlyName != oid) 
+                ? $"{r.FriendlyName}"
+                : $"{oid}";
+            Debug.Assert(!String.IsNullOrWhiteSpace(o));
+            return o;
+            }
+
+        private void ReportStatistics() {
+            if (logger.IsEnabled(LogLevel.Trace)) {
+                GetClassObject<IStatTable>(out var table);
+                if (table != null) {
+                    var count = table.Count;
+                    var rows = new List<StatRecord>();
+                    var scces = 0;
+                    var errrs = 0;
+                    for (var i = 0; i < count; i++) {
+                        var j = table[i];
+                        rows.Add(new StatRecord
+                            {
+                            IsError = j.IsError,
+                            Country = j.Country,
+                            CertificateDigestAlgorithm = FormatOID(j.CertificateDigestAlgorithm),
+                            CertificateSignatureAlgorithm = FormatOID(j.CertificateSignatureAlgorithm),
+                            SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
+                            SignerSignatureAlgorithm = FormatOID(j.SignerSignatureAlgorithm),
+                            Organization = j.Organization,
+                            Source = j.Source
+                            });
+                        if (j.IsError)
+                            {
+                            errrs++;
+                            }
+                        else
+                            {
+                            scces++;
+                            }
+                        }
+                    var builder = new StringBuilder();
+                    builder.AppendLine("\n# STATISTICS:");
+                    builder.AppendFormat("  Total:{0}\n", rows.Count);
+                    builder.AppendFormat("  Success:{0}\n", scces);
+                    builder.AppendFormat("  Errors:{0}\n", errrs);
+                    builder.AppendLine("# DETAILS{SignerSignatureAlgorithm}:");
+                    foreach (var j in rows.GroupBy(i => i.SignerSignatureAlgorithm).OrderBy(i => i.Key))
+                        {
+                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                            j.Key,
+                            j.Count(i =>  i.IsError).ToString("D4"),
+                            j.Count(i => !i.IsError).ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{SignerDigestAlgorithm}:");
+                    foreach (var j in rows.GroupBy(i => i.SignerDigestAlgorithm).OrderBy(i => i.Key))
+                        {
+                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                            j.Key,
+                            j.Count(i =>  i.IsError).ToString("D4"),
+                            j.Count(i => !i.IsError).ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{CertificateSignatureAlgorithm}:");
+                    foreach (var j in rows.GroupBy(i => i.CertificateSignatureAlgorithm).OrderBy(i => i.Key))
+                        {
+                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                            j.Key,
+                            j.Count(i =>  i.IsError).ToString("D4"),
+                            j.Count(i => !i.IsError).ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{CertificateDigestAlgorithm}:");
+                    foreach (var j in rows.GroupBy(i => i.CertificateDigestAlgorithm).OrderBy(i => i.Key))
+                        {
+                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                            j.Key,
+                            j.Count(i =>  i.IsError).ToString("D4"),
+                            j.Count(i => !i.IsError).ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{Country,Organization}{Only Errors}:");
+                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1))
+                        {
+                        builder.AppendFormat("  {{{1}}} # {0}\n",
+                            $"{j.Key.Item1},{j.Key.Item2}",
+                            j.Count().ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{Source}{Only Errors}:");
+                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key))
+                        {
+                        builder.AppendFormat("  {{{1}}} # {0}\n",
+                            $"{j.Key}",
+                            j.Count().ToString("D4"));
+                        }
+                    builder.AppendLine("# DETAILS{Source-Country,Organization}{Only Errors}:");
+                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key)) {
+                        builder.AppendFormat("  {{{1}}} # {0}\n",
+                            $"{j.Key}",
+                            j.Count().ToString("D4"));
+                        foreach (var K in j.GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1)) {
+                            builder.AppendFormat("    {{{1}}} # {0}\n",
+                                $"{K.Key.Item1},{K.Key.Item2}",
+                                K.Count().ToString("D4"));
+                            foreach (var L in K.GroupBy(i => Tuple.Create(i.SignerSignatureAlgorithm, i.CertificateSignatureAlgorithm)).OrderBy(i=> i.Key.Item1)) {
+                            builder.AppendFormat("      {{{1}}} # {0}\n",
+                                $"{L.Key.Item1},{L.Key.Item2}",
+                                L.Count().ToString("D4"));
+                                }
+                            }
+                        }
+                    logger.Log(LogLevel.Trace, builder.ToString());
+                    Dispose(ref table);
+                    }
+                }
+            }
+        #endif
+
+        protected override void Dispose(Boolean disposing) {
+            if (!Disposed)
+                {
+                #if TRACE
+                ReportStatistics();
+                #endif
+                base.Dispose(disposing);
+                Disposed = true;
+                }
+            }
+
+        private const String szOID_ECDSA_SHA224 = "1.2.840.10045.4.3.1";
+        private const String szOID_NIST_sha224  = "2.16.840.1.101.3.4.2.4";
         }
     }

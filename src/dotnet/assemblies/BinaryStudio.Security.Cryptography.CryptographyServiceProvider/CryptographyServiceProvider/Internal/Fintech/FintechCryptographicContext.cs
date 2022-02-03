@@ -14,8 +14,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         private IntPtr _handle;
         protected internal override ILogger Logger { get; }
         private IEnumerable<ICryptKey> _keys;
-        private static IFintechLibrary core;
-        private static readonly Object o = new Object();
+        private IFintechLibrary UnderlyingObject;
 
         /// <summary>
         /// Constructs <see cref="FintechCryptographicContext"/> instance using <paramref name="flags"/>.
@@ -67,7 +66,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             IX509CertificateResolver finder, VerificationPolicy policy) {
             certificates = null;
             if (policy == VerificationPolicy.Icao) {
-                Core.VerifyMrtdMessage(input);
+                EnsureCore();
+                UnderlyingObject.VerifyMrtdMessage(input);
                 return;
                 }
             throw new NotImplementedException();
@@ -110,17 +110,25 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
             CertificateChainPolicy policy, IntPtr chainengine) {
             if (policy == CertificateChainPolicy.Icao) {
-                Core.VerifyMrtdCertificate(certificate.Handle);
+                EnsureCore();
+                UnderlyingObject.VerifyMrtdCertificate(certificate.Handle);
                 return;
                 }
             throw new NotSupportedException();
             }
 
-        private static IFintechLibrary Core { get {
-            lock(o)
+        private void EnsureCore() {
+            lock (this)
                 {
-                return core ?? (core = new FintechLibrary());
+                UnderlyingObject = UnderlyingObject ?? new FintechLibrary(Logger);
                 }
-            }}
+            }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+            {
+            Dispose(ref UnderlyingObject);
+            base.Dispose(disposing);
+            }
         }
     }

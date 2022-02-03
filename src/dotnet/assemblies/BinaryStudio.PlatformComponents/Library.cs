@@ -19,13 +19,28 @@ namespace BinaryStudio.PlatformComponents
         protected virtual String FilePath { get; }
         public  String FileName { get; }
 
+        #region M:Dispose<T>([Ref]T)
+        protected void Dispose<T>(ref T o)
+            where T: class, IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = null;
+                }
+            }
+        #endregion
         #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing) {
             if (disposing) {
                 }
             }
         #endregion
         #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
             {
             Dispose(true);
@@ -33,6 +48,7 @@ namespace BinaryStudio.PlatformComponents
             }
         #endregion
         #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         ~Library()
             {
             Dispose(false);
@@ -67,12 +83,14 @@ namespace BinaryStudio.PlatformComponents
         #region M:EnsureProcedure<T>(String,[Ref]T):T
         protected T EnsureProcedure<T>(String name, ref T value) {
             if (value == null) {
-                EnsureCore();
-                if (!Entries.TryGetValue(name, out var r)) {
-                    r = SharedObject.Get(name);
-                    Entries.Add(name, r);
+                lock(this) {
+                    EnsureCore();
+                    if (!Entries.TryGetValue(name, out var r)) {
+                        r = SharedObject.Get(name);
+                        Entries.Add(name, r);
+                        }
+                    value = (T)(Object)Marshal.GetDelegateForFunctionPointer(r, typeof(T));
                     }
-                value = (T)(Object)Marshal.GetDelegateForFunctionPointer(r, typeof(T));
                 }
             return value;
             }
