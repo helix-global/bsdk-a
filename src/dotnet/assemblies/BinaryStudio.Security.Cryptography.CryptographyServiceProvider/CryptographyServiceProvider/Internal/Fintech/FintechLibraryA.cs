@@ -17,6 +17,9 @@ using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
@@ -343,6 +346,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String CertificateDigestAlgorithm { get; }
             String Organization { get; }
             String Source { get; }
+            String ActualDigestMethod { get; }
+            Boolean SignatureInverse { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -455,14 +460,16 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         #if TRACE
         private class StatRecord
             {
-            public Boolean IsError;
-            public String SignerSignatureAlgorithm;
-            public String SignerDigestAlgorithm;
-            public String Country;
-            public String CertificateSignatureAlgorithm;
-            public String CertificateDigestAlgorithm;
-            public String Organization;
-            public String Source;
+            [DisplayName("Ошибка")] public Boolean IsError { get;set; }
+            [DisplayName("Алгоритм подписи(Сообщение)")] public String SignerSignatureAlgorithm { get;set; }
+            [DisplayName("Алгоритм хэширования(Сообщение)")] public String SignerDigestAlgorithm { get;set; }
+            [DisplayName("Страна")] public String Country { get;set; }
+            [DisplayName("Алгоритм подписи(Сертификат)")] public String CertificateSignatureAlgorithm { get;set; }
+            [DisplayName("Алгоритм хэширования(Сертификат)")] public String CertificateDigestAlgorithm { get;set; }
+            [DisplayName("Организация")] public String Organization { get;set; }
+            [DisplayName("Источник ошибки")] public String Source { get;set; }
+            [DisplayName("Используемый aлгоритм хэширования")] public String ActualDigestMethod { get;set; }
+            [DisplayName("Инверсия сигнатуры")] public Boolean SignatureInverse { get;set; }
             }
 
         private static String FormatOID(String oid) {
@@ -470,10 +477,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (oid == szOID_NIST_sha224) { return "sha224"; }
             if (oid == szOID_ECDSA_SHA224) { return "sha224ECDSA"; }
             var r = new Oid(oid);
-            var o = (r.FriendlyName != oid) 
+            var o = ((r.FriendlyName != oid) && !(String.IsNullOrWhiteSpace(r.FriendlyName)))
                 ? $"{r.FriendlyName}"
                 : $"{oid}";
-            Debug.Assert(!String.IsNullOrWhiteSpace(o));
             return o;
             }
 
@@ -496,7 +502,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
                             SignerSignatureAlgorithm = FormatOID(j.SignerSignatureAlgorithm),
                             Organization = j.Organization,
-                            Source = j.Source
+                            Source = j.Source ?? "Нет",
+                            ActualDigestMethod = FormatOID(j.ActualDigestMethod),
+                            SignatureInverse = j.SignatureInverse
                             });
                         if (j.IsError)
                             {
@@ -507,74 +515,83 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             scces++;
                             }
                         }
-                    var builder = new StringBuilder();
-                    builder.AppendLine("\n# STATISTICS:");
-                    builder.AppendFormat("  Total:{0}\n", rows.Count);
-                    builder.AppendFormat("  Success:{0}\n", scces);
-                    builder.AppendFormat("  Errors:{0}\n", errrs);
-                    builder.AppendLine("# DETAILS{SignerSignatureAlgorithm}:");
-                    foreach (var j in rows.GroupBy(i => i.SignerSignatureAlgorithm).OrderBy(i => i.Key))
-                        {
-                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
-                            j.Key,
-                            j.Count(i =>  i.IsError).ToString("D4"),
-                            j.Count(i => !i.IsError).ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{SignerDigestAlgorithm}:");
-                    foreach (var j in rows.GroupBy(i => i.SignerDigestAlgorithm).OrderBy(i => i.Key))
-                        {
-                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
-                            j.Key,
-                            j.Count(i =>  i.IsError).ToString("D4"),
-                            j.Count(i => !i.IsError).ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{CertificateSignatureAlgorithm}:");
-                    foreach (var j in rows.GroupBy(i => i.CertificateSignatureAlgorithm).OrderBy(i => i.Key))
-                        {
-                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
-                            j.Key,
-                            j.Count(i =>  i.IsError).ToString("D4"),
-                            j.Count(i => !i.IsError).ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{CertificateDigestAlgorithm}:");
-                    foreach (var j in rows.GroupBy(i => i.CertificateDigestAlgorithm).OrderBy(i => i.Key))
-                        {
-                        builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
-                            j.Key,
-                            j.Count(i =>  i.IsError).ToString("D4"),
-                            j.Count(i => !i.IsError).ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{Country,Organization}{Only Errors}:");
-                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1))
-                        {
-                        builder.AppendFormat("  {{{1}}} # {0}\n",
-                            $"{j.Key.Item1},{j.Key.Item2}",
-                            j.Count().ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{Source}{Only Errors}:");
-                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key))
-                        {
-                        builder.AppendFormat("  {{{1}}} # {0}\n",
-                            $"{j.Key}",
-                            j.Count().ToString("D4"));
-                        }
-                    builder.AppendLine("# DETAILS{Source-Country,Organization}{Only Errors}:");
-                    foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key)) {
-                        builder.AppendFormat("  {{{1}}} # {0}\n",
-                            $"{j.Key}",
-                            j.Count().ToString("D4"));
-                        foreach (var K in j.GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1)) {
-                            builder.AppendFormat("    {{{1}}} # {0}\n",
-                                $"{K.Key.Item1},{K.Key.Item2}",
-                                K.Count().ToString("D4"));
-                            foreach (var L in K.GroupBy(i => Tuple.Create(i.SignerSignatureAlgorithm, i.CertificateSignatureAlgorithm)).OrderBy(i=> i.Key.Item1)) {
-                            builder.AppendFormat("      {{{1}}} # {0}\n",
-                                $"{L.Key.Item1},{L.Key.Item2}",
-                                L.Count().ToString("D4"));
-                                }
+                    var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
+                    using (var stream = File.OpenWrite(filename))
+                    using (var target = new StreamWriter(stream, Encoding.UTF8)) {
+                        var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
+                        target.WriteLine($"{String.Join(";", descriptors.Select(i => i.DisplayName))}");
+                        foreach (var row in rows) {
+                            target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
                             }
                         }
-                    logger.Log(LogLevel.Trace, builder.ToString());
+                    //var builder = new StringBuilder();
+                    //builder.AppendLine("\n# STATISTICS:");
+                    //builder.AppendFormat("  Total:{0}\n", rows.Count);
+                    //builder.AppendFormat("  Success:{0}\n", scces);
+                    //builder.AppendFormat("  Errors:{0}\n", errrs);
+                    //builder.AppendLine("# DETAILS{SignerSignatureAlgorithm}:");
+                    //foreach (var j in rows.GroupBy(i => i.SignerSignatureAlgorithm).OrderBy(i => i.Key))
+                    //    {
+                    //    builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                    //        j.Key,
+                    //        j.Count(i =>  i.IsError).ToString("D4"),
+                    //        j.Count(i => !i.IsError).ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{SignerDigestAlgorithm}:");
+                    //foreach (var j in rows.GroupBy(i => i.SignerDigestAlgorithm).OrderBy(i => i.Key))
+                    //    {
+                    //    builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                    //        j.Key,
+                    //        j.Count(i =>  i.IsError).ToString("D4"),
+                    //        j.Count(i => !i.IsError).ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{CertificateSignatureAlgorithm}:");
+                    //foreach (var j in rows.GroupBy(i => i.CertificateSignatureAlgorithm).OrderBy(i => i.Key))
+                    //    {
+                    //    builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                    //        j.Key,
+                    //        j.Count(i =>  i.IsError).ToString("D4"),
+                    //        j.Count(i => !i.IsError).ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{CertificateDigestAlgorithm}:");
+                    //foreach (var j in rows.GroupBy(i => i.CertificateDigestAlgorithm).OrderBy(i => i.Key))
+                    //    {
+                    //    builder.AppendFormat("  Errors:{{{1}}} Success:{{{2}}} # {{{0}}}\n",
+                    //        j.Key,
+                    //        j.Count(i =>  i.IsError).ToString("D4"),
+                    //        j.Count(i => !i.IsError).ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{Country,Organization}{Only Errors}:");
+                    //foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1))
+                    //    {
+                    //    builder.AppendFormat("  {{{1}}} # {0}\n",
+                    //        $"{j.Key.Item1},{j.Key.Item2}",
+                    //        j.Count().ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{Source}{Only Errors}:");
+                    //foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key))
+                    //    {
+                    //    builder.AppendFormat("  {{{1}}} # {0}\n",
+                    //        $"{j.Key}",
+                    //        j.Count().ToString("D4"));
+                    //    }
+                    //builder.AppendLine("# DETAILS{Source-Country,Organization}{Only Errors}:");
+                    //foreach (var j in rows.Where(i=>i.IsError).GroupBy(i => i.Source).OrderBy(i=> i.Key)) {
+                    //    builder.AppendFormat("  {{{1}}} # {0}\n",
+                    //        $"{j.Key}",
+                    //        j.Count().ToString("D4"));
+                    //    foreach (var K in j.GroupBy(i => Tuple.Create(i.Country, i.Organization)).OrderBy(i=> i.Key.Item1)) {
+                    //        builder.AppendFormat("    {{{1}}} # {0}\n",
+                    //            $"{K.Key.Item1},{K.Key.Item2}",
+                    //            K.Count().ToString("D4"));
+                    //        foreach (var L in K.GroupBy(i => Tuple.Create(i.SignerSignatureAlgorithm, i.CertificateSignatureAlgorithm)).OrderBy(i=> i.Key.Item1)) {
+                    //        builder.AppendFormat("      {{{1}}} # {0}\n",
+                    //            $"{L.Key.Item1},{L.Key.Item2}",
+                    //            L.Count().ToString("D4"));
+                    //            }
+                    //        }
+                    //    }
+                    //logger.Log(LogLevel.Trace, builder.ToString());
                     Dispose(ref table);
                     }
                 }
