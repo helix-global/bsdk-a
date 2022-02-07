@@ -78,3 +78,6 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Services/obj
 /src/dotnet/assemblies/BinaryStudio.IO.Compression/bin/Debug/net40
 /src/dotnet/assemblies/BinaryStudio.IO.Compression/obj
+/src/cc/clrx/.intermediate
+/src/dotnet/Debug
+/src/dotnet/x64/Debug

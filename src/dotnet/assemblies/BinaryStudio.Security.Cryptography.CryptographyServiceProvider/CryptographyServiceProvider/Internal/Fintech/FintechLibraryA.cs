@@ -14,6 +14,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
@@ -334,6 +335,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         #if TRACE
+        [StructLayout(LayoutKind.Sequential,Pack = 1)]
+        private struct DateTimeRef
+            {
+            [MarshalAs(UnmanagedType.Bool)] public Boolean HasValue;
+            public DateTime Value;
+            }
+
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         [ComImport, Guid("73D2E14E-12CB-424A-A9D5-480C3BA132E1")]
         private interface IStatRow
@@ -347,7 +355,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String Organization { get; }
             String Source { get; }
             String ActualDigestMethod { get; }
-            Boolean SignatureInverse { get; }
+            String Modifiers { get; }
+            String CCryptError { get; }
+            String BCryptError { get; }
+            DateTime CertificateNotBefore { get; }
+            DateTime CertificateNotAfter { get; }
+            String CertificateIssuer { get; }
+            String CertificateAuthorityKeyIdentifier { get; }
+            DateTimeRef SigningTime { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -457,19 +472,279 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         private DDllVerifyMRTD            FDllVerifyMRTD;
         private DDllGetClassObject        FDllGetClassObject;
 
+        public static readonly IDictionary<String, Country> Countries = new SortedDictionary<String, Country> {
+            {"af", new Country("Афганистан","af","afg",4)},
+            {"al", new Country("Албания","al","alb",8)},
+            {"aq", new Country("Антарктика","aq","ata",10)},
+            {"dz", new Country("Алжир","dz","dza",12)},
+            {"as", new Country("Американское Самоа","as","asm",16)},
+            {"ad", new Country("Андорра","ad","and",20)},
+            {"ao", new Country("Ангола","ao","ago",24)},
+            {"ag", new Country("Антигуа и Барбуда","ag","atg",28)},
+            {"az", new Country("Азербайджан","az","aze",31)},
+            {"ar", new Country("Аргентина","ar","arg",32)},
+            {"au", new Country("Австралия","au","aus",36)},
+            {"at", new Country("Австрия","at","aut",40)},
+            {"bs", new Country("Багамские Острова","bs","bhs",44)},
+            {"bh", new Country("Бахрейн","bh","bhr",48)},
+            {"bd", new Country("Бангладеш","bd","bgd",50)},
+            {"am", new Country("Армения","am","arm",51)},
+            {"bb", new Country("Барбадос","bb","brb",52)},
+            {"be", new Country("Бельгия","be","bel",56)},
+            {"bm", new Country("Бермуды","bm","bmu",60)},
+            {"bt", new Country("Бутан","bt","btn",64)},
+            {"bo", new Country("Боливия","bo","bol",68)},
+            {"ba", new Country("Босния и Герцеговина","ba","bih",70)},
+            {"bw", new Country("Ботсвана","bw","bwa",72)},
+            {"bv", new Country("Остров Буве","bv","bvt",74)},
+            {"br", new Country("Бразилия","br","bra",76)},
+            {"bz", new Country("Белиз","bz","blz",84)},
+            {"io", new Country("Британская территория в Индийском океане","io","iot",86)},
+            {"sb", new Country("Соломоновы Острова","sb","slb",90)},
+            {"vg", new Country("Виргинские Острова (Великобритания)","vg","vgb",92)},
+            {"bn", new Country("Бруней","bn","brn",96)},
+            {"bg", new Country("Болгария","bg","bgr",100)},
+            {"mm", new Country("Мьянма","mm","mmr",104)},
+            {"bi", new Country("Бурунди","bi","bdi",108)},
+            {"by", new Country("Белоруссия","by","blr",112)},
+            {"kh", new Country("Камбоджа","kh","khm",116)},
+            {"cm", new Country("Камерун","cm","cmr",120)},
+            {"ca", new Country("Канада","ca","can",124)},
+            {"cv", new Country("Кабо-Верде","cv","cpv",132)},
+            {"ky", new Country("Острова Кайман","ky","cym",136)},
+            {"cf", new Country("ЦАР (Центральноафриканская Республика)","cf","caf",140)},
+            {"lk", new Country("Шри-Ланка","lk","lka",144)},
+            {"td", new Country("Чад","td","tcd",148)},
+            {"cl", new Country("Чили","cl","chl",152)},
+            {"cn", new Country("Китай (Китайская Народная Республика)","cn","chn",156)},
+            {"tw", new Country("Китайская Республика (Тайвань)","tw","twn",158)},
+            {"cx", new Country("Остров Рождества","cx","cxr",162)},
+            {"cc", new Country("Кокосовые острова","cc","cck",166)},
+            {"co", new Country("Колумбия","co","col",170)},
+            {"km", new Country("Коморы","km","com",174)},
+            {"yt", new Country("Майотта","yt","myt",175)},
+            {"cg", new Country("Республика Конго","cg","cog",178)},
+            {"cd", new Country("Демократическая Республика Конго","cd","cod",180)},
+            {"ck", new Country("Острова Кука","ck","cok",184)},
+            {"cr", new Country("Коста-Рика","cr","cri",188)},
+            {"hr", new Country("Хорватия","hr","hrv",191)},
+            {"cu", new Country("Куба","cu","cub",192)},
+            {"cy", new Country("Кипр","cy","cyp",196)},
+            {"cz", new Country("Чехия","cz","cze",203)},
+            {"bj", new Country("Бенин","bj","ben",204)},
+            {"dk", new Country("Дания","dk","dnk",208)},
+            {"dm", new Country("Доминика","dm","dma",212)},
+            {"do", new Country("Доминиканская Республика","do","dom",214)},
+            {"ec", new Country("Эквадор","ec","ecu",218)},
+            {"sv", new Country("Сальвадор","sv","slv",222)},
+            {"gq", new Country("Экваториальная Гвинея","gq","gnq",226)},
+            {"et", new Country("Эфиопия","et","eth",231)},
+            {"er", new Country("Эритрея","er","eri",232)},
+            {"ee", new Country("Эстония","ee","est",233)},
+            {"fo", new Country("Фарерские острова","fo","fro",234)},
+            {"fk", new Country("Фолклендские острова","fk","flk",238)},
+            {"gs", new Country("Южная Георгия и Южные Сандвичевы Острова","gs","sgs",239)},
+            {"fj", new Country("Фиджи","fj","fji",242)},
+            {"fi", new Country("Финляндия","fi","fin",246)},
+            {"ax", new Country("Аландские острова","ax","ala",248)},
+            {"fr", new Country("Франция","fr","fra",250)},
+            {"gf", new Country("Гвиана","gf","guf",254)},
+            {"pf", new Country("Французская Полинезия","pf","pyf",258)},
+            {"tf", new Country("Французские Южные и Антарктические территории","tf","atf",260)},
+            {"dj", new Country("Джибути","dj","dji",262)},
+            {"ga", new Country("Габон","ga","gab",266)},
+            {"ge", new Country("Грузия","ge","geo",268)},
+            {"gm", new Country("Гамбия","gm","gmb",270)},
+            {"ps", new Country("Государство Палестина","ps","pse",275)},
+            {"de", new Country("Германия","de","deu",276)},
+            {"gh", new Country("Гана","gh","gha",288)},
+            {"gi", new Country("Гибралтар","gi","gib",292)},
+            {"ki", new Country("Кирибати","ki","kir",296)},
+            {"gr", new Country("Греция","gr","grc",300)},
+            {"gl", new Country("Гренландия","gl","grl",304)},
+            {"gd", new Country("Гренада","gd","grd",308)},
+            {"gp", new Country("Гваделупа","gp","glp",312)},
+            {"gu", new Country("Гуам","gu","gum",316)},
+            {"gt", new Country("Гватемала","gt","gtm",320)},
+            {"gn", new Country("Гвинея","gn","gin",324)},
+            {"gy", new Country("Гайана","gy","guy",328)},
+            {"ht", new Country("Гаити","ht","hti",332)},
+            {"hm", new Country("Херд и Макдональд","hm","hmd",334)},
+            {"va", new Country("Ватикан","va","vat",336)},
+            {"hn", new Country("Гондурас","hn","hnd",340)},
+            {"hk", new Country("Гонконг","hk","hkg",344)},
+            {"hu", new Country("Венгрия","hu","hun",348)},
+            {"is", new Country("Исландия","is","isl",352)},
+            {"in", new Country("Индия","in","ind",356)},
+            {"id", new Country("Индонезия","id","idn",360)},
+            {"ir", new Country("Иран","ir","irn",364)},
+            {"iq", new Country("Ирак","iq","irq",368)},
+            {"ie", new Country("Ирландия","ie","irl",372)},
+            {"il", new Country("Израиль","il","isr",376)},
+            {"it", new Country("Италия","it","ita",380)},
+            {"ci", new Country("Кот-д’Ивуар","ci","civ",384)},
+            {"jm", new Country("Ямайка","jm","jam",388)},
+            {"jp", new Country("Япония","jp","jpn",392)},
+            {"kz", new Country("Казахстан","kz","kaz",398)},
+            {"jo", new Country("Иордания","jo","jor",400)},
+            {"ke", new Country("Кения","ke","ken",404)},
+            {"kp", new Country("КНДР (Корейская Народно-Демократическая Республика)","kp","prk",408)},
+            {"kr", new Country("Республика Корея","kr","kor",410)},
+            {"kw", new Country("Кувейт","kw","kwt",414)},
+            {"kg", new Country("Киргизия","kg","kgz",417)},
+            {"la", new Country("Лаос","la","lao",418)},
+            {"lb", new Country("Ливан","lb","lbn",422)},
+            {"ls", new Country("Лесото","ls","lso",426)},
+            {"lv", new Country("Латвия","lv","lva",428)},
+            {"lr", new Country("Либерия","lr","lbr",430)},
+            {"ly", new Country("Ливия","ly","lby",434)},
+            {"li", new Country("Лихтенштейн","li","lie",438)},
+            {"lt", new Country("Литва","lt","ltu",440)},
+            {"lu", new Country("Люксембург","lu","lux",442)},
+            {"mo", new Country("Макао","mo","mac",446)},
+            {"mg", new Country("Мадагаскар","mg","mdg",450)},
+            {"mw", new Country("Малави","mw","mwi",454)},
+            {"my", new Country("Малайзия","my","mys",458)},
+            {"mv", new Country("Мальдивы","mv","mdv",462)},
+            {"ml", new Country("Мали","ml","mli",466)},
+            {"mt", new Country("Мальта","mt","mlt",470)},
+            {"mq", new Country("Мартиника","mq","mtq",474)},
+            {"mr", new Country("Мавритания","mr","mrt",478)},
+            {"mu", new Country("Маврикий","mu","mus",480)},
+            {"mx", new Country("Мексика","mx","mex",484)},
+            {"mc", new Country("Монако","mc","mco",492)},
+            {"mn", new Country("Монголия","mn","mng",496)},
+            {"md", new Country("Молдавия","md","mda",498)},
+            {"me", new Country("Черногория","me","mne",499)},
+            {"ms", new Country("Монтсеррат","ms","msr",500)},
+            {"ma", new Country("Марокко","ma","mar",504)},
+            {"mz", new Country("Мозамбик","mz","moz",508)},
+            {"om", new Country("Оман","om","omn",512)},
+            {"na", new Country("Намибия","na","nam",516)},
+            {"nr", new Country("Науру","nr","nru",520)},
+            {"np", new Country("Непал","np","npl",524)},
+            {"nl", new Country("Нидерланды","nl","nld",528)},
+            {"cw", new Country("Кюрасао","cw","cuw",531)},
+            {"aw", new Country("Аруба","aw","abw",533)},
+            {"sx", new Country("Синт-Мартен","sx","sxm",534)},
+            {"bq", new Country("Бонайре, Синт-Эстатиус и Саба","bq","bes",535)},
+            {"nc", new Country("Новая Каледония","nc","ncl",540)},
+            {"vu", new Country("Вануату","vu","vut",548)},
+            {"nz", new Country("Новая Зеландия","nz","nzl",554)},
+            {"ni", new Country("Никарагуа","ni","nic",558)},
+            {"ne", new Country("Нигер","ne","ner",562)},
+            {"ng", new Country("Нигерия","ng","nga",566)},
+            {"nu", new Country("Ниуэ","nu","niu",570)},
+            {"nf", new Country("Остров Норфолк","nf","nfk",574)},
+            {"no", new Country("Норвегия","no","nor",578)},
+            {"mp", new Country("Северные Марианские Острова","mp","mnp",580)},
+            {"um", new Country("Внешние малые острова США","um","umi",581)},
+            {"fm", new Country("Микронезия","fm","fsm",583)},
+            {"mh", new Country("Маршалловы Острова","mh","mhl",584)},
+            {"pw", new Country("Палау","pw","plw",585)},
+            {"pk", new Country("Пакистан","pk","pak",586)},
+            {"pa", new Country("Панама","pa","pan",591)},
+            {"pg", new Country("Папуа—Новая Гвинея","pg","png",598)},
+            {"py", new Country("Парагвай","py","pry",600)},
+            {"pe", new Country("Перу","pe","per",604)},
+            {"ph", new Country("Филиппины","ph","phl",608)},
+            {"pn", new Country("Острова Питкэрн","pn","pcn",612)},
+            {"pl", new Country("Польша","pl","pol",616)},
+            {"pt", new Country("Португалия","pt","prt",620)},
+            {"gw", new Country("Гвинея-Бисау","gw","gnb",624)},
+            {"tl", new Country("Восточный Тимор","tl","tls",626)},
+            {"pr", new Country("Пуэрто-Рико","pr","pri",630)},
+            {"qa", new Country("Катар","qa","qat",634)},
+            {"re", new Country("Реюньон","re","reu",638)},
+            {"ro", new Country("Румыния","ro","rou",642)},
+            {"ru", new Country("Россия","ru","rus",643)},
+            {"rw", new Country("Руанда","rw","rwa",646)},
+            {"bl", new Country("Сен-Бартелеми","bl","blm",652)},
+            {"sh", new Country("Острова Святой Елены, Вознесения и Тристан-да-Кунья","sh","shn",654)},
+            {"kn", new Country("Сент-Китс и Невис","kn","kna",659)},
+            {"ai", new Country("Ангилья","ai","aia",660)},
+            {"lc", new Country("Сент-Люсия","lc","lca",662)},
+            {"mf", new Country("Сен-Мартен","mf","maf",663)},
+            {"pm", new Country("Сен-Пьер и Микелон","pm","spm",666)},
+            {"vc", new Country("Сент-Винсент и Гренадины","vc","vct",670)},
+            {"sm", new Country("Сан-Марино","sm","smr",674)},
+            {"st", new Country("Сан-Томе и Принсипи","st","stp",678)},
+            {"sa", new Country("Саудовская Аравия","sa","sau",682)},
+            {"sn", new Country("Сенегал","sn","sen",686)},
+            {"rs", new Country("Сербия","rs","srb",688)},
+            {"sc", new Country("Сейшельские Острова","sc","syc",690)},
+            {"sl", new Country("Сьерра-Леоне","sl","sle",694)},
+            {"sg", new Country("Сингапур","sg","sgp",702)},
+            {"sk", new Country("Словакия","sk","svk",703)},
+            {"vn", new Country("Вьетнам","vn","vnm",704)},
+            {"si", new Country("Словения","si","svn",705)},
+            {"so", new Country("Сомали","so","som",706)},
+            {"za", new Country("ЮАР","za","zaf",710)},
+            {"zw", new Country("Зимбабве","zw","zwe",716)},
+            {"es", new Country("Испания","es","esp",724)},
+            {"ss", new Country("Южный Судан","ss","ssd",728)},
+            {"sd", new Country("Судан","sd","sdn",729)},
+            {"eh", new Country("САДР (Сахарская Арабская Демократическая Республика)","eh","esh",732)},
+            {"sr", new Country("Суринам","sr","sur",740)},
+            {"sj", new Country("Шпицберген и Ян-Майен","sj","sjm",744)},
+            {"sz", new Country("Эсватини","sz","swz",748)},
+            {"se", new Country("Швеция","se","swe",752)},
+            {"ch", new Country("Швейцария","ch","che",756)},
+            {"sy", new Country("Сирия","sy","syr",760)},
+            {"tj", new Country("Таджикистан","tj","tjk",762)},
+            {"th", new Country("Таиланд","th","tha",764)},
+            {"tg", new Country("Того","tg","tgo",768)},
+            {"tk", new Country("Токелау","tk","tkl",772)},
+            {"to", new Country("Тонга","to","ton",776)},
+            {"tt", new Country("Тринидад и Тобаго","tt","tto",780)},
+            {"ae", new Country("ОАЭ (Объединённые Арабские Эмираты)","ae","are",784)},
+            {"tn", new Country("Тунис","tn","tun",788)},
+            {"tr", new Country("Турция","tr","tur",792)},
+            {"tm", new Country("Туркмения","tm","tkm",795)},
+            {"tc", new Country("Теркс и Кайкос","tc","tca",796)},
+            {"tv", new Country("Тувалу","tv","tuv",798)},
+            {"ug", new Country("Уганда","ug","uga",800)},
+            {"ua", new Country("Украина","ua","ukr",804)},
+            {"mk", new Country("Северная Македония","mk","mkd",807)},
+            {"eg", new Country("Египет","eg","egy",818)},
+            {"gb", new Country("Великобритания","gb","gbr",826)},
+            {"gg", new Country("Гернси","gg","ggy",831)},
+            {"je", new Country("Джерси","je","jey",832)},
+            {"im", new Country("Остров Мэн","im","imn",833)},
+            {"tz", new Country("Танзания","tz","tza",834)},
+            {"us", new Country("США","us","usa",840)},
+            {"vi", new Country("Виргинские Острова (США)","vi","vir",850)},
+            {"bf", new Country("Буркина-Фасо","bf","bfa",854)},
+            {"uy", new Country("Уругвай","uy","ury",858)},
+            {"uz", new Country("Узбекистан","uz","uzb",860)},
+            {"ve", new Country("Венесуэла","ve","ven",862)},
+            {"wf", new Country("Уоллис и Футуна","wf","wlf",876)},
+            {"ws", new Country("Самоа","ws","wsm",882)},
+            {"ye", new Country("Йемен","ye","yem",887)},
+            {"zm", new Country("Замбия","zm","zmb",894)},
+            };
+
         #if TRACE
         private class StatRecord
             {
             [DisplayName("Ошибка")] public Boolean IsError { get;set; }
             [DisplayName("Алгоритм подписи(Сообщение)")] public String SignerSignatureAlgorithm { get;set; }
             [DisplayName("Алгоритм хэширования(Сообщение)")] public String SignerDigestAlgorithm { get;set; }
-            [DisplayName("Страна")] public String Country { get;set; }
+            [DisplayName("Страна(Код)")] public String CountryCode { get;set; }
+            [DisplayName("Страна(Наименование)")] public String CountryName { get;set; }
             [DisplayName("Алгоритм подписи(Сертификат)")] public String CertificateSignatureAlgorithm { get;set; }
             [DisplayName("Алгоритм хэширования(Сертификат)")] public String CertificateDigestAlgorithm { get;set; }
             [DisplayName("Организация")] public String Organization { get;set; }
             [DisplayName("Источник ошибки")] public String Source { get;set; }
             [DisplayName("Используемый aлгоритм хэширования")] public String ActualDigestMethod { get;set; }
-            [DisplayName("Инверсия сигнатуры")] public Boolean SignatureInverse { get;set; }
+            [DisplayName("Статус CRYPTAPI")] public String CCryptError { get;set; }
+            [DisplayName("Статус BCRYPT")]   public String BCryptError { get;set; }
+            [DisplayName("Модификаторы")] public String Modifiers { get;set; }
+            [DisplayName("Начальная дата периода действия сертификата")] public String CertificateNotBefore { get;set; }
+            [DisplayName("Конечная дата периода действия сертификата")]  public String CertificateNotAfter { get;set; }
+            [DisplayName("Дата подписи")]  public String SigningTime { get;set; }
+            [DisplayName("Издатель")] public String CertificateIssuer { get;set; }
+            [DisplayName("УЦ")] public String CertificateAuthorityKeyIdentifier { get;set; }
             }
 
         private static String FormatOID(String oid) {
@@ -493,10 +768,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     var errrs = 0;
                     for (var i = 0; i < count; i++) {
                         var j = table[i];
+                        var countryCode = j.Country?.ToLowerInvariant();
+                        var signingTime = j.SigningTime;
                         rows.Add(new StatRecord
                             {
                             IsError = j.IsError,
-                            Country = j.Country,
+                            CountryCode = countryCode,
                             CertificateDigestAlgorithm = FormatOID(j.CertificateDigestAlgorithm),
                             CertificateSignatureAlgorithm = FormatOID(j.CertificateSignatureAlgorithm),
                             SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
@@ -504,7 +781,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             Organization = j.Organization,
                             Source = j.Source ?? "Нет",
                             ActualDigestMethod = FormatOID(j.ActualDigestMethod),
-                            SignatureInverse = j.SignatureInverse
+                            Modifiers = j.Modifiers,
+                            CCryptError = j.CCryptError,
+                            BCryptError = j.BCryptError,
+                            CertificateIssuer = j.CertificateIssuer,
+                            CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
+                            CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
+                            CountryName = Countries.TryGetValue(countryCode, out var countryName)
+                                ? countryName.ShortName
+                                : String.Empty
                             });
                         if (j.IsError)
                             {
@@ -520,7 +807,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     using (var target = new StreamWriter(stream, Encoding.UTF8)) {
                         var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
                         target.WriteLine($"{String.Join(";", descriptors.Select(i => i.DisplayName))}");
-                        foreach (var row in rows) {
+                        foreach (var row in rows.OrderBy(i => i.CountryCode)) {
                             target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
                             }
                         }
