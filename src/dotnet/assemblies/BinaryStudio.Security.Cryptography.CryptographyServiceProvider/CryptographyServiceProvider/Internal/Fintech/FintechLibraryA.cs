@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,9 +17,6 @@ using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
@@ -363,6 +359,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String CertificateIssuer { get; }
             String CertificateAuthorityKeyIdentifier { get; }
             DateTimeRef SigningTime { get; }
+            String Stream { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -513,6 +510,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {"cv", new Country("Кабо-Верде","cv","cpv",132)},
             {"ky", new Country("Острова Кайман","ky","cym",136)},
             {"cf", new Country("ЦАР (Центральноафриканская Республика)","cf","caf",140)},
+            {"car", new Country("ЦАР (Центральноафриканская Республика)","cf","caf",140)},
             {"lk", new Country("Шри-Ланка","lk","lka",144)},
             {"td", new Country("Чад","td","tcd",148)},
             {"cl", new Country("Чили","cl","chl",152)},
@@ -524,6 +522,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {"km", new Country("Коморы","km","com",174)},
             {"yt", new Country("Майотта","yt","myt",175)},
             {"cg", new Country("Республика Конго","cg","cog",178)},
+            {"cog", new Country("Республика Конго","cg","cog",178)},
             {"cd", new Country("Демократическая Республика Конго","cd","cod",180)},
             {"ck", new Country("Острова Кука","ck","cok",184)},
             {"cr", new Country("Коста-Рика","cr","cri",188)},
@@ -648,6 +647,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {"py", new Country("Парагвай","py","pry",600)},
             {"pe", new Country("Перу","pe","per",604)},
             {"ph", new Country("Филиппины","ph","phl",608)},
+            {"rsm", new Country("Филиппины","ph","phl",608)},
             {"pn", new Country("Острова Питкэрн","pn","pcn",612)},
             {"pl", new Country("Польша","pl","pol",616)},
             {"pt", new Country("Португалия","pt","prt",620)},
@@ -680,6 +680,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {"si", new Country("Словения","si","svn",705)},
             {"so", new Country("Сомали","so","som",706)},
             {"za", new Country("ЮАР","za","zaf",710)},
+            {"rss", new Country("ЮАР","za","zaf",710)},
             {"zw", new Country("Зимбабве","zw","zwe",716)},
             {"es", new Country("Испания","es","esp",724)},
             {"ss", new Country("Южный Судан","ss","ssd",728)},
@@ -722,6 +723,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             {"ws", new Country("Самоа","ws","wsm",882)},
             {"ye", new Country("Йемен","ye","yem",887)},
             {"zm", new Country("Замбия","zm","zmb",894)},
+            {"ks", new Country("Республика Косово","ks","kos",383)},
+            {"un", new Country("ООН (Организация Объединенных Наций)","un","un",-1)},
+            {"zz", new Country("ООН (Организация Объединенных Наций)","zz","un",-1)},
             };
 
         #if TRACE
@@ -745,6 +749,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             [DisplayName("Дата подписи")]  public String SigningTime { get;set; }
             [DisplayName("Издатель")] public String CertificateIssuer { get;set; }
             [DisplayName("УЦ")] public String CertificateAuthorityKeyIdentifier { get;set; }
+            [DisplayName("Исходный файл")] public String Stream { get;set; }
             }
 
         private static String FormatOID(String oid) {
@@ -770,6 +775,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         var j = table[i];
                         var countryCode = j.Country?.ToLowerInvariant();
                         var signingTime = j.SigningTime;
+                        var
+                        countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
+                        countryName = countryName ?? (IcaoCountry.ThreeLetterCountries.TryGetValue(countryCode, out country) ? country.RussianShortName : "Не удалось опознать страну");
                         rows.Add(new StatRecord
                             {
                             IsError = j.IsError,
@@ -788,10 +796,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
                             CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
                             SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
+                            Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileName(j.Stream) : "Нет данных",
                             CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
-                            CountryName = Countries.TryGetValue(countryCode, out var countryName)
-                                ? countryName.ShortName
-                                : String.Empty
+                            CountryName = countryName
                             });
                         if (j.IsError)
                             {

@@ -59,6 +59,8 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
             operation.Value.ValidatePermission();
+            Console.WriteLine("Press [ENTER] to start...");
+            Console.ReadLine();
             Task.Factory.StartNew(()=>{
                 try
                     {

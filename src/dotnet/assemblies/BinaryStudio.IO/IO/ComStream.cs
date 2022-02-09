@@ -180,7 +180,19 @@ namespace BinaryStudio.IO
         /// <param name="grfStatFlag">Members in the <see langword="STATSTG" /> structure that this method does not return, thus saving some memory allocation operations.</param>
         void IStream.Stat(out STATSTG pstatstg, Int32 grfStatFlag)
             {
-            throw new NotImplementedException();
+            var filestream = UnderlyingStream as FileStream;
+            pstatstg = new STATSTG{
+                type = (Int32)STGTY.STGTY_STREAM,
+                };
+            if (filestream != null)
+                {
+                pstatstg.cbSize = filestream.Length;
+                }
+            if (grfStatFlag == (Int32)STATFLAG.STATFLAG_DEFAULT) {
+                if (filestream != null) {
+                    pstatstg.pwcsName = filestream.Name;
+                    }
+                }
             }
 
         /// <summary>Creates a new stream object with its own seek pointer that references the same bytes as the original stream.</summary>
@@ -202,8 +214,25 @@ namespace BinaryStudio.IO
                             }
                         }
                     base.Dispose(disposing);
+                    Disposed = true;
                     }
                 }
             }
+        }
+
+    [Flags]
+    public enum STATFLAG
+        {
+        STATFLAG_DEFAULT = 0x0,
+        STATFLAG_NONAME  = 0x1,
+        STATFLAG_NOOPEN  = 0x2
+        }
+
+    public enum STGTY
+        {
+        STGTY_STORAGE = 1,
+        STGTY_STREAM,
+        STGTY_LOCKBYTES,
+        STGTY_PROPERTY
         }
     }
