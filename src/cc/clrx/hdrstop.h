@@ -13,5 +13,7 @@
 #include <propvarutil.h>
 #include <oaidl.h>
 #include <propidl.h>
+#include <atlbase.h>
+#include <atlsafe.h>
 
 #endif //PCH_H

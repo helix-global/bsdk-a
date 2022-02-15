@@ -15,8 +15,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public static String LibraryFullPath { get {
             if (fullpath == null) {
                 var filename = (IntPtr.Size == 4)
-                    ? "csecapi32.dll"
-                    : "csecapi64.dll";
+                    ? "csecapi32d.dll"
+                    : "csecapi64d.dll";
                 var executingassembly = Assembly.GetExecutingAssembly();
                 var location = executingassembly.Location;
                     location = (String.IsNullOrEmpty(location))
@@ -54,11 +54,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 UnderlyingObject = new FintechLibraryA(LibraryFullPath, version, logger);
                 return;
                 }
-            if ((version.CompareTo(new Version(1, 1)) > 0) && (version.CompareTo(new Version(1,2)) < 0)) {
+            //if ((version.CompareTo(new Version(1, 1)) > 0) && (version.CompareTo(new Version(1,2)) <= 0)) {
                 UnderlyingObject = new FintechLibraryB(LibraryFullPath, version, logger);
                 return;
-                }
-            throw new NotSupportedException();
+                //}
+            //throw new NotSupportedException();
             }
 
         public Version Version { get; }
