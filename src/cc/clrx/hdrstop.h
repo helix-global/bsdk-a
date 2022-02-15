@@ -10,6 +10,7 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 #include <windows.h>
+#include <wincrypt.h>
 #include <propvarutil.h>
 #include <oaidl.h>
 #include <propidl.h>

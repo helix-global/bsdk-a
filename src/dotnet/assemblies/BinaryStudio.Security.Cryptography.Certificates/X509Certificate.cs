@@ -384,23 +384,20 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         private const UInt32 CRYPT_SILENT = 0x00000040;
 
         #region M:GetProperty(Int32,Boolean)
-        private Byte[] GetProperty(Int32 property, Boolean flags)
-            {
-            if (flags)
-                {
+        private Byte[] GetProperty(Int32 property, Boolean flags) {
+            if (flags) {
                 var c = 0;
-                Validate(CertGetCertificateContextProperty(Handle, property, null, ref c));
-                var r = new Byte[c];
+                Validate(CertGetCertificateContextProperty(Handle, property, null, ref c)); var r = new Byte[c];
                 Validate(CertGetCertificateContextProperty(Handle, property, r, ref c));
                 return r;
                 }
             else
                 {
                 var c = 0;
-                if (!CertGetCertificateContextProperty(Handle, property, null, ref c)) { return new Byte[0]; }
+                if (!CertGetCertificateContextProperty(Handle, property, null, ref c)) { return EmptyArray<Byte>.Value; }
                 var r = new Byte[c];
                 return !CertGetCertificateContextProperty(Handle, property, r, ref c)
-                    ? new Byte[0]
+                    ? EmptyArray<Byte>.Value
                     : r;
                 }
             }
@@ -562,9 +559,27 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return Source.ToString();
             }
 
-        public void WriteJson(JsonWriter writer, JsonSerializer serializer)
-            {
-            Source.WriteJson(writer, serializer);
+        public void WriteJson(JsonWriter writer, JsonSerializer serializer) {
+            using (writer.ObjectScope(serializer)) {
+                writer.WriteValue(serializer, "(Self)", FriendlyName);
+                writer.WriteValue(serializer, nameof(Version), Version);
+                writer.WriteValue(serializer, nameof(SerialNumber), SerialNumber);
+                writer.WriteValue(serializer, nameof(SignatureAlgorithm), SignatureAlgorithm.FriendlyName);
+                writer.WriteValue(serializer, nameof(Issuer), Issuer);
+                writer.WriteValue(serializer, nameof(Subject), Subject);
+                writer.WriteValue(serializer, nameof(NotBefore), NotBefore);
+                writer.WriteValue(serializer, nameof(NotAfter), NotAfter);
+                writer.WritePropertyName("CertificateProperties");
+                using (writer.ObjectScope(serializer)) {
+                    var r = GetProperty((Int32)CERT_PROP.CERT_KEY_PROV_INFO_PROP_ID, true);
+                    foreach (var id in new HashSet<CERT_PROP>(Enum.GetValues(typeof(CERT_PROP)).OfType<CERT_PROP>())) {
+                        var value = GetProperty((Int32)id, false);
+                        if (value.Length > 0) {
+                            writer.WriteValue(serializer, id.ToString(), Convert.ToBase64String(value));
+                            }
+                        }
+                    }
+                }
             }
 
         /// <summary>This method is reserved and should not be used. When implementing the IXmlSerializable interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" /> to the class.</summary>

@@ -5,6 +5,7 @@ using System.Diagnostics.Eventing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using BinaryStudio.IO;
 using Newtonsoft.Json;
@@ -177,6 +178,17 @@ namespace BinaryStudio.Serialization
                 }
             }
         #endregion
+
+        public static void WriteIndentSpace(this JsonWriter writer, Int32 spaces) {
+            var fi = writer.GetType().GetField("_writer", BindingFlags.Instance|BindingFlags.NonPublic);
+            if (fi != null) {
+                var nestedwriter = (TextWriter)fi.GetValue(writer);
+                if (nestedwriter != null) {
+                    nestedwriter.Write(new String(' ', spaces));
+                    nestedwriter.Flush();
+                    }
+                }
+            }
 
         public static void WriteBase32PropertyValue(this JsonWriter writer, String propertyname, Byte[] value) {
             if ((value != null) && (value.Length > 0)) {

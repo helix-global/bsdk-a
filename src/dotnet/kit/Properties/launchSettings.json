@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:c:\\temp6\\*.hex verify policy:icao datetime:now  providertype:-2",
+      "commandLineArgs": "input:*.cer batch:serialize",
       "remoteDebugEnabled": false,
       "nativeDebugging": true
     }

@@ -115,7 +115,7 @@ namespace Operations
                             }
                         status = ExecuteAction(service, Options, new FileOperationArgs
                             {
-                            TargetFolder = TargetFolder,
+                            TargetFolder = targetfolder,
                             Pattern = Pattern??"*.*"
                             });
                         if (status == FileOperationStatus.Skip) {

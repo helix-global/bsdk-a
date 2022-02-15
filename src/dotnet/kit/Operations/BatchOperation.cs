@@ -142,9 +142,10 @@ namespace Operations
                     }
                 else
                     {
+                    var certificate = new X509Certificate(source);
                     var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
                     using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
-                        JsonSerialize(source, writer);
+                        JsonSerialize(certificate, writer);
                         }
                     }
                 }

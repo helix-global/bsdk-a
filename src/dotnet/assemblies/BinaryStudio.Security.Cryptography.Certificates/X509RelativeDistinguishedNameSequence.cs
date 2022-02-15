@@ -11,6 +11,9 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates.Converters;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -18,7 +21,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     #if USE_WINFORMS
     [Editor(typeof(NoEditor), typeof(UITypeEditor))]
     #endif
-    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, String>>, IXmlSerializable, IX509RelativeDistinguishedNameSequence
+    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, String>>,
+        IXmlSerializable,
+        IX509RelativeDistinguishedNameSequence,
+        IJsonSerializable
         {
         private class X509RelativeDistinguishedNamePropertyDescriptor : PropertyDescriptor
             {
@@ -288,6 +294,28 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 return true;
                 }
             return false;
+            }
+
+        public void WriteJson(JsonWriter writer, JsonSerializer serializer) {
+            using (writer.ObjectScope(serializer)) {
+                writer.WriteValue(serializer, "(Self)", ToString());
+                writer.WritePropertyName("[Self]");
+                using (writer.ArrayScope(serializer)) {
+                    var values = Items.ToArray();
+                    var n = values.Max(i => i.Key.ToString().Length);
+                    foreach (var i in values) {
+                        var type = i.Key.ToString();
+                        writer.Formatting = Formatting.Indented;
+                        writer.WriteStartObject();
+                        writer.Formatting = Formatting.None;
+                        writer.WriteValue(serializer, "Type",  type);
+                        writer.WriteIndentSpace(n - type.Length);
+                        writer.WriteValue(serializer, "Value", i.Value);
+                        writer.WriteEndObject();
+                        }
+                    writer.Formatting = Formatting.Indented;
+                    }
+                }
             }
         }
     }
