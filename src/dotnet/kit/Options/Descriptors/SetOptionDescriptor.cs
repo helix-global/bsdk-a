@@ -3,17 +3,18 @@ using System.IO;
 
 namespace Options.Descriptors
     {
-    internal class TraceOptionDescriptor : OptionDescriptor
+    internal class SetOptionDescriptor : OptionDescriptor
         {
-        public override String OptionName { get { return "trace"; }}
+        public override String OptionName { get { return "set"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
             if (!String.IsNullOrWhiteSpace(source)) {
                 source = source.Trim();
-                if (source == "trace")
-                    {
-                    option = new TraceOption(true);
+                if (source.StartsWith("set:")) {
+                    option = new SetOption(
+                        source.Substring(4).
+                        Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries));
                     return true;
                     }
                 }
@@ -22,7 +23,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("trace");
+            output.Write("set:{key}:{value}");
             }
         }
     }

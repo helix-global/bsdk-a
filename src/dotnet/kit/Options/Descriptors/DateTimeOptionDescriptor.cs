@@ -6,6 +6,7 @@ namespace Options.Descriptors
     {
     internal class DateTimeOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "datetime"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

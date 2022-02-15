@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Options;
 
@@ -22,7 +23,7 @@ namespace Operations
                     AddSeconds(version.Revision * 2)).ToString("s"));
             output.WriteLine($"# Is64BitProcess:{Environment.Is64BitProcess}");
             output.WriteLine("# Available options:");
-            foreach (var descriptor in descriptors) { 
+            foreach (var descriptor in descriptors.OrderBy(j => j.OptionName)) { 
                 if (i > 0)
                     {
                     output.WriteLine();
@@ -47,7 +48,9 @@ namespace Operations
   input:{file-name}.rar output:{folder} batch:extract,group
   input:{file-name}.rar output:{folder} batch:extract,group filter:*.crl
   input:{file-name}.rar\*.crl output:{folder} batch:extract,group
-  input:*.cer verify policy:icao datetime:{datetime}");
+  input:*.cer verify policy:icao datetime:{datetime}
+  input:{file-name} certificate:{thumbprint} message create storename:device
+");
             }
         }
     }

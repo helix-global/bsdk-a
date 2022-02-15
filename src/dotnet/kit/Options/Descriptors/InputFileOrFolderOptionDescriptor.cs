@@ -7,6 +7,7 @@ namespace Options.Descriptors
     {
     internal class InputFileOrFolderOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "input"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

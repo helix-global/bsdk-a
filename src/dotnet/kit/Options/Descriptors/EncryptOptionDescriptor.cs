@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class EncryptOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "encrypt"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

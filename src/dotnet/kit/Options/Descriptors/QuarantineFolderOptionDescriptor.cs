@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class QuarantineFolderOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "quarantine"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

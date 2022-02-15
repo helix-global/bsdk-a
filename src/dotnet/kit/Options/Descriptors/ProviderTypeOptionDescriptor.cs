@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class ProviderTypeOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "providertype"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
