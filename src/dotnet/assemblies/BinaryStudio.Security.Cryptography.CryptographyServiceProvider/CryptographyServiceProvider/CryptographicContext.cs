@@ -40,6 +40,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
+        public String ProviderName { get { return UnderlyingObject.ProviderName; }}
+        public CRYPT_PROVIDER_TYPE ProviderType { get { return UnderlyingObject.ProviderType; }}
+        public Boolean UseMachineKeySet { get { return UnderlyingObject.UseMachineKeySet; }}
         private ICryptographicContext UnderlyingObject;
 
         /// <summary>

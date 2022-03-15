@@ -150,6 +150,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         enumeratorD.Key,
                         enumeratorD.Value);
                     }
+                Marshal.FinalReleaseComObject(values);
+                Marshal.FinalReleaseComObject(enumeratorD);
                 }
             #endregion
             if (exception is IArgumentNullException)       { basetype = typeof(ArgumentNullException);       }
@@ -171,26 +173,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     ? exceptions[0]
                     : Make(errorinfo?.GetDescription(), exceptions, stacktrace, scode, basetype, source);
                 }
-            else if (exception.InnerException != IntPtr.Zero)
+            else if (exception.InnerException != null)
                 {
-                var ip = exception.InnerException;
-                var iu = Marshal.GetObjectForIUnknown(ip);
-                if (iu is IClrException ci) { r = Make(exception.Message, new []{From(ci) }, stacktrace, scode, basetype, source); }
-                else if (iu is Exception)
-                    {
-                    r = Make(exception.Message, new []{(Exception)iu }, stacktrace, scode, basetype, source);
-                    }
-                else
-                    {
-                    r = Make(exception.Message, null, stacktrace, scode, basetype, source);
-                    }
+                r = Make(exception.Message, new []{
+                    From(exception.InnerException)
+                    }, stacktrace, scode, basetype, source);
+                Marshal.FinalReleaseComObject(exception.InnerException);
                 }
             else
                 {
-                var errorinfo = exception as IErrorInfo;
                 r = Make(exception.Message, null,
                     stacktrace, scode, basetype, source);
-                Marshal.FinalReleaseComObject(errorinfo);
                 }
             foreach (var i in data)
                 {
@@ -205,14 +198,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (r != HRESULT.S_OK) {
                 IErrorInfo i = null;
                 GetErrorInfo(0, ref i);
-                //var u = Marshal.GetIUnknownForObject(i);
-                //var o = Marshal.AddRef(u);
                 var e = From(i, r);
                 SetErrorInfo(0, IntPtr.Zero);
-                //Release(i, o);
-                //Marshal.Release(u);
-                //Marshal.Release(u);
-                //Marshal.Release(u);
                 Marshal.FinalReleaseComObject(i);
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
@@ -280,7 +267,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         void IFintechLibrary.VerifyMrtdMessage(Stream stream)
             {
             using (var inputstream = new ComStream(stream)) {
-                Validate(EnsureProcedure("DllVerifyMRTD", ref FDllVerifyMRTD)(inputstream, out var certificates, 0));
+                var hr = (EnsureProcedure("DllVerifyMRTD", ref FDllVerifyMRTD)(inputstream, out var certificates, 0));
+                if (certificates.Length > 0) {
+                    foreach (var certificate in certificates) {
+                        Marshal.FinalReleaseComObject(certificate);
+                        }
+                    }
+                Validate(hr);
                 }
             }
 
@@ -377,7 +370,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String Source { get; set; }
             [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
             void GetObjectData(SerializationInfo info, StreamingContext context);
-            IntPtr InnerException { get; }
+            IClrException InnerException { get; }
             _MethodBase TargetSite { get; }
             }
 

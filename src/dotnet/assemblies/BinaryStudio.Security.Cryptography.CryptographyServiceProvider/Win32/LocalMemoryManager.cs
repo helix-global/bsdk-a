@@ -6,7 +6,7 @@ using BinaryStudio.PlatformComponents;
 
 namespace BinaryStudio.Security.Cryptography.Win32
     {
-    internal class LocalMemoryManager : IDisposable
+    public class LocalMemoryManager : IDisposable
         {
         private readonly IList<LocalMemory> values = new List<LocalMemory>();
 

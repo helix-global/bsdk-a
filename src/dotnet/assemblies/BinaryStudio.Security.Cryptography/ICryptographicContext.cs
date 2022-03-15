@@ -10,6 +10,10 @@ namespace BinaryStudio.Security.Cryptography
     {
     public interface ICryptographicContext : IDisposable
         {
+        String ProviderName { get; }
+        CRYPT_PROVIDER_TYPE ProviderType { get; }
+        Boolean UseMachineKeySet { get; }
+
         /// <summary>
         /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
         /// </summary>

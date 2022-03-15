@@ -5,7 +5,7 @@ namespace Options
     {
     internal class SetOption : OperationOptionWithParameters
         {
-        public override String OptionName { get { return "set"; } }
+        public override String OptionName { get { return "set"; }}
         public IDictionary<String,String> Properties { get; }
         public SetOption(IList<String> values)
             : base(values)
@@ -15,11 +15,11 @@ namespace Options
                 var index = value.IndexOf(':');
                 if (index == -1)
                     {
-                    Properties[value] = null;
+                    Properties[value.ToLowerInvariant()] = null;
                     }
                 else
                     {
-                    Properties[value.Substring(0,index)] = value.Substring(index + 1);
+                    Properties[value.Substring(0,index).ToLowerInvariant()] = value.Substring(index + 1);
                     }
                 }
             }

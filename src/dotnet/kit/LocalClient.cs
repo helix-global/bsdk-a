@@ -50,13 +50,14 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
             if (HasOption(options, typeof(MessageGroupOption))) {
-                        if (HasOption(options, typeof(CreateOption)))  { operation.Value = new CreateMessageOperation(Console.Out, Console.Error, options);  }
+                     if (HasOption(options, typeof(CreateOption)))  { operation.Value = new CreateMessageOperation(Console.Out, Console.Error, options);  }
                 else if (HasOption(options, typeof(VerifyOption)))     { operation.Value = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
                 else if (HasOption(options, typeof(EncryptOption)))    { operation.Value = new EncryptMessageOperation(Console.Out, Console.Error, options); }
                 }
             else if (HasOption(options, typeof(VerifyOption)))            { operation.Value = new VerifyOperation(Console.Out, Console.Error, options);         }
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
             else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
+            else if (HasOption(options, typeof(SetOption)))               { operation.Value = new SetOperation(Console.Out, Console.Error, options);            }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
             operation.Value.ValidatePermission();
             //Console.WriteLine("Press [ENTER] to start...");

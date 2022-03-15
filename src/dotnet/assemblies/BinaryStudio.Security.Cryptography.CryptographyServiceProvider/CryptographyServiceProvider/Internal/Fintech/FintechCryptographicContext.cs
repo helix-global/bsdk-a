@@ -15,6 +15,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         protected internal override ILogger Logger { get; }
         private IEnumerable<ICryptKey> _keys;
         private IFintechLibrary UnderlyingObject;
+        String ICryptographicContext.ProviderName { get { return "Fintech Cryptographic Library Context."; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return CRYPT_PROVIDER_TYPE.FINTECH; }}
+        Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
 
         /// <summary>
         /// Constructs <see cref="FintechCryptographicContext"/> instance using <paramref name="flags"/>.

@@ -26,7 +26,10 @@ namespace Operations
         #region M:BuildCertificateStorage:IX509CertificateStorage
         private IX509CertificateStorage BuildCertificateStorage() {
             if (String.Equals(StoreName, "device", StringComparison.OrdinalIgnoreCase)) {
-                using (var context = new SCryptographicContext(ProviderType, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                var flags = (StoreLocation == X509StoreLocation.LocalMachine)
+                    ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
+                    : 0;
+                using (var context = new SCryptographicContext(ProviderType, CryptographicContextFlags.CRYPT_SILENT| CryptographicContextFlags.CRYPT_VERIFYCONTEXT|flags)) {
                     var storage = (IX509CertificateStorage)context.GetService(typeof(IX509CertificateStorage));
                     if (IsNullOrEmpty(Certificates)) { return storage; }
                     var r = new X509CertificateStorage();

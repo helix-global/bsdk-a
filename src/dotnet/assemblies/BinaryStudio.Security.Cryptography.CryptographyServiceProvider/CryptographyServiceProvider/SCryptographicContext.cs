@@ -38,6 +38,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     #endif
     public partial class SCryptographicContext : CryptographicObject, ICryptographicContext
         {
+        String ICryptographicContext.ProviderName { get { return Name; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return Type; }}
+
         static SCryptographicContext()
             {
             RegisterCustomCryptographicMessageProvider(new FintechCryptographicMessageProvider());

@@ -26,6 +26,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             this.flags = flags;
             }
 
+        String ICryptographicContext.ProviderName { get { return ".NET Default Cryptographic Context."; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return 0; }}
+        Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
+
         /// <summary>
         /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
         /// </summary>

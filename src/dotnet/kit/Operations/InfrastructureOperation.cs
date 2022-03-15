@@ -101,7 +101,7 @@ namespace Operations
                         var handle = Is64Bit
                             ? ((Int64)i.Handle).ToString("X16")
                             : ((Int32)i.Handle).ToString("X8");
-                        WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}", j, handle, i.Container);
+                        WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}:Certificate:{{{3}}}", j, handle, i.Container, i.Certificate?.Thumbprint ?? "{none}");
                         j++;
                         }
                     }
@@ -112,7 +112,7 @@ namespace Operations
                         var handle = Is64Bit
                             ? ((Int64)i.Handle).ToString("X16")
                             : ((Int32)i.Handle).ToString("X8");
-                        WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}", j, handle, i.Container);
+                        WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}:Certificate:{{{3}}}", j, handle, i.Container, i.Certificate?.Thumbprint ?? "{none}");
                         j++;
                         }
                     }

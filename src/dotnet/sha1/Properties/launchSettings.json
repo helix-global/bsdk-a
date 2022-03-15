@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "sha1": {
+      "commandName": "Project",
+      "commandLineArgs": "\"folder:C:\\Program Files\\Microsoft Visual Studio\""
+    }
+  }
+}

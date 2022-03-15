@@ -30,7 +30,7 @@ namespace srv
                     var handle = Is64Bit
                         ? ((Int64)i.Handle).ToString("X16")
                         : ((Int32)i.Handle).ToString("X8");
-                    var o = $"{{{handle}}}:{i.Container}";
+                    var o = $"{{{handle}}}:{i.Container}:Certificate:{{{i.Certificate?.Thumbprint ?? "{none}"}}}";
                     logger.Log(LogLevel.Information, $"    {{{j}}}:{o}");
                     r.Add(o);
                     j++;

@@ -36,6 +36,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             Context = null;
             }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
             using (new TraceScope())
                 {
@@ -173,10 +177,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return keyperm.Value;
             }}
 
-        //private IDictionary<KEY_PARAM, Object> values = new Dictionary<KEY_PARAM, Object>();
-        //private Object GetCachedParameter(KEY_PARAM key) {
-        //    Object r;
-
-        //    }
+        IX509Certificate ICryptKey.Certificate { get{
+            var r = GetParameter(KEY_PARAM.KP_CERTIFICATE);
+            if (r != null)
+                {
+                return new X509Certificate(r,
+                    Container, KeySpec, Context.Type, Context.FullQualifiedContainerName,
+                    Context.SecurityDescriptor, Context.Name);
+                }
+            return null;
+            }}
         }
     }

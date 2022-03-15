@@ -11,6 +11,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     internal class OpenSSLCryptographicContext: CryptographicObject, ICryptographicContext
         {
+        String ICryptographicContext.ProviderName { get { return "OpenSSL Cryptographic Context."; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return CRYPT_PROVIDER_TYPE.OPENSSL; }}
+        Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
         public readonly CryptographicContextFlags flags;
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }

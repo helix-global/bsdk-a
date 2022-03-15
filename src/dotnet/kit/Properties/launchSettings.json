@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "certificate:b3ffbaedcada4664ccfb537d4b09081a715dcf9e storename:device set:SAVE_PIN:12345678",
+      "commandLineArgs": "certificate:B3FFBAEDCADA4664CCFB537D4B09081A715DCF9E message create input:sample storename:device storelocation:localMachine",
       "remoteDebugEnabled": false,
       "nativeDebugging": true
     }
