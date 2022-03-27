@@ -27,7 +27,7 @@ STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID
     _TRY_BEGIN
     _CATCH_ALL
         const auto scode = (HRESULT)GetLastError();
-        SetErrorInfo(0, new HResultException(THIS_FILE,__LINE__,__EFUNCSIG__,scode));
+        SetErrorInfo(0, __EFUNCSRC__.GetExceptionForHR(scode));
         return scode;
     _CATCH_END
     return E_NOINTERFACE;

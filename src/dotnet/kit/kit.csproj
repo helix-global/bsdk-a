@@ -13,7 +13,7 @@
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net40|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>DEBUG;TRACE;</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <Prefer32Bit>true</Prefer32Bit>

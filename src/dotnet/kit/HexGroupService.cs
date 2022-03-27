@@ -43,6 +43,7 @@ internal class HexGroupService : IDirectoryService
             }
         }
 
+    /// <inheritdoc/>
     public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption) {
         var fileindex = 0;
         using (var sourcestream = Source.OpenRead()) {

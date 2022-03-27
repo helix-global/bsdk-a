@@ -1,13 +1,46 @@
 #include "hdrstop.h"
 #include "object.h"
 
-Object<IUnknown>::Object()
-    :m_ref(1)
+#pragma push_macro("FormatMessage")
+#undef FormatMessage
+
+unordered_set<Object<IUnknown>*> Object<IUnknown>::Instances;
+HANDLE Object<IUnknown>::Mutex = nullptr;
+string  Object<IUnknown>::TypeName() const { return "Object<IUnknown>" ; }
+string Object<IDispatch>::TypeName() const { return "Object<IDispatch>"; }
+
+template<> basic_string<CHAR> Object<IUnknown>::FormatMessage<CHAR>(const  CHAR* format, va_list args)
     {
+    size_t size;
+    vector<CHAR> o((size = _vscprintf(format,args)) + 1);
+    vsprintf_s(&o[0],size,format,args);
+    return &o[0];
+    }
+
+template<> basic_string<CHAR> Object<IUnknown>::FormatMessage(time_t value,const CHAR* format)
+    {
+    char o[64];
+    tm r;
+    localtime_s(&r, &value);
+    strftime(o, 64, format, &r);
+    return o;
+    }
+
+Object<IUnknown>::Object(const ObjectSource& Source):
+    Reference(make_shared<ObjectReference>(1)),Source(Source),Disposing(false),Disposed(false)
+    {
+    MutexLock lock(Mutex);
+    Instances.insert(this);
     }
 
 Object<IUnknown>::~Object()
     {
+    MutexLock lock(Mutex);
+    Reference->Count = 0;
+    Instances.erase(this);
+    Disposed = true;
+    Reference = nullptr;
+    ATLTRACE(L"Object<IUnknown>::Finalize{%p}\n", this);
     }
 
 #pragma region M:QueryInterface(REFIID,void**):HRESULT
@@ -34,23 +67,28 @@ HRESULT STDMETHODCALLTYPE Object<IUnknown>::QueryInterface(REFIID riid, _COM_Out
 #pragma region M:AddRef:ULONG
 ULONG STDMETHODCALLTYPE Object<IUnknown>::AddRef()
     {
-    return InterlockedIncrement(&m_ref);
+    _ASSERT(this != nullptr);
+    _ASSERT(!Disposed);
+    const auto r = InterlockedIncrement(&Reference->Count);
+    ATLTRACE(L"%S::AddRef{%p}:%i\n", TypeName().c_str(), this, r);
+    return r;
     }
 #pragma endregion
 #pragma region M:Release:ULONG
 ULONG STDMETHODCALLTYPE Object<IUnknown>::Release() {
+    _ASSERT(this != nullptr);
+    _ASSERT(!Disposed);
     #ifdef FEATURE_FREE_THREADED_MARSHALER
-    if (destroying) { return 0; }
+    if (Disposing) { return 0; }
     #endif
-    InterlockedDecrement(&m_ref);
-    if (m_ref == 0) {
-        #ifdef FEATURE_FREE_THREADED_MARSHALER
-        destroying = true;
-        #endif
+    const auto r = InterlockedDecrement(&Reference->Count);
+    ATLTRACE(L"%S::Release{%p}:%i\n", TypeName().c_str(), this, r);
+    if (r == 0) {
+        Disposing = true;
         try
             {
             #ifdef FEATURE_FREE_THREADED_MARSHALER
-            marshaler = nullptr;
+            Marshaler = nullptr;
             #endif
             delete this;
             }
@@ -59,9 +97,13 @@ ULONG STDMETHODCALLTYPE Object<IUnknown>::Release() {
             }
         return 0;
         }
-    return m_ref;
+    return r;
     }
 #pragma endregion
+
+shared_ptr<ObjectReference> Object<IUnknown>::GetReference() {
+    return Reference;
+    }
 
 HRESULT STDMETHODCALLTYPE Object<IDispatch>::QueryInterface(REFIID riid,void** r) {
     if (r == nullptr) { return E_INVALIDARG; }
@@ -85,3 +127,20 @@ ULONG STDMETHODCALLTYPE Object<IDispatch>::Release()
     {
     return Object<IUnknown>::Release();
     }
+
+Object<IDispatch>::Object(const ObjectSource& Source):
+    Object<IUnknown>(Source)
+    {
+    }
+
+ObjectSource::ObjectSource(const ObjectSource& Other):
+    FileName(Other.FileName),Line(Other.Line)
+    {
+    }
+
+ObjectSource::ObjectSource(const string& FileName, int Line):
+    FileName(FileName),Line(Line)
+    {
+    }
+
+#pragma pop_macro("FormatMessage")

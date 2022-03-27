@@ -27,6 +27,9 @@
     <ClInclude Include="exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
@@ -39,6 +42,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="exception.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logging.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

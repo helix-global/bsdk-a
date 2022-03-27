@@ -32,6 +32,18 @@ namespace Operations
         private readonly EventWaitHandle E = new AutoResetEvent(false);
         private readonly CancellationTokenSource B = new CancellationTokenSource();
         private volatile Int32 NumberOfErrors = 0;
+        private Int32 NumberOfFiles = 1;
+        private Int64 FileIndex = 0;
+        private const Int32 NumberOfThreads = 64;
+
+        private void UpdateTitle()
+            {
+            lock(this)
+                {
+                var fileindex = Interlocked.Read(ref FileIndex);
+                Console.Title = $"Total:{NumberOfFiles}:FileCount:{fileindex}:{((Single)fileindex/NumberOfFiles)*100:F2}%";
+                }
+            }
 
         public VerifyOperation(TextWriter output, TextWriter error, IList<OperationOption> args)
             : base(output, error, args)
@@ -77,6 +89,8 @@ namespace Operations
         public override void Execute(TextWriter output) {
             try
                 {
+                ThreadPool.GetMinThreads(out var prevThreads, out var prevPorts);
+                ThreadPool.SetMinThreads(32, prevPorts);
                 using (var context = new CryptographicContext(Logger, ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT))
                 using (var store = new X509CombinedCertificateStorage(true,
                         new X509CertificateStorage(X509StoreName.Root, X509StoreLocation.LocalMachine),
@@ -86,8 +100,10 @@ namespace Operations
                             var pattern = Path.GetFileName(InputFileName);
                             if (String.IsNullOrEmpty(folder)) { folder = ".\\"; }
                             var j = 0;
+                            var Files = Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).ToArray();
+                            NumberOfFiles = Files.Length;
                             #if DEBUG
-                            foreach (var i in Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).OrderBy(i => i)) {
+                            foreach (var i in Files.OrderBy(i => i)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)
                                     {
@@ -97,10 +113,11 @@ namespace Operations
                                 if (B.IsCancellationRequested) { break; }
                                 }
                             #else
-                            Parallel.ForEach(Directory.GetFiles(folder, pattern, SearchOption.AllDirectories),
+                            Parallel.ForEach(Files,
                                 new ParallelOptions
                                     {
-                                    CancellationToken = B.Token
+                                    CancellationToken = B.Token,
+                                    MaxDegreeOfParallelism = NumberOfThreads
                                     },
                                 (i,state) =>
                                 {
@@ -147,6 +164,8 @@ namespace Operations
         #region M:Execute(CryptographicContext,String)
         private void Execute(CryptographicContext context, IX509CertificateStorage store, String filename) {
             if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
+            Interlocked.Increment(ref FileIndex);
+            UpdateTitle();
             Thread.Yield();
             Thread.Sleep(0);
             var E = Path.GetExtension(filename).ToLower();

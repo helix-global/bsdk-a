@@ -17,6 +17,8 @@ using BinaryStudio.PlatformUI.Controls.Markups;
 using BinaryStudio.PlatformUI.Extensions;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.DataProcessing.Annotations;
+using BinaryStudio.IO;
+using Microsoft.Win32;
 
 namespace BinaryStudio.PlatformUI.Controls.Primitives
     {
@@ -36,6 +38,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 Places[i] = Slot.Create(0.0, 0.0, 0.0, 0.0,0.0);
                 ActualPlaces[i] = Slot.Create(0.0, 0.0, 0.0, 0.0,0.0);
                 }
+            CommandManager.AddCanExecuteHandler(this, OnCanExecuteCommand);
+            CommandManager.AddExecutedHandler(this, OnExecutedCommand);
             }
 
         #region P:Background:Brush
@@ -1162,6 +1166,46 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             if (r)
                 {
                 VisibleMarkups = n;
+                }
+            }
+
+        protected internal void OnCanExecuteCommand(Object sender, CanExecuteRoutedEventArgs e) {
+            if (!e.Handled) {
+                if (ReferenceEquals(e.Command, ApplicationCommands.SaveAs)) {
+                    e.CanExecute = (Selection.Length > 0);
+                    e.Handled = true;
+                    return;
+                    }
+                }
+            }
+
+        protected internal void OnExecutedCommand(Object sender, ExecutedRoutedEventArgs e) {
+            if (!e.Handled) {
+                if (ReferenceEquals(e.Command, ApplicationCommands.SaveAs)) {
+                    var range = Selection;
+                    if (range.Length > 0) {
+                        var dialog = new SaveFileDialog
+                            {
+                            Filter = "All Files|*.*"
+                            };
+                        if (dialog.ShowDialog(null) == true) {
+                            var source = Source;
+                            using (source.StorePosition()) {
+                                var block = new Byte[1024];
+                                source.Seek(range.Start, SeekOrigin.Begin);
+                                var count = range.Length;
+                                using (var output = File.OpenWrite(dialog.FileName)) {
+                                    for (;count > 0;) {
+                                        var c = source.Read(block, 0, Math.Min((Int32)count, block.Length));
+                                        if (c == 0) { break; }
+                                        output.Write(block, 0, c);
+                                        count -= c;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

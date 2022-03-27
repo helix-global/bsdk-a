@@ -37,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             SealedSize              = 0x080,
             DisposeUnderlyingObject = 0x100,
             DisposeContent          = 0x200,
+            Incompleted             = 0x400
             }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private ObjectState state;
@@ -650,6 +651,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             {
                             state |= ObjectState.Decoded;
                             return true;
+                            }
+                        else
+                            {
+                            if (Decode(r))
+                                {
+                                sequence.AddRange(r);
+                                state |= ObjectState.Decoded;
+                                state |= ObjectState.ImplicitConstructed;
+                                state |= ObjectState.Incompleted;
+                                return true;
+                                }
                             }
                         }
                     state |= ObjectState.Failed;

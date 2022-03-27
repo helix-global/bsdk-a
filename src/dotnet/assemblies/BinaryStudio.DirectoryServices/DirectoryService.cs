@@ -62,7 +62,13 @@ namespace BinaryStudio.DirectoryServices
                     {
                     if (source is IFileService file) { return file; }
                     if (source is Uri uri) {
-                        if (uri.Scheme == "file") { return new LocalFile(uri.LocalPath); }
+                        if (uri.Scheme == "file") {
+                            return new LocalFile(uri.AbsoluteUri.Substring(7).TrimEnd('/'));
+                            }
+                        }
+                    if (source is String StringValue) {
+                        if (File.Exists(StringValue)) { return new LocalFile(StringValue); }
+                        if (StringValue.StartsWith("file://")) { return new LocalFile(StringValue.Substring(7).TrimEnd('/')); }
                         }
                     return (source as IServiceProvider)?.GetService(service);
                     }

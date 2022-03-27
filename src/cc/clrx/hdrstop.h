@@ -16,5 +16,11 @@
 #include <propidl.h>
 #include <atlbase.h>
 #include <atlsafe.h>
+#include <winscard.h>
+#include <sstream>
+
+#ifdef USE_MSDETOURS
+#include <detours.h>
+#endif
 
 #endif //PCH_H

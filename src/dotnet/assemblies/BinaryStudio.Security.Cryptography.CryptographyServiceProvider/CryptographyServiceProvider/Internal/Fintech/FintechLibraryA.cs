@@ -796,7 +796,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
                             CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
                             SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
-                            Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileName(j.Stream) : "Нет данных",
+                            Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "Нет данных",
                             CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
                             CountryName = countryName
                             });

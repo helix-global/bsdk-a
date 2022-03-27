@@ -11,7 +11,15 @@ namespace BinaryStudio.DirectoryServices
         private static Boolean IsMatchPart(String pattern, String value) {
             if (String.IsNullOrWhiteSpace(pattern)) { return true; }
             if ((pattern == "*") || (pattern == "*.*")) { return true; }
-            return String.Equals(pattern, value, StringComparison.OrdinalIgnoreCase);
+            if (String.Equals(pattern, value, StringComparison.OrdinalIgnoreCase)) { return true; }
+            if (pattern.EndsWith  ("*") &&
+                pattern.StartsWith("*"))
+                {
+                return value.Contains(pattern.Trim('*'));
+                }
+            if (pattern.EndsWith  ("*")) { return value.StartsWith(pattern.TrimEnd('*')); }
+            if (pattern.StartsWith("*")) { return value.EndsWith(pattern.TrimStart('*')); }
+            return false;
             }
 
         public static Boolean IsMatch(String pattern, String filename)
@@ -24,8 +32,8 @@ namespace BinaryStudio.DirectoryServices
             var iF = Path.GetFileNameWithoutExtension(filename);
             var iE = Path.GetExtension(filename);
             return IsMatchPart(pD,iD)
-                && IsMatchPart(pF,iF)
-                && IsMatchPart(pE,iE);
+                && IsMatchPart(pE,iE)
+                && IsMatchPart(pF,iF);
             }
 
         /// <summary>

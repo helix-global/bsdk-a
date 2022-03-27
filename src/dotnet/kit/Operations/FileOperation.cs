@@ -41,17 +41,15 @@ namespace Operations
                     var pattern = Path.GetFileName(file);
                     folder = String.IsNullOrEmpty(folder) ? ".\\" : $"file://{folder}";
                     status = Max(status, Execute(
-                        DirectoryService.GetService<IDirectoryService>(folder),
+                        GetService<IDirectoryService>(folder),
                         pattern));
                     }
                 else
-                    status = Max(status, ExecuteAction(
-                        DirectoryService.GetService<IFileService>(new Uri($"file://{file}")),
-                        Options, new FileOperationArgs
-                            {
-                            TargetFolder = TargetFolder,
-                            Pattern = Pattern??"*.*"
-                            }));
+                    {
+                    status = Max(status, Execute(
+                        GetService<IFileService>(new Uri($"file://{file}")),
+                        Pattern = Pattern ?? "*.*"));
+                    }
                 }
             return status;
             }
@@ -60,7 +58,7 @@ namespace Operations
         private FileOperationStatus Execute(IDirectoryService service, String pattern) {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             var status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
-            #if DEBUG2
+            #if DEBUG
             foreach (var i in service.GetFiles(pattern, Options)) {
                 status.Value = Max(status.Value, Execute(i, pattern));
                 }
@@ -178,5 +176,17 @@ namespace Operations
                 (Int32)y);
             }
         #endregion
+
+        public override object GetService(object source, Type service) {
+            if (service == typeof(IDirectoryService)) {
+                var file = GetService<IFileService>(source);
+                if (file != null) {
+                    switch (Path.GetExtension(file.FullName).ToLower()) {
+                        case ".hexcsv": { return new HexCSVGroupService(file); }
+                        }
+                    }
+                }
+            return base.GetService(source, service);
+            }
         }
     }

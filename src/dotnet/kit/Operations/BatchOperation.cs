@@ -250,7 +250,7 @@ namespace Operations
                     Options = DirectoryServiceSearchOptions.Recursive|DirectoryServiceSearchOptions.Containers,
                     ExecuteAction = Execute,
                     };
-                core.DirectoryServiceRequest += OnDirectoryServiceRequest;
+                core.DirectoryServiceRequest += DirectoryServiceRequest;
                 core.Execute(InputFileName);
                 if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
                     store.Commit();
@@ -266,10 +266,14 @@ namespace Operations
             GC.Collect();
             }
 
-        private void OnDirectoryServiceRequest(Object sender, DirectoryServiceRequestEventArgs e) {
+        private static void DirectoryServiceRequest(Object sender, DirectoryServiceRequestEventArgs e) {
             switch (Path.GetExtension(e.Source.FileName).ToLower()) {
                 case ".hexgroup":
                     e.Service = new HexGroupService(e.Source);
+                    e.Handled = true;
+                    break;
+                case ".hexcsv":
+                    e.Service = new HexCSVGroupService(e.Source);
                     e.Handled = true;
                     break;
                 }
@@ -299,6 +303,14 @@ namespace Operations
                                 status = FileOperation.Max(status, FileOperationStatus.Warning);
                                 }
                             }
+                        }
+                    }
+                else
+                    {
+                    if (QuarantineFolder != null)
+                        {
+                        MakeDir(QuarantineFolder);
+                        service.CopyTo(Path.Combine(QuarantineFolder, service.FileName), true);
                         }
                     }
                 index++;

@@ -1,13 +1,39 @@
 #include "hdrstop.h"
 #include "exception.h"
+#include <ostream>
 
-Exception::Exception(const string& FileName, int LineNumber, const string& Source)
-    :HelpContext(-1)
+ExceptionSource::ExceptionSource(ExceptionSource&& o):
+    ObjectSource(o.ObjectSource),Source(o.Source)
     {
     }
 
-HResultException::HResultException(const string& FileName, const int LineNumber, const string& Source, const HRESULT SCode):
-    Exception(FileName,LineNumber,Source),SCode(SCode)
+ExceptionSource::ExceptionSource(const ExceptionSource& o):
+    ObjectSource(o.ObjectSource),Source(o.Source)
+    {
+    }
+
+ExceptionSource::ExceptionSource(const ::ObjectSource& ObjectSource, const string& Source):
+    ObjectSource(ObjectSource),Source(Source)
+    {
+    }
+
+ExceptionSource::ExceptionSource(const string& FileName, int Line, const string& Source):
+    ObjectSource(FileName,Line),Source(Source)
+    {
+    }
+
+ComPtr<Exception> ExceptionSource::PushStack(const ComPtr<Exception>& Target) const
+    {
+    return Target->PushStack(*this);
+    }
+
+Exception::Exception(const ExceptionSource& Source):
+    BaseType(Source.ObjectSource),HelpContext(-1)
+    {
+    }
+
+HResultException::HResultException(const ExceptionSource& Source, const HRESULT SCode):
+    Exception(Source),SCode(SCode)
     {
     }
 
@@ -92,4 +118,45 @@ HRESULT Exception::GetType(IType** r)
     if (r == nullptr) { return E_INVALIDARG; }
     *r = nullptr;
     return S_OK;
+    }
+
+ComPtr<Exception> ExceptionSource::GetExceptionForHR(HRESULT hr)
+    {
+    return ComPtrM<Exception,HResultException>(*this, hr);
+    }
+
+ComPtr<Exception> Exception::PushStack(const string& FileName, const int Line, const string& Source)
+    {
+    _ASSERT(this != nullptr);
+    _ASSERT(!Disposed);
+    USES_CONVERSION;
+    wstringstream r;
+    r << L"   at ";
+    r << (Source.empty()) ? L"[code]" : (A2W(Source.c_str()));
+    if (!FileName.empty()) {
+        r << L" in " <<
+            A2W(Path::GetFileName(FileName).c_str()) <<
+            L":line " <<
+            Line;
+        }
+    if (StackTrace != nullptr) {
+        r << endl;
+        r << StackTrace;
+        }
+    StackTrace = r.str().c_str();
+    return this;
+    }
+
+ComPtr<Exception> Exception::PushStack(const ObjectSource& FileName, const string& Source)
+    {
+    _ASSERT(this != nullptr);
+    _ASSERT(!Disposed);
+    return PushStack(FileName.FileName,FileName.Line,Source);
+    }
+
+ComPtr<Exception> Exception::PushStack(const ExceptionSource& Source)
+    {
+    _ASSERT(this != nullptr);
+    _ASSERT(!Disposed);
+    return PushStack(Source.ObjectSource,Source.Source);
     }

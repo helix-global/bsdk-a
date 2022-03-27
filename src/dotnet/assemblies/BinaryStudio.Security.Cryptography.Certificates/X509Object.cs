@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates

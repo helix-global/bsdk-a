@@ -5,6 +5,7 @@ namespace BinaryStudio.PlatformComponents.Win32
     public enum HRESULT
         {
         S_OK                                                                  = unchecked((Int32)0x00000000),
+        SCARD_S_SUCCESS                                                       = unchecked((Int32)0x00000000),
         STG_S_CONVERTED                                                       = unchecked((Int32)0x00030200),
         STG_S_BLOCK                                                           = unchecked((Int32)0x00030201),
         STG_S_RETRYNOW                                                        = unchecked((Int32)0x00030202),

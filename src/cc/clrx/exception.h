@@ -13,13 +13,39 @@ typedef mscorlib::StreamingContext StreamingContext;
 typedef mscorlib::_MethodBase IMethodBase;
 typedef mscorlib::_Type IType;
 
+class Exception;
+class ExceptionSource
+    {
+public:
+    ExceptionSource(const ObjectSource& ObjectSource, const string& Source);
+    ExceptionSource(const string& FileName, int Line, const string& Source);
+    ExceptionSource(const ExceptionSource&);
+    ExceptionSource(ExceptionSource&&);
+public:
+    ComPtr<Exception> GetExceptionForHR(HRESULT);
+    ComPtr<Exception> GetExceptionForHR(HRESULT,const string&);
+    ComPtr<Exception> GetExceptionForHR(HRESULT,const char*,...);
+    ComPtr<Exception> GetExceptionForHR(HRESULT,const ComPtr<Exception>&);
+    ComPtr<Exception> GetExceptionForHR(HRESULT,const ComPtr<Exception>&,const  string&);
+    ComPtr<Exception> GetExceptionForHR(HRESULT,const ComPtr<Exception>&,const wstring&);
+    ComPtr<Exception> GetErrorInfo(HRESULT) const;
+    ComPtr<Exception> PushStack(const ComPtr<Exception>&) const;
+public:
+    ObjectSource ObjectSource;
+    string Source;
+private:
+    friend class E;
+    };
+
 class Exception : public Object<
         IDispatch,
         IException,
         IErrorInfo>
     {
 public:
-    Exception(const string& FileName, int LineNumber, const string& Source);
+    typedef Object<IDispatch,IException,IErrorInfo> BaseType;
+public:
+    Exception(const ExceptionSource& Source);
 public:
     HRESULT STDMETHODCALLTYPE get_ToString(BSTR*) override;
     HRESULT STDMETHODCALLTYPE Equals(VARIANT,VARIANT_BOOL*) override;
@@ -47,12 +73,16 @@ private:
     DWORD HelpContext;
 protected:
     CComPtr<IException> InnerException;
+public:
+    ComPtr<Exception> PushStack(const string& FileName, const int Line, const string& Source);
+    ComPtr<Exception> PushStack(const ObjectSource&, const string& Source);
+    ComPtr<Exception> PushStack(const ExceptionSource&);
     };
 
 class HResultException : public Exception
     {
 public:
-    HResultException(const string& FileName, int LineNumber, const string& Source, HRESULT SCode);
+    HResultException(const ExceptionSource& Source, HRESULT SCode);
 private:
     HRESULT SCode;
     };

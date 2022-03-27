@@ -15,8 +15,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public static String LibraryFullPath { get {
             if (fullpath == null) {
                 var filename = (IntPtr.Size == 4)
-                    ? "csecapi32d.dll"
-                    : "csecapi64d.dll";
+                    ? "csecapi32.dll"
+                    : "csecapi64.dll";
                 var executingassembly = Assembly.GetExecutingAssembly();
                 var location = executingassembly.Location;
                     location = (String.IsNullOrEmpty(location))

@@ -14,6 +14,7 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
+using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -296,7 +297,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValue(serializer, nameof(NotBefore), NotBefore);
                 writer.WriteValue(serializer, nameof(NotAfter), NotAfter);
                 if (!IsNullOrEmpty(extensions)) {
-                    WriteValue(writer, serializer, nameof(Extensions), extensions);
+                    writer.WritePropertyName(nameof(Extensions));
+                    using (writer.ObjectScope(serializer)) {
+                        writer.WriteValue(serializer, "Count", Extensions.Count);
+                        writer.WritePropertyName("(Self)");
+                        using (writer.ArrayScope(serializer)) {
+                            foreach (var i in Extensions.OfType<Asn1CertificateExtension>()) {
+                                i.WriteJson(writer, serializer);
+                                }
+                            }
+                        }
                     }
                 var icao = (IIcaoCertificate)this;
                 if (icao.Type != IcaoCertificateType.None) {

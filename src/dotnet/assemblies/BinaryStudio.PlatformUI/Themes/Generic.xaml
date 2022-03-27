@@ -136,7 +136,13 @@
                                       Selection="{Binding Selection,Mode=TwoWay}"
                                       Markups="{TemplateBinding Markups}"
                                       FocusVisualStyle="{x:Null}"
-                                      x:Name="H"/>
+                                      x:Name="H">
+                        <p:HexBoxPanelH.ContextMenu>
+                          <ContextMenu>
+                            <MenuItem Header="Save" Command="{x:Static ApplicationCommands.SaveAs}"/>
+                          </ContextMenu>
+                        </p:HexBoxPanelH.ContextMenu>
+                      </p:HexBoxPanelH>
                     </Border>
                     <Rectangle Grid.Column="1" Fill="{DynamicResource ControlBrushKey}" Width="{DynamicResource {x:Static SystemParameters.ScrollWidthKey}}"/>
                     <Border BorderThickness="0" BorderBrush="{x:Null}" Grid.Column="2" x:Name="A" SnapsToDevicePixels="True">

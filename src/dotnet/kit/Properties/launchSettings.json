@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "certificate:B3FFBAEDCADA4664CCFB537D4B09081A715DCF9E message create input:sample storename:device storelocation:localMachine",
+      "commandLineArgs": "input:C:\\QuarantineFolder\\*.hex verify policy:icao provider:-2",
       "remoteDebugEnabled": false,
       "nativeDebugging": true
     }

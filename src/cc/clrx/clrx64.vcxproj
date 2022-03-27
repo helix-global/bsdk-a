@@ -88,6 +88,7 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
+    <ClInclude Include="logging.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +98,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="logging.cc" />
     <ClCompile Include="object.cc" />
+    <ClCompile Include="utils.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

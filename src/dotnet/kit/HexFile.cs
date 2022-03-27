@@ -6,21 +6,35 @@ using BinaryStudio.DirectoryServices;
 internal class HexFile : IFileService
     {
     public Byte[] Body { get; }
-    public String FileId { get; }
+    public String IdentifyDocumentId { get; }
     public String Folder { get; }
     public Int32 FileIndex { get; }
 
     public HexFile(Byte[] body, String fileid, Int32 fileindex, String folder)
         {
         Body = body;
-        FileId    = fileid.ToLowerInvariant();
+        IdentifyDocumentId = fileid.ToLowerInvariant();
+        IdentifyDocumentId = (new String('0', Math.Max(10-IdentifyDocumentId.Length, 0))) + IdentifyDocumentId;
         FileIndex = fileindex;
-        FileId    = (new String('0', Math.Max(10-FileId.Length, 0))) + FileId;
         Folder = folder;
         }
 
-    public String FileName { get { return $"{FileId}.hex"; }}
+    public String FileName { get { return $"{IdentifyDocumentId}.hex"; }}
     public String FullName { get { return Path.Combine(Folder,FileName); }}
+    public String DocumentCategoryName { get; set; }
+    public String CountryName { get; set; }
+    public String CountryICAO { get; set; }
+    public String Year { get; set; }
+    public String Month { get; set; }
+    public String RegisterCode { get; set; }
+    public String RegisterNumber { get; set; }
+    public String IssueDate { get; set; }
+    public String ValidToDate { get; set; }
+    public String InscribeId { get; set; }
+    public String DataFormatId { get; set; }
+    public String DataTypeId { get; set; }
+    public String Order { get; set; }
+    public String Dense { get; set; }
 
     Byte[] IFileService.ReadAllBytes()
         {

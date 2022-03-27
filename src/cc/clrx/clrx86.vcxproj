@@ -46,6 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.intermediate\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\packages\msdetours\lib\ia32;$(ProjectDir)..\..\..\packages\log4cpp\lib\ia32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -54,7 +56,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;CLRX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;CLRX_EXPORTS;_WINDOWS;_USRDLL;USE_MSDETOURS;USE_LOG4CPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdrstop.h</PrecompiledHeaderFile>
@@ -88,6 +90,7 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
+    <ClInclude Include="logging.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +100,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="logging.cc" />
     <ClCompile Include="object.cc" />
+    <ClCompile Include="utils.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

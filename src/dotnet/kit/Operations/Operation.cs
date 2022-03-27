@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography;
 using Kit;
 using Options;
@@ -112,6 +113,18 @@ namespace Operations
             e.SecureString.AppendChar('7');
             e.SecureString.AppendChar('8');
             e.StoreSecureString = true;
+            }
+
+        public virtual Object GetService(Object source, Type service)
+            {
+            if (service == typeof(IFileService))      { return DirectoryService.GetService(source, service); }
+            if (service == typeof(IDirectoryService)) { return DirectoryService.GetService(source, service); }
+            return source;
+            }
+
+        public T GetService<T>(Object source)
+            {
+            return (T)GetService(source, typeof(T));
             }
         }
     }
