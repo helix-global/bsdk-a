@@ -6,6 +6,14 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\.intermediate\clrx64.dll" Link="clrx64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\.intermediate\clrx86.dll" Link="clrx86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>

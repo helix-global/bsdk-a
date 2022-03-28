@@ -1,7 +1,6 @@
 #include "hdrstop.h"
 #include "object.h"
 
-#pragma push_macro("FormatMessage")
 #undef FormatMessage
 
 unordered_set<Object<IUnknown>*> Object<IUnknown>::Instances;
@@ -13,9 +12,12 @@ template<> basic_string<CHAR> Object<IUnknown>::FormatMessage<CHAR>(const  CHAR*
     {
     size_t size;
     vector<CHAR> o((size = _vscprintf(format,args)) + 1);
-    vsprintf_s(&o[0],size,format,args);
+    vsprintf_s(&o[0],o.size(),format,args);
     return &o[0];
     }
+
+template<> DWORD Object<IUnknown>::FormatMessage< CHAR>(const DWORD Flags,LPCVOID Source,const DWORD MessageId,const DWORD LanguageId, CHAR* Buffer,const DWORD Size,va_list *Arguments) { return FormatMessageA(Flags,Source,MessageId,LanguageId,Buffer,Size,Arguments); }
+template<> DWORD Object<IUnknown>::FormatMessage<WCHAR>(const DWORD Flags,LPCVOID Source,const DWORD MessageId,const DWORD LanguageId,WCHAR* Buffer,const DWORD Size,va_list *Arguments) { return FormatMessageW(Flags,Source,MessageId,LanguageId,Buffer,Size,Arguments); }
 
 template<> basic_string<CHAR> Object<IUnknown>::FormatMessage(time_t value,const CHAR* format)
     {
@@ -142,5 +144,3 @@ ObjectSource::ObjectSource(const string& FileName, int Line):
     FileName(FileName),Line(Line)
     {
     }
-
-#pragma pop_macro("FormatMessage")

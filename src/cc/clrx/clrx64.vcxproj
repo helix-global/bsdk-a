@@ -46,6 +46,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.intermediate\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\.intermediate</OutDir>
+    <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\packages\msdetours\lib\amd64;$(ProjectDir)..\..\..\packages\log4cpp\lib\amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -54,7 +57,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;CLRX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CLRX_EXPORTS;_WINDOWS;_USRDLL;USE_LOG4CPP;USE_MSDETOURS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdrstop.h</PrecompiledHeaderFile>
@@ -88,10 +91,17 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
+    <ClInclude Include="module.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="detours.cc">
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="json.cc" />
+    <ClCompile Include="module.cc" />
     <ClCompile Include="dllmain.cc" />
     <ClCompile Include="exception.cc" />
     <ClCompile Include="hdrstop.cc">

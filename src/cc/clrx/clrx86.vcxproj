@@ -48,6 +48,7 @@
     <IntDir>.intermediate\$(PlatformTarget)\$(Configuration)\</IntDir>
     <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\..\..\packages\msdetours\lib\ia32;$(ProjectDir)..\..\..\packages\log4cpp\lib\ia32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)..\..\..\.intermediate</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,17 +91,24 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
+    <ClInclude Include="module.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="detours.cc">
+      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExceptionHandling>
+    </ClCompile>
     <ClCompile Include="dllmain.cc" />
     <ClCompile Include="exception.cc" />
     <ClCompile Include="hdrstop.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="json.cc" />
     <ClCompile Include="logging.cc" />
+    <ClCompile Include="module.cc" />
     <ClCompile Include="object.cc" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>

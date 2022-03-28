@@ -94,7 +94,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Smart
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{1383B170-18CB-4B70-AFB4-EB0F4890F40E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCardSample", "samples\SmartCardSample\SmartCardSample.csproj", "{DCA2A42C-846D-4FB4-940B-BA03C2BDD09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCardSample", "samples\SmartCardSample\SmartCardSample.csproj", "{DCA2A42C-846D-4FB4-940B-BA03C2BDD09C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{24B08818-4C56-46B8-87A3-D011745EF267} = {24B08818-4C56-46B8-87A3-D011745EF267}
+		{6246745F-9FA8-48D1-8E75-8FA20F785E4D} = {6246745F-9FA8-48D1-8E75-8FA20F785E4D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

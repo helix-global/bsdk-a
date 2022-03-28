@@ -9,7 +9,8 @@ enum class LoggingSeverity
     Info,
     Warning,
     Error,
-    Debug
+    Debug,
+    Trace
     };
 
 MIDL_INTERFACE("87e670f7-b2b2-4979-a9c4-1df99df6b23b")
@@ -21,6 +22,9 @@ ILoggingSource : IUnknown
 class LoggingSource : public Object<IUnknown,ILoggingSource>
     {
 public:
+    template<class E> static void Log(LoggingSeverity severity, const basic_string<E>& message) {
+        LogCore(severity, message);
+        }
     template<class E> static void Log(LoggingSeverity severity, const E* format, ...)
         {
         va_list args;

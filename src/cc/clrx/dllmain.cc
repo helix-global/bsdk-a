@@ -1,19 +1,18 @@
 #include "hdrstop.h"
 #include <yvals.h>
 #include "exception.h"
+#include "module.h"
 
 #undef  THIS_FILE
 #define THIS_FILE "dllmain.cc"
 
-BOOL APIENTRY DllMain(HMODULE hModule,DWORD ul_reason_for_call,LPVOID lpReserved)
+BOOL APIENTRY DllMain(HMODULE Module,DWORD ul_reason_for_call,LPVOID)
     {
-    switch (ul_reason_for_call)
-        {
-        case DLL_PROCESS_ATTACH:
-        case DLL_THREAD_ATTACH:
-        case DLL_THREAD_DETACH:
-        case DLL_PROCESS_DETACH:
-            break;
+    switch (ul_reason_for_call) {
+        case DLL_PROCESS_ATTACH: return Module::ProcessAttach(Module);
+        case DLL_PROCESS_DETACH: return Module::ProcessDetach(Module);
+        case DLL_THREAD_ATTACH:  return Module::ThreadAttach(Module);
+        case DLL_THREAD_DETACH:  return Module::ThreadDetach(Module);
         }
     return TRUE;
     }

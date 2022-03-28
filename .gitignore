@@ -90,3 +90,4 @@
 /src/dotnet/assemblies/BinaryStudio.Security.SmartCard/obj
 /src/dotnet/samples/SmartCardSample/bin
 /src/dotnet/samples/SmartCardSample/obj
+/.intermediate

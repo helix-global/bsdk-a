@@ -1,8 +1,6 @@
 #include "hdrstop.h"
 #include "logging.h"
-
-#pragma push_macro("FormatMessage")
-#undef FormatMessage
+#include "module.h"
 
 #ifdef USE_LOG4CPP
 #include <log4cpp/Category.hh>
@@ -46,6 +44,8 @@ namespace log4cpp
 log4cpp::Appender* DefaultAppender = nullptr;
 #endif
 
+#undef FormatMessage
+
 void LoggingSource::LogCore(const LoggingSeverity severity, const wstring& message)
     {
     USES_CONVERSION;
@@ -56,7 +56,10 @@ void LoggingSource::LogCore(const LoggingSeverity severity, const string& messag
     {
     #ifdef USE_LOG4CPP
     if (DefaultAppender == nullptr) {
-        DefaultAppender = new log4cpp::FileAppender("default", FormatMessage("csecapi-%s.log", FormatMessage(time(nullptr),"%Y-%m-%dT%H-%M-%S").c_str()));
+        DefaultAppender = new log4cpp::FileAppender("default", FormatMessage("%s-%s-%s.log",
+            Path::GetFileNameWithoutExtension(Module::ModuleName).c_str(),
+            Module::ProcessName.c_str(),
+            FormatMessage(time(nullptr),"%Y-%m-%dT%H-%M-%S").c_str()));
         DefaultAppender->setLayout(new log4cpp::DefaultLayout());
         auto& root = log4cpp::Category::getRoot();
         root.setPriority(log4cpp::Priority::DEBUG);
@@ -68,8 +71,7 @@ void LoggingSource::LogCore(const LoggingSeverity severity, const string& messag
         case LoggingSeverity::Warning:  { log4cpp::Category::getRoot().warn(message);  } break;
         case LoggingSeverity::Error:    { log4cpp::Category::getRoot().error(message); } break;
         case LoggingSeverity::Debug:    { log4cpp::Category::getRoot().debug(message); } break;
+        case LoggingSeverity::Trace:    { log4cpp::Category::getRoot().debug(message); } break;
         }
     #endif
     }
-
-#pragma pop_macro("FormatMessage")

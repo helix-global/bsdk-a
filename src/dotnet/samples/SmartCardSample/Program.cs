@@ -8,6 +8,8 @@ namespace SmartCardSample
         {
         private static void Main(String[] args)
             {
+            var L = new Win32SharedObject((IntPtr.Size == 4)? "clrx86.dll" : "clrx64.dll");
+            var P = L.Get("DllGetClassObject");
             using (var context = new SCardContext(SCardScope.System)) {
                 var index = 0;
                 foreach (var reader in context.Readers)

@@ -12,6 +12,8 @@
 
 using namespace std;
 
+#define nameof(E)   #E
+
 class ObjectReference
     {
 public:
@@ -224,6 +226,18 @@ public:
     static HANDLE Mutex;
     static unordered_set<Object<IUnknown>*> Instances;
 public:
+    template<class E> static DWORD FormatMessage(DWORD Flags,LPCVOID Source,DWORD MessageId,DWORD LanguageId,E* Buffer,DWORD Size,va_list *Arguments);
+    template<class E> static basic_string<E> FormatMessage(const HRESULT SCode) {
+        basic_string<E> r;
+        E *o;
+        if (FormatMessage<E>(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+            nullptr, (DWORD)SCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (E*)&o, 0, nullptr))
+            {
+            r = o;
+            LocalFree(o);
+            }
+        return r;
+        }
     template<class E> static basic_string<E> FormatMessage(time_t value,const E* format);
     template<class E> static basic_string<E> FormatMessage(const E* format, va_list args);
     template<class E> static basic_string<E> FormatMessage(const E* format, ...) {
@@ -422,8 +436,138 @@ private:
 
 struct Path
     {
-    static wstring GetFileName(const wstring&);
-    static  string GetFileName(const  string&);
+    template<class E> static basic_string<E> GetFileName(const basic_string<E>&);
+    template<class E> static basic_string<E> GetFileNameWithoutExtension(const basic_string<E>&);
     };
+
+template<class T, class D> struct SafeHandleHolder
+    {
+    T m_r;
+    SafeHandleHolder(T r)
+        :m_r(r)
+        {
+        }
+
+    virtual ~SafeHandleHolder() {
+        if (m_r != T()) {
+            (D()).operator ()(m_r);
+            m_r = T();
+            }
+        }
+public:
+    T Detach() {
+        const auto r = m_r;
+        m_r = T();
+        return r;
+        }
+private:
+    SafeHandleHolder(const SafeHandleHolder<T,D>&) = default;
+    };
+
+template<class T, class D> struct SafeHandle
+    {
+    SafeHandle(T r)
+        :m_r(make_shared<SafeHandleHolder<T,D>>(r))
+        {
+        }
+    SafeHandle()
+        :m_r(make_shared<SafeHandleHolder<T,D>>(T()))
+        {
+        }
+    SafeHandle(const SafeHandle& r)
+        :m_r(r.m_r)
+        {
+        }
+    SafeHandle(SafeHandle&& r)
+        :m_r(r.m_r)
+        {
+        }
+
+    SafeHandle& operator=(SafeHandle&& o)
+        {
+        m_r = o.m_r;
+        return *this;
+        }
+
+    SafeHandle& operator=(const SafeHandle& o)
+        {
+        m_r = o.m_r;
+        return *this;
+        }
+
+    shared_ptr<SafeHandleHolder<T,D>> m_r;
+
+    T* operator &()          { return &(m_r.get()->m_r); }
+    T  operator->() const    { return  (m_r.get()->m_r); }
+    operator T()             { return  (m_r.get()->m_r); }
+    operator const T() const { return  (m_r.get()->m_r); }
+
+    T Detach() {
+        return m_r->Detach();
+        }
+    };
+
+struct ModuleSafeHandleDeleter {
+    bool operator ()(HMODULE r) const {
+        return (r)
+            ? FreeLibrary(r)
+            : false;
+        }
+    };
+struct CCryptProviderSafeHandleDeleter {
+    constexpr bool operator ()(HCRYPTPROV r) const {
+        return (r)
+            ? (CryptReleaseContext(r, 0) == TRUE)
+            : false;
+        }
+    };
+
+struct MessageSafeHandleDeleter {
+    constexpr bool operator ()(HCRYPTMSG r) const {
+        return (r)
+            ? (CryptMsgClose(r) == TRUE)
+            : false;
+        }
+    };
+
+struct CCryptKeySafeHandleDeleter {
+    constexpr bool operator ()(HCRYPTKEY r) const {
+        return (r)
+            ? (CryptDestroyKey(r) == TRUE)
+            : false;
+        }
+    };
+
+struct CCryptHashSafeHandleDeleter {
+    constexpr bool operator ()(HCRYPTHASH r) const {
+        return (r)
+            ? (CryptDestroyHash(r) == TRUE)
+            : false;
+        }
+    };
+
+struct CertificateContextSafeHandleDeleter {
+    constexpr bool operator ()(PCCERT_CONTEXT r) const {
+        return (r)
+            ? (CertFreeCertificateContext(r) == TRUE)
+            : false;
+        }
+    };
+
+struct SafeArrayHandleDeleter {
+    constexpr bool operator ()(LPSAFEARRAY r) const {
+        return (r)
+            ? (SafeArrayDestroy(r) == S_OK)
+            : false;
+        }
+    };
+
+typedef SafeHandle<HMODULE,ModuleSafeHandleDeleter> ModuleSafeHandle;
+typedef SafeHandle<HCRYPTPROV,CCryptProviderSafeHandleDeleter> CCryptProviderSafeHandle;
+typedef SafeHandle<HCRYPTKEY,CCryptKeySafeHandleDeleter> CCryptKeySafeHandle;
+typedef SafeHandle<HCRYPTHASH,CCryptHashSafeHandleDeleter> CCryptHashSafeHandle;
+typedef SafeHandle<PCCERT_CONTEXT,CertificateContextSafeHandleDeleter> CertificateContextSafeHandle;
+typedef SafeHandle<HCRYPTMSG,MessageSafeHandleDeleter> MessageSafeHandle;
+typedef SafeHandle<LPSAFEARRAY,SafeArrayHandleDeleter> SafeArrayHandle;
 
 #pragma pop_macro("FormatMessage")

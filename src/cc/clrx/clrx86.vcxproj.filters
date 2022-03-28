@@ -30,6 +30,12 @@
     <ClInclude Include="logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
@@ -48,6 +54,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utils.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="detours.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="json.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

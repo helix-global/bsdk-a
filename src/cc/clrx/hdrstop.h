@@ -17,6 +17,8 @@
 #include <atlbase.h>
 #include <atlsafe.h>
 #include <winscard.h>
+#include <string>
+#include <iostream>
 #include <sstream>
 
 #ifdef USE_MSDETOURS
