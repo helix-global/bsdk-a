@@ -46,7 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.intermediate\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <OutDir>$(ProjectDir)..\..\..\.intermediate</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\.intermediate\</OutDir>
     <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\..\..\packages\msdetours\lib\amd64;$(ProjectDir)..\..\..\packages\log4cpp\lib\amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -61,6 +61,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>hdrstop.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,18 +89,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="any.h" />
     <ClInclude Include="exception.h" />
+    <ClInclude Include="feature.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="module.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="scard.h" />
+    <ClInclude Include="scode.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="any.cc" />
     <ClCompile Include="detours.cc">
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExceptionHandling>
     </ClCompile>
+    <ClCompile Include="feature.cc" />
     <ClCompile Include="json.cc" />
     <ClCompile Include="module.cc" />
     <ClCompile Include="dllmain.cc" />
@@ -110,6 +117,8 @@
     </ClCompile>
     <ClCompile Include="logging.cc" />
     <ClCompile Include="object.cc" />
+    <ClCompile Include="scard.cc" />
+    <ClCompile Include="scode.cc" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

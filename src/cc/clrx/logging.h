@@ -19,9 +19,11 @@ ILoggingSource : IUnknown
     STDMETHOD(Log)(LoggingSeverity severity, BSTR message) = 0;
     };
 
+class ObjectFeature;
 class LoggingSource : public Object<IUnknown,ILoggingSource>
     {
 public:
+    static void Log(LoggingSeverity severity, const ObjectFeature&);
     template<class E> static void Log(LoggingSeverity severity, const basic_string<E>& message) {
         LogCore(severity, message);
         }
@@ -38,6 +40,7 @@ private:
         }
     static void LogCore(LoggingSeverity severity, const wstring& message);
     static void LogCore(LoggingSeverity severity, const  string& message);
+private:
     };
 
 #pragma pop_macro("FormatMessage")

@@ -12,6 +12,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shell", "shell\shell.csproj", "{B7D7E5D7-6452-4776-9129-155D3DDEA5ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Diagnostics", "assemblies\BinaryStudio.Diagnostics\BinaryStudio.Diagnostics.csproj", "{4CEEB6E0-DE05-4DD3-8814-584C5CE3E2C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{24B08818-4C56-46B8-87A3-D011745EF267} = {24B08818-4C56-46B8-87A3-D011745EF267}
+		{6246745F-9FA8-48D1-8E75-8FA20F785E4D} = {6246745F-9FA8-48D1-8E75-8FA20F785E4D}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DirectoryServices", "assemblies\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj", "{42B2C30B-B9BB-42DF-AAB6-BB557E7749F5}"
 EndProject

@@ -231,7 +231,7 @@ public:
         basic_string<E> r;
         E *o;
         if (FormatMessage<E>(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-            nullptr, (DWORD)SCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (E*)&o, 0, nullptr))
+            nullptr, (DWORD)SCode, MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), (E*)&o, 0, nullptr))
             {
             r = o;
             LocalFree(o);

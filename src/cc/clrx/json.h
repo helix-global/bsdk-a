@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 #include "object.h"
 
 #define JSON_STATE_PROPERTY_NAME  2
@@ -86,3 +87,5 @@ inline JsonWriter<char>& JsonWriter<char>::WriteValue<const wchar_t*>(wchar_t co
     state = JSON_STATE_PROPERTY_VALUE;
     return *this;
     }
+
+

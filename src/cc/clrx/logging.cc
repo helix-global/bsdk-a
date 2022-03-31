@@ -1,6 +1,7 @@
 #include "hdrstop.h"
 #include "logging.h"
 #include "module.h"
+#include "feature.h"
 
 #ifdef USE_LOG4CPP
 #include <log4cpp/Category.hh>
@@ -74,4 +75,11 @@ void LoggingSource::LogCore(const LoggingSeverity severity, const string& messag
         case LoggingSeverity::Trace:    { log4cpp::Category::getRoot().debug(message); } break;
         }
     #endif
+    }
+
+void LoggingSource::Log(LoggingSeverity severity, const ObjectFeature& o)
+    {
+    wstringstream r;
+    o.WriteTo(r);
+    Log(severity,r.str());
     }

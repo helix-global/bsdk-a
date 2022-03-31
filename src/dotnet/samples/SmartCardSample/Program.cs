@@ -19,7 +19,7 @@ namespace SmartCardSample
                         {
                         using (var rcontext = reader.Open(SCardShareMode.Shared)) {
                             Console.WriteLine(HRESULT.SCARD_S_SUCCESS);
-                            rcontext.Transmit("00a4 0000 02 3f00", out var o);
+                            rcontext.Transmit("00a4000402003f", out var o);
                             rcontext.Transmit("00b0 0000",     out o);
                             }
                         }
