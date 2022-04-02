@@ -48,6 +48,9 @@
     <ClInclude Include="any.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
@@ -87,6 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scode.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trace.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\packages\sqlite3\3.38.2\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

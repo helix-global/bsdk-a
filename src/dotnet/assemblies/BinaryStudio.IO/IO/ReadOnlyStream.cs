@@ -39,7 +39,7 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (count  < 0) { throw new ArgumentOutOfRangeException(nameof(count));  }
             if (buffer.Length - offset < count) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-            if (IsDisposed) { throw new ObjectDisposedException("Object already disposed."); }
+            if (Disposed) { throw new ObjectDisposedException("Object already disposed."); }
             return source.Read(buffer, offset, count);
             }
 
@@ -120,8 +120,8 @@ namespace BinaryStudio.IO
         /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            if (!IsDisposed) {
-                lock(this) {
+            lock(this) {
+                if (Disposed) {
                     if (source != null) {
                         if (closable)
                             {

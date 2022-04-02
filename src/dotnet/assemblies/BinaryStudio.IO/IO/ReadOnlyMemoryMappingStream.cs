@@ -64,7 +64,7 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (count < 0)  { throw new ArgumentOutOfRangeException(nameof(count));  }
             if (buffer.Length - offset < count) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-            if (IsDisposed) { throw new ObjectDisposedException(nameof(source)); }
+            if (Disposed) { throw new ObjectDisposedException(nameof(source)); }
             #if TRACE
             //using (TraceManager.Instance.Trace(count))
             #endif
@@ -84,9 +84,11 @@ namespace BinaryStudio.IO
          * <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
          * */
         protected override void Dispose(Boolean disposing) {
-            if (!IsDisposed) {
-                source = null;
-                base.Dispose(disposing);
+            lock(this) {
+                if (!Disposed) {
+                    source = null;
+                    base.Dispose(disposing);
+                    }
                 }
             }
 

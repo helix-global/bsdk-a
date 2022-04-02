@@ -6,6 +6,7 @@
 #include <codecvt>
 #include <vector>
 #include <unordered_set>
+#include "scode.h"
 
 #pragma push_macro("FormatMessage")
 #undef FormatMessage
@@ -438,6 +439,7 @@ struct Path
     {
     template<class E> static basic_string<E> GetFileName(const basic_string<E>&);
     template<class E> static basic_string<E> GetFileNameWithoutExtension(const basic_string<E>&);
+    template<class E> static basic_string<E> GetDirectoryName(const basic_string<E>&);
     };
 
 template<class T, class D> struct SafeHandleHolder
@@ -570,4 +572,5 @@ typedef SafeHandle<PCCERT_CONTEXT,CertificateContextSafeHandleDeleter> Certifica
 typedef SafeHandle<HCRYPTMSG,MessageSafeHandleDeleter> MessageSafeHandle;
 typedef SafeHandle<LPSAFEARRAY,SafeArrayHandleDeleter> SafeArrayHandle;
 
+#define const_ref(T) add_lvalue_reference_t<add_const<T>::type>
 #pragma pop_macro("FormatMessage")

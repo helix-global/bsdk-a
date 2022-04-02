@@ -46,7 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>.intermediate\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\packages\msdetours\include;$(ProjectDir)..\..\..\packages\log4cpp\include;$(ProjectDir)..\..\..\packages\sqlite3\3.38.2;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\..\..\packages\msdetours\lib\ia32;$(ProjectDir)..\..\..\packages\log4cpp\lib\ia32;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)..\..\..\.intermediate\</OutDir>
   </PropertyGroup>
@@ -100,8 +100,12 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="scard.h" />
     <ClInclude Include="scode.h" />
+    <ClInclude Include="trace.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\packages\sqlite3\3.38.2\sqlite3.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="any.cc" />
     <ClCompile Include="detours.cc">
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExceptionHandling>
@@ -119,6 +123,7 @@
     <ClCompile Include="object.cc" />
     <ClCompile Include="scard.cc" />
     <ClCompile Include="scode.cc" />
+    <ClCompile Include="trace.cc" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

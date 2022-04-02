@@ -45,9 +45,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:Background:Brush
         public static readonly DependencyProperty BackgroundProperty = Control.BackgroundProperty.AddOwner(typeof(HexBoxPanelH), new FrameworkPropertyMetadata(Brushes.Transparent, OnBackgroundChanged));
         private static void OnBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+            if (sender is HexBoxPanelH source) {
                 source.OnBackgroundChanged();
                 }
             }
@@ -65,17 +63,15 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:Source:Stream
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(Stream), typeof(HexBoxPanelH), new PropertyMetadata(default(Stream), OnSourceChanged));
-        private static void OnSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnSourceChanged();
                 }
             }
 
         private void OnSourceChanged()
             {
+            Selection = new RangeSelection(0,0);
             InvalidateMeasure();
             }
 
@@ -87,11 +83,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:ItemsCount:Int64
         public static readonly DependencyProperty ItemsCountProperty = DependencyProperty.Register("ItemsCount", typeof(Int64), typeof(HexBoxPanelH), new PropertyMetadata(default(Int64), OnItemsCountChanged));
-        private static void OnItemsCountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnItemsCountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnItemsCountChanged();
                 }
             }
@@ -110,8 +103,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:ItemSize:Size
         public static readonly DependencyProperty ItemSizeProperty = DependencyProperty.Register("ItemSize", typeof(Size), typeof(HexBoxPanelH), new PropertyMetadata(default(Size), OnItemSizeChanged));
         private static void OnItemSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as HexBoxPanelH);
-            if (source != null) {
+            if (sender is HexBoxPanelH source) {
                 source.OnItemSizeChanged();
                 }
             }
@@ -139,11 +131,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:VerticalOffset:Double
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(Double), typeof(HexBoxPanelH), new PropertyMetadata(default(Double), OnVerticalOffsetChanged));
-        private static void OnVerticalOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnVerticalOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnVerticalOffsetChanged();
                 }
             }
@@ -164,8 +153,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:HorizontalOffset:Double
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(Double), typeof(HexBoxPanelH), new PropertyMetadata(default(Double), OnHorizontalOffsetChanged));
         private static void OnHorizontalOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as HexBoxPanelH);
-            if (source != null) {
+            if (sender is HexBoxPanelH source) {
                 source.OnHorizontalOffsetChanged();
                 }
             }
@@ -190,11 +178,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:ViewportHeight:Double
         public static readonly DependencyProperty ViewportHeightProperty = DependencyProperty.Register("ViewportHeight", typeof(Double), typeof(HexBoxPanelH), new PropertyMetadata(default(Double), OnViewportHeightChanged));
-        private static void OnViewportHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnViewportHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnViewportHeightChanged();
                 }
             }
@@ -213,11 +198,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:Typeface:Typeface
         public static readonly DependencyProperty TypefaceProperty = DependencyProperty.Register("Typeface", typeof(Typeface), typeof(HexBoxPanelH), new PropertyMetadata(default(Typeface), OnTypefaceChanged));
-        private static void OnTypefaceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnTypefaceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnTypefaceChanged();
                 }
             }
@@ -235,11 +217,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:ScrollableObject:IScrollInfo
         public static readonly DependencyProperty ScrollableObjectProperty = DependencyProperty.Register("ScrollableObject", typeof(IScrollInfo), typeof(HexBoxPanelH), new PropertyMetadata(default(IScrollInfo), OnScrollableObjectChanged));
-        private static void OnScrollableObjectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnScrollableObjectChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnScrollableObjectChanged();
                 }
             }
@@ -264,32 +243,27 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:ExtentHeight:Double
         public static readonly DependencyProperty ExtentHeightProperty = DependencyProperty.Register("ExtentHeight", typeof(Double), typeof(HexBoxPanelH), new PropertyMetadata(default(Double), OnExtentHeightChanged));
-        private static void OnExtentHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-            {
+        private static void OnExtentHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source)
+                {
                 source.OnExtentHeightChanged();
+                }
             }
-        }
 
         private void OnExtentHeightChanged()
-        {
-        }
+            {
+            }
 
         public Double ExtentHeight
-        {
+            {
             get { return (Double)GetValue(ExtentHeightProperty); }
             set { SetValue(ExtentHeightProperty, value); }
-        }
+            }
         #endregion
         #region P:Selection:RangeSelection
         public static readonly DependencyProperty SelectionProperty = DependencyProperty.Register("Selection", typeof(RangeSelection), typeof(HexBoxPanelH), new PropertyMetadata(default(RangeSelection), OnSelectionChanged));
-        private static void OnSelectionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnSelectionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnSelectionChanged();
                 }
             }
@@ -308,8 +282,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:Markups:MarkupCollection
         public static readonly DependencyProperty MarkupsProperty = DependencyProperty.Register(nameof(Markups), typeof(MarkupCollection), typeof(HexBoxPanelH), new PropertyMetadata(default(MarkupCollection), OnMarkupsChanged));
         private static void OnMarkupsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as HexBoxPanelH);
-            if (source != null) {
+            if (sender is HexBoxPanelH source) {
                 source.OnMarkupsChanged(
                     (MarkupCollection)e.OldValue,
                     (MarkupCollection)e.NewValue);
@@ -370,11 +343,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
         #region P:CaretPosition:ValueTuple<Int64,Int16>
         internal static readonly DependencyProperty CaretPositionProperty = DependencyProperty.Register("CaretPosition", typeof(ValueTuple<Int64, Int16>), typeof(HexBoxPanelH), new PropertyMetadata(default(ValueTuple<Int64, Int16>), OnCaretPositionChanged));
-        private static void OnCaretPositionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanelH);
-            if (source != null)
-                {
+        private static void OnCaretPositionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanelH source) {
                 source.OnCaretPositionChanged();
                 }
             }
@@ -411,42 +381,44 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <param name="context">The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext context) {
             base.OnRender(context);
-            var background = Background;
-            var foreground = TextBlock.GetForeground(this);
-            if (background != null)
-                {
-                context.DrawRectangle(background.Clone(), null, new Rect(0, 0, ActualWidth, ActualHeight));
-                }
-            var source = Source;
-            var count = ItemsCount;
-            var itemsize = ItemSize;
-            var typeface = Typeface;
-            if ((source != null) && (count > 0) && (itemsize.Height > 0) && (typeface != null)) {
-                lock (source)
+            lock (this) {
+                var background = Background;
+                var foreground = TextBlock.GetForeground(this);
+                if (background != null)
                     {
-                    var fontsize = TextBlock.GetFontSize(this);
-                    var H = (Int64)VerticalOffset;
-                    var y = PaddingTop;
-                    var offset = H * 16;
-                    var buffer = new Byte[16];
-                    var I = 0;
-                    for (var i = H; (i < count) && (I <= (ViewportHeight + 1)); i++) {
-                        I++;
-                        source.Seek(offset, SeekOrigin.Begin);
-                        var sz = source.Read(buffer, 0, 16);
-                        var r = new StringBuilder();
-                        for (var j = 0; j < sz; j++) {
-                            r.AppendFormat("{0:X2}", buffer[j]);
-                            if (j != 15) {
-                                r.Append((j == 7)
-                                    ? "  "
-                                    : " ");
+                    context.DrawRectangle(background.Clone(), null, new Rect(0, 0, ActualWidth, ActualHeight));
+                    }
+                var source = Source;
+                var count = ItemsCount;
+                var itemsize = ItemSize;
+                var typeface = Typeface;
+                if ((source != null) && (count > 0) && (itemsize.Height > 0) && (typeface != null)) {
+                    lock (source)
+                        {
+                        var fontsize = TextBlock.GetFontSize(this);
+                        var H = (Int64)VerticalOffset;
+                        var y = PaddingTop;
+                        var offset = H * 16;
+                        var buffer = new Byte[16];
+                        var I = 0;
+                        for (var i = H; (i < count) && (I <= (ViewportHeight + 1)); i++) {
+                            I++;
+                            source.Seek(offset, SeekOrigin.Begin);
+                            var sz = source.Read(buffer, 0, 16);
+                            var r = new StringBuilder();
+                            for (var j = 0; j < sz; j++) {
+                                r.AppendFormat("{0:X2}", buffer[j]);
+                                if (j != 15) {
+                                    r.Append((j == 7)
+                                        ? "  "
+                                        : " ");
+                                    }
                                 }
+                            offset += sz;
+                            var text = new FormattedText(r.ToString(), CultureInfo.CurrentCulture, FlowDirection, typeface, fontsize, foreground);
+                            context.DrawText(text, new Point(PaddingLeft, y));
+                            y += itemsize.Height;
                             }
-                        offset += sz;
-                        var text = new FormattedText(r.ToString(), CultureInfo.CurrentCulture, FlowDirection, typeface, fontsize, foreground);
-                        context.DrawText(text, new Point(PaddingLeft, y));
-                        y += itemsize.Height;
                         }
                     }
                 }

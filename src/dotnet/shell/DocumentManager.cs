@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -53,7 +54,11 @@ namespace shell
                 var cms = ReadCms(o); if (cms != null) { r.Add(new View<ECms>(new ECms(cms))); return r; }
                 else
                     {
-                    r.Add(new View<EAsn1>(new EAsn1(o)));
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = new EAsn1(o)
+                            }));
                     }
                 }
             return r;

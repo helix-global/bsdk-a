@@ -1,5 +1,6 @@
 #include "hdrstop.h"
 #include "scard.h"
+#include "trace.h"
 
 #undef FormatMessage
 #define F(...) Any::FormatMessage(__VA_ARGS__)
@@ -348,15 +349,63 @@ ObjectValue DecodeSelectRequest(const vector<uint8_t>& request)
 
 ObjectValue DecodeSelectResponse(const vector<uint8_t>& request,const vector<uint8_t>& response)
     {
+    map<string,ObjectValue> values;
     #pragma region BER-TLV
     if ((response[0] >= 0) && (response[1] <= 0xbf)) {
         const auto P2 = (scard_select_P2*)&request[3];
         if (response[0] == 0x62) {
             ATLASSERT(P2->file_control_information == SELECT_RETURN_FCP_TEMPLATE);
-            ATLASSERT(response[1] == (response.size() - 4));
-            auto TLV = make_shared<TLVBER>(response[0],response[1],&response[2],response.size() - 4);
+            values.emplace(ScardDecoder::DecodeTLV(make_shared<bertlv_object>(&response[0]),
+                [](const shared_ptr<bertlv_object>& i) {
+                    switch (i->header) {
+                        case 0x62: return pair<string,ObjectValue>("FCP template", i->value);
+                        case 0x80: return pair<string,ObjectValue>("Number of data bytes in the file, excluding structural information", i->value);
+                        case 0x81: return pair<string,ObjectValue>("Number of data bytes in the file, including structural information", i->value);
+                        case 0x82: return pair<string,ObjectValue>("File descriptor", i->value);
+                        case 0x83: return pair<string,ObjectValue>("File identifier", i->value);
+                        case 0x84: return pair<string,ObjectValue>("DF name", i->value);
+                        case 0x85: return pair<string,ObjectValue>("Proprietary information not encoded in BER-TLV", i->value);
+                        case 0x86: return pair<string,ObjectValue>("Security attribute in proprietary format", i->value);
+                        case 0x87: return pair<string,ObjectValue>("Identifier of an EF containing an extension of the file control information", i->value);
+                        case 0x88: return pair<string,ObjectValue>("Short EF identifier", i->value);
+                        case 0x8a: return pair<string,ObjectValue>("Life cycle status byte", i->value);
+                        case 0x8b: return pair<string,ObjectValue>("Security attribute referencing the expanded format", i->value);
+                        case 0x8c: return pair<string,ObjectValue>("Security attribute in compact format", i->value);
+                        case 0x8d: return pair<string,ObjectValue>("Identifier of an EF containing security environment templates", i->value);
+                        case 0x8e: return pair<string,ObjectValue>("Channel security attribute", i->value);
+                        case 0xa0: return pair<string,ObjectValue>("Security attribute template for data objects", i->value);
+                        case 0xa1: return pair<string,ObjectValue>("Security attribute template in proprietary format", i->value);
+                        case 0xa2: return pair<string,ObjectValue>("Template consisting of one or more pairs of data objects", i->value);
+                        case 0xa5: return pair<string,ObjectValue>("Proprietary information encoded in BER-TLV", i->value);
+                        case 0xab: return pair<string,ObjectValue>("Security attribute template in expanded format", i->value);
+                        case 0xac: return pair<string,ObjectValue>("Cryptographic mechanism identifier template", i->value);
+                        }
+                    return pair<string,ObjectValue>(F("{%02x}", i->header),0);
+                    }));
+            return values;
             }
         }
     #pragma endregion
     return "{none}";
+    }
+
+template <>
+void TraceDescriptor::Pack(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) {
+    if (value != nullptr) {
+        PackType(target,ASN1_SEQ);
+        PackSize(target,(size_t)(-1));
+        Pack(target, value->dwProtocol);
+        Pack(target, value->cbPciLength);
+        PackType(target,ASN1_EOC);
+        }
+    else
+        {
+        PackType(target,ASN1_NULL);
+        PackSize(target,0x00);
+        }
+    }
+
+template <>
+void TraceDescriptor::Pack(vector<uint8_t>& target, const_ref(LPSCARD_IO_REQUEST) value) {
+    Pack(target,const_cast<LPCSCARD_IO_REQUEST>(value));
     }

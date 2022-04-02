@@ -5,13 +5,14 @@
 #include "feature.h"
 #include "scard.h"
 #include "scode.h"
+#include "trace.h"
 
 #undef FormatMessage
 
 #undef  THIS_FILE
 #define THIS_FILE "detours.cc"
 #undef  nameof
-#define nameof(E) string(#E)
+#define nameof(E) #E
 
 #ifdef USE_MSDETOURS
 
@@ -112,52 +113,16 @@ VOID DetAttach(PVOID *o, PVOID mine, const char* psz)
     }
 
 LONG WINAPI H(SCardConnectW)(SCARDCONTEXT Context,LPCWSTR Reader,DWORD ShareMode,DWORD PreferredProtocols,LPSCARDHANDLE Card,LPDWORD ActiveProtocol) {
+    TraceDescriptor D(nameof(SCardConnectW),"SCardConnectW(SCARDCONTEXT,LPCWSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD):LONG");
+    LONG scope = 0;
     LONG r = 0;
     TRY
-        #ifdef _WIN64
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Request", nameof(SCardConnectW)},
-            {"Parameters", {
-                {nameof(Context),Any::FormatMessage("%016I64x", Context)},
-                {nameof(Reader), Reader},
-                {nameof(ShareMode), ScardShareFlagsToString(ShareMode)},
-                {nameof(PreferredProtocols), ObjectValue::ScardProtocolToString(PreferredProtocols)}
-                }
-            }});
-        #else
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Request", nameof(SCardConnectW)},
-            {"Parameters", {
-                {nameof(Context),Any::FormatMessage("%016I32x", Context)},
-                {nameof(Reader), Reader},
-                {nameof(ShareMode), ScardShareFlagsToString(ShareMode)},
-                {nameof(PreferredProtocols), ObjectValue::ScardProtocolToString(PreferredProtocols)}
-                }
-            }});
-        #endif
+        D.Enter(scope,Context,Reader,ShareMode,PreferredProtocols);
         r = O(SCardConnectW)(Context,Reader,ShareMode,PreferredProtocols,Card,ActiveProtocol);
-        #ifdef _WIN64
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Response", nameof(SCardConnectW)},
-            {"Parameters", {
-                {nameof(Context),Any::FormatMessage("%016I64x", Context)},
-                {nameof(Card), (Card != nullptr) ? Any::FormatMessage("{%016I64x}:%016I64x", Card, *Card) : "{null}"},
-                {nameof(ActiveProtocol), (ActiveProtocol != nullptr) ? Any::FormatMessage("{%016I64x}:%s", ActiveProtocol, ObjectValue::ScardProtocolToString(*ActiveProtocol).c_str()) : "{null}"},
-                {"{RetVal}", (scode(r)).str()}
-                }
-            }});
-        #else
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Response", nameof(SCardConnectW)},
-            {"Parameters", {
-                {nameof(Context),Any::FormatMessage("%08I32x", Context)},
-                {nameof(Card), (Card != nullptr) ? Any::FormatMessage("{%08I32x}:%08I32x", Card, *Card) : "{null}"},
-                {nameof(ActiveProtocol), (ActiveProtocol != nullptr) ? Any::FormatMessage("{%08I32x}:%s", ActiveProtocol, ObjectValue::ScardProtocolToString(*ActiveProtocol).c_str()) : "{null}"},
-                {"{RetVal}", (scode(r)).str()}
-                }
-            }});
-        #endif
     FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context,Card,ActiveProtocol)
+            : D.Leave(scope, r,    r);
     END
     return r;
     }
@@ -165,58 +130,41 @@ LONG WINAPI H(SCardConnectW)(SCARDCONTEXT Context,LPCWSTR Reader,DWORD ShareMode
 LONG WINAPI H(SCardTransmit)(SCARDHANDLE Card,LPCSCARD_IO_REQUEST SendPci,LPCBYTE SendBuffer,DWORD SendLength,
                              LPSCARD_IO_REQUEST RecvPci,LPBYTE RecvBuffer,LPDWORD RecvLength)
     {
+    TraceDescriptor D(nameof(SCardTransmit),"SCardTransmit(SCARDHANDLE,LPCSCARD_IO_REQUEST,LPCBYTE,DWORD,LPSCARD_IO_REQUEST,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
     LONG r = 0;
     TRY
-        #ifdef _WIN64
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Request", nameof(SCardTransmit)},
-            {"Parameters", {
-                {nameof(Card),Any::FormatMessage("%016I64x", Card)},
-                {nameof(SendBuffer),Any(SendBuffer,SendLength)},
-                {"SendBuffer{Decoded}",ScardDecoder::DecodeTransmitRequest(SendPci->dwProtocol,{SendBuffer,SendLength})},
-                {nameof(SendPci),SendPci},
-                {nameof(RecvPci),RecvPci}
-                }
-            }});
-        #else
-        LoggingSource::Log(LoggingSeverity::Debug, {
-            {"Request", nameof(SCardTransmit)},
-            {"Parameters", {
-                {nameof(Card),Any::FormatMessage("%08I32x", Card)},
-                {nameof(SendBuffer),Any(SendBuffer,SendLength)},
-                {"SendBuffer{Decoded}",ScardDecoder::DecodeTransmitRequest(SendPci->dwProtocol,{SendBuffer,SendLength})},
-                {nameof(SendPci),SendPci},
-                {nameof(RecvPci),RecvPci}
-                }
-            }});
-        #endif
+        D.Enter(scope,Card,SendPci,vector<uint8_t>(SendBuffer,SendBuffer + SendLength));
         r = O(SCardTransmit)(Card,SendPci,SendBuffer,SendLength,RecvPci,RecvBuffer,RecvLength);
-        if (r == 0) {
-            #ifdef _WIN64
-            LoggingSource::Log(LoggingSeverity::Debug, {
-                {"Response", nameof(SCardTransmit)},
-                {"Parameters", {
-                    {nameof(Card),Any::FormatMessage("%016I64x", Card)},
-                    {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
-                    {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
-                    {nameof(RecvPci),RecvPci},
-                    {"{RetVal}", (scode(r)).str()}
-                    }
-                }});
-            #else
-            LoggingSource::Log(LoggingSeverity::Debug, {
-                {"Response", nameof(SCardTransmit)},
-                {"Parameters", {
-                    {nameof(Card),Any::FormatMessage("%08I32x", Card)},
-                    {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
-                    {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
-                    {nameof(RecvPci),RecvPci},
-                    {"{RetVal}", (scode(r)).str()}
-                    }
-                }});
-            #endif
-            }
+        //if (r == 0) {
+        //    #ifdef _WIN64
+        //    LoggingSource::Log(LoggingSeverity::Debug, {
+        //        {"Response", nameof(SCardTransmit)},
+        //        {"Parameters", {
+        //            {nameof(Card),Any::FormatMessage("%016I64x", Card)},
+        //            {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
+        //            {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
+        //            {nameof(RecvPci),RecvPci},
+        //            {"{RetVal}", (scode(r)).str()}
+        //            }
+        //        }});
+        //    #else
+        //    LoggingSource::Log(LoggingSeverity::Debug, {
+        //        {"Response", nameof(SCardTransmit)},
+        //        {"Parameters", {
+        //            {nameof(Card),Any::FormatMessage("%08I32x", Card)},
+        //            {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
+        //            {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
+        //            {nameof(RecvPci),RecvPci},
+        //            {"{RetVal}", (scode(r)).str()}
+        //            }
+        //        }});
+        //    #endif
+        //    }
     FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Card,RecvPci,vector<uint8_t>(RecvBuffer,RecvBuffer + *RecvLength))
+            : D.Leave(scope, r,    r);
     END
     return r;
     }

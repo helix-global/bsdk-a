@@ -17,6 +17,7 @@ public:
     Any(PCWCH);
     Any(PCCH);
     Any(const uint8_t* r, size_t length);
+    Any(const shared_ptr<vector<uint8_t>>& r);
     Any(bool);
     Any(uint16_t);
     Any(uint32_t);

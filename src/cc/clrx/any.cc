@@ -99,6 +99,23 @@ Any::Any(const uint8_t* r, const size_t length)
         }
     }
 
+Any::Any(const shared_ptr<vector<uint8_t>>& r)
+    {
+    VariantInit(&value);
+    if (r != nullptr) {
+        if (!r->empty()) {
+            CComSafeArray<uint8_t> o((ULONG)r->size());
+            V_VT(&value) = VT_UI1 | VT_ARRAY;
+            memcpy(o.m_psa->pvData, &(*r)[0], r->size());
+            V_ARRAY(&value) = o.Detach();
+            }
+        }
+    else
+        {
+        V_VT(&value) = VT_NULL;
+        }
+    }
+
 #define AnySpecification(Type,Suffix) \
 template<> \
 Any::Any(Type && r) \

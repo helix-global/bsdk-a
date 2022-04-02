@@ -33,39 +33,45 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>When overridden in a derived class, participates in rendering operations that are directed by the layout system. The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for later asynchronous use by layout and drawing. </summary>
         /// <param name="context">The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext context) {
-            var background = Background;
-            var foreground = TextBlock.GetForeground(this);
-            if (background != null)
-                {
-                context.DrawRectangle(background.Clone(), null, new Rect(0, 0, ActualWidth, ActualHeight));
-                }
-            var source = Source;
-            var count = ItemsCount;
-            var itemsize = ItemSize;
-            var typeface = Typeface;
-            if ((source != null) && (count > 0) && (itemsize.Height > 0) && (typeface != null)) {
-                lock (source)
+            lock(this) {
+                var background = Background;
+                var foreground = TextBlock.GetForeground(this);
+                if (background != null)
                     {
-                    var fontsize = TextBlock.GetFontSize(this);
-                    var H = (Int64)VerticalOffset;
-                    var y = PaddingTop;
-                    var offset = H * 16;
-                    var buffer = new Byte[16];
-                    var I = 0;
-                    for (var i = H; (i < count) && (I <= (ViewportHeight + 1)); i++) {
-                        I++;
-                        source.Seek(offset, SeekOrigin.Begin);
-                        var sz = source.Read(buffer, 0, 16);
-                        var r = new StringBuilder();
-                        for (var j = 0; j < sz; j++) {
-                            r.Append(IsPrintableCharacter(buffer[j])
-                                ? OEM.GetString(new Byte[]{buffer[j] })
-                                : ".");
+                    context.DrawRectangle(background.Clone(), null, new Rect(0, 0, ActualWidth, ActualHeight));
+                    }
+                var source = Source;
+                var count = ItemsCount;
+                var itemsize = ItemSize;
+                var typeface = Typeface;
+                if ((source != null) && (count > 0) && (itemsize.Height > 0) && (typeface != null)) {
+                    lock (source)
+                        {
+                        var fontsize = TextBlock.GetFontSize(this);
+                        var H = (Int64)VerticalOffset;
+                        var y = PaddingTop;
+                        var offset = H * 16;
+                        var buffer = new Byte[16];
+                        var I = 0;
+                        for (var i = H;
+                            (i < count) &&
+                            (I <= (ViewportHeight + 1)) &&
+                            (offset <= count); i++)
+                            {
+                            I++;
+                            source.Seek(offset, SeekOrigin.Begin);
+                            var sz = source.Read(buffer, 0, 16);
+                            var r = new StringBuilder();
+                            for (var j = 0; j < sz; j++) {
+                                r.Append(IsPrintableCharacter(buffer[j])
+                                    ? OEM.GetString(new Byte[]{buffer[j] })
+                                    : ".");
+                                }
+                            offset += sz;
+                            var text = new FormattedText(r.ToString(), CultureInfo.CurrentCulture, FlowDirection, typeface, fontsize, foreground);
+                            context.DrawText(text, new Point(PaddingLeft, y));
+                            y += itemsize.Height;
                             }
-                        offset += sz;
-                        var text = new FormattedText(r.ToString(), CultureInfo.CurrentCulture, FlowDirection, typeface, fontsize, foreground);
-                        context.DrawText(text, new Point(PaddingLeft, y));
-                        y += itemsize.Height;
                         }
                     }
                 }

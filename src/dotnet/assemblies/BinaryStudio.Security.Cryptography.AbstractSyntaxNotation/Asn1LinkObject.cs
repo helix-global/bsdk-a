@@ -23,7 +23,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
             U = source;
-            State = source.State | ObjectState.DisposeUnderlyingObject;
             }
 
         public override void WriteTo(Stream target)
@@ -51,7 +50,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            if (State.HasFlag(ObjectState.DisposeUnderlyingObject)) { Dispose(ref U); }
             base.Dispose(disposing);
             }
         }

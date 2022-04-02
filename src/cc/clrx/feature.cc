@@ -109,6 +109,11 @@ template<> ObjectValue::ObjectValue(const uint8_t* r, const DWORD* count):
         }
     }
 
+ObjectValue::ObjectValue(const shared_ptr<vector<uint8_t>>& r):
+    Value(r)
+    {
+    }
+
 void ObjectValue::WriteTo(wstringstream& o, int level) const {
     if (IsFeature) { Feature.WriteTo(o, level); }
     else

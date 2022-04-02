@@ -31,4 +31,6 @@
 #include <detours.h>
 #endif
 
+using namespace std;
+
 #endif //PCH_H

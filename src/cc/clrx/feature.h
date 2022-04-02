@@ -35,6 +35,7 @@ public:
     ObjectValue(const ObjectFeature& r);
     ObjectValue(ObjectFeature&& r);
     ObjectValue(const char* r);
+    ObjectValue(const shared_ptr<vector<uint8_t>>& r);
     template<class T> ObjectValue(const uint8_t* r,const  T* count);
     template<class T> ObjectValue(const T& r);
 public:

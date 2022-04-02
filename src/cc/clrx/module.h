@@ -25,6 +25,7 @@ private:
     static HMODULE Instance;
 public:
     static string ProcessName;
+    static string FullProcessName;
     static string ModuleName;
 private:
     template<class E> static HRESULT QueryFullProcessImageName(HMODULE Module,DWORD Flags,E* Target,DWORD* Size);

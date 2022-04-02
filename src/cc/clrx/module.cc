@@ -12,6 +12,7 @@ LONG Module::s_nThreadCnt =  0;
 HMODULE Module::Instance = nullptr;
 string Module::ProcessName = "{none}";
 string Module::ModuleName  = "{none}";
+string Module::FullProcessName  = "{none}";
 
 BOOL Module::ProcessAttach(const HMODULE Module)
     {
@@ -19,8 +20,9 @@ BOOL Module::ProcessAttach(const HMODULE Module)
     Instance = Module;
     s_nTlsIndent = TlsAlloc();
     s_nTlsThread = TlsAlloc();
-    ModuleName  = Path::GetFileName(GetModuleFileName<char>(Module));
-    ProcessName = Path::GetFileName(GetModuleFileName<char>(nullptr));
+    ModuleName      = Path::GetFileName(GetModuleFileName<char>(Module));
+    FullProcessName = GetModuleFileName<char>(nullptr);
+    ProcessName     = Path::GetFileName(FullProcessName);
     LoggingSource::Log(LoggingSeverity::Info, "Module::ProcessAttach{%p:%s}", Module,ProcessName.c_str());
     ThreadAttach(Module);
     if (FAILED(hr = AttachDetours())) {

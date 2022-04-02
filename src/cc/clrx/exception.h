@@ -6,6 +6,8 @@
     rename("ReportEvent", "MSCorReportEvent") \
     raw_interfaces_only
 
+#define THIS_FILE    __FILE__
+#define __EFUNCSIG__ __FUNCSIG__
 
 typedef mscorlib::_Exception IException;
 typedef mscorlib::_SerializationInfo ISerializationInfo;
@@ -86,3 +88,77 @@ public:
 private:
     HRESULT SCode;
     };
+
+#pragma pack(push)
+#pragma pack(1)
+template<class T> class __declspec(novtable) NullableReference{
+public:
+    BOOL HasValue;
+    T Value;
+public:
+    NullableReference():
+        HasValue(false),Value(T())
+        {
+        }
+    NullableReference(const T& value):
+        HasValue(true),Value(value)
+        {
+        }
+    NullableReference(const NullableReference<T>& value):
+        HasValue(value.HasValue),Value(value.Value)
+        {
+        }
+    NullableReference(const nullptr_t):
+        HasValue(false),Value(T())
+        {
+        }
+public:
+    NullableReference<T>& operator=(const NullableReference<T>& value) {
+        HasValue = value.HasValue;
+        Value = value.Value;
+        return *this;
+        }
+    NullableReference<T>& operator=(NullableReference<T>&& value) {
+        HasValue = value.HasValue;
+        Value = value.Value;
+        return *this;
+        }
+    template<class P>
+    NullableReference<T>& operator=(const P& value) {
+        HasValue = true;
+        Value = value;
+        return *this;
+        }
+public:
+    operator T() {
+        if (!HasValue) {
+            throw __EFUNCSRC__.GetExceptionForHR(COR_E_NULLREFERENCE);
+            }
+        return Value;
+        }
+    bool operator == (const nullptr_t r) const {
+        return (r == nullptr)
+            ? !HasValue
+            :  HasValue;
+        }
+    bool operator != (const nullptr_t r) const {
+        return (r != nullptr)
+            ?  HasValue
+            : !HasValue;
+        }
+public:
+    static const NullableReference& Empty;
+    };
+#pragma pack(pop)
+
+template<class T> const NullableReference<T>& NullableReference<T>::Empty = NullableReference<T>();
+
+template<typename E, typename T> E union_cast(const T& value) {
+    union U
+        {
+        T first;
+        E second;
+        } u;
+    u.first = value;
+    return u.second;
+    }

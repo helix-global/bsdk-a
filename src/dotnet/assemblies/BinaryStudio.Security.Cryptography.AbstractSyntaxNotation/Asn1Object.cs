@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define FEATURE_ASN1_INCOMPLETED
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,7 +38,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             SealedSize              = 0x080,
             DisposeUnderlyingObject = 0x100,
             DisposeContent          = 0x200,
+            #if FEATURE_ASN1_INCOMPLETED
             Incompleted             = 0x400
+            #endif
             }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private ObjectState state;
@@ -48,7 +51,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
+        [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
         [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return state.HasFlag(ObjectState.Indefinite);          }}
@@ -184,10 +187,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * <summary>Gets the number of elements in the collection.</summary>
          * <returns>The number of elements in the collection.</returns>
          * */
-        public virtual Int32 Count
-            {
-            get { return sequence.Count; }
-            }
+        public virtual Int32 Count { get {
+            if (IsDisposed) { throw new ObjectDisposedException("this"); }
+            return sequence.Count;
+            }}
         #endregion
         #region P:ICollection<Asn1Object>.IsReadOnly:Boolean
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Boolean IsReadOnly { get;set; }
@@ -248,9 +251,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
          * <exception cref="NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
          * */
-        public virtual Asn1Object this[Int32 index]
-            {
-            get { return sequence[index]; }
+        public virtual Asn1Object this[Int32 index] {
+            get
+                {
+                if (IsDisposed) { throw new ObjectDisposedException("this"); }
+                return sequence[index];
+                }
             set
                 {
                 if (IsReadOnly) { throw new NotSupportedException(); }
@@ -654,6 +660,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             }
                         else
                             {
+                            #if FEATURE_ASN1_INCOMPLETED
                             if (Decode(r))
                                 {
                                 sequence.AddRange(r);
@@ -662,6 +669,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                                 state |= ObjectState.Incompleted;
                                 return true;
                                 }
+                            #endif
+                            state |= ObjectState.Failed;
+                            return false;
                             }
                         }
                     state |= ObjectState.Failed;
@@ -1165,7 +1175,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         sequence.Clear();
                         sequence = null;
                         }
-                    if (state.HasFlag(ObjectState.DisposeContent)) { Dispose(ref content); }
+                    //if (state.HasFlag(ObjectState.DisposeContent)) { Dispose(ref content); }
                     content = null;
                     state |= ObjectState.Disposed;
                     Interlocked.Decrement(ref gref);
