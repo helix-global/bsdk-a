@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Windows.Controls;
 using BinaryStudio.PlatformUI.Shell;
@@ -19,6 +20,20 @@ namespace shell
             this.dockgroup = dockgroup;
             }
 
+        private static Object LoadSQLiteDatabase(String filename)
+            {
+            try
+                {
+                var r = new SQLiteConnection($"DataSource={filename}");
+                r.Open();
+                return r;
+                }
+            catch
+                {
+                return null;
+                }
+            }
+
         #region M:Max<T>(T[],T[]):T[]
         private static T[] Max<T>(T[] x, T[] y) {
             return (x.Length >= y.Length)
@@ -30,9 +45,12 @@ namespace shell
         public Object LoadObject(String filename) {
             try
                 {
-                return Max(
+                var o = LoadSQLiteDatabase(filename);
+                if (o != null) { return o; }
+                o = Max(
                     Asn1Object.Load(filename,Asn1ReadFlags.IgnoreLeadLineEnding).ToArray(),
                     Asn1Object.Load(filename).ToArray());
+                return o;
                 }
             catch (Exception e)
                 {
@@ -60,6 +78,14 @@ namespace shell
                             Content = new EAsn1(o)
                             }));
                     }
+                }
+            else
+                {
+                r.Add(new View<Object>(
+                    new ContentControl
+                        {
+                        Content = source
+                        }));
                 }
             return r;
             }

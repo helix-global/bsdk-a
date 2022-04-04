@@ -87,7 +87,9 @@ namespace shell
 
         private void ConvertToBase64Executed(Object sender, ExecutedRoutedEventArgs e)
             {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog{
+                Filter = "All Files (*.*)|*.*"
+                };
             if (dialog.ShowDialog(this) == true)
                 {
                 var r = File.ReadAllBytes(dialog.FileName);
@@ -102,7 +104,9 @@ namespace shell
 
         private void OpenExecuted(Object sender, ExecutedRoutedEventArgs e)
             {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog{
+                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db"
+                };
             if (dialog.ShowDialog(this) == true)
                 {
                 LoadFrom(dialog.FileName);

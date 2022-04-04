@@ -12,6 +12,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.2" />
+    <PackageReference Include="stub.system.data.sqlite.core.netframework" Version="1.0.113">
+      <GeneratePathProperty>true</GeneratePathProperty>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Remove="App.xaml" />
@@ -26,6 +31,12 @@
     <Reference Include="PresentationFramework.Classic">
       <Private>True</Private>
     </Reference>
+    <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x86\SQLite.Interop.dll" Link="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x64\SQLite.Interop.dll" Link="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
