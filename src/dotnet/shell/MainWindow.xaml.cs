@@ -37,7 +37,7 @@ namespace shell
 
         private void OnLoad(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[0]);
+            Theme.Apply(Theme.Themes[1]);
             UpdateCommandBindings();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {
@@ -61,7 +61,7 @@ namespace shell
 
         private void Initialize()
             {
-            //LoadFrom(@"C:\TFS\icao\rfid\unsorted\efsod047.p7b");
+            LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-04-02-17-42-30.db");
             }
 
         private void LoadFrom(String filename) {

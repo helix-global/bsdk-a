@@ -142,7 +142,7 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
                 return;
             var hideWindowElement = AutoHideWindowElement;
             StopMouseObserver();
-            if (Keyboard.FocusedElement != null && FocusHelper.IsKeyboardFocusWithin(AutoHideWindow))
+            if (Keyboard.FocusedElement != null && FocusOperations.IsKeyboardFocusWithin(AutoHideWindow))
                 Keyboard.ClearFocus();
             AutoHideChannelControl.AutoHideSlideout = null;
             AutoHideWindow.Visibility = Visibility.Collapsed;

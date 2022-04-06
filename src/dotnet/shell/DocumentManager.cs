@@ -25,8 +25,17 @@ namespace shell
             try
                 {
                 var r = new SQLiteConnection($"DataSource={filename}");
-                r.Open();
-                return r;
+                try
+                    {
+                    r.Open();
+                    r.GetSchema("Catalogs");
+                    return r;
+                    }
+                catch
+                    {
+                    r.Dispose();
+                    return null;
+                    }
                 }
             catch
                 {
@@ -78,6 +87,10 @@ namespace shell
                             Content = new EAsn1(o)
                             }));
                     }
+                }
+            else if (source is SQLiteConnection sqlitec)
+                {
+                r.Add(new View<SQLiteConnectionSchemeBrowser>(new SQLiteConnectionSchemeBrowser(sqlitec))); return r;
                 }
             else
                 {

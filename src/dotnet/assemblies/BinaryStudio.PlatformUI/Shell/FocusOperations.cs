@@ -11,13 +11,13 @@ namespace BinaryStudio.PlatformUI
     /// <summary>
     /// Manages focus tasks.
     /// </summary>
-    public static class FocusHelper
+    public static class FocusOperations
         {
         #region P:FocusHelper.FocusTarget:UIElement
         /// <summary>
         /// Gets or sets a focus target for an element. The focus target is automatically focused whenever the DependencyObject that the target is attached to receives direct keyboard focus.
         /// </summary>
-        public static readonly DependencyProperty FocusTargetProperty = DependencyProperty.RegisterAttached("FocusTarget", typeof(UIElement), typeof(FocusHelper), new FrameworkPropertyMetadata(null, OnFocusTargetChanged));
+        public static readonly DependencyProperty FocusTargetProperty = DependencyProperty.RegisterAttached("FocusTarget", typeof(UIElement), typeof(FocusOperations), new FrameworkPropertyMetadata(null, OnFocusTargetChanged));
         private static void OnFocusTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             var source = (UIElement)d;
             if (e.NewValue == null) {
@@ -56,6 +56,17 @@ namespace BinaryStudio.PlatformUI
             element.SetValue(FocusTargetProperty, value);
             }
         #endregion
+
+        public static readonly DependencyProperty FocusedProperty = DependencyProperty.RegisterAttached("Focused", typeof(Boolean), typeof(FocusOperations), new PropertyMetadata(default(Boolean)));
+        public static void SetFocused(DependencyObject element, Boolean value)
+            {
+            element.SetValue(FocusedProperty, value);
+            }
+
+        public static Boolean GetFocused(DependencyObject element)
+            {
+            return (Boolean) element.GetValue(FocusedProperty);
+            }
 
         /// <summary>
         /// Either sends focus to the <see cref="T:System.Windows.FrameworkElement" /> immediately or delays focusing until the <see cref="T:System.Windows.FrameworkElement" /> is loaded. The last element pending focus on Loaded will be focused and all previous <see cref="T:System.Windows.FrameworkElement" />s will not be focused.

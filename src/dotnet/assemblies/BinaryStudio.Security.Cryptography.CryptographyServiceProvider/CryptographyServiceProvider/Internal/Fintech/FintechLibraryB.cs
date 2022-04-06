@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -205,7 +206,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 GetErrorInfo(0, ref i);
                 var e = From(i, r);
                 SetErrorInfo(0, IntPtr.Zero);
-                Marshal.FinalReleaseComObject(i);
+                if (i != null)
+                    {
+                    Marshal.FinalReleaseComObject(i);
+                    }
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
             }
@@ -796,60 +800,67 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         private void ReportStatistics() {
             if (logger.IsEnabled(LogLevel.Trace)) {
-                GetClassObject<IStatTable>(out var table);
-                if (table != null) {
-                    var count = table.Count;
-                    var rows = new List<StatRecord>();
-                    var scces = 0;
-                    var errrs = 0;
-                    for (var i = 0; i < count; i++) {
-                        var j = table[i];
-                        var countryCode = j.Country?.ToLowerInvariant();
-                        var signingTime = j.SigningTime;
-                        var
-                        countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
-                        countryName = countryName ?? (IcaoCountry.ThreeLetterCountries.TryGetValue(countryCode, out country) ? country.RussianShortName : "Не удалось опознать страну");
-                        rows.Add(new StatRecord
-                            {
-                            IsError = j.IsError,
-                            CountryCode = countryCode,
-                            CertificateDigestAlgorithm = FormatOID(j.CertificateDigestAlgorithm),
-                            CertificateSignatureAlgorithm = FormatOID(j.CertificateSignatureAlgorithm),
-                            SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
-                            SignerSignatureAlgorithm = FormatOID(j.SignerSignatureAlgorithm),
-                            Organization = j.Organization,
-                            Source = j.Source ?? "Нет",
-                            ActualDigestMethod = FormatOID(j.ActualDigestMethod),
-                            Modifiers = j.Modifiers,
-                            CCryptError = j.CCryptError,
-                            BCryptError = j.BCryptError,
-                            CertificateIssuer = j.CertificateIssuer,
-                            CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
-                            CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
-                            SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
-                            Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "Нет данных",
-                            CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
-                            CountryName = countryName
-                            });
-                        if (j.IsError)
-                            {
-                            errrs++;
+                try
+                    {
+                    GetClassObject<IStatTable>(out var table);
+                    if (table != null) {
+                        var count = table.Count;
+                        var rows = new List<StatRecord>();
+                        var scces = 0;
+                        var errrs = 0;
+                        for (var i = 0; i < count; i++) {
+                            var j = table[i];
+                            var countryCode = j.Country?.ToLowerInvariant();
+                            var signingTime = j.SigningTime;
+                            var
+                            countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
+                            countryName = countryName ?? (IcaoCountry.ThreeLetterCountries.TryGetValue(countryCode, out country) ? country.RussianShortName : "Не удалось опознать страну");
+                            rows.Add(new StatRecord
+                                {
+                                IsError = j.IsError,
+                                CountryCode = countryCode,
+                                CertificateDigestAlgorithm = FormatOID(j.CertificateDigestAlgorithm),
+                                CertificateSignatureAlgorithm = FormatOID(j.CertificateSignatureAlgorithm),
+                                SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
+                                SignerSignatureAlgorithm = FormatOID(j.SignerSignatureAlgorithm),
+                                Organization = j.Organization,
+                                Source = j.Source ?? "Нет",
+                                ActualDigestMethod = FormatOID(j.ActualDigestMethod),
+                                Modifiers = j.Modifiers,
+                                CCryptError = j.CCryptError,
+                                BCryptError = j.BCryptError,
+                                CertificateIssuer = j.CertificateIssuer,
+                                CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
+                                CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
+                                SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
+                                Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "Нет данных",
+                                CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
+                                CountryName = countryName
+                                });
+                            if (j.IsError)
+                                {
+                                errrs++;
+                                }
+                            else
+                                {
+                                scces++;
+                                }
                             }
-                        else
-                            {
-                            scces++;
+                        var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
+                        using (var stream = File.OpenWrite(filename))
+                        using (var target = new StreamWriter(stream, Encoding.UTF8)) {
+                            var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
+                            target.WriteLine($"{String.Join(";", descriptors.Select(i => i.DisplayName))}");
+                            foreach (var row in rows.OrderBy(i => i.CountryCode)) {
+                                target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
+                                }
                             }
+                        Dispose(ref table);
                         }
-                    var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
-                    using (var stream = File.OpenWrite(filename))
-                    using (var target = new StreamWriter(stream, Encoding.UTF8)) {
-                        var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
-                        target.WriteLine($"{String.Join(";", descriptors.Select(i => i.DisplayName))}");
-                        foreach (var row in rows.OrderBy(i => i.CountryCode)) {
-                            target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
-                            }
-                        }
-                    Dispose(ref table);
+                    }
+                catch (Exception e)
+                    {
+                    Debug.WriteLine(Exceptions.ToString(e));
                     }
                 }
             }

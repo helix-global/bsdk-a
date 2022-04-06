@@ -87,6 +87,8 @@ namespace Operations
 
         #region M:Execute(TextWriter)
         public override void Execute(TextWriter output) {
+            var timer = new Stopwatch();
+            timer.Start();
             try
                 {
                 ThreadPool.GetMinThreads(out var prevThreads, out var prevPorts);
@@ -102,7 +104,7 @@ namespace Operations
                             var j = 0;
                             var Files = Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).ToArray();
                             NumberOfFiles = Files.Length;
-                            #if DEBUG
+                            #if DEBUG2
                             foreach (var i in Files.OrderBy(i => i)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)
@@ -139,10 +141,12 @@ namespace Operations
                             Execute(context, store, InputFileName);
                             }
                         }
+                timer.Stop();
                 Write(Out,ConsoleColor.Gray,  "Min:");Write(Out,ConsoleColor.Cyan, $"{{{MinElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Max:");Write(Out,ConsoleColor.Cyan, $"{{{MaxElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Avg:");Write(Out,ConsoleColor.Cyan, $"{{{AvgElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Errors:");Write(Out,ConsoleColor.Red, $"{{{NumberOfErrors}}}");
+                Write(Out,ConsoleColor.Gray, ":Total:" );Write(Out,ConsoleColor.Yellow, $"{{{timer.Elapsed}}}");
                 Out.WriteLine();
                 }
             catch(OperationCanceledException)

@@ -11,6 +11,9 @@
         Background="{DynamicResource ControlBrushKey}"
         Foreground="{DynamicResource ControlTextBrushKey}"
         Title="MainWindow" Height="450" Width="800" Loaded="OnLoad">
+  <u:MainWindow.Resources>
+    <ResourceDictionary Source="DataTemplates.xaml"/>
+  </u:MainWindow.Resources>
   <u:MainWindow.CommandBindings>
     <!--<CommandBinding Command="Open"/>-->
   </u:MainWindow.CommandBindings>

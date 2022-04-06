@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32.SafeHandles;
 
 namespace BinaryStudio.IO
@@ -40,7 +41,7 @@ namespace BinaryStudio.IO
                 #else
                 FileHandle = CreateFile(filename, FileGenericAccess.Read, FileShare.Read|FileShare.Delete, null,
                     FileMode.Open, flags: FILE_ATTRIBUTE_TEMPORARY, templatefile: IntPtr.Zero);
-                if (FileHandle.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error(), filename); }
+                if (FileHandle.IsInvalid) { throw new HResultException(Marshal.GetLastWin32Error()); }
                 var i = default(LargeInteger);
                 if (!GetFileSizeEx(FileHandle, ref i)) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
                 var sz = i.QuadPart;

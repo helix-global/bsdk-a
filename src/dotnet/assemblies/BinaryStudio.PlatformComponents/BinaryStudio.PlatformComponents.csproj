@@ -8,6 +8,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.PlatformCore\BinaryStudio.PlatformCore.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>

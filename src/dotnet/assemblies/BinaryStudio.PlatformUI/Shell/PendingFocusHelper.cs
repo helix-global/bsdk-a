@@ -45,7 +45,7 @@ namespace BinaryStudio.PlatformUI
             if (focusAction != null)
                 focusAction(element);
             else
-                FocusHelper.MoveFocusInto(element);
+                FocusOperations.MoveFocusInto(element);
             }
 
         public static void SetFocusOnLoad(FrameworkElement element, Action<FrameworkElement> focusAction = null)
