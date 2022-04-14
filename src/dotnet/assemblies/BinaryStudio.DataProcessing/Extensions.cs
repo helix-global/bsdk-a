@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace BinaryStudio.DataProcessing
     {
@@ -30,6 +32,12 @@ namespace BinaryStudio.DataProcessing
             if (condition) {
                 source.Add(value);
                 }
+            }
+
+        public static IQueryable AsQueryable(this DbCommand source)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return (new DBQuery(source));
             }
         }
     }

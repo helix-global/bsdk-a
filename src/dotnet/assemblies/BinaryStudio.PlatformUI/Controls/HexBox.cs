@@ -97,11 +97,8 @@ namespace BinaryStudio.PlatformUI.Controls
         #endregion
         #region P:Source:Object
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(Object), typeof(HexBox), new PropertyMetadata(default(Object), OnSourceChanged));
-        private static void OnSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBox);
-            if (source != null)
-                {
+        private static void OnSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBox source) {
                 source.OnSourceChanged();
                 }
             }

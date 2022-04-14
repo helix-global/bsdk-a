@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Linq;
+using System.Linq.Expressions;
+using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformUI;
 
 namespace shell
@@ -150,6 +153,25 @@ namespace shell
         IEnumerator IEnumerable.GetEnumerator()
             {
             return GetEnumerator();
+            }
+
+        public IQueryable SelectedTable
+            {
+            get
+                {
+                var connection = new SqlConnection("data source=localhost;initial catalog=icao;integrated security=True;MultipleActiveResultSets=True");
+                //var connection = new SqlConnection(@"Data Source=DEV-SR-SQL02\SQL2008SRV;Initial Catalog=CensorDb_ulyanov;Persist Security Info=True;User ID=sa;Password=escort");
+                connection.Open();
+                return
+                    new SqlCommand(@"SELECT * FROM [dbo].[T_EthalonStorageTable]", connection){
+                        CommandTimeout = 600,
+                        CommandType = CommandType.Text
+                        }.AsQueryable();
+                // //return (new DBQueryProvider(new SqlQueryFactory())).CreateQuery(
+                //    Expression.Constant(new SqlCommand(@"SELECT * FROM [dbo].[T1]", connection){
+                //        CommandType = CommandType.Text
+                //        }));
+                }
             }
         }
     }

@@ -1,0 +1,127 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Shell.Controls">
+  <Style x:Key="{x:Type e:FormFrame}" TargetType="{x:Type e:FormFrame}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:FormFrame}">
+          <Grid>
+            <ContentPresenter Content="{TemplateBinding Content}"/>
+            <Grid Margin="-2">
+              <Grid.Resources>
+                <Style TargetType="{x:Type Thumb}">
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Rectangle Fill="{TemplateBinding Background}"/>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </Grid.Resources>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Thumb Grid.Column="1" Grid.Row="0" Background="Transparent" Height="5" Cursor="SizeNS" x:Name="ThumbTop"/>
+              <Thumb Grid.Column="1" Grid.Row="2" Background="Transparent" Height="5" Cursor="SizeNS" x:Name="ThumbBottom"/>
+              <Thumb Grid.Column="0" Grid.Row="1" Background="Transparent" Width="5"  Cursor="SizeWE" x:Name="ThumbLeft"/>
+              <Thumb Grid.Column="2" Grid.Row="1" Background="Transparent" Width="5"  Cursor="SizeWE" x:Name="ThumbRight"/>
+              <Thumb Grid.Column="0" Grid.Row="0" Background="Transparent" Width="5" Height="5" Cursor="SizeNWSE" x:Name="ThumbLeftTop"/>
+              <Thumb Grid.Column="2" Grid.Row="0" Background="Transparent" Width="5" Height="5" Cursor="SizeNESW" x:Name="ThumbRightTop"/>
+              <Thumb Grid.Column="0" Grid.Row="2" Background="Transparent" Width="5" Height="5" Cursor="SizeNESW" x:Name="ThumbLeftBottom"/>
+              <Thumb Grid.Column="2" Grid.Row="2" Background="Transparent" Width="5" Height="5" Cursor="SizeNWSE" x:Name="ThumbRightBottom"/>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style x:Key="{x:Type e:ToolWindow}" TargetType="{x:Type e:ToolWindow}">
+    <Setter Property="Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
+    <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource HighlightBrushKey}"/>
+    <Setter Property="ActiveGlowColor" Value="{DynamicResource ActiveGlowColorKey}"/>
+    <Setter Property="InactiveGlowColor" Value="{DynamicResource InactiveGlowColorKey}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <!--<Setter Property="AllowsTransparency" Value="True"/>
+    <Setter Property="ResizeMode" Value="NoResize"/>
+    <Setter Property="WindowStyle" Value="None"/>
+    -->
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:ToolWindow}">
+          <Decorator>
+            <Grid ClipToBounds="True">
+              <Decorator>
+                <Grid Background="{TemplateBinding Background}">
+                  <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
+                    <Grid>
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                      </Grid.RowDefinitions>
+                      <e:WindowTitleBar Grid.Row="0" BorderThickness="0,0,0,0" BorderBrush="{x:Null}" Background="{TemplateBinding BorderBrush}">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="1" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" Margin="5,2,5,2"/>
+                          <e:WindowTitleBarButton Grid.Column="3" Width="20" Height="20" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}" Command="Close"
+                                                  HoverBackground="#e81123"
+                                                  GlyphForeground="White">
+                            <Path Data="F1M0 0L2 0 5 3 8 0 10 0 6 4 10 8 8 8 5 5 2 8 0 8 4 4 0 0z" Fill="White" Width="10" Height="10"/>
+                          </e:WindowTitleBarButton>
+                          <Rectangle Height="6" Margin="8,0,4,0" VerticalAlignment="Center" Opacity="0.5" DockPanel.Dock="Left" UseLayoutRounding="True"
+                                      Grid.Column="2">
+                            <Rectangle.Fill>
+                              <DrawingBrush TileMode="Tile" Stretch="None" Viewport="1,1,4,4" ViewportUnits="Absolute" Viewbox="0,0,4,5"  ViewboxUnits="Absolute">
+                                <DrawingBrush.Drawing>
+                                  <DrawingGroup>
+                                    <DrawingGroup.GuidelineSet>
+                                      <GuidelineSet GuidelinesX="0.1"/>
+                                    </DrawingGroup.GuidelineSet>
+                                    <DrawingGroup.Children>
+                                      <GeometryDrawing Geometry="M 0 0 L 1 0 M 2 2 L 3 2 M 0 4 L 1 4">
+                                        <GeometryDrawing.Pen>
+                                          <Pen Brush="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Foreground}" Thickness="1"/>
+                                        </GeometryDrawing.Pen>
+                                      </GeometryDrawing>
+                                    </DrawingGroup.Children>
+                                  </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                              </DrawingBrush>
+                            </Rectangle.Fill>
+                          </Rectangle>
+                        </Grid>
+                      </e:WindowTitleBar>
+                      <Border Grid.Row="1" Background="{TemplateBinding Background}">
+                        <AdornerDecorator>
+                          <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </AdornerDecorator>
+                      </Border>
+                    </Grid>
+                  </Border>
+                </Grid>
+              </Decorator>
+            </Grid>
+          </Decorator>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="False">
+              <Setter Property="BorderBrush" Value="{DynamicResource ControlBrushKey}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

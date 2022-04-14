@@ -2,35 +2,27 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace BinaryStudio.PlatformUI
+namespace BinaryStudio.PlatformUI.Converters
     {
-    public class SubtractionConverter : IValueConverter
+    public class IsNull : IValueConverter
         {
-        public Double Subtrahend
-            {
-            get;
-            set;
-            }
-
-        /// <summary>Converts a value. </summary>
+        /// <summary>Converts a value.</summary>
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         /// <param name="value">The value produced by the binding source.</param>
         /// <param name="targetType">The type of the binding target property.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
-            {
-            var num = (Double)value;
-            return num - Subtrahend;
+        Object IValueConverter.Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
+            return (value == null) || (value is DBNull);
             }
 
-        /// <summary>Converts a value. </summary>
+        /// <summary>Converts a value.</summary>
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         /// <param name="value">The value that is produced by the binding target.</param>
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
+        Object IValueConverter.ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
             {
             throw new NotImplementedException();
             }

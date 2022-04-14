@@ -232,7 +232,6 @@ namespace BinaryStudio.DataProcessing
             }
         #endregion
 
-
         private static readonly IComparer<PropertyDescriptor> DefaultComparer = new PropertyDescriptorComparer();
         private class PropertyDescriptorComparer : IComparer<PropertyDescriptor>
             {

@@ -42,6 +42,13 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             CommandManager.AddExecutedHandler(this, OnExecutedCommand);
             }
 
+        public static readonly DependencyProperty LinkedPanelProperty = DependencyProperty.Register("LinkedPanel", typeof(HexBoxPanelH), typeof(HexBoxPanelH), new PropertyMetadata(default(HexBoxPanelH)));
+        public HexBoxPanelH LinkedPanel
+            {
+            get { return (HexBoxPanelH) GetValue(LinkedPanelProperty); }
+            set { SetValue(LinkedPanelProperty, value); }
+            }
+
         #region P:Background:Brush
         public static readonly DependencyProperty BackgroundProperty = Control.BackgroundProperty.AddOwner(typeof(HexBoxPanelH), new FrameworkPropertyMetadata(Brushes.Transparent, OnBackgroundChanged));
         private static void OnBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
@@ -268,9 +275,11 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
 
-        private void OnSelectionChanged()
-            {
+        protected virtual void OnSelectionChanged() {
             ShowOrHideSelection();
+            if (LinkedPanel != null) {
+                LinkedPanel.Selection = Selection;
+                }
             }
 
         public RangeSelection Selection

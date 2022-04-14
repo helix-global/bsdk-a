@@ -4,11 +4,16 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Classic;component/Themes/Classic.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/ProgressBar.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/DataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TreeView.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/ScrollViewer.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TabControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/Menu.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TextBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/ListBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/Button.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/StatusBar.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Geometries.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="Accent3BrushKey"                        Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
@@ -64,6 +69,12 @@
   <SolidColorBrush x:Key="TabItemMouseOverBackgroundBrushKey"         Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}" Opacity="0.2"/>
   <SolidColorBrush x:Key="TabItemHighlightBackgroundBrushKey"         Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
   <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrushKey"     Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonBackgroundBrushKey"                   Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonBorderBrushKey"                       Color="{DynamicResource {x:Static SystemColors.ControlDarkColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonMouseOverBorderBrushKey"              Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonMouseOverBackgroundBrushKey"          Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonDefaultBackgroundBrushKey"            Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
+  <SolidColorBrush x:Key="ButtonPressedBackgroundBrushKey"            Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
 
   <u:MarginFromLeft x:Key="MarginFromLeft"/>
   <Style TargetType="{x:Type Window}" x:Key="{x:Type Window}">

@@ -408,9 +408,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             DateTime CertificateNotBefore { get; }
             DateTime CertificateNotAfter { get; }
             String CertificateIssuer { get; }
+            String CertificateSubject { get; }
             String CertificateAuthorityKeyIdentifier { get; }
+            String ActualContentDigestMethod { get; }
             DateTimeRef SigningTime { get; }
             String Stream { get; }
+            Int32 MessageSize { get; }
+            Int32 ContentSize { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -785,6 +789,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             [DisplayName("Издатель")] public String CertificateIssuer { get;set; }
             [DisplayName("УЦ")] public String CertificateAuthorityKeyIdentifier { get;set; }
             [DisplayName("Исходный файл")] public String Stream { get;set; }
+            [DisplayName("Субъект")] public String CertificateSubject { get;set; }
+            [DisplayName("Актуальный алгоритм хэширования(Содержимое)")] public String ActualContentDigestMethod { get;set; }
+            [DisplayName("Размер сообщения")]   public Int32 MessageSize { get;set; }
+            [DisplayName("Размер содержимого")] public Int32 ContentSize { get;set; }
             }
 
         private static String FormatOID(String oid) {
@@ -835,7 +843,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
                                 Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "Нет данных",
                                 CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
-                                CountryName = countryName
+                                CountryName = countryName,
+                                CertificateSubject = j.CertificateSubject,
+                                ActualContentDigestMethod = FormatOID(j.ActualContentDigestMethod),
+                                ContentSize = j.ContentSize,
+                                MessageSize = j.MessageSize
                                 });
                             if (j.IsError)
                                 {

@@ -30,6 +30,17 @@ namespace shell
         private DocumentGroup dockgroup;
         private DocumentManager docmanager;
 
+        static MainWindow()
+            {
+            EventManager.RegisterClassHandler(typeof(MainWindow), CommandSource.OpenBinaryDataEvent, new RoutedEventHandler(OpenBinaryDataExecuted));
+            }
+
+        private static void OpenBinaryDataExecuted(Object sender, RoutedEventArgs e) {
+            if (sender is MainWindow source) {
+                source.OpenBinaryDataExecuted(e);
+                }
+            }
+
         public MainWindow()
             {
             InitializeComponent();
@@ -77,11 +88,30 @@ namespace shell
 
         private void OpenBase64Executed(Object sender, ExecutedRoutedEventArgs e)
             {
-            var dialog = new OpenFromBase64Dialog();
+            var dialog = new OpenFromBase64Dialog
+                {
+                Owner = this
+                };
+            Theme.CurrentTheme.ApplyTo(dialog);
             if (dialog.ShowDialog() == true)
                 {
-                var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.Bytes)).FirstOrDefault());
+                var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.OutputBytes)).FirstOrDefault());
                 docmanager.Add(o, "?");
+                }
+            }
+
+        private void OpenBinaryDataExecuted(RoutedEventArgs e) {
+            if (e is OpenBinaryDataEventArgs data) {
+                var dialog = new OpenFromBase64Dialog{
+                    Owner = this,
+                    InputBytes = data.Data
+                    };
+                if (dialog.ShowDialog() == true)
+                    {
+                    var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.OutputBytes)).FirstOrDefault());
+                    docmanager.Add(o, "?");
+                    e.Handled = true;
+                    }
                 }
             }
 

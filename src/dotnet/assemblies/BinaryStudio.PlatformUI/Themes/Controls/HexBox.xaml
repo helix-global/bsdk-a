@@ -1,0 +1,355 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Controls"
+                    xmlns:p="clr-namespace:BinaryStudio.PlatformUI.Controls.Primitives"
+                    xmlns:m="clr-namespace:BinaryStudio.PlatformUI.Controls.Markups"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    xmlns:c="clr-namespace:BinaryStudio.PlatformUI.Converters"
+                    xmlns:r="clr-namespace:BinaryStudio.PlatformUI.Properties">
+  <c:IsTypeOf x:Key="IsTypeOf"/>
+  <r:LocalResource x:Key="Resources" ResourceManager="{x:Static r:Resources.ResourceManager}"/>
+  <Style TargetType="{x:Type e:HexBox}">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="FontFamily" Value="Consolas"/>
+    <Setter Property="BorderBrush" Value="Black"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Setter Property="FocusManager.IsFocusScope" Value="True"/>
+    <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle"/>
+    <Setter Property="Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:HexBox}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  Margin="0">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto"
+                            Focusable="False" UseLayoutRounding="True" FocusVisualStyle="{x:Null}"
+                            VerticalScrollBarVisibility="Auto"
+                            FontFamily="{TemplateBinding FontFamily}"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            x:Name="ScrollViewer"
+                            Background="{TemplateBinding Background}"
+                            DataContext="{Binding ElementName=HostPanel}">
+                <ScrollViewer.Template>
+                  <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <Grid.RowDefinitions>
+                        <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+                        <RowDefinition Height="Auto"/>
+                      </Grid.RowDefinitions>
+                      <Rectangle x:Name="Corner" Grid.Column="1" Fill="{DynamicResource ControlBrushKey}" Grid.Row="3"/>
+                      <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0" Grid.RowSpan="3" FocusVisualStyle="{x:Null}"/>
+                      <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Grid.RowSpan="3"
+                                 BorderThickness="0,1,0,1" Background="{DynamicResource ControlBrushKey}"/>
+                      <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="3" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                      <Grid Grid.Column="1" Grid.Row="1" Visibility="Collapsed">
+                        <Rectangle Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        <p:RangeSelectionTrackingControl Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" Opacity="0.2"
+                                                         Start="{Binding Selection.Start,Mode=OneWay}"
+                                                         Length="{Binding Selection.Length,Mode=OneWay}"
+                                                         TotalLength="{Binding ItemsCount,Mode=OneWay}"/>
+                      </Grid>
+                    </Grid>
+                  </ControlTemplate>
+                </ScrollViewer.Template>
+                <p:HexBoxPanel OriginalSource="{TemplateBinding Source}" x:Name="HostPanel" DataContext="{Binding RelativeSource={RelativeSource Self}}" FocusVisualStyle="{x:Null}"
+                               Background="{TemplateBinding Background}"
+                               Focusable="False">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="30"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness="0" BorderBrush="{x:Null}" Grid.Column="0" SnapsToDevicePixels="True">
+                      <p:HexBoxPanelH Source="{Binding Source,Mode=OneWay}" ItemsCount="{Binding ItemsCount,Mode=OneWay}"
+                                      ItemSize="{Binding ItemSize,Mode=OneWay}"
+                                      VerticalOffset="{Binding Offset.Y,Mode=OneWay}"
+                                      HorizontalOffset="{Binding Offset.X,Mode=OneWay}"
+                                      ViewportHeight="{Binding ViewportHeight, Mode=OneWay}"
+                                      ExtentHeight="{Binding Extent.Y,Mode=OneWay}"
+                                      Typeface="{Binding Typeface,Mode=OneWay}"
+                                      PhysicalViewport="{Binding PhysicalViewport,Mode=OneWay}"
+                                      ScrollableObject="{Binding}"
+                                      Selection="{Binding Selection,Mode=TwoWay}"
+                                      Markups="{TemplateBinding Markups}"
+                                      FocusVisualStyle="{x:Null}"
+                                      x:Name="H"
+                                      LinkedPanel="{Binding ElementName=PanelA}">
+                        <p:HexBoxPanelH.ContextMenu>
+                          <ContextMenu>
+                            <MenuItem Header="Save" Command="{x:Static ApplicationCommands.SaveAs}"/>
+                          </ContextMenu>
+                        </p:HexBoxPanelH.ContextMenu>
+                      </p:HexBoxPanelH>
+                    </Border>
+                    <Rectangle Grid.Column="1" Fill="{DynamicResource ControlBrushKey}" Width="{DynamicResource {x:Static SystemParameters.ScrollWidthKey}}"/>
+                    <Border BorderThickness="0" BorderBrush="{x:Null}" Grid.Column="2" x:Name="A" SnapsToDevicePixels="True">
+                      <p:HexBoxPanelA Source="{Binding Source,Mode=OneWay}" ItemsCount="{Binding ItemsCount,Mode=OneWay}" x:Name="PanelA"
+                                      ItemSize="{Binding ItemSize,Mode=OneWay}"
+                                      VerticalOffset="{Binding Offset.Y,Mode=OneWay}"
+                                      HorizontalOffset="{Binding Offset.X,Mode=OneWay}"
+                                      ViewportHeight="{Binding ViewportHeight, Mode=OneWay}"
+                                      Typeface="{Binding Typeface,Mode=OneWay}"
+                                      ExtentHeight="{Binding Extent.Y,Mode=OneWay}"
+                                      FocusVisualStyle="{x:Null}"
+                                      PhysicalViewport="{Binding PhysicalViewport,Mode=OneWay}"
+                                      ScrollableObject="{Binding}"
+                                      Selection="{Binding Selection,Mode=TwoWay}"
+                                      Markups="{TemplateBinding Markups}"
+                                      Background="{TemplateBinding Background}"
+                                      CaretPosition="{Binding ElementName=H,Path=CaretPosition,Mode=TwoWay}"
+                                      LinkedPanel="{Binding ElementName=H}"/>
+                    </Border>
+                    <Border Grid.Column="3" Margin="0,0,0,0" UseLayoutRounding="True" IsHitTestVisible="False" Visibility="Collapsed">
+                      <ListBox ItemsSource="{Binding ElementName=H,Path=VisibleMarkups,Mode=OneWay}"
+                               UseLayoutRounding="True"
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                               VerticalContentAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch"
+                               SnapsToDevicePixels="True">
+                        <ListBox.ItemContainerStyle>
+                          <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="UseLayoutRounding" Value="True"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="Template">
+                              <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                  <p:PolyLine Points="{Binding Points}" StrokeThickness="0.5">
+                                    <p:PolyLine.Stroke>
+                                      <SolidColorBrush Color="{Binding Color}"/>
+                                    </p:PolyLine.Stroke>
+                                  </p:PolyLine>
+                                </ControlTemplate>
+                              </Setter.Value>
+                            </Setter>
+                          </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.Template>
+                          <ControlTemplate TargetType="{x:Type ListBox}">
+                            <Canvas IsItemsHost="True" SnapsToDevicePixels="True"/>
+                          </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <Canvas/>
+                          </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                      </ListBox>
+                    </Border>
+                    <Border BorderThickness="0" BorderBrush="Black" Grid.Column="4" SnapsToDevicePixels="True" Margin="-1,0,0,0"
+                            Visibility="Collapsed">
+                      <e:ListBox ItemsSource="{Binding ElementName=H,Path=VisibleMarkups,Mode=OneWay}" x:Name="Markups"
+                               BorderBrush="{x:Null}" BorderThickness="0"
+                               Background="Transparent" Focusable="False"
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                               FocusVisualStyle="{x:Null}"
+                               VerticalContentAlignment="Stretch"
+                               HorizontalContentAlignment="Stretch">
+                        <e:ListBox.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <p:HexBoxPanelM/>
+                          </ItemsPanelTemplate>
+                        </e:ListBox.ItemsPanel>
+                        <e:ListBox.ItemContainerStyle>
+                          <Style TargetType="{x:Type e:ListBoxItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}"/>
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Padding" Value="0,0,0,0"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Template">
+                              <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type e:ListBoxItem}">
+                                  <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                  <ControlTemplate.Triggers>
+                                    <!--<Trigger Property="IsKeyboardFocused" Value="True">
+                                      <Setter Property="IsSelected" Value="True"></Setter>
+                                    </Trigger>-->
+                                    <!--<Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                      <Setter Property="IsSelected" Value="True"></Setter>
+                                    </Trigger>-->
+                                  </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                              </Setter.Value>
+                            </Setter>
+                          </Style>
+                        </e:ListBox.ItemContainerStyle>
+                        <e:ListBox.ItemTemplate>
+                          <DataTemplate DataType="{x:Type m:MarkupElement}">
+                            <Border BorderThickness="1" Margin="0,1,1,1" CornerRadius="2" Name="Border" SnapsToDevicePixels="True">
+                              <Border.BorderBrush>
+                                <SolidColorBrush Color="{Binding Color,Mode=OneWay}" Opacity="0.5"/>
+                              </Border.BorderBrush>
+                              <ContentPresenter Content="{Binding Content}" x:Name="Content" Margin="5,0,5,0"/>
+                            </Border>
+                            <DataTemplate.Triggers>
+                              <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="Border" Property="Background">
+                                  <Setter.Value>
+                                    <SolidColorBrush Color="{Binding Color}" Opacity="0.05"/>
+                                  </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Border" Property="BorderBrush">
+                                  <Setter.Value>
+                                    <SolidColorBrush Color="{Binding Color}" Opacity="1"/>
+                                  </Setter.Value>
+                                </Setter>
+                              </DataTrigger>
+                              <DataTrigger Binding="{Binding Content,Mode=OneWay,Converter={StaticResource IsTypeOf},ConverterParameter={x:Type s:String}}" Value="True">
+                                <Setter TargetName="Content" Property="ContentTemplate">
+                                  <Setter.Value>
+                                    <DataTemplate>
+                                      <TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                    </DataTemplate>
+                                  </Setter.Value>
+                                </Setter>
+                              </DataTrigger>
+                            </DataTemplate.Triggers>
+                          </DataTemplate>
+                        </e:ListBox.ItemTemplate>
+                      </e:ListBox>
+                    </Border>
+                  </Grid>
+                </p:HexBoxPanel>
+              </ScrollViewer>
+              <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" xml:space="preserve" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" TextAlignment="Center"
+                         Text="{Binding Converter={StaticResource Resources},ConverterParameter='HexBox.Offset'}"/>
+              <p:HexBoxPanelO Grid.Column="0" Grid.Row="1"
+                              IsHitTestVisible="False"
+                              Source="{Binding ElementName=HostPanel,Path=Source,Mode=OneWay}"
+                              Typeface="{Binding ElementName=HostPanel,Path=Typeface,Mode=OneWay}"
+                              ItemSize="{Binding ElementName=HostPanel,Path=ItemSize,Mode=OneWay}"
+                              ItemsCount="{Binding ElementName=HostPanel,Path=ItemsCount,Mode=OneWay}"
+                              ViewportHeight="{Binding ElementName=HostPanel,Path=ViewportHeight,Mode=OneWay}"
+                              VerticalOffset="{Binding ElementName=HostPanel,Path=Offset.Y,Mode=OneWay}"
+                              TextBlock.Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+              <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="5,0,0,0" TextBlock.Foreground="{DynamicResource GrayTextBrushKey}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                    <ColumnDefinition Width="{Binding ElementName=HostPanel,Path=ItemSize.Width,Mode=OneWay}"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0">0</TextBlock>
+                  <TextBlock Grid.Column="1">0</TextBlock>
+                  <TextBlock Grid.Column="3">0</TextBlock>
+                  <TextBlock Grid.Column="4">1</TextBlock>
+                  <TextBlock Grid.Column="6">0</TextBlock>
+                  <TextBlock Grid.Column="7">2</TextBlock>
+                  <TextBlock Grid.Column="9">0</TextBlock>
+                  <TextBlock Grid.Column="10">3</TextBlock>
+                  <TextBlock Grid.Column="12">0</TextBlock>
+                  <TextBlock Grid.Column="13">4</TextBlock>
+                  <TextBlock Grid.Column="15">0</TextBlock>
+                  <TextBlock Grid.Column="16">5</TextBlock>
+                  <TextBlock Grid.Column="18">0</TextBlock>
+                  <TextBlock Grid.Column="19">6</TextBlock>
+                  <TextBlock Grid.Column="21">0</TextBlock>
+                  <TextBlock Grid.Column="22">7</TextBlock>
+                  <TextBlock Grid.Column="25">0</TextBlock>
+                  <TextBlock Grid.Column="26">8</TextBlock>
+                  <TextBlock Grid.Column="28">0</TextBlock>
+                  <TextBlock Grid.Column="29">9</TextBlock>
+                  <TextBlock Grid.Column="31">0</TextBlock>
+                  <TextBlock Grid.Column="32">A</TextBlock>
+                  <TextBlock Grid.Column="34">0</TextBlock>
+                  <TextBlock Grid.Column="35">B</TextBlock>
+                  <TextBlock Grid.Column="37">0</TextBlock>
+                  <TextBlock Grid.Column="38">C</TextBlock>
+                  <TextBlock Grid.Column="40">0</TextBlock>
+                  <TextBlock Grid.Column="41">D</TextBlock>
+                  <TextBlock Grid.Column="43">0</TextBlock>
+                  <TextBlock Grid.Column="44">E</TextBlock>
+                  <TextBlock Grid.Column="46">0</TextBlock>
+                  <TextBlock Grid.Column="47">F</TextBlock>
+                </Grid>
+                <Rectangle Grid.Column="1" Fill="{DynamicResource ControlBrushKey}" Width="{DynamicResource {x:Static SystemParameters.ScrollWidthKey}}" />
+                <TextBlock Grid.Column="2" Margin="1,0,1,0" Foreground="{DynamicResource GrayTextBrushKey}" Width="{Binding ElementName=A,Path=ActualWidth,Mode=OneWay}" TextAlignment="Center">ASCII</TextBlock>
+              </Grid>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

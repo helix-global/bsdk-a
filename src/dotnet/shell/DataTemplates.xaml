@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:e="clr-namespace:shell"
-                    xmlns:u="http://schemas.helix.global">
+                    xmlns:u="http://schemas.helix.global"
+                    xmlns:std="clr-namespace:System;assembly=mscorlib"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+  <u:CopyTo x:Key="RowHeaderTemplate" Key="RowHeaderTemplate"/>
   <DataTemplate DataType="{x:Type e:SQLiteConnectionSchemeBrowser}">
     <Decorator>
       <Grid>
@@ -94,6 +97,57 @@
               </TreeView.Resources>
             </TreeView>
           </Grid>
+        </Border>
+        <Border Grid.Column="1">
+          <Border.Resources>
+          </Border.Resources>
+          <u:DataGrid ItemsSource="{Binding SelectedTable}"
+                    CanUserSortColumns="False"
+                    HeadersVisibility="All"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                    VirtualizingStackPanel.IsVirtualizing="True">
+            <u:DataGrid.RowHeaderTemplate>
+              <DataTemplate>
+                <Border DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridRow}}" HorizontalAlignment="Right">
+                  <TextBlock Padding="5,0,5,0" Text="{Binding ImplicitRowNumber,Mode=OneWay}"/>
+                </Border>
+              </DataTemplate>
+            </u:DataGrid.RowHeaderTemplate>
+            <u:DataGridOptions.ColumnHeaderTemplateSelector>
+              <u:DataTemplateSelector>
+                <u:DataTemplateSelector.Templates>
+                  <DataTemplate DataType="{x:Type std:String}">
+                    <TextBlock Padding="5,0,5,0"
+                               VerticalAlignment="Top"
+                               Text="{Binding Mode=OneWay}"
+                               TextTrimming="CharacterEllipsis"/>
+                  </DataTemplate>
+                </u:DataTemplateSelector.Templates>
+              </u:DataTemplateSelector>
+            </u:DataGridOptions.ColumnHeaderTemplateSelector>
+            <!--<u:DataGrid.DefaultDataGridTextColumnEditingElementStyle>
+              <Style TargetType="{x:Type TextBox}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
+              </Style>
+            </u:DataGrid.DefaultDataGridTextColumnEditingElementStyle>-->
+            <!--<u:DataGridOptions.CellTemplateSelector>
+              <u:DataTemplateSelector>
+                <u:DataTemplateSelector.Templates>
+                  <DataTemplate DataType="{x:Type u:DBQueryRow}">
+                    <TextBlock Padding="5,0,5,0"
+                               VerticalAlignment="Top"
+                               Text="{Binding Mode=OneWay}"
+                               TextTrimming="CharacterEllipsis"/>
+                  </DataTemplate>
+                </u:DataTemplateSelector.Templates>
+              </u:DataTemplateSelector>
+            </u:DataGridOptions.CellTemplateSelector>-->
+          </u:DataGrid>
         </Border>
       </Grid>
     </Decorator>

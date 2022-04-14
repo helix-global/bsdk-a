@@ -119,5 +119,11 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
 
         private static readonly Encoding OEM = Encoding.GetEncoding(GetACP());
         [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.None)] private static extern UInt16 GetACP();
+
+        protected override void OnSelectionChanged()
+            {
+            Debug.Print("A:OnSelectionChanged");
+            base.OnSelectionChanged();
+            }
         }
     }

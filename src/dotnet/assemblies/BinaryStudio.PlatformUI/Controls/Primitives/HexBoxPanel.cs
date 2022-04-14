@@ -11,17 +11,13 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         {
         #region P:OriginalSource:Object
         public static readonly DependencyProperty OriginalSourceProperty = DependencyProperty.Register("OriginalSource", typeof(Object), typeof(HexBoxPanel), new PropertyMetadata(default(Object), OnOriginalSourceChanged));
-        private static void OnOriginalSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanel);
-            if (source != null)
-                {
+        private static void OnOriginalSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanel source) {
                 source.OnOriginalSourceChanged();
                 }
             }
 
-        private void OnOriginalSourceChanged()
-            {
+        private void OnOriginalSourceChanged() {
             if (OriginalSource != null) {
                      if (OriginalSource is Stream) { Source = (Stream)OriginalSource; }
                 else if (OriginalSource is Byte[]) { Source = new MemoryStream((Byte[])OriginalSource); }
@@ -36,8 +32,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
 
-        public Object OriginalSource
-            {
+        public Object OriginalSource {
             get { return GetValue(OriginalSourceProperty); }
             set { SetValue(OriginalSourceProperty, value); }
             }
@@ -46,15 +41,12 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         private static readonly DependencyPropertyKey SourcePropertyKey = DependencyProperty.RegisterReadOnly("Source", typeof(Stream), typeof(HexBoxPanel), new PropertyMetadata(default(Stream), OnSourceChanged));
         public static readonly DependencyProperty SourceProperty = SourcePropertyKey.DependencyProperty;
         private static void OnSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as HexBoxPanel);
-            if (source != null)
-                {
+            if (sender is HexBoxPanel source) {
                 source.OnSourceChanged();
                 }
             }
 
-        private void OnSourceChanged()
-            {
+        private void OnSourceChanged() {
             var source = Source;
             if (source != null) {
                 Int64 c;
@@ -82,11 +74,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:ItemsCount:Int64
         private static readonly DependencyPropertyKey SizePropertyKey = DependencyProperty.RegisterReadOnly("ItemsCount", typeof(Int64), typeof(HexBoxPanel), new PropertyMetadata(default(Int64), OnItemsCountChanged));
         public static readonly DependencyProperty ItemsCountProperty = SizePropertyKey.DependencyProperty;
-        private static void OnItemsCountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanel);
-            if (source != null)
-                {
+        private static void OnItemsCountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanel source) {
                 source.OnItemsCountChanged();
                 }
             }
@@ -105,11 +94,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:ItemSize:Size
         private static readonly DependencyPropertyKey ItemSizePropertyKey = DependencyProperty.RegisterReadOnly("ItemSize", typeof(Size), typeof(HexBoxPanel), new PropertyMetadata(default(Size), OnItemSizeChanged));
         public static readonly DependencyProperty ItemSizeProperty = ItemSizePropertyKey.DependencyProperty;
-        private static void OnItemSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as HexBoxPanel);
-            if (source != null)
-                {
+        private static void OnItemSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is HexBoxPanel source) {
                 source.OnItemSizeChanged();
                 }
             }

@@ -43,13 +43,16 @@ namespace BinaryStudio.PlatformUI.Shell.Controls {
 
         private void TryActivateOwner() {
             var windowInteropHelper = new WindowInteropHelper(this);
-            if (!(windowInteropHelper.Owner != IntPtr.Zero))
-                return;
+            if (!(windowInteropHelper.Owner != IntPtr.Zero)) { return; }
             var window = GetWindow(windowInteropHelper.Owner);
             if (window != null)
+                {
                 window.Focus();
+                }
             else
+                {
                 NativeMethods.SetActiveWindow(windowInteropHelper.Owner);
+                }
             }
 
         private Window GetWindow(IntPtr hwnd) {

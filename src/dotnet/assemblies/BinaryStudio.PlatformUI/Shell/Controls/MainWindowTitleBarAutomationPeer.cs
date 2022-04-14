@@ -6,7 +6,7 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
     {
     public class MainWindowTitleBarAutomationPeer : FrameworkElementAutomationPeer
         {
-        public MainWindowTitleBarAutomationPeer(MainWindowTitleBar owner) : base(owner)
+        public MainWindowTitleBarAutomationPeer(WindowTitleBar owner) : base(owner)
             {
             }
 

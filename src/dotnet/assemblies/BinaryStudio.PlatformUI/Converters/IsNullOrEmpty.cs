@@ -7,7 +7,7 @@ namespace BinaryStudio.PlatformUI
     {
     public class IsNullOrEmpty : IValueConverter
         {
-        /// <summary>Converts a value. </summary>
+        /// <summary>Converts a value.</summary>
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         /// <param name="value">The value produced by the binding source.</param>
         /// <param name="targetType">The type of the binding target property.</param>
@@ -20,7 +20,7 @@ namespace BinaryStudio.PlatformUI
             return false;
             }
 
-        /// <summary>Converts a value. </summary>
+        /// <summary>Converts a value.</summary>
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         /// <param name="value">The value that is produced by the binding target.</param>
         /// <param name="targetType">The type to convert to.</param>

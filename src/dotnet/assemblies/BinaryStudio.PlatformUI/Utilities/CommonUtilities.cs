@@ -4,10 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using BinaryStudio.PlatformUI.Shell;
 
 namespace BinaryStudio.PlatformUI {
-    internal static class CommonUtilities {
+    internal static class CommonUtilities
+        {
+        public static Size GetSize(Object value, DataTemplate template) {
+            var r = new ContentControl {
+                Content = value,
+                ContentTemplate = template
+                };
+            r.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+            return r.DesiredSize;
+            }
+
         public static Int32 RoundToInt(Double d) {
             return (Int32)Math.Round(d);
             }
