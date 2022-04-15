@@ -120,7 +120,7 @@ namespace Operations
             var country = Flags.HasFlag(BatchOperationFlags.Group)
                 ? GetCountry(source.Subject)??GetCountry(source.Issuer)
                 : null;
-            if (Flags.HasFlag(BatchOperationFlags.Rename)) {
+            if (Flags.HasFlag(BatchOperationFlags.Extract)) {
                 var targetfilename = Path.Combine(Combine(targetfolder,country), source.FriendlyName + ".cer");
                 if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
                     if (!String.IsNullOrEmpty(country)) {
@@ -159,7 +159,7 @@ namespace Operations
             var country = Flags.HasFlag(BatchOperationFlags.Group)
                 ? GetCountry(source.Issuer)
                 : null;
-            if (Flags.HasFlag(BatchOperationFlags.Rename)) {
+            if (Flags.HasFlag(BatchOperationFlags.Extract)) {
                 var targetfilename = Path.Combine(Combine(targetfolder,country), source.FriendlyName + ".crl");
                 if (!String.Equals(targetfilename, fileservice.FileName, StringComparison.OrdinalIgnoreCase)) {
                     if (!String.IsNullOrEmpty(country)) {
@@ -187,7 +187,7 @@ namespace Operations
                         }
                     }
                 }
-                    if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509CertificateRevocationList(source));    }
+                 if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509CertificateRevocationList(source));    }
             else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509CertificateRevocationList(source)); }
             return FileOperationStatus.Success;
             }

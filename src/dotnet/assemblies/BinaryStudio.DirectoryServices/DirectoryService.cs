@@ -35,14 +35,15 @@ namespace BinaryStudio.DirectoryServices
                                 }
                             }
                         }
-                    else if (source is String stringvalue) {
-                        if (Directory.Exists(stringvalue)) return new LocalFolder(stringvalue);
-                        if (File.Exists(stringvalue)) {
-                            switch (Path.GetExtension(stringvalue).ToLower()) {
-                                case ".rar": { return new ArchiveService(stringvalue, RarArchive.Open(stringvalue));      }
+                    else if (source is String StringValue) {
+                        if (StringValue.StartsWith("file://")) { StringValue = StringValue.Substring(7); }
+                        if (Directory.Exists(StringValue)) return new LocalFolder(StringValue);
+                        if (File.Exists(StringValue)) {
+                            switch (Path.GetExtension(StringValue).ToLower()) {
+                                case ".rar": { return new ArchiveService(StringValue, RarArchive.Open(StringValue));      }
                                 case ".jar":
-                                case ".zip": { return new ArchiveService(stringvalue, ZipArchive.Open(stringvalue));      }
-                                case ".7z" : { return new ArchiveService(stringvalue, SevenZipArchive.Open(stringvalue)); }
+                                case ".zip": { return new ArchiveService(StringValue, ZipArchive.Open(StringValue));      }
+                                case ".7z" : { return new ArchiveService(StringValue, SevenZipArchive.Open(StringValue)); }
                                 default:
                                     {
                                     return null;
@@ -68,7 +69,12 @@ namespace BinaryStudio.DirectoryServices
                         }
                     if (source is String StringValue) {
                         if (File.Exists(StringValue)) { return new LocalFile(StringValue); }
-                        if (StringValue.StartsWith("file://")) { return new LocalFile(StringValue.Substring(7).TrimEnd('/')); }
+                        if (StringValue.StartsWith("file://")) {
+                            StringValue = StringValue.Substring(7).TrimEnd('/');
+                            return !Directory.Exists(StringValue)
+                                ? new LocalFile(StringValue)
+                                : null;
+                            }
                         }
                     return (source as IServiceProvider)?.GetService(service);
                     }

@@ -164,6 +164,13 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
             return String.Join("\\", values);
             }}
 
+        private static String UpdateFileName(String value) {
+            if (value == null) { return null; }
+            return value.
+                Replace('`', '\'').
+                Replace('"','\'');
+            }
+
         public String FileName { get {
             var r = new StringBuilder(CommonName);
                  if (properties.ContainsKey("userCertificate;binary"))           { r.Append(".cer"); }
@@ -171,7 +178,7 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
             else if (properties.ContainsKey("CscaMasterListData"))               { r.Append(".ml");  }
             else if (properties.ContainsKey("userCertificate"))                  { r.Append(".cer"); }
             else if (properties.ContainsKey("certificateRevocationList"))        { r.Append(".crl"); }
-            return r.ToString();
+            return UpdateFileName(r.ToString());
             }}
 
         public Byte[] ReadAllBytes()
