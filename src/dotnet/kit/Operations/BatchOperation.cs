@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
@@ -21,6 +26,7 @@ using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 using Options;
 using DRelativeDistinguishedName = BinaryStudio.Security.Cryptography.Interchange.DRelativeDistinguishedName;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Operations
     {
@@ -548,7 +554,7 @@ namespace Operations
             }
         #endregion
 
-        #region M:Update(Entities,Asn1Certificate)
+        #region M:Update(SqlConnection,Asn1Certificate)
         private static void Update(Entities context, Asn1Certificate source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -600,10 +606,26 @@ namespace Operations
                 }
             }
         #endregion
-        #region M:Update(Entities,Asn1CertificateRevocationList)
+        #region M:Update(SqlConnection,Asn1CertificateRevocationList)
         private static void Update(Entities context, Asn1CertificateRevocationList source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            //var builder = new StringBuilder();
+            //using (var writer = XmlWriter.Create(builder)) {
+            //    source.WriteXml(writer);
+            //    }
+            //using (var command = context.CreateCommand()) {
+            //    command.CommandText = "[dbo].[ImportCertificateRevocationList]";
+            //    command.CommandType = CommandType.StoredProcedure;
+            //    command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) {
+            //        Value = source.Thumbprint
+            //        });
+            //    command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
+            //        Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
+            //        });
+            //    command.ExecuteNonQuery();
+            //    }
+            //return;
             var thumbprint = source.Thumbprint;
             var target = context.CertificateRevocationLists.
                 Include(nameof(DCertificateRevocationList.RelativeDistinguishedNameSequence)).
@@ -713,6 +735,11 @@ namespace Operations
             }
         #endregion
 
+        //private static SqlConnection CreateConnection(String connection) {
+        //    var r = new SqlConnection(connection);
+        //    r.Open();
+        //    return r;
+        //    }
         private static Entities CreateConnection(String connection) {
             if (String.IsNullOrWhiteSpace(connection)) { return null; }
             return new Entities(new EntityConnectionStringBuilder

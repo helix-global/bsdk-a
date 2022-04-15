@@ -63,6 +63,7 @@
     <Folder Include="Storage\" />
     <Folder Include="dbo\Views\" />
     <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RelativeDistinguishedNameSequence.sql" />
@@ -85,6 +86,9 @@
     <Build Include="dbo\Functions\GeneralNameToString.sql" />
     <Build Include="dbo\Tables\CertificateRevocationList.sql" />
     <Build Include="dbo\Views\CrlView.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCertificateRevocationList.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\Cleanup.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

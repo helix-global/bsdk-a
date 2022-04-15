@@ -973,6 +973,10 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateExtension.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateExtension.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources used by the instance and optionally releases the managed resources.
@@ -1024,9 +1028,25 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CRLNumberExtension.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1DnsName.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1GeneralNameObject.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1IssuerAlternativeName.ToString">
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1IssuerAlternativeName.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         </member>
         <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1LocalKeyIdExtension">
              {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) localKeyID(21)}
@@ -1042,17 +1062,29 @@
                ID pkcs-9-at-localKeyId
              }
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1OtherName.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1PreviousCACertificateHash">
             {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 2}
             {1.3.6.1.4.1.311.21.2}
             {/ISO/Identified-Organization/6/1/4/1/311/21/2}
             szOID_CERTSRV_PREVIOUS_CERT_HASH
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1Uri.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateAuthorityKeyIdentifier.ToString">
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
             <filterpriority>2</filterpriority>
             
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateAuthorityKeyIdentifier.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateKeyUsage.ToString">
             <summary>Returns a string that represents the current object.</summary>
@@ -1114,11 +1146,19 @@
                SYNTAX NULL IDENTIFIED BY id-icao-mrtd-security-extensions-nameChange
              }
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.RFC822Name.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationList.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources used by the instance and optionally releases the managed resources.
             </summary>
             <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationList.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationListEntry.ToString">
             <summary>Returns a string that represents the current object.</summary>

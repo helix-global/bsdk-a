@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
@@ -77,9 +79,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
 
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Extension");
+            writer.WriteAttributeString(nameof(Identifier), Identifier.ToString());
+            writer.WriteAttributeString(nameof(IsCritical), IsCritical.ToString());
+            if (KeyIdentifier != null) {
+                writer.WriteAttributeString("Key", KeyIdentifier.ToString("X"));
+                }
+            if (!String.IsNullOrWhiteSpace(SerialNumber)) {
+                writer.WriteAttributeString(nameof(SerialNumber), SerialNumber);
+                }
+            if (CertificateIssuer is IXmlSerializable CertificateIssuerProperty) {
+                CertificateIssuerProperty.WriteXml(writer);
+                }
+            writer.WriteEndElement();
+            }
+
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer) {
             using (writer.ObjectScope(serializer)) {
-                //writer.WriteIndent();
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(serializer, nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(serializer, nameof(IsCritical), IsCritical);

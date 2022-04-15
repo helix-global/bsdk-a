@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Xml;
 using System.Xml.Serialization;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
@@ -110,6 +111,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
         #endregion
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Extension");
+            writer.WriteAttributeString(nameof(Identifier), Identifier.ToString());
+            writer.WriteAttributeString(nameof(IsCritical), IsCritical.ToString());
+            writer.WriteEndElement();
+            }
 
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer) {
             throw new NotImplementedException(Identifier.ToString());

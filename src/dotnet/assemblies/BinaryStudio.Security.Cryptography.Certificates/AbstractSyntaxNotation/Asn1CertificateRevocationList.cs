@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Xml;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -14,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     public sealed class Asn1CertificateRevocationList : Asn1LinkObject
         {
-        private String _thumbprint;
+        private String ThumbprintProperty;
         private static Int32 gref;
         private Asn1CertificateRevocationListEntry[] entries = EmptyArray<Asn1CertificateRevocationListEntry>.Value;
         private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
@@ -30,15 +31,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public String Country { get; }
 
         public String Thumbprint { get {
-            if (_thumbprint == null) {
+            if (ThumbprintProperty == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
                     UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    _thumbprint = engine.ComputeHash(output).ToString("X");
+                    ThumbprintProperty = engine.ComputeHash(output).ToString("X");
                     }
                 }
-            return _thumbprint;
+            return ThumbprintProperty;
             }}
 
         public Asn1CertificateRevocationList(Asn1Object o)
@@ -169,6 +170,23 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 base.Dispose(disposing);
                 State |= ObjectState.Disposed;
                 }
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("CertificateRevocationList");
+            if (!String.IsNullOrWhiteSpace(Country)) { writer.WriteAttributeString(nameof(Country), Country); }
+            writer.WriteAttributeString(nameof(EffectiveDate), EffectiveDate.ToString("O"));
+            if (NextUpdate != null) { writer.WriteAttributeString(nameof(NextUpdate), NextUpdate.Value.ToString("O")); }
+            if (!IsNullOrEmpty(Extensions)) {
+                writer.WriteStartElement(nameof(Extensions));
+                foreach (var extension in Extensions.OfType<Asn1CertificateExtension>()){
+                    extension.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
             }
         }
     }

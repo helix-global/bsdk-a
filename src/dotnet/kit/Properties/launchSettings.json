@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:C:\\TFS\\icao\\repo\\*.* \"output:{oledb://Data Source=DEV-SR-SQL02\\SQL2008SRV;Initial Catalog=icao;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;Password=escort}\" batch:serialize",
+      "commandLineArgs": "input:C:\\TFS\\icao\\repo\\*.crl \"output:{oledb://Data Source=DEV-SR-SQL02\\SQL2008SRV;Initial Catalog=icao;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;Password=escort}\" batch:serialize",
       "remoteDebugEnabled": false,
       "nativeDebugging": true
     }
