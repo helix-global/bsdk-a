@@ -42,7 +42,12 @@
               </Rectangle>
               <TextBlock Padding="5,1,5,1" Background="{DynamicResource HighlightBrushKey}" Foreground="{DynamicResource HighlightTextBrushKey}" HorizontalAlignment="Left">Object Explorer</TextBlock>
             </Grid>
-            <TreeView Grid.Row="1" Background="{DynamicResource ControlBrushKey}" BorderThickness="0" ItemsSource="{Binding}" u:FocusOperations.Focused="{Binding Focused,Mode=OneWayToSource}">
+            <u:BridgeReference Source="{Binding ElementName=ObjectHierarchy,Path=SelectedValue,Mode=OneWay}"
+                               Target="{Binding SelectedTableDescriptor,Mode=OneWayToSource}"/>
+            <TreeView Grid.Row="1" x:Name="ObjectHierarchy"
+                      Background="{DynamicResource ControlBrushKey}"
+                      BorderThickness="0" ItemsSource="{Binding}"
+                      u:FocusOperations.Focused="{Binding Focused,Mode=OneWayToSource}">
               <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type e:SQLiteTableCollection}" ItemsSource="{Binding}">
                   <Grid>

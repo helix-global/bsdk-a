@@ -28,38 +28,59 @@ namespace shell
             }
 
         private Boolean FocusedProperty;
+        private SQLiteTableDescriptor SelectedTableDescriptorProperty;
+
+        #region P:Focused:Boolean
         public Boolean Focused
             {
             get { return FocusedProperty; }
             set { SetValue(ref FocusedProperty, value, nameof(Focused)); }
             }
+        #endregion
+        #region P:SelectedTableDescriptor:SQLiteTableDescriptor
+        public SQLiteTableDescriptor SelectedTableDescriptor
+            {
+            get { return SelectedTableDescriptorProperty; }
+            set
+                {
+                if (SetValue(ref SelectedTableDescriptorProperty, value, nameof(SelectedTableDescriptorProperty))) {
+                    OnPropertyChanged(nameof(SelectedTable));
+                    }
+                }
+            }
+        #endregion
 
+        #region M:ToInt32(Object):Int32?
         private static Int32? ToInt32(Object value)
             {
             if ((value == null) || (value is DBNull)) { return null; }
             if (value is Int32 r) { return r; }
             return Int32.Parse(value.ToString());
             }
-
+        #endregion
+        #region M:ToInt64(Object):Int64?
         private static Int64? ToInt64(Object value)
             {
             if ((value == null) || (value is DBNull)) { return null; }
             if (value is Int64 r) { return r; }
             return Int64.Parse(value.ToString());
             }
-
+        #endregion
+        #region M:ToString(Object):String
         private static String ToString(Object value)
             {
             if ((value == null) || (value is DBNull)) { return null; }
             return value.ToString();
             }
-
+        #endregion
+        #region M:ToGuid(Object):Guid?
         private static Guid? ToGuid(Object value)
             {
             if ((value == null) || (value is DBNull)) { return null; }
             if (value is Guid r) { return r; }
             return Guid.Parse(value.ToString());
             }
+        #endregion
 
         public SQLiteConnectionSchemeBrowser(SQLiteConnection content)
             : base(content)
@@ -134,15 +155,10 @@ namespace shell
                         String.Equals(i.TableCatalog, table.TableCatalog) &&
                         String.Equals(i.TableName, table.TableName)));
                 }
-            return;
-            //using (var command = content.CreateCommand()) {
-            //    command.CommandText = "SELECT * FROM SQLITE_SCHEMA";
-            //    using (var reader = command.ExecuteReader()) {
-            //        while (reader.Read()) {
-            //            r.Add(reader[0]);
-            //            }
-            //        }
-            //    }
+            var tableS = TableDescriptors.FirstOrDefault();
+            if (tableS != null) {
+                tableS.IsSelected = true;
+                }
             }
 
         public IEnumerator<Object> GetEnumerator()
@@ -155,23 +171,24 @@ namespace shell
             return GetEnumerator();
             }
 
-        public IQueryable SelectedTable
-            {
-            get
-                {
-                var connection = new SqlConnection("data source=localhost;initial catalog=icao;integrated security=True;MultipleActiveResultSets=True");
-                //var connection = new SqlConnection(@"Data Source=DEV-SR-SQL02\SQL2008SRV;Initial Catalog=CensorDb_ulyanov;Persist Security Info=True;User ID=sa;Password=escort");
-                connection.Open();
-                return
-                    new SqlCommand(@"SELECT * FROM [dbo].[T_EthalonStorageTable]", connection){
-                        CommandTimeout = 600,
-                        CommandType = CommandType.Text
-                        }.AsQueryable();
-                // //return (new DBQueryProvider(new SqlQueryFactory())).CreateQuery(
-                //    Expression.Constant(new SqlCommand(@"SELECT * FROM [dbo].[T1]", connection){
+        public IQueryable SelectedTable { get {
+            return (SelectedTableDescriptor != null)
+                ? new SQLiteCommand($"SELECT * FROM {SelectedTableDescriptor.TableName}",Source).AsQueryable()
+                : null;
+                //return new SQLiteCommand(@"");
+                //var connection = new SqlConnection("data source=localhost;initial catalog=icao;integrated security=True;MultipleActiveResultSets=True");
+                ////var connection = new SqlConnection(@"Data Source=DEV-SR-SQL02\SQL2008SRV;Initial Catalog=CensorDb_ulyanov;Persist Security Info=True;User ID=sa;Password=escort");
+                //connection.Open();
+                //return
+                //    new SqlCommand(@"SELECT * FROM [dbo].[T_EthalonStorageTable]", connection){
+                //        CommandTimeout = 600,
                 //        CommandType = CommandType.Text
-                //        }));
-                }
+                //        }.AsQueryable();
+                //return (new DBQueryProvider(new SqlQueryFactory())).CreateQuery(
+                //    Expression.Constant(new SqlCommand(@"SELECT * FROM [dbo].[T1]", connection){
+                //     CommandType = CommandType.Text
+                //     }));
+            }
             }
         }
     }

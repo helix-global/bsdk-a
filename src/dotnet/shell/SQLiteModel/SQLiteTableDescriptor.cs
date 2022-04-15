@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using BinaryStudio.PlatformUI;
 
 namespace shell
     {
-    internal class SQLiteTableDescriptor
+    internal class SQLiteTableDescriptor : NotifyPropertyChangedDispatcherObject
         {
+        private Boolean IsSelectedProperty;
         public String TableCatalog { get;set; }
         public String TableSchema { get;set; }
         public String TableName { get;set; }
@@ -20,9 +22,18 @@ namespace shell
             Columns = new List<SQLiteColumnDescriptor>();
             }
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        /// <filterpriority>2</filterpriority>
         public override String ToString()
             {
             return TableName;
+            }
+
+        public Boolean IsSelected
+            {
+            get { return IsSelectedProperty; }
+            set { SetValue(ref IsSelectedProperty,value,nameof(IsSelected)); }
             }
         }
     }
