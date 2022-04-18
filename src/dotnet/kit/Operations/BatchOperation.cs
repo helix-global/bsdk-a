@@ -813,6 +813,7 @@ namespace Operations
         #endregion
 
         private static SqlConnection CreateNativeConnection(String connection) {
+            if (String.IsNullOrWhiteSpace(connection)) { return null; }
             var r = new SqlConnection(connection);
             r.Open();
             return r;
