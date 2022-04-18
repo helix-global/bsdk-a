@@ -1,5 +1,6 @@
 ﻿
 
+
 --<ScriptOptions statementTerminator="GO"/>
 
 CREATE VIEW [dbo].[ReportCertificateRevocationList]
@@ -15,4 +16,5 @@ SELECT
     FROM [dbo].[Extension] [b]
       INNER JOIN [dbo].[AuthorityKeyIdentifier] [c] ON [c].[ExtensionId]=[b].[ExtensionId]
     WHERE [b].[ObjectId] = [a].[ObjectId]) [AuthorityKeyIdentifier]
+  ,[a].[Thumbprint] [Thumbprint]
 FROM [dbo].[CertificateRevocationList] [a]

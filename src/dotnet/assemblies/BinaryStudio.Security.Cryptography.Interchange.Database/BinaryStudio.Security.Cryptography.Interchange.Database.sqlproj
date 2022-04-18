@@ -75,7 +75,6 @@
     <Build Include="dbo\Tables\RelativeDistinguishedNameSequenceMapping.sql" />
     <Build Include="dbo\Tables\ObjectIdentifier.sql" />
     <Build Include="dbo\Tables\Object.sql" />
-    <Build Include="dbo\Views\CertificateView.sql" />
     <Build Include="dbo\Functions\RelativeDistinguishedNameSequenceToString.sql" />
     <Build Include="dbo\Tables\SubjectKeyIdentifier.sql" />
     <Build Include="dbo\Tables\SubjectAlternativeName.sql" />
@@ -96,6 +95,7 @@
     <Build Include="dbo\Stored Procedures\ImportObjectIdentifier.sql" />
     <Build Include="dbo\Stored Procedures\ImportExtensions.sql" />
     <Build Include="dbo\Stored Procedures\ImportExtension.sql" />
+    <Build Include="dbo\Views\ReportCertificate.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
