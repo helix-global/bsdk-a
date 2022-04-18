@@ -6,13 +6,14 @@ namespace Operations
     public enum BatchOperationFlags
         {
         None,
-        Rename    = 0x01,
-        Serialize = 0x02,
-        Extract   = 0x04,
-        Group     = 0x08,
-        Install   = 0x10,
-        Uninstall = 0x20,
-        AbstractSyntaxNotation = 0x40,
-        Verify    = 0x80
+        Rename    = 0x001,
+        Serialize = 0x002,
+        Extract   = 0x004,
+        Group     = 0x008,
+        Install   = 0x010,
+        Uninstall = 0x020,
+        AbstractSyntaxNotation = 0x040,
+        Verify    = 0x080,
+        Report    = 0x100
         }
     }

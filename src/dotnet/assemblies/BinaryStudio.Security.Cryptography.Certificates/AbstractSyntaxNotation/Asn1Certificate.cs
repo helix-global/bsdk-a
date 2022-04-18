@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Diagnostics;
@@ -100,7 +101,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 using(var output = new MemoryStream()) {
                     UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    _thumbprint = engine.ComputeHash(output).ToString("X");
+                    _thumbprint = engine.ComputeHash(output).ToString("x");
                     }
                 }
             return _thumbprint;
@@ -410,6 +411,35 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     sourcestream.CopyTo(targetstream);
                     }
                 }
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Certificate");
+            writer.WriteAttributeString(nameof(NotBefore), NotBefore.ToString("o"));
+            writer.WriteAttributeString(nameof(NotAfter),  NotAfter.ToString("o"));
+            writer.WriteAttributeString(nameof(Thumbprint), Thumbprint);
+            if (!String.IsNullOrWhiteSpace(Country)) { writer.WriteAttributeString(nameof(Country), Country); }
+            if (SerialNumber != null) { writer.WriteAttributeString(nameof(SerialNumber), SerialNumber.Value.ToString("x")); }
+            if ((Issuer != null) && (Issuer.Count > 0)) {
+                writer.WriteStartElement("Certificate.Issuer");
+                Issuer.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if ((Subject != null) && (Subject.Count > 0)) {
+                writer.WriteStartElement("Certificate.Subject");
+                Subject.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (!IsNullOrEmpty(Extensions)) {
+                writer.WriteStartElement(nameof(Extensions));
+                foreach (var extension in Extensions.OfType<Asn1CertificateExtension>()){
+                    extension.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
             }
         }
     }

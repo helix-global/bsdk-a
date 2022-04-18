@@ -36,7 +36,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 using(var output = new MemoryStream()) {
                     UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    ThumbprintProperty = engine.ComputeHash(output).ToString("X");
+                    ThumbprintProperty = engine.ComputeHash(output).ToString("x");
                     }
                 }
             return ThumbprintProperty;
@@ -179,6 +179,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (!String.IsNullOrWhiteSpace(Country)) { writer.WriteAttributeString(nameof(Country), Country); }
             writer.WriteAttributeString(nameof(EffectiveDate), EffectiveDate.ToString("O"));
             if (NextUpdate != null) { writer.WriteAttributeString(nameof(NextUpdate), NextUpdate.Value.ToString("O")); }
+            writer.WriteAttributeString(nameof(Thumbprint), Thumbprint);
+            if ((Issuer != null) && (Issuer.Count > 0)) {
+                writer.WriteStartElement("CertificateRevocationList.Issuer");
+                Issuer.WriteXml(writer);
+                writer.WriteEndElement();
+                }
             if (!IsNullOrEmpty(Extensions)) {
                 writer.WriteStartElement(nameof(Extensions));
                 foreach (var extension in Extensions.OfType<Asn1CertificateExtension>()){

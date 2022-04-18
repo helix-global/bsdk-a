@@ -27,7 +27,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("batch:{rename,serialize,extract,group,install,uninstall,asn1}+");
+            output.Write("batch:{rename,serialize,extract,group,install,uninstall,asn1,report}+");
             }
         }
     }

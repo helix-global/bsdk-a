@@ -44,8 +44,31 @@ namespace Operations
         private String Filter { get; }
         private readonly Object FolderLock = new Object();
         private Entities connection;
+        private SqlConnection NativeConnection;
         private MetadataScope scope;
         private X509CertificateStorage store;
+        //private HashSet<CertificateReportItem> CertificateReport = new HashSet<CertificateReportItem>();
+
+        //private class CertificateReportItem
+        //    {
+        //    public String Country { get; }
+        //    public String SerialNumber { get; }
+        //    public String Issuer { get; }
+        //    public String Subject { get; }
+        //    public DateTime NotBefore { get; }
+        //    public DateTime NotAfter { get; }
+        //    public String AuthorityKeyIdentifier { get;set; }
+
+        //    public CertificateReportItem(Asn1Certificate source)
+        //        {
+        //        Country = source.Country;
+        //        SerialNumber = source.SerialNumber.Value.ToString("x");
+        //        Issuer = source.Issuer.ToString();
+        //        Subject = source.Subject.ToString();
+        //        NotAfter = source.NotAfter;
+        //        NotBefore = source.NotBefore;
+        //        }
+        //    }
 
         public BatchOperation(TextWriter output, TextWriter error, IList<OperationOption> args) 
             : base(output, error, args)
@@ -64,6 +87,7 @@ namespace Operations
             if (Options.Any(i => String.Equals(i, "group",     StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Group;     }
             if (Options.Any(i => String.Equals(i, "install",   StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Install;   }
             if (Options.Any(i => String.Equals(i, "uninstall", StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Uninstall; }
+            if (Options.Any(i => String.Equals(i, "report",    StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Report;    }
             if (Options.Any(i => String.Equals(i, "asn1",      StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.AbstractSyntaxNotation; }
             if (!String.IsNullOrWhiteSpace(TargetFolder)) {
                 if (TargetFolder.StartsWith("oledb://")) {
@@ -143,8 +167,8 @@ namespace Operations
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                if (connection != null) {
-                    Update(connection, source);
+                if (NativeConnection != null) {
+                    Update(NativeConnection, source);
                     }
                 else
                     {
@@ -182,8 +206,8 @@ namespace Operations
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                if (connection != null) {
-                    Update(connection, source);
+                if (NativeConnection != null) {
+                    Update(NativeConnection, source);
                     }
                 else
                     {
@@ -247,6 +271,7 @@ namespace Operations
                 }
             scope = new MetadataScope();
             connection = CreateConnection(TargetConnectionString);
+            NativeConnection = CreateNativeConnection(TargetConnectionString);
             store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location);
             try
                 {
@@ -257,6 +282,7 @@ namespace Operations
                     ExecuteAction = Execute,
                     };
                 core.DirectoryServiceRequest += DirectoryServiceRequest;
+                core.DirectoryCompleted += DirectoryCompleted;
                 core.Execute(InputFileName);
                 if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
                     store.Commit();
@@ -270,6 +296,12 @@ namespace Operations
                 }
             GC.Collect();
             GC.Collect();
+            }
+
+        private void DirectoryCompleted(Object sender, EventArgs e) {
+            if (connection != null) {
+                connection.SaveChanges();
+                }
             }
 
         private static void DirectoryServiceRequest(Object sender, DirectoryServiceRequestEventArgs e) {
@@ -389,8 +421,8 @@ namespace Operations
         #region M:Get:RelativeDistinguishedName
         private static DRelativeDistinguishedName Get(Entities context, LocalCache cache, IDbSet<DRelativeDistinguishedName> set, Oid oid, String value) {
             var type = oid.Value;
-            var r =
-                cache.RelativeDistinguishedNames.FirstOrDefault(i => (i.ObjectIdentifier.Value == type) && (i.String.Value == value))??
+            var r = cache.RelativeDistinguishedNames.FirstOrDefault(i => (i.ObjectIdentifier != null) && (i.ObjectIdentifier.Value == type) && (i.String.Value == value));
+            r = r??
                 set.
                     Include(nameof(DRelativeDistinguishedName.String)).
                     Include(nameof(DRelativeDistinguishedName.ObjectIdentifier)).
@@ -554,7 +586,7 @@ namespace Operations
             }
         #endregion
 
-        #region M:Update(SqlConnection,Asn1Certificate)
+        #region M:Update(Entities,Asn1Certificate)
         private static void Update(Entities context, Asn1Certificate source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -602,11 +634,34 @@ namespace Operations
                         }
                     }
                 context.Certificates.Add(target);
-                context.SaveChanges();
+                //context.SaveChanges();
                 }
             }
         #endregion
-        #region M:Update(SqlConnection,Asn1CertificateRevocationList)
+        #region M:Update(SqlConnection,Asn1Certificate)
+        private static void Update(SqlConnection context, Asn1Certificate source) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            var thumbprint = source.Thumbprint;
+            var builder = new StringBuilder();
+            using (var writer = XmlWriter.Create(builder)) {
+                source.WriteXml(writer);
+                }
+            using (var command = context.CreateCommand()) {
+                command.CommandText = "[dbo].[ImportCertificate]";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) {
+                    Value = source.Thumbprint
+                    });
+                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
+                    Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
+                    });
+                command.ExecuteNonQuery();
+                }
+            return;
+            }
+        #endregion
+        #region M:Update(Entities,Asn1CertificateRevocationList)
         private static void Update(Entities context, Asn1CertificateRevocationList source) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -667,8 +722,30 @@ namespace Operations
                         }
                     }
                 context.CertificateRevocationLists.Add(target);
-                context.SaveChanges();
+                //context.SaveChanges();
                 }
+            }
+        #endregion
+        #region M:Update(SqlConnection,Asn1CertificateRevocationList)
+        private static void Update(SqlConnection context, Asn1CertificateRevocationList source) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            var builder = new StringBuilder();
+            using (var writer = XmlWriter.Create(builder)) {
+                source.WriteXml(writer);
+                }
+            using (var command = context.CreateCommand()) {
+                command.CommandText = "[dbo].[ImportCertificateRevocationList]";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) {
+                    Value = source.Thumbprint
+                    });
+                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
+                    Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
+                    });
+                command.ExecuteNonQuery();
+                }
+            return;
             }
         #endregion
 
@@ -735,11 +812,12 @@ namespace Operations
             }
         #endregion
 
-        //private static SqlConnection CreateConnection(String connection) {
-        //    var r = new SqlConnection(connection);
-        //    r.Open();
-        //    return r;
-        //    }
+        private static SqlConnection CreateNativeConnection(String connection) {
+            var r = new SqlConnection(connection);
+            r.Open();
+            return r;
+            }
+
         private static Entities CreateConnection(String connection) {
             if (String.IsNullOrWhiteSpace(connection)) { return null; }
             return new Entities(new EntityConnectionStringBuilder

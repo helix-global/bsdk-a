@@ -85,10 +85,17 @@
     <Build Include="dbo\Tables\AlternativeName.sql" />
     <Build Include="dbo\Functions\GeneralNameToString.sql" />
     <Build Include="dbo\Tables\CertificateRevocationList.sql" />
-    <Build Include="dbo\Views\CrlView.sql" />
     <Build Include="dbo\Stored Procedures\ImportCertificateRevocationList.sql" />
     <Build Include="dbo\Stored Procedures\ImportCertificate.sql" />
     <Build Include="dbo\Stored Procedures\Cleanup.sql" />
+    <Build Include="dbo\Views\ReportCertificateRevocationList.sql" />
+    <Build Include="FullTextIndexes.sql" />
+    <Build Include="dbo\Functions\GetShortKey.sql" />
+    <Build Include="dbo\Stored Procedures\ImportRelativeDistinguishedNameSequence.sql" />
+    <Build Include="dbo\Stored Procedures\ImportRelativeDistinguishedName.sql" />
+    <Build Include="dbo\Stored Procedures\ImportObjectIdentifier.sql" />
+    <Build Include="dbo\Stored Procedures\ImportExtensions.sql" />
+    <Build Include="dbo\Stored Procedures\ImportExtension.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

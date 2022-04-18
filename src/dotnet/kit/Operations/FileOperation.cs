@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
@@ -19,6 +20,7 @@ namespace Operations
         public String Pattern { get;set; }
         public Func<IFileService,DirectoryServiceSearchOptions,FileOperationArgs,FileOperationStatus> ExecuteAction { get;set; }
         public event EventHandler<DirectoryServiceRequestEventArgs> DirectoryServiceRequest;
+        public event EventHandler DirectoryCompleted;
         private readonly Object console = new Object();
 
         public FileOperation(TextWriter output, TextWriter error)
@@ -55,11 +57,11 @@ namespace Operations
             }
         #endregion
         #region M:Execute(IDirectoryService,String):FileOperationStatus
-        private FileOperationStatus Execute(IDirectoryService service, String pattern) {
+        protected virtual FileOperationStatus Execute(IDirectoryService service, String pattern) {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             var status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
             #if DEBUG
-            foreach (var i in service.GetFiles(pattern, Options)) {
+            foreach (var i in service.GetFiles(pattern, Options).OrderBy(i => i.FullName)) {
                 status.Value = Max(status.Value, Execute(i, pattern));
                 }
             #else
@@ -67,6 +69,7 @@ namespace Operations
                 status.Value = Max(status.Value, Execute(i, pattern));
                 });
             #endif
+            DirectoryCompleted?.Invoke(this, EventArgs.Empty);
             return status.Value;
             }
         #endregion

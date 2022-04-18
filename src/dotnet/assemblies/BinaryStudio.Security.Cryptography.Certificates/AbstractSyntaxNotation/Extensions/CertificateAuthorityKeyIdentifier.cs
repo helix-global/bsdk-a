@@ -48,7 +48,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     #region [2]:SerialNumber
                     specific = contextspecifics.FirstOrDefault(i => ((Asn1ContextSpecificObject)i).Type == 2);
                     if (specific != null) {
-                        SerialNumber = String.Join(String.Empty, specific.Content.ToArray().Select(i => i.ToString("X2")));
+                        SerialNumber = String.Join(String.Empty, specific.Content.ToArray().Select(i => i.ToString("x2")));
                         }
                     #endregion
                     }
@@ -85,15 +85,21 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             writer.WriteStartElement("Extension");
             writer.WriteAttributeString(nameof(Identifier), Identifier.ToString());
             writer.WriteAttributeString(nameof(IsCritical), IsCritical.ToString());
+            writer.WriteStartElement("Extension.Value");
+            writer.WriteStartElement("CertificateAuthorityKeyIdentifier");
             if (KeyIdentifier != null) {
-                writer.WriteAttributeString("Key", KeyIdentifier.ToString("X"));
+                writer.WriteAttributeString("Key", KeyIdentifier.ToString("x"));
                 }
             if (!String.IsNullOrWhiteSpace(SerialNumber)) {
                 writer.WriteAttributeString(nameof(SerialNumber), SerialNumber);
                 }
             if (CertificateIssuer is IXmlSerializable CertificateIssuerProperty) {
+                writer.WriteStartElement("CertificateAuthorityKeyIdentifier.CertificateIssuer");
                 CertificateIssuerProperty.WriteXml(writer);
+                writer.WriteEndElement();
                 }
+            writer.WriteEndElement();
+            writer.WriteEndElement();
             writer.WriteEndElement();
             }
 
@@ -102,7 +108,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(serializer, nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(serializer, nameof(IsCritical), IsCritical);
-                writer.WriteValue(serializer, nameof(KeyIdentifier), KeyIdentifier.ToString("X"));
+                writer.WriteValue(serializer, nameof(KeyIdentifier), KeyIdentifier.ToString("x"));
                 if (!String.IsNullOrWhiteSpace(SerialNumber)) {
                     writer.WriteValue(serializer, nameof(SerialNumber), SerialNumber);
                     }
