@@ -1,3 +1,5 @@
 # bsdk
 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe srv.exe
 input:*.cer [output:{folder}] batch:serialize
+
+.\kit input:C:\TFS\icao\repo\*.crl "output:{oledb://Data Source=DEV-SR-SQL02\SQL2008SRV;Initial Catalog=icao;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;Password=escort}" batch:serialize
