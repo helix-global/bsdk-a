@@ -51,8 +51,8 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
             if (HasOption(options, typeof(MessageGroupOption))) {
                      if (HasOption(options, typeof(CreateOption)))  { operation.Value = new CreateMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(VerifyOption)))     { operation.Value = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(EncryptOption)))    { operation.Value = new EncryptMessageOperation(Console.Out, Console.Error, options); }
+                else if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
+                else if (HasOption(options, typeof(EncryptOption))) { operation.Value = new EncryptMessageOperation(Console.Out, Console.Error, options); }
                 }
             else if (HasOption(options, typeof(VerifyOption)))            { operation.Value = new VerifyOperation(Console.Out, Console.Error, options);         }
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
@@ -60,8 +60,11 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(SetOption)))               { operation.Value = new SetOperation(Console.Out, Console.Error, options);            }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
             operation.Value.ValidatePermission();
-            //Console.WriteLine("Press [ENTER] to start...");
-            //Console.ReadLine();
+            var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
+            if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {
+                Console.WriteLine("Press [ENTER] to resume...");
+                Console.ReadLine();
+                }
             Task.Factory.StartNew(()=>{
                 try
                     {
