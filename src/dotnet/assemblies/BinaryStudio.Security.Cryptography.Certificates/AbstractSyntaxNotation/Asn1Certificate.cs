@@ -439,6 +439,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     }
                 writer.WriteEndElement();
                 }
+            if (SignatureAlgorithm != null) {
+                writer.WriteStartElement("Certificate.SignatureAlgorithm");
+                SignatureAlgorithm.WriteXml(writer);
+                writer.WriteEndElement();
+                }
             writer.WriteEndElement();
             }
         }

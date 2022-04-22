@@ -6,7 +6,8 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[ImportCertificateRevocationList]
   @Thumbprint AS NVARCHAR(MAX),
-	@Body AS XML
+  @Body AS XML,
+  @Status AS TINYINT=NULL
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -30,7 +31,7 @@ BEGIN
           ,@Extensions = [a].query('Extensions')
           ,@Issuer  = [a].query('CertificateRevocationList.Issuer/RelativeDistinguishedName')
         FROM @Body.nodes(N'CertificateRevocationList') [a]([a])
-        INSERT INTO [dbo].[Object] ([Type],[Body]) VALUES (2,@Body)
+        INSERT INTO [dbo].[Object] ([Type],[Body],[Status]) VALUES (2,@Body,@Status)
         SET @ObjectId = @@IDENTITY
         EXECUTE [dbo].[ImportRelativeDistinguishedNameSequence] @Body=@Issuer ,@Identifier=@IssuerId  OUTPUT
         INSERT INTO [dbo].[CertificateRevocationList]

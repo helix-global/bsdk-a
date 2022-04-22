@@ -104,7 +104,7 @@ namespace Operations
                             var j = 0;
                             var Files = Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).ToArray();
                             NumberOfFiles = Files.Length;
-                            #if DEBUG2
+                            #if DEBUG
                             foreach (var i in Files.OrderBy(i => i)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)

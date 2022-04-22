@@ -96,6 +96,13 @@
     <Build Include="dbo\Stored Procedures\ImportExtensions.sql" />
     <Build Include="dbo\Stored Procedures\ImportExtension.sql" />
     <Build Include="dbo\Views\ReportCertificate.sql" />
+    <Build Include="dbo\Views\MessageCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCmsMessage.sql" />
+    <Build Include="dbo\Tables\CmsMessage.sql" />
+    <Build Include="dbo\Tables\CmsSignerInfo.sql" />
+    <Build Include="dbo\Tables\CmsCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCmsSignerInfo.sql" />
+    <Build Include="dbo\Views\ReportMessage.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,5 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="string_agg.cs" />
+    <Compile Include="dbo\Functions\OidToStr.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="BinaryStudio.Security.Cryptography.Interchange.Database.refactorlog" />
   </ItemGroup>
 </Project>

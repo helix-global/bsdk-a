@@ -225,9 +225,15 @@ namespace Operations
         #region M:Execute(String,IFileService,CmsMessage):FileOperationStatus
         private FileOperationStatus Execute(String targetfolder, IFileService fileservice, CmsMessage source) {
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
-                var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
-                using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
-                    JsonSerialize(source, writer);
+                if (NativeConnection != null) {
+                    Update(NativeConnection, source, Path.GetFileNameWithoutExtension(fileservice.FileName));
+                    }
+                else
+                    {
+                    var targetfilename = Path.Combine(targetfolder, Path.GetFileName(fileservice.FileName + ".json"));
+                    using (var writer = new StreamWriter(File.OpenWrite(targetfilename))) {
+                        JsonSerialize(source, writer);
+                        }
                     }
                 }
             return FileOperationStatus.Success;
@@ -333,6 +339,7 @@ namespace Operations
                                     MakeDir(targetfolder);
                                     service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
                                     ((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
+                                    ((IFileService)cms).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".p7b")), true);
                                     status = FileOperation.Max(status, FileOperationStatus.Success);
                                     }
                                 }
@@ -739,6 +746,28 @@ namespace Operations
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) {
                     Value = source.Thumbprint
+                    });
+                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
+                    Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
+                    });
+                command.ExecuteNonQuery();
+                }
+            return;
+            }
+        #endregion
+        #region M:Update(SqlConnection,Asn1CertificateRevocationList)
+        private static void Update(SqlConnection context, CmsMessage source, String key) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            var builder = new StringBuilder();
+            using (var writer = XmlWriter.Create(builder)) {
+                source.WriteXml(writer);
+                }
+            using (var command = context.CreateCommand()) {
+                command.CommandText = "[dbo].[ImportCmsMessage]";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Key", SqlDbType.NVarChar) {
+                    Value = key
                     });
                 command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
                     Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())

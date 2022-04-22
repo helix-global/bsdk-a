@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -442,6 +443,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             //writer.WriteIndentSpace(6);
             //writer.WriteComment($" {HashAlgorithm.FriendlyName} ");
             writer.WriteEndObject();
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("SignatureAlgorithm");
+            writer.WriteAttributeString(nameof(SignatureAlgorithm), SignatureAlgorithm.ToString());
+            writer.WriteAttributeString(nameof(HashAlgorithm), HashAlgorithm.Value);
+            writer.WriteEndElement();
             }
         }
     }

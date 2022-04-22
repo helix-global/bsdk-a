@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Cryptography;
+using System.Xml;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -18,6 +19,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     }
                 }
             HashAlgorithm = HashAlgorithm ?? new Oid(szOID_OIWSEC_sha1);
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("RSAWithPSSSignatureAlgorithm");
+            writer.WriteAttributeString(nameof(SignatureAlgorithm), SignatureAlgorithm.ToString());
+            writer.WriteAttributeString(nameof(HashAlgorithm), HashAlgorithm.Value);
+            writer.WriteEndElement();
             }
         }
     }

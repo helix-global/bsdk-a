@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -12,17 +13,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         public CmsIssuerSerialSequence(Asn1Sequence source)
             : base(source)
             {
-            CertificateSerialNumber = (Asn1Integer)source[1];
+            CertificateSerialNumber = ((BigInteger)(Asn1Integer)source[1]).ToByteArray().Reverse().ToArray().ToString("x");
             CertificateIssuer = X509GeneralName.From((Asn1ContextSpecificObject)source[0][0]);
             }
 
-        public BigInteger CertificateSerialNumber { get; }
+        public String CertificateSerialNumber { get; }
         public IX509GeneralName CertificateIssuer { get; }
 
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer)
             {
             writer.WriteStartObject();
-            writer.WriteValue(serializer, nameof(CertificateSerialNumber), CertificateSerialNumber.ToByteArray().Reverse().ToArray().ToString("X"));
+            writer.WriteValue(serializer, nameof(CertificateSerialNumber), CertificateSerialNumber);
             writer.WriteValue(serializer, nameof(CertificateIssuer), CertificateIssuer);
             writer.WriteEndObject();
             }

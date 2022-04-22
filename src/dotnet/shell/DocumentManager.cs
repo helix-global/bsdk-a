@@ -77,7 +77,15 @@ namespace shell
                     }
                 }
             else if (source is Asn1Object o) {
-                var crt = ReadCrt(o); if (crt != null) { r.Add(new View<ECertificate>(new ECertificate(new X509Certificate(crt)))); return r; }
+                var crt = ReadCrt(o);
+                if (crt != null) {
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = new ECertificate(new X509Certificate(crt))
+                            }));
+                    return r;
+                    }
                 var cms = ReadCms(o); if (cms != null) { r.Add(new View<ECms>(new ECms(cms))); return r; }
                 else
                     {

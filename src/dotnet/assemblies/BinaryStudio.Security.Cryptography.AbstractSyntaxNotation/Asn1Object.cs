@@ -976,6 +976,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:IXmlSerializable.WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public virtual void WriteXml(XmlWriter writer)
             {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }

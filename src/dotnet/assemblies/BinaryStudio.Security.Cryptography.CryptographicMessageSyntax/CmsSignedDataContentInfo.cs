@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -184,6 +185,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                 writer.WriteEndArray();
                 }
             writer.WriteEndObject();
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("CmsSignedDataContentInfo");
+            if (DigestAlgorithms != null) {
+                writer.WriteStartElement(nameof(DigestAlgorithms));
+                foreach (var identifier in DigestAlgorithms) {
+                    identifier.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            if (Certificates != null) {
+                writer.WriteStartElement(nameof(Certificates));
+                foreach (var certificate in Certificates) {
+                    certificate.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            if (Signers != null) {
+                writer.WriteStartElement(nameof(Signers));
+                foreach (var signer in Signers) {
+                    signer.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
             }
         }
     }

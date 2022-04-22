@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.DataProcessing.Annotations;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -74,6 +75,21 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             writer.WriteValue(serializer, nameof(Type), oid);
             WriteJsonOverride(writer, serializer);
             writer.WriteEndObject();
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Attribute");
+            writer.WriteAttributeString(nameof(Type), Type.ToString());
+            if (!IsNullOrEmpty(Values)) {
+                writer.WriteStartElement("Attribute.Value");
+                foreach (var value in Values) {
+                    value.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
             }
 
         protected new virtual void WriteJsonOverride(JsonWriter writer, JsonSerializer serializer)

@@ -93,3 +93,5 @@
 /src/dotnet/samples/SmartCardSample/bin
 /src/dotnet/samples/SmartCardSample/obj
 /.intermediate
+/src/dotnet/samples/HResultSample/bin/Debug/net40
+/src/dotnet/samples/HResultSample/obj

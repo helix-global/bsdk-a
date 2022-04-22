@@ -60,7 +60,7 @@ namespace Operations
         protected virtual FileOperationStatus Execute(IDirectoryService service, String pattern) {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             var status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
-            #if DEBUG2
+            #if DEBUG
             foreach (var i in service.GetFiles(pattern, Options).OrderBy(i => i.FullName)) {
                 status.Value = Max(status.Value, Execute(i, pattern));
                 }

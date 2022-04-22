@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 using BinaryStudio.IO;
 using Newtonsoft.Json;
 
@@ -58,6 +59,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             WriteValue(writer, serializer, nameof(Type),Type.ToString());
             if (Offset >= 0) { WriteValue(writer, serializer, nameof(Offset), Offset); }
             WriteValue(writer, serializer, nameof(Value), Value.ToString("O"));
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Object");
+            writer.WriteAttributeString(nameof(Class), Class.ToString());
+            if (Offset >= 0) { writer.WriteAttributeString(nameof(Offset), Offset.ToString()); }
+            writer.WriteAttributeString("Type", Type.ToString());
+            writer.WriteString(Value.ToString("o"));
+            writer.WriteEndElement();
             }
         }
     }

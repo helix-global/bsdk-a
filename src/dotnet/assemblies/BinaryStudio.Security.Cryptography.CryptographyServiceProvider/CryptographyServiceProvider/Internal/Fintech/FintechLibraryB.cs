@@ -20,6 +20,7 @@ using BinaryStudio.DirectoryServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using Internal.CryptoAPICOM;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
@@ -38,6 +39,38 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public Version Version { get; }
+
+        private static Type GetExceptionType(HRESULT? scode) {
+            if (scode == null) { return null; }
+            switch (scode.Value) {
+                case HRESULT.FINTECH_E_CERT_MISSING:             return typeof(CertificateMissingException);
+                case HRESULT.FINTECH_E_CERT_SIGNATURE:           return typeof(CertificateRootAuthorityInvalidSignatureException);
+                case HRESULT.FINTECH_E_CERT_EXPIRED:             return typeof(CertificateRootAuthorityExpiredException);
+                case HRESULT.CERT_E_CHAINING:                    return typeof(CertificateMissingException);
+                case HRESULT.TRUST_E_CERT_SIGNATURE:             return typeof(CertificateSignatureException);
+                case HRESULT.CRYPT_E_NO_REVOCATION_CHECK:        return typeof(CertificateRevocationException);
+                case HRESULT.CRYPT_E_REVOCATION_OFFLINE:         return typeof(CertificateRevocationOfflineException);
+                case HRESULT.CRYPT_E_REVOKED:                    return typeof(CertificateIsRevokedException);
+                case HRESULT.CERT_E_EXPIRED:                     return typeof(CertificateExpiredException);
+                case HRESULT.CRYPT_E_OID_FORMAT:                 return typeof(InvalidObjectIdentifierException);
+                case HRESULT.FINTECH_E_CERT_WRONG_EKU:           return typeof(CertificateInvalidExtendedKeyUsageException);
+                case HRESULT.FINTECH_E_CERT_STORE_NOT_FOUND:     return typeof(CertificateStoreNotFoundException);
+                case HRESULT.FINTECH_E_CERT_PRIVATE_KEY_EXPIRED: return typeof(CertificatePrivateKeyExpiredException);
+                case HRESULT.FINTECH_E_CERT_DECODE:              return typeof(CertificateInvalidFormatException);
+                case HRESULT.CRYPT_E_MSG_ERROR:                  return typeof(CmsOperationException);
+                case HRESULT.CRYPT_E_INVALID_MSG_TYPE:           return typeof(CmsInvalidTypeException);
+                case HRESULT.NTE_BAD_SIGNATURE:                  return typeof(CertificateInvalidSignatureException);
+                case HRESULT.NTE_BAD_HASH:                       return typeof(CertificateInvalidHashException);
+                case HRESULT.NTE_BAD_DATA:
+                case HRESULT.CRYPT_E_ASN1_BADTAG:                return typeof(SecurityInvalidDataException);
+                case HRESULT.NTE_BAD_KEYSET:
+                case HRESULT.NTE_NO_KEY:                         return typeof(CertificatePrivateKeyMissingException);
+                case HRESULT.FINTECH_E_CRL_MISSING:              return typeof(CrlMissingException);
+                case HRESULT.FINTECH_E_CRL_SIGNATURE:            return typeof(CrlSignatureException);
+                case HRESULT.FINTECH_E_CRL_EXPIRED:              return typeof(CrlExpiredException);
+                }
+            return null;
+            }
 
         #region M:Make(Type,params Object[]):T
         private static Object Make(Type type, params Object[] args)
@@ -77,9 +110,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     case HRESULT.COR_E_ARGUMENTOUTOFRANGE:           basetype = typeof(ArgumentOutOfRangeException); break;
                     case HRESULT.COR_E_NOTSUPPORTED:                 basetype = typeof(NotSupportedException); break;
                     case HRESULT.COR_E_NULLREFERENCE:                basetype = basetype ?? typeof(NullReferenceException); break;
-                    case HRESULT.FINTECH_E_CRL_MISSING:             type = typeof(CrlMissingException); break;
-                    case HRESULT.FINTECH_E_CRL_SIGNATURE:           type = typeof(CrlSignatureException); break;
-                    case HRESULT.FINTECH_E_CRL_EXPIRED:             type = typeof(CrlExpiredException); break;
+                    case HRESULT.FINTECH_E_CRL_MISSING:              type = typeof(CrlMissingException); break;
+                    case HRESULT.FINTECH_E_CRL_SIGNATURE:            type = typeof(CrlSignatureException); break;
+                    case HRESULT.FINTECH_E_CRL_EXPIRED:              type = typeof(CrlExpiredException); break;
                     }
                 if (basetype != null)
                     {
@@ -184,7 +217,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 r = Make(exception.Message, new []{
                     From(exception.InnerException)
                     }, stacktrace, scode, basetype, source);
-                Marshal.FinalReleaseComObject(exception.InnerException);
+                //Marshal.FinalReleaseComObject(exception.InnerException);
                 }
             else
                 {
@@ -208,7 +241,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 SetErrorInfo(0, IntPtr.Zero);
                 if (i != null)
                     {
-                    Marshal.FinalReleaseComObject(i);
+                    //Marshal.FinalReleaseComObject(i);
                     }
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
@@ -393,7 +426,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [ComImport, Guid("73D2E14E-12CB-424A-A9D5-480C3BA132E1")]
         private interface IStatRow
 	        {
-            Boolean IsError { get; }
+            UInt32 SCode { get; }
             String SignerSignatureAlgorithm { get; }
             String SignerDigestAlgorithm { get; }
             String Country { get; }
@@ -405,14 +438,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String Modifiers { get; }
             String CCryptError { get; }
             String BCryptError { get; }
-            DateTime CertificateNotBefore { get; }
-            DateTime CertificateNotAfter { get; }
+            DateTimeRef CertificateNotBefore { get; }
+            DateTimeRef CertificateNotAfter { get; }
             String CertificateIssuer { get; }
             String CertificateSubject { get; }
             String CertificateAuthorityKeyIdentifier { get; }
+            String CertificateSubjectKeyIdentifier { get; }
+            String CertificateThumbprint { get; }
             String ActualContentDigestMethod { get; }
             DateTimeRef SigningTime { get; }
             String Stream { get; }
+            String IssuerCertificateThumbprint { get; }
             Int32 MessageSize { get; }
             Int32 ContentSize { get; }
 	        }
@@ -787,12 +823,24 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             [DisplayName("Конечная дата периода действия сертификата")]  public String CertificateNotAfter { get;set; }
             [DisplayName("Дата подписи")]  public String SigningTime { get;set; }
             [DisplayName("Издатель")] public String CertificateIssuer { get;set; }
-            [DisplayName("УЦ")] public String CertificateAuthorityKeyIdentifier { get;set; }
+            public String CertificateAuthorityKeyIdentifier { get;set; }
+            public String CertificateSubjectKeyIdentifier { get;set; }
             [DisplayName("Исходный файл")] public String Stream { get;set; }
             [DisplayName("Субъект")] public String CertificateSubject { get;set; }
             [DisplayName("Актуальный алгоритм хэширования(Содержимое)")] public String ActualContentDigestMethod { get;set; }
             [DisplayName("Размер сообщения")]   public Int32 MessageSize { get;set; }
             [DisplayName("Размер содержимого")] public Int32 ContentSize { get;set; }
+            public String CertificateThumbprint { get;set; }
+            public String IssuerCertificateThumbprint { get;set; }
+            public String SCode { get;set; }
+            }
+
+        private static String ShortKey(String value) {
+            if (String.IsNullOrWhiteSpace(value)) { return null; }
+            if (value.Length > 4) {
+                return value.Substring(0,2)+value.Substring(value.Length - 3, 2);
+                }
+            return value;
             }
 
         private static String FormatOID(String oid) {
@@ -814,8 +862,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     if (table != null) {
                         var count = table.Count;
                         var rows = new List<StatRecord>();
-                        var scces = 0;
-                        var errrs = 0;
                         for (var i = 0; i < count; i++) {
                             var j = table[i];
                             var countryCode = j.Country?.ToLowerInvariant();
@@ -825,38 +871,34 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             countryName = countryName ?? (IcaoCountry.ThreeLetterCountries.TryGetValue(countryCode, out country) ? country.RussianShortName : "Не удалось опознать страну");
                             rows.Add(new StatRecord
                                 {
-                                IsError = j.IsError,
+                                IsError = j.SCode != 0,
+                                SCode = j.SCode.ToString("x8"),
                                 CountryCode = countryCode,
-                                CertificateDigestAlgorithm = FormatOID(j.CertificateDigestAlgorithm),
-                                CertificateSignatureAlgorithm = FormatOID(j.CertificateSignatureAlgorithm),
-                                SignerDigestAlgorithm = FormatOID(j.SignerDigestAlgorithm),
-                                SignerSignatureAlgorithm = FormatOID(j.SignerSignatureAlgorithm),
+                                CertificateDigestAlgorithm = j.CertificateDigestAlgorithm ?? "NULL",
+                                CertificateSignatureAlgorithm = j.CertificateSignatureAlgorithm ?? "NULL",
+                                SignerDigestAlgorithm = j.SignerDigestAlgorithm ?? "NULL",
+                                SignerSignatureAlgorithm = j.SignerSignatureAlgorithm ?? "NULL",
                                 Organization = j.Organization,
-                                Source = j.Source ?? "Нет",
-                                ActualDigestMethod = FormatOID(j.ActualDigestMethod),
+                                Source = j.Source ?? "NULL",
+                                ActualDigestMethod = j.ActualDigestMethod ?? "NULL",
                                 Modifiers = j.Modifiers,
                                 CCryptError = j.CCryptError,
                                 BCryptError = j.BCryptError,
-                                CertificateIssuer = j.CertificateIssuer,
-                                CertificateNotAfter = j.CertificateNotAfter.ToString("yyyy-MM-ddTHH:mm:ss"),
-                                CertificateNotBefore = j.CertificateNotBefore.ToString("yyyy-MM-ddTHH:mm:ss"),
-                                SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "Нет данных",
-                                Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "Нет данных",
-                                CertificateAuthorityKeyIdentifier = j.CertificateAuthorityKeyIdentifier,
-                                CountryName = countryName,
-                                CertificateSubject = j.CertificateSubject,
-                                ActualContentDigestMethod = FormatOID(j.ActualContentDigestMethod),
+                                CertificateIssuer = j.CertificateIssuer ?? "NULL",
+                                CertificateNotAfter = j.CertificateNotAfter.HasValue ? j.CertificateNotAfter.Value.ToString("yyyy-MM-ddTHH:mm:ss") : "NULL",
+                                CertificateNotBefore = j.CertificateNotBefore.HasValue ? j.CertificateNotBefore.Value.ToString("yyyy-MM-ddTHH:mm:ss"): "NULL",
+                                SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "NULL",
+                                Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "NULL",
+                                CertificateAuthorityKeyIdentifier = ShortKey(j.CertificateAuthorityKeyIdentifier) ?? "NULL",
+                                CountryName = countryName ?? "NULL",
+                                CertificateSubject = j.CertificateSubject ?? "NULL",
+                                ActualContentDigestMethod = j.ActualContentDigestMethod ?? "NULL",
                                 ContentSize = j.ContentSize,
-                                MessageSize = j.MessageSize
+                                MessageSize = j.MessageSize,
+                                CertificateThumbprint = j.CertificateThumbprint ?? "NULL",
+                                CertificateSubjectKeyIdentifier = ShortKey(j.CertificateSubjectKeyIdentifier) ?? "NULL",
+                                IssuerCertificateThumbprint = j.IssuerCertificateThumbprint ?? "NULL",
                                 });
-                            if (j.IsError)
-                                {
-                                errrs++;
-                                }
-                            else
-                                {
-                                scces++;
-                                }
                             }
                         var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
                         using (var stream = File.OpenWrite(filename))

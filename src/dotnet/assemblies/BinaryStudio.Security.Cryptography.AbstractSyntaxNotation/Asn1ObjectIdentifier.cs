@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Xml;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -179,6 +180,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             if (service == typeof(Asn1ObjectIdentifier)) { return this; }
             return base.GetService(service);
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Object");
+            writer.WriteAttributeString(nameof(Class), Class.ToString());
+            if (Offset >= 0) { writer.WriteAttributeString(nameof(Offset), Offset.ToString()); }
+            writer.WriteAttributeString("Type", Type.ToString());
+            writer.WriteString(ToString());
+            writer.WriteEndElement();
             }
         }
     }

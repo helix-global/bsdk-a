@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,6 +40,9 @@ public class LocalClient : ILocalClient
         {
         try
             {
+            var x1 = new HResultException(HRESULT.S_OK);
+            var x2 = new HResultException(HRESULT.S_OK, CultureInfo.GetCultureInfo("ru-RU"));
+            var x3 = new HResultException(HRESULT.S_OK, CultureInfo.GetCultureInfo("en-US"));
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
