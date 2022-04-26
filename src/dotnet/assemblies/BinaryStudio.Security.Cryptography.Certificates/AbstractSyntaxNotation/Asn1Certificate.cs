@@ -81,7 +81,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     [TypeConverter(typeof(ObjectTypeConverter))]
     public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate, IFileService
         {
-        private String _thumbprint;
+        private String thumbprint;
         private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
 
         [Order( 1)] public Int32 Version { get; }
@@ -96,15 +96,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Order(10)] public Asn1CertificateExtensionCollection Extensions { get { return new Asn1CertificateExtensionCollection(extensions); }}
         [Order(11)] 
         public String Thumbprint { get {
-            if (_thumbprint == null) {
+            if (thumbprint == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
                     UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    _thumbprint = engine.ComputeHash(output).ToString("x");
+                    thumbprint = engine.ComputeHash(output).ToString("x");
                     }
                 }
-            return _thumbprint;
+            return thumbprint;
             }}
 
         public Asn1Certificate(Asn1Object o)

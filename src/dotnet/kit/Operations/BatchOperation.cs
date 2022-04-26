@@ -773,12 +773,8 @@ namespace Operations
             using (var command = context.CreateCommand()) {
                 command.CommandText = "[dbo].[ImportCertificateRevocationList]";
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) {
-                    Value = source.Thumbprint
-                    });
-                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
-                    Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
-                    });
+                command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) { Value = source.Thumbprint });
+                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) { Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader()) });
                 command.ExecuteNonQuery();
                 }
             return;
@@ -798,6 +794,7 @@ namespace Operations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@Key", SqlDbType.NVarChar) { Value = key });
                     command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) { Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader()) });
+                    command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) { Value = source.Thumbprint });
                     command.Parameters.Add(new SqlParameter("@Group", SqlDbType.TinyInt) { Value = group });
                     command.ExecuteNonQuery();
                     }

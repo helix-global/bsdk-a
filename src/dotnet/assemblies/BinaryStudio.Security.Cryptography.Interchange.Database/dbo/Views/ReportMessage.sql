@@ -4,6 +4,7 @@
 
 
 
+
 CREATE VIEW [dbo].[ReportMessage]
 AS
 SELECT
@@ -16,6 +17,7 @@ SELECT
   ,(SELECT TOP 1 [o].[Value] FROM [dbo].[GeneralName] [o] WHERE [o].[GeneralNameId]=[c].[Issuer]) [SignerIssuer]
   ,[c].[IssuerSerialNumber]
   ,[c].[SigningTime]
+  ,[a].[Thumbprint]
 FROM [dbo].[CmsMessage] [a] WITH(NOLOCK)
   INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
   INNER JOIN [dbo].[CmsSignerInfo] [c] ON [c].[MessageId]=[a].[ObjectId]

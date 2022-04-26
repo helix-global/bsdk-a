@@ -104,7 +104,7 @@ namespace BinaryStudio.DataProcessing
                     return i;
                     }
                 }
-            throw new ArgumentOutOfRangeException(nameof(name));
+            return -1;
             }
         #endregion
         #region M:GetBoolean(Int32):Boolean

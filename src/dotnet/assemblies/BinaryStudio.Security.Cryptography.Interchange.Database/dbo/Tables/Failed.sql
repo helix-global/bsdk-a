@@ -1,5 +1,9 @@
 ﻿CREATE TABLE [dbo].[Failed] (
-    [Key]    NVARCHAR (255) NULL,
-    [Status] INT            NOT NULL
+    [Id]                   INT           IDENTITY (1, 1) NOT NULL,
+    [Key]   NVARCHAR (255) NULL,
+    [Group] INT            NOT NULL,
+    CONSTRAINT [Failed_PK] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 

@@ -28,6 +28,16 @@ internal class HexCSVGroupService : IDirectoryService
         return value;
         }
 
+    private static String ToString(Object value) {
+        return value.ToString().Trim();
+        }
+
+    private static String ToString(CSVDataReader reader, String fieldname) {
+        return (reader.GetOrdinal(fieldname) != -1)
+            ? ToString(reader[fieldname])
+            : null;
+        }
+
     /// <inheritdoc/>
     public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption)
         {
@@ -43,24 +53,23 @@ internal class HexCSVGroupService : IDirectoryService
                     null, CultureInfo.CurrentCulture, Encoding.ASCII,
                     CSVDataReaderFlags.Delimited|
                     CSVDataReaderFlags.FirstRowContainsFieldNames, 0, Environment.NewLine)) {
-                while (reader.Read())
-                    {
-                    var DocumentCategoryName = ((String)reader["DocumentCategoryName"]).Trim();
-                    var CountryName = ((String)reader["CountryName"]).Trim();
-                    var CountryICAO = GetCountry(((String)reader["CountryICAO"]).Trim());
-                    var Month = ((String)reader["Month"]).Trim();
-                    var IdentifyDocumentId = ((String)reader["IdentifyDocumentID"]).Trim();
-                    var RegisterCode = ((String)reader["RegisterCod"]).Trim();
-                    var RegisterNumber = ((String)reader["RegisterNumber"]).Trim();
-                    var IssueDate = ((String)reader["IssueDate"]).Trim();
-                    var Year = IssueDate.Substring(0,4);
-                    var ValidToDate = ((String)reader["ValidToDate"]).Trim();
-                    var InscribeId = ((String)reader["InscribeID"]).Trim();
-                    var DataFormatId = ((String)reader["DataFormatID"]).Trim();
-                    var DataTypeId = ((String)reader["DataTypeID"]).Trim();
-                    var Order = ((String)reader["Ord"]).Trim();
-                    var Dense = ((String)reader["DENSE"]).Trim();
-                    var Body = ToArray((String)reader["CHIP_1D"]);
+                while (reader.Read()) {
+                    var IdentifyDocumentId   = ToString(reader,"IdentifyDocumentID");
+                    var DocumentCategoryName = ToString(reader["DocumentCategoryName"]);
+                    var CountryName          = ToString(reader["CountryName"]);
+                    var CountryICAO          = GetCountry(ToString(reader["CountryICAO"]));
+                    var RegisterCode         = ToString(reader["RegisterCod"]);
+                    var RegisterNumber       = ToString(reader["RegisterNumber"]);
+                    var IssueDate            = ToString(reader["IssueDate"]);
+                    var Year                 = IssueDate.Substring(0,4);
+                    var Month                = IssueDate.Substring(5,2);
+                    var ValidToDate          = ToString(reader["ValidToDate"]);
+                    var InscribeId           = ToString(reader,"InscribeID");
+                    var DataFormatId         = ToString(reader,"DataFormatID");
+                    var DataTypeId           = ToString(reader,"DataTypeID");
+                    var Order                = ToString(reader,"Ord");
+                    var Dense                = ToString(reader,"DENSE");
+                    var Body = ToArray(ToString(reader["CHIP_1D"]));
                     var r = new HexFile(Body,
                         IdentifyDocumentId, fileindex,
                         Source.FileName)

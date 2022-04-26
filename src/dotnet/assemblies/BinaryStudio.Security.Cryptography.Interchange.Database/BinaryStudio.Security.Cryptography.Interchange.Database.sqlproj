@@ -107,6 +107,7 @@
     <Build Include="dbo\Tables\Country.sql" />
     <Build Include="dbo\Tables\ThreeLetterISOCountryCode.sql" />
     <Build Include="dbo\Tables\Failed.sql" />
+    <Build Include="dbo\Views\ReportFailed.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

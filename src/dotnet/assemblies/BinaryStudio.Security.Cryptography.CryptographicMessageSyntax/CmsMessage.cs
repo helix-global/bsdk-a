@@ -23,6 +23,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [TypeConverter(typeof(CmsMessageTypeConverter))]
     public sealed class CmsMessage : CmsObject, IFileService
         {
+        private String thumbprint;
+
         /**
          * <summary>
          * This is the associated content. The type of content can be determined uniquely by <see cref="ContentType"/>.
@@ -74,6 +76,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         [TypeConverter(typeof(Asn1ObjectIdentifierTypeConverter))]
         [Order(-1)]
         public Oid ContentType { get; }
+
+        public String Thumbprint { get {
+            if (thumbprint == null) {
+                using (var engine = SHA1.Create())
+                using(var output = new MemoryStream()) {
+                    UnderlyingObject.WriteTo(output);
+                    output.Seek(0, SeekOrigin.Begin);
+                    thumbprint = engine.ComputeHash(output).ToString("x");
+                    }
+                }
+            return thumbprint;
+            }}
 
         /**
          * <summary>

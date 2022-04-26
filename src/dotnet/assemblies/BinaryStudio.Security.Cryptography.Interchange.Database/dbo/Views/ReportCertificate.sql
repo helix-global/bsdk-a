@@ -24,4 +24,4 @@ SELECT
   ,(SELECT TOP 1 [dbo].[OidToStr]([b].[Value]) FROM [dbo].[ObjectIdentifier] [b] WHERE [b].[Id]=[a].[HashAlgorithm]) [HashAlgorithm]
 FROM [dbo].[Certificate] [a]
   INNER JOIN [dbo].[Object] [o] ON [o].[ObjectId]=[a].[ObjectId]
-WHERE ([o].[Status] IS NULL)
+WHERE ([o].[Group] IS NULL)

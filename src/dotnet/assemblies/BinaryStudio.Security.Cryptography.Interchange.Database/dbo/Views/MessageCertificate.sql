@@ -22,4 +22,4 @@ SELECT
   ,[a].[Thumbprint] [Thumbprint]
 FROM [dbo].[Certificate] [a]
   INNER JOIN [dbo].[Object] [o] ON [o].[ObjectId]=[a].[ObjectId]
-WHERE ([o].[Status] = 1)
+WHERE ([o].[Group] IS NOT NULL)

@@ -14,8 +14,16 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [NonClusteredIndex-20220422-183610]
     ON [dbo].[Object]([ObjectId] ASC)
     INCLUDE([Key]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20220426-170555]
+    ON [dbo].[Object]([ObjectId] ASC)
+    INCLUDE([Group], [Key]);
 

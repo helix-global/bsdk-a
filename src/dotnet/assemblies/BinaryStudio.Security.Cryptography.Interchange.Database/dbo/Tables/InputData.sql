@@ -1,4 +1,5 @@
 ﻿CREATE TABLE [dbo].[InputData] (
+    [Id]                   INT           IDENTITY (1, 1) NOT NULL,
     [IdentifyDocumentId]   VARCHAR (50)  NULL,
     [DocumentCategoryName] NVARCHAR (50) NULL,
     [CountryName]          NVARCHAR (50) NULL,
@@ -15,8 +16,19 @@
     [Order]                VARCHAR (50)  NULL,
     [Dense]                VARCHAR (50)  NULL,
     [Size]                 INT           NULL,
-    [Group]                TINYINT       NULL
+    [Group]                TINYINT       NULL,
+    CONSTRAINT [InputData_PK] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
+
+
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20220426-173317]
+    ON [dbo].[InputData]([Id] ASC)
+    INCLUDE([RegisterNumber]);
 

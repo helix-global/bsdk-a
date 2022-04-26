@@ -8,6 +8,7 @@
 CREATE PROCEDURE [dbo].[ImportCmsMessage]
   @Key AS NVARCHAR(MAX),
   @Body AS XML,
+  @Thumbprint AS NVARCHAR(MAX),
   @Group AS TINYINT
 AS
 BEGIN
@@ -18,7 +19,7 @@ BEGIN
         [a].[ObjectId]
        FROM [dbo].[CmsMessage] [a]
         INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-      WHERE [b].[Key]=@Key))
+      WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)))
     BEGIN
       BEGIN TRANSACTION
         DECLARE @HashAlgorithm NVARCHAR(MAX)
@@ -37,8 +38,8 @@ BEGIN
         INSERT INTO [dbo].[Object] ([Type],[Body],[Group],[Key]) VALUES (3,@Body,@Group,@Key)
         SET @ObjectId=@@IDENTITY
         INSERT INTO [dbo].[CmsMessage]
-          ([ObjectId],[ContentType],[HashAlgorithm]) VALUES
-          (@ObjectId, @ContentTypeId, @HashAlgorithmId)
+          ([ObjectId],[ContentType],[HashAlgorithm],[Thumbprint]) VALUES
+          (@ObjectId, @ContentTypeId, @HashAlgorithmId,@Thumbprint)
         DECLARE @Certificate XML
         DECLARE [cursor] CURSOR LOCAL FORWARD_ONLY FAST_FORWARD FOR
         SELECT
@@ -79,5 +80,16 @@ BEGIN
         DEALLOCATE [cursor]
       COMMIT
     END
+	ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL)
+	BEGIN
+	  UPDATE [a]
+      SET [a].[Thumbprint]=@Thumbprint
+    FROM [dbo].[CmsMessage] [a]
+      INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
+    WHERE ([b].[Key]=@Key)
+      AND ([b].[Group]=@Group)
+      AND ([a].[Thumbprint] IS NULL)
+	  RETURN
+	END
   END
 END

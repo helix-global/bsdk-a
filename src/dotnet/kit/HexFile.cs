@@ -13,10 +13,16 @@ internal class HexFile : IFileService
     public HexFile(Byte[] body, String fileid, Int32 fileindex, String folder)
         {
         Body = body;
-        IdentifyDocumentId = fileid.ToLowerInvariant();
-        IdentifyDocumentId = (new String('0', Math.Max(10-IdentifyDocumentId.Length, 0))) + IdentifyDocumentId;
         FileIndex = fileindex;
         Folder = folder;
+        if (!String.IsNullOrWhiteSpace(fileid)) {
+            IdentifyDocumentId = fileid.ToLowerInvariant();
+            IdentifyDocumentId = (new String('0', Math.Max(10-IdentifyDocumentId.Length, 0))) + IdentifyDocumentId;
+            }
+        else
+            {
+            IdentifyDocumentId = FileIndex.ToString("x10");
+            }
         }
 
     public String FileName { get { return $"{IdentifyDocumentId}.hex"; }}
