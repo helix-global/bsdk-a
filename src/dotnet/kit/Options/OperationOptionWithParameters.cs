@@ -10,7 +10,6 @@ namespace Options
         public abstract String OptionName { get; }
         protected OperationOptionWithParameters(IList<String> values) {
             if (values == null) { throw new ArgumentNullException(nameof(values)); }
-            if (values.Count == 0) { throw new ArgumentOutOfRangeException(nameof(values)); }
             Values = new ReadOnlyCollection<String>(values);
             }
 

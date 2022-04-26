@@ -595,10 +595,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             ln += i.Size;
                             r.Add(i);
                             }
-                        if (flag)
-                            {
+                        if (flag) {
                             size   = sz;
                             length = ln;
+                            if ((offset + length) > content.Length) {
+                                state |= ObjectState.Failed;
+                                return false;
+                                }
                             content = content.Clone(offset, length);
                             state |= ObjectState.DisposeContent;
                             if (Decode(r))
@@ -1037,7 +1040,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 var offset = source.Position;
                 var i = ReadNext(source, source.Position);
                 if (i == null) { break; }
-                i.Decode();
+                if (!i.IsDecoded) {
+                    if (i.IsFailed || !i.Decode()) {
+                        break;
+                        }
+                    }
                 yield return i;
                 source.Position = offset + i.Size;
                 }
@@ -1061,12 +1068,27 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public static IEnumerable<Asn1Object> Load(Stream source) {
             if (source == null)  { throw new ArgumentNullException(nameof(source));       }
             if (!source.CanRead) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            return Load(new ReadOnlyStream(source));
+            var ro = source as ReadOnlyMappingStream;
+            return (ro != null)
+                ? Load(ro)
+                : Load(new ReadOnlyStream(source));
             }
 
         public virtual void WriteTo(Stream target) {
-            WriteHeader(target);
-            WriteContent(target);
+            if (IsIndefiniteLength)
+                {
+                Content.Seek(0, SeekOrigin.Begin);
+                Content.CopyTo(target);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                }
+            else
+                {
+                WriteHeader(target);
+                WriteContent(target);
+                }
             }
 
         protected virtual void WriteContent(Stream target) {

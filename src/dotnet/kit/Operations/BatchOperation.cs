@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using BinaryStudio.DirectoryServices;
@@ -47,28 +48,11 @@ namespace Operations
         private SqlConnection NativeConnection;
         private MetadataScope scope;
         private X509CertificateStorage store;
-        //private HashSet<CertificateReportItem> CertificateReport = new HashSet<CertificateReportItem>();
-
-        //private class CertificateReportItem
-        //    {
-        //    public String Country { get; }
-        //    public String SerialNumber { get; }
-        //    public String Issuer { get; }
-        //    public String Subject { get; }
-        //    public DateTime NotBefore { get; }
-        //    public DateTime NotAfter { get; }
-        //    public String AuthorityKeyIdentifier { get;set; }
-
-        //    public CertificateReportItem(Asn1Certificate source)
-        //        {
-        //        Country = source.Country;
-        //        SerialNumber = source.SerialNumber.Value.ToString("x");
-        //        Issuer = source.Issuer.ToString();
-        //        Subject = source.Subject.ToString();
-        //        NotAfter = source.NotAfter;
-        //        NotBefore = source.NotBefore;
-        //        }
-        //    }
+        private readonly MultiThreadOption MultiThreadOption;
+        private readonly TraceOption TraceOption;
+        private Int32 NumberOfFiles = 1;
+        private Int64 FileIndex = 0;
+        private Byte GroupNumber = 1;
 
         public BatchOperation(TextWriter output, TextWriter error, IList<OperationOption> args) 
             : base(output, error, args)
@@ -80,6 +64,11 @@ namespace Operations
             StoreLocation    = args.OfType<StoreLocationOption>().FirstOrDefault()?.Value;
             StoreName        = args.OfType<StoreNameOption>().FirstOrDefault()?.Value ?? nameof(X509StoreName.My);
             Filter           = args.OfType<FilterOption>().FirstOrDefault()?.Value ?? "*.*";
+            MultiThreadOption = args.OfType<MultiThreadOption>().FirstOrDefault() ??
+                new MultiThreadOption{
+                    NumberOfThreads = 32
+                    };
+            TraceOption = args.OfType<TraceOption>()?.FirstOrDefault();
             Options = (new HashSet<String>(args.OfType<BatchOption>().SelectMany(i => i.Values))).ToArray();
             if (Options.Any(i => String.Equals(i, "rename",    StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Rename;    }
             if (Options.Any(i => String.Equals(i, "serialize", StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Serialize; }
@@ -89,6 +78,14 @@ namespace Operations
             if (Options.Any(i => String.Equals(i, "uninstall", StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Uninstall; }
             if (Options.Any(i => String.Equals(i, "report",    StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Report;    }
             if (Options.Any(i => String.Equals(i, "asn1",      StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.AbstractSyntaxNotation; }
+
+            foreach (var option in Options) {
+                if (option.StartsWith("group=", StringComparison.OrdinalIgnoreCase)) {
+                    Flags |= BatchOperationFlags.Group;
+                    GroupNumber = (Byte)Int32.Parse(option.Substring(6));
+                    break;
+                    }
+                }
             if (!String.IsNullOrWhiteSpace(TargetFolder)) {
                 if (TargetFolder.StartsWith("oledb://")) {
                     TargetConnectionString = TargetFolder.Substring(8).Trim();
@@ -96,6 +93,15 @@ namespace Operations
                 else if (!TargetFolder.StartsWith(@"\\?\")) {
                     TargetFolder = $@"\\?\{TargetFolder}";
                     }
+                }
+            }
+
+        private void UpdateTitle()
+            {
+            lock(this)
+                {
+                var fileindex = Interlocked.Read(ref FileIndex);
+                Console.Title = $"Total:{NumberOfFiles}:FileCount:{fileindex}:{((Single)fileindex/NumberOfFiles)*100:F2}%";
                 }
             }
 
@@ -137,6 +143,7 @@ namespace Operations
         #endregion
         #region M:Execute(String,IFileService,Stream):FileOperationStatus
         private FileOperationStatus Execute(String targetfolder, IFileService fileservice, Stream sourcestream) {
+            sourcestream.Seek(0, SeekOrigin.Begin);
             using (var o = Asn1Object.Load(sourcestream).FirstOrDefault()) {
                 using (var cer = new Asn1Certificate(o))               if (!cer.IsFailed) { return Execute(targetfolder, fileservice, cer); }
                 using (var crl = new Asn1CertificateRevocationList(o)) if (!crl.IsFailed) { return Execute(targetfolder, fileservice, crl); }
@@ -226,7 +233,7 @@ namespace Operations
         private FileOperationStatus Execute(String targetfolder, IFileService fileservice, CmsMessage source) {
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
                 if (NativeConnection != null) {
-                    Update(NativeConnection, source, Path.GetFileNameWithoutExtension(fileservice.FileName));
+                    Update(NativeConnection, source, Path.GetFileNameWithoutExtension(fileservice.FileName), GroupNumber);
                     }
                 else
                     {
@@ -281,7 +288,10 @@ namespace Operations
             store = new X509CertificateStorage(ToStoreName(StoreName).GetValueOrDefault(X509StoreName.My), location);
             try
                 {
-                var core = new FileOperation(Out,Error) {
+                var core = new FileOperation(Out,Error,new OperationOption[]{
+                        MultiThreadOption,
+                        TraceOption
+                        }) {
                     TargetFolder = TargetFolder,
                     Pattern = Filter,
                     Options = DirectoryServiceSearchOptions.Recursive|DirectoryServiceSearchOptions.Containers,
@@ -289,6 +299,8 @@ namespace Operations
                     };
                 core.DirectoryServiceRequest += DirectoryServiceRequest;
                 core.DirectoryCompleted += DirectoryCompleted;
+                core.NumberOfFilesNotify += NumberOfFilesNotify;
+                core.FileCompleted += FileCompleted;
                 core.Execute(InputFileName);
                 if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
                     store.Commit();
@@ -302,6 +314,17 @@ namespace Operations
                 }
             GC.Collect();
             GC.Collect();
+            }
+
+        private void FileCompleted(Object sender, EventArgs e)
+            {
+            Interlocked.Increment(ref FileIndex);
+            UpdateTitle();
+            }
+
+        private void NumberOfFilesNotify(Object sender, NumberOfFilesNotifyEventArgs e)
+            {
+            NumberOfFiles += e.NumberOfFiles;
             }
 
         private void DirectoryCompleted(Object sender, EventArgs e) {
@@ -324,7 +347,6 @@ namespace Operations
             }
         #endregion
         private FileOperationStatus ExecuteHex(String targetfolder, IFileService service, Stream sourcestream) {
-            var index = 0;
             var status = FileOperationStatus.Skip;
             foreach (var o in Asn1Object.Load(new ReadOnlyMemoryMappingStream(service.ReadAllBytes()))) {
                 if (o.IsDecoded && !o.IsFailed) {
@@ -334,13 +356,24 @@ namespace Operations
                             if (!cms.IsFailed && (cms.ContentInfo is CmsSignedDataContentInfo signedData)) {
                                 var certificates = signedData.Certificates.ToArray();
                                 if (certificates.Length > 0) {
-                                    var country = certificates[0].Country ?? String.Empty;
+                                    var country = certificates[0].Country;
+                                    if (country == null) {
+                                        if (service is HexFile hxfile) {
+                                            if (hxfile.CountryICAO != null) {
+                                                IcaoCountry.ThreeLetterCountries.TryGetValue(hxfile.CountryICAO, out country);
+                                                }
+                                            }
+                                        }
+                                    country = country ?? String.Empty;
                                     if (Flags.HasFlag(BatchOperationFlags.Group)) { targetfolder = Path.Combine(targetfolder, country); }
                                     MakeDir(targetfolder);
-                                    service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
-                                    ((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
+                                    if (!PathUtils.IsSame(service.FullName, Path.Combine(targetfolder, service.FileName))) {
+                                        service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
+                                        }
+                                    //((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
                                     ((IFileService)cms).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".p7b")), true);
                                     status = FileOperation.Max(status, FileOperationStatus.Success);
+                                    return status;
                                     }
                                 }
                             else
@@ -350,15 +383,11 @@ namespace Operations
                             }
                         }
                     }
-                else
-                    {
-                    if (QuarantineFolder != null)
-                        {
-                        MakeDir(QuarantineFolder);
-                        service.CopyTo(Path.Combine(QuarantineFolder, service.FileName), true);
-                        }
-                    }
-                index++;
+                }
+            if (QuarantineFolder != null)
+                {
+                MakeDir(QuarantineFolder);
+                service.CopyTo(Path.Combine(QuarantineFolder, service.FileName), true);
                 }
             return status;
             }
@@ -756,25 +785,23 @@ namespace Operations
             }
         #endregion
         #region M:Update(SqlConnection,Asn1CertificateRevocationList)
-        private static void Update(SqlConnection context, CmsMessage source, String key) {
+        private static void Update(SqlConnection context, CmsMessage source, String key, Byte group) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            var builder = new StringBuilder();
-            using (var writer = XmlWriter.Create(builder)) {
-                source.WriteXml(writer);
+            lock(context) {
+                var builder = new StringBuilder();
+                using (var writer = XmlWriter.Create(builder)) {
+                    source.WriteXml(writer);
+                    }
+                using (var command = context.CreateCommand()) {
+                    command.CommandText = "[dbo].[ImportCmsMessage]";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Key", SqlDbType.NVarChar) { Value = key });
+                    command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) { Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader()) });
+                    command.Parameters.Add(new SqlParameter("@Group", SqlDbType.TinyInt) { Value = group });
+                    command.ExecuteNonQuery();
+                    }
                 }
-            using (var command = context.CreateCommand()) {
-                command.CommandText = "[dbo].[ImportCmsMessage]";
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@Key", SqlDbType.NVarChar) {
-                    Value = key
-                    });
-                command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) {
-                    Value = new SqlXml(XElement.Parse(builder.ToString()).CreateReader())
-                    });
-                command.ExecuteNonQuery();
-                }
-            return;
             }
         #endregion
 

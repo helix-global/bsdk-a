@@ -210,7 +210,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                     File.Delete(target);
                     }
                 var folder = Path.GetDirectoryName(target);
-                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                if (!String.IsNullOrWhiteSpace(folder) && !Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
                 using (var targetstream = File.OpenWrite(target)) {
                     sourcestream.CopyTo(targetstream);
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.IO;
 
 namespace BinaryStudio.DirectoryServices
     {
@@ -19,7 +20,7 @@ namespace BinaryStudio.DirectoryServices
 
         public Stream OpenRead()
             {
-            return File.OpenRead(FullName);
+            return new ReadOnlyFileMappingStream(FullName);
             }
 
         /// <summary>

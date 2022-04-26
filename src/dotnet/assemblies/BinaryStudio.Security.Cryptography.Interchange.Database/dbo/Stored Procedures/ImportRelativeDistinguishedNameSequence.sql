@@ -33,7 +33,7 @@ BEGIN
       INSERT INTO [dbo].[RelativeDistinguishedNameSequence] ([RelativeDistinguishedNameSequenceId]) VALUES (@RelativeDistinguishedNameSequenceId)
       DECLARE @Type NVARCHAR(MAX)
       DECLARE @RelativeDistinguishedNameId INT
-      DECLARE [cursor] CURSOR LOCAL FOR
+      DECLARE [cursor] CURSOR LOCAL FORWARD_ONLY FAST_FORWARD FOR
       SELECT
         [b].value(N'@Type[1]',N'NVARCHAR(MAX)') [Type],
         [b].value(N'@Value[1]',N'NVARCHAR(MAX)') [Value]

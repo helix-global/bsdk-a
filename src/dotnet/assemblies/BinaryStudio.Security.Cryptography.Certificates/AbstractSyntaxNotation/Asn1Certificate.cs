@@ -331,9 +331,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         private static String GetCountry(Asn1RelativeDistinguishedNameSequence source) {
-            return source.TryGetValue("2.5.4.6", out var r)
+            var o = source.TryGetValue("2.5.4.6", out var r)
                 ? r.ToString().ToLower()
                 : null;
+            if (o != null) {
+                if (o.Length == 3) {
+                    o = IcaoCountry.ThreeLetterCountries[o];
+                    }
+                }
+            return o;
             }
 
         IcaoCertificateType IIcaoCertificate.Type { get; }
@@ -406,7 +412,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     File.Delete(target);
                     }
                 var folder = Path.GetDirectoryName(target);
-                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                if (!String.IsNullOrWhiteSpace(folder) && !Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
                 using (var targetstream = File.OpenWrite(target)) {
                     sourcestream.CopyTo(targetstream);
                     }

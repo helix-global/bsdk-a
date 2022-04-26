@@ -15,6 +15,19 @@ internal class HexCSVGroupService : IDirectoryService
         Source = source;
         }
 
+    private static String GetCountry(String value) {
+        if (String.IsNullOrWhiteSpace(value)) { return null; }
+        if (value.Length == 3) { return value.ToLowerInvariant(); }
+        if (value.Length == 2)
+            {
+            if (IcaoCountry.TwoLetterCountries.TryGetValue(value, out var r)) {
+                return r.ThreeLetterISOCountryName;
+                }
+            if (value == "РC") { return "rus"; }
+            }
+        return value;
+        }
+
     /// <inheritdoc/>
     public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption)
         {
@@ -34,13 +47,13 @@ internal class HexCSVGroupService : IDirectoryService
                     {
                     var DocumentCategoryName = ((String)reader["DocumentCategoryName"]).Trim();
                     var CountryName = ((String)reader["CountryName"]).Trim();
-                    var CountryICAO = ((String)reader["CountryICAO"]).Trim();
-                    var Year = ((String)reader["Year"]).Trim();
+                    var CountryICAO = GetCountry(((String)reader["CountryICAO"]).Trim());
                     var Month = ((String)reader["Month"]).Trim();
                     var IdentifyDocumentId = ((String)reader["IdentifyDocumentID"]).Trim();
                     var RegisterCode = ((String)reader["RegisterCod"]).Trim();
                     var RegisterNumber = ((String)reader["RegisterNumber"]).Trim();
                     var IssueDate = ((String)reader["IssueDate"]).Trim();
+                    var Year = IssueDate.Substring(0,4);
                     var ValidToDate = ((String)reader["ValidToDate"]).Trim();
                     var InscribeId = ((String)reader["InscribeID"]).Trim();
                     var DataFormatId = ((String)reader["DataFormatID"]).Trim();

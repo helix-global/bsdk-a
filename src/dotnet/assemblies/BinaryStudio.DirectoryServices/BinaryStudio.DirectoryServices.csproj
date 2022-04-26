@@ -7,6 +7,9 @@
     <PackageReference Include="SharpCompress" Version="0.24.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>

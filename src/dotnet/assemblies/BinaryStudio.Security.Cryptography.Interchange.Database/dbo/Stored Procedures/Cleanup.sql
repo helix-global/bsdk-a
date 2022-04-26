@@ -21,9 +21,12 @@ BEGIN
   --DELETE FROM [dbo].[Object]
   --DELETE FROM [dbo].[ObjectIdentifier]
   --DELETE FROM [dbo].[String]
-  DELETE FROM [dbo].[CmsCertificate]
-  DELETE FROM [dbo].[CmsSignerInfo]
+  --DELETE FROM [dbo].[CmsCertificate]
+  --DELETE FROM [dbo].[CmsSignerInfo]
   DELETE FROM [dbo].[CmsMessage]
-  DELETE FROM [dbo].[Object] WHERE [ObjectId]=3
+  FROM [dbo].[CmsMessage] [a]
+	INNER JOIN [dbo].[Object] [b] ON ([b].[ObjectId]=[a].[ObjectId]) AND ([b].[Type]=3)
+  WHERE [b].[Key] IS NULL
+  --DELETE FROM [dbo].[Object] WHERE [ObjectId]=3
   SET NOCOUNT ON;
 END

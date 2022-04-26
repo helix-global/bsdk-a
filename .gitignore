@@ -95,3 +95,5 @@
 /.intermediate
 /src/dotnet/samples/HResultSample/bin/Debug/net40
 /src/dotnet/samples/HResultSample/obj
+/src/dotnet/samples/DirectoryServiceSample/bin/Debug/net40
+/src/dotnet/samples/DirectoryServiceSample/obj

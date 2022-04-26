@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
@@ -21,11 +22,25 @@ namespace Operations
         public Func<IFileService,DirectoryServiceSearchOptions,FileOperationArgs,FileOperationStatus> ExecuteAction { get;set; }
         public event EventHandler<DirectoryServiceRequestEventArgs> DirectoryServiceRequest;
         public event EventHandler DirectoryCompleted;
+        public event EventHandler FileCompleted;
+        public event EventHandler<NumberOfFilesNotifyEventArgs> NumberOfFilesNotify;
         private readonly Object console = new Object();
+        private Int32 NumberOfFiles = 1;
+        private readonly MultiThreadOption MultiThreadOption;
+        private readonly TraceOption TraceOption;
+        private readonly Boolean StopOnError = false;
 
-        public FileOperation(TextWriter output, TextWriter error)
+        public FileOperation(TextWriter output, TextWriter error, IList<OperationOption> args = null)
             :base(output, error, new OperationOption[0])
             {
+            MultiThreadOption = args?.OfType<MultiThreadOption>().FirstOrDefault() ??
+                new MultiThreadOption{
+                    NumberOfThreads = 32
+                    };
+            TraceOption = args?.OfType<TraceOption>()?.FirstOrDefault();
+            if (TraceOption != null) {
+                StopOnError = TraceOption.HasValue("StopOnError");
+                }
             }
 
         public override void Execute(TextWriter output) {
@@ -60,14 +75,27 @@ namespace Operations
         protected virtual FileOperationStatus Execute(IDirectoryService service, String pattern) {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             var status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
-            #if DEBUG
-            foreach (var i in service.GetFiles(pattern, Options).OrderBy(i => i.FullName)) {
+            var files = service.GetFiles(pattern, Options).ToArray();
+            NumberOfFiles = files.Length;
+            NumberOfFilesNotify?.Invoke(this, new NumberOfFilesNotifyEventArgs{
+                NumberOfFiles = NumberOfFiles
+                });
+
+            #if DEBUG4
+            foreach (var i in files.OrderBy(i => i.FullName)) {
                 status.Value = Max(status.Value, Execute(i, pattern));
+                FileCompleted?.Invoke(this, EventArgs.Empty);
                 }
             #else
-            Parallel.ForEach(service.GetFiles(pattern, Options), i=>{
-                status.Value = Max(status.Value, Execute(i, pattern));
-                });
+            Parallel.ForEach(files,
+                new ParallelOptions{
+                    MaxDegreeOfParallelism = MultiThreadOption.NumberOfThreads
+                    },
+                i=>
+                    {
+                    status.Value = Max(status.Value, Execute(i, pattern));
+                    FileCompleted?.Invoke(this, EventArgs.Empty);
+                    });
             #endif
             DirectoryCompleted?.Invoke(this, EventArgs.Empty);
             return status.Value;
@@ -137,6 +165,10 @@ namespace Operations
                     });
                 status = FileOperationStatus.Error;
                 Logger.Log(LogLevel.Warning, e);
+                if (StopOnError)
+                    {
+                    throw;
+                    }
                 }
             finally
                 {

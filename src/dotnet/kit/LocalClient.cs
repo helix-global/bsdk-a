@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using BinaryStudio.Diagnostics.Logging;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
@@ -40,13 +40,17 @@ public class LocalClient : ILocalClient
         {
         try
             {
-            var x1 = new HResultException(HRESULT.S_OK);
-            var x2 = new HResultException(HRESULT.S_OK, CultureInfo.GetCultureInfo("ru-RU"));
-            var x3 = new HResultException(HRESULT.S_OK, CultureInfo.GetCultureInfo("en-US"));
+            //var X = Asn1Object.Load(@"d:\icao\rfid\us\1507068980.p7b").FirstOrDefault();
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
             operation.Value = new UsageOperation(Console.Out, Console.Error, options);
+            if (!HasOption(options, typeof(MultiThreadOption))) {
+                options.Add(new MultiThreadOption
+                    {
+                    NumberOfThreads = 64
+                    });
+                }
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
             if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }

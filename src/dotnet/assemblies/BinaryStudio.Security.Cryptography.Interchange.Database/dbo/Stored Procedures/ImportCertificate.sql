@@ -7,7 +7,7 @@
 CREATE PROCEDURE [dbo].[ImportCertificate]
   @Thumbprint AS NVARCHAR(MAX),
   @Body AS XML,
-  @Status TINYINT=NULL,
+  @Group TINYINT=NULL,
   @CertificateId INT=NULL OUTPUT
 AS
 BEGIN
@@ -56,7 +56,7 @@ BEGIN
         EXECUTE [dbo].[ImportRelativeDistinguishedNameSequence] @Body=@Subject,@Identifier=@SubjectId OUTPUT
         execute [dbo].[ImportObjectIdentifier] @Value=@SignatureAlgorithm,@Identifier=@SignatureAlgorithmId output
         execute [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId output
-        INSERT INTO [dbo].[Object] ([Type],[Body],[Status]) VALUES (1,@Body,@Status)
+        INSERT INTO [dbo].[Object] ([Type],[Body],[Group]) VALUES (1,@Body,@Group)
         SET @ObjectId=@@IDENTITY
         INSERT INTO [dbo].[Certificate]
           ([ObjectId],[Country],[SerialNumber],[Thumbprint],[Issuer], [Subject], [NotBefore],[NotAfter],[SignatureAlgorithm],[HashAlgorithm]) VALUES

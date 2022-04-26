@@ -12,7 +12,7 @@ BEGIN
   SET NOCOUNT ON;
   BEGIN TRANSACTION
     DECLARE @Extension XML
-    DECLARE [cursor] CURSOR LOCAL FOR
+    DECLARE [cursor] CURSOR LOCAL FORWARD_ONLY FAST_FORWARD FOR
     SELECT
       [a].query(N'.') [Extension]
     FROM @Body.nodes(N'//Extension') [a]([a])

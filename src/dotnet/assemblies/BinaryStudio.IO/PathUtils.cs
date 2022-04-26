@@ -59,5 +59,15 @@ namespace BinaryStudio.DirectoryServices
 
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)] internal static extern UInt32 GetTempFileName(String tmppath,String prefix,UInt32 uniqueIdOrZero,[Out] StringBuilder tmpFileName);
+
+        public static Boolean IsSame(String x, String y)
+            {
+            if (String.Equals(x, y)) { return true; }
+            if ((x == null) || (y == null)) { return false; }
+            if (x.StartsWith(@"\\?\")) { x = x.Substring(4); }
+            if (y.StartsWith(@"\\?\")) { y = y.Substring(4); }
+            if (String.Equals(x, y)) { return true; }
+            return false;
+            }
         }
     }

@@ -9,7 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.Diagnostics\BinaryStudio.Diagnostics.csproj" />
-    <ProjectReference Include="..\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.PlatformCore\BinaryStudio.PlatformCore.csproj" />
   </ItemGroup>
 </Project>

@@ -103,6 +103,10 @@
     <Build Include="dbo\Tables\CmsCertificate.sql" />
     <Build Include="dbo\Stored Procedures\ImportCmsSignerInfo.sql" />
     <Build Include="dbo\Views\ReportMessage.sql" />
+    <Build Include="dbo\Tables\InputData.sql" />
+    <Build Include="dbo\Tables\Country.sql" />
+    <Build Include="dbo\Tables\ThreeLetterISOCountryCode.sql" />
+    <Build Include="dbo\Tables\Failed.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -12,7 +12,7 @@ CREATE PROCEDURE [dbo].[ImportCmsSignerInfo]
 AS
 BEGIN
   SET NOCOUNT ON;
-  --IF (@MessageId IS NOT NULL) AND (@Body IS NOT NULL)
+  IF (@MessageId IS NOT NULL) AND (@Body IS NOT NULL)
   BEGIN
     BEGIN TRANSACTION
       DECLARE @IssuerId INT

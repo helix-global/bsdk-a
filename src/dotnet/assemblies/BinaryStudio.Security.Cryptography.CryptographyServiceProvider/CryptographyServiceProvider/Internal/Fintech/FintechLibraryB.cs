@@ -866,9 +866,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             var j = table[i];
                             var countryCode = j.Country?.ToLowerInvariant();
                             var signingTime = j.SigningTime;
-                            var
-                            countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
-                            countryName = countryName ?? (IcaoCountry.ThreeLetterCountries.TryGetValue(countryCode, out country) ? country.RussianShortName : "Не удалось опознать страну");
+                            var countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
+                            if (countryName == null) {
+                                if (countryCode.Length == 3) {
+                                    countryName = IcaoCountry.ThreeLetterCountries[countryCode];
+                                    }
+                                }
                             rows.Add(new StatRecord
                                 {
                                 IsError = j.SCode != 0,
