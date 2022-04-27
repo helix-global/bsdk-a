@@ -10,3 +10,10 @@
 );
 
 
+
+
+
+GO
+CREATE STATISTICS [_dta_stat_902346329_1_3]
+    ON [dbo].[CmsMessage]([ObjectId], [HashAlgorithm]);
+

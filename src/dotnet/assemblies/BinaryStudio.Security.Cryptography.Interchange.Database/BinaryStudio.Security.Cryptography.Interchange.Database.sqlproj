@@ -106,8 +106,9 @@
     <Build Include="dbo\Tables\InputData.sql" />
     <Build Include="dbo\Tables\Country.sql" />
     <Build Include="dbo\Tables\ThreeLetterISOCountryCode.sql" />
-    <Build Include="dbo\Tables\Failed.sql" />
     <Build Include="dbo\Views\ReportFailed.sql" />
+    <Build Include="dbo\Tables\DecodingFailed.sql" />
+    <Build Include="dbo\Views\DecodingFailedInGroup1SucceededWithTheSameInGroup2.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
