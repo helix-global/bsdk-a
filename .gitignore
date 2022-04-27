@@ -97,3 +97,5 @@
 /src/dotnet/samples/HResultSample/obj
 /src/dotnet/samples/DirectoryServiceSample/bin/Debug/net40
 /src/dotnet/samples/DirectoryServiceSample/obj
+/src/dotnet/testing/UnitTests.BinaryStudio.DirectoryServices/bin/Debug/net40
+/src/dotnet/testing/UnitTests.BinaryStudio.DirectoryServices/obj
