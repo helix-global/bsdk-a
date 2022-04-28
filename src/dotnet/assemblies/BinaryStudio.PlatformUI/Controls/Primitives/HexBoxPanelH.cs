@@ -1150,7 +1150,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
 
-        protected internal void OnCanExecuteCommand(Object sender, CanExecuteRoutedEventArgs e) {
+        protected internal virtual void OnCanExecuteCommand(Object sender, CanExecuteRoutedEventArgs e) {
             if (!e.Handled) {
                 if (ReferenceEquals(e.Command, ApplicationCommands.SaveAs)) {
                     e.CanExecute = (Selection.Length > 0);
@@ -1160,7 +1160,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
 
-        protected internal void OnExecutedCommand(Object sender, ExecutedRoutedEventArgs e) {
+        protected internal virtual void OnExecutedCommand(Object sender, ExecutedRoutedEventArgs e) {
             if (!e.Handled) {
                 if (ReferenceEquals(e.Command, ApplicationCommands.SaveAs)) {
                     var range = Selection;

@@ -12,21 +12,22 @@ CREATE PROCEDURE [dbo].[ImportCertificate]
 AS
 BEGIN
   SET NOCOUNT ON;
-  IF (@Thumbprint IS NULL) AND (@Body IS NOT NULL)
-  BEGIN
-    SELECT TOP 1
-      @Thumbprint  = [a].value(N'@Thumbprint[1]' ,N'NVARCHAR(MAX)')
-    FROM @Body.nodes(N'Certificate') [a]([a])
-  END
-  IF (@Thumbprint IS NOT NULL) AND (@Body IS NOT NULL)
-  BEGIN
-    --INSERT INTO Table_1 ([VALUE]) VALUES (@Body);
-    SELECT
-      @CertificateId=[ObjectId]
-    FROM [dbo].[Certificate] WHERE [Thumbprint] LIKE @Thumbprint
-    IF (@CertificateId IS NULL)
+  BEGIN TRY
+    IF @@TRANCOUNT = 0 RAISERROR('No external transaction', 16, 1)
+    IF (@Thumbprint IS NULL) AND (@Body IS NOT NULL)
     BEGIN
-      BEGIN TRANSACTION
+      SELECT TOP 1
+        @Thumbprint  = [a].value(N'@Thumbprint[1]' ,N'NVARCHAR(MAX)')
+      FROM @Body.nodes(N'Certificate') [a]([a])
+    END
+    IF (@Thumbprint IS NOT NULL) AND (@Body IS NOT NULL)
+    BEGIN
+      --INSERT INTO Table_1 ([VALUE]) VALUES (@Body);
+      SELECT
+        @CertificateId=[ObjectId]
+      FROM [dbo].[Certificate] WHERE [Thumbprint] LIKE @Thumbprint
+      IF (@CertificateId IS NULL)
+      BEGIN
         DECLARE @ObjectId  INT
         DECLARE @IssuerId  INT
         DECLARE @SubjectId INT
@@ -42,7 +43,7 @@ BEGIN
         DECLARE @HashAlgorithm VARCHAR(MAX)
         DECLARE @Extensions XML
         SELECT TOP 1
-           @Issuer  = [a].query('Certificate.Issuer/RelativeDistinguishedName')
+            @Issuer  = [a].query('Certificate.Issuer/RelativeDistinguishedName')
           ,@Subject = [a].query('Certificate.Subject/RelativeDistinguishedName')
           ,@Extensions = [a].query('Extensions')
           ,@NotAfter  = [a].value(N'@NotAfter[1]' ,N'DATETIME')
@@ -62,8 +63,33 @@ BEGIN
           ([ObjectId],[Country],[SerialNumber],[Thumbprint],[Issuer], [Subject], [NotBefore],[NotAfter],[SignatureAlgorithm],[HashAlgorithm]) VALUES
           (@ObjectId, @Country, @SerialNumber, @Thumbprint, @IssuerId,@SubjectId,@NotBefore, @NotAfter,@SignatureAlgorithmId,@HashAlgorithmId)
         EXECUTE [dbo].[ImportExtensions] @ObjectId,@Body=@Extensions
-      COMMIT
-      SET @CertificateId=@ObjectId
+        SET @CertificateId=@ObjectId
+      END
     END
-  END
+  END   TRY
+  BEGIN CATCH
+    DECLARE @ErrorMessage NVARCHAR(MAX)
+    DECLARE @ErrorSeverity NVARCHAR(MAX)
+    DECLARE @ErrorState NVARCHAR(MAX)
+    DECLARE @ErrorNumber NVARCHAR(MAX)
+    DECLARE @ErrorLine NVARCHAR(MAX)
+    DECLARE @ErrorProcedure NVARCHAR(MAX)
+
+    SELECT
+      @ErrorMessage   = ERROR_MESSAGE()
+     ,@ErrorSeverity  = CAST(ERROR_SEVERITY() AS NVARCHAR(MAX))
+     ,@ErrorState     = CAST(ERROR_STATE() AS NVARCHAR(MAX))
+     ,@ErrorNumber    = CAST(ERROR_NUMBER() AS NVARCHAR(MAX))
+     ,@ErrorLine      = CAST(ERROR_LINE() AS NVARCHAR(MAX))
+     ,@ErrorProcedure = CAST(ERROR_PROCEDURE() AS NVARCHAR(MAX))
+
+    SET @ErrorMessage = @ErrorMessage +
+      N':{Number='+@ErrorNumber+
+      '},{State='+ @ErrorState +
+      '},{Severity='+ @ErrorSeverity +
+      '},{Line='+ @ErrorLine +
+      '},{Procedure='+ @ErrorProcedure +'}'
+    IF @@TRANCOUNT > 0 ROLLBACK TRAN
+    RAISERROR(@ErrorMessage, 11, 1)
+  END   CATCH
 END

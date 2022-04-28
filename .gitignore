@@ -99,3 +99,5 @@
 /src/dotnet/samples/DirectoryServiceSample/obj
 /src/dotnet/testing/UnitTests.BinaryStudio.DirectoryServices/bin/Debug/net40
 /src/dotnet/testing/UnitTests.BinaryStudio.DirectoryServices/obj
+/src/dotnet/testing/UnitTests.BinaryStudio.AbstractSyntaxNotation/bin/Debug/net40
+/src/dotnet/testing/UnitTests.BinaryStudio.AbstractSyntaxNotation/obj

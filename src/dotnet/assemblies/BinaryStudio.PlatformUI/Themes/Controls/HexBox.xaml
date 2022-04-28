@@ -122,7 +122,13 @@
                                       Markups="{TemplateBinding Markups}"
                                       Background="{TemplateBinding Background}"
                                       CaretPosition="{Binding ElementName=H,Path=CaretPosition,Mode=TwoWay}"
-                                      LinkedPanel="{Binding ElementName=H}"/>
+                                      LinkedPanel="{Binding ElementName=H}">
+                        <p:HexBoxPanelA.ContextMenu>
+                          <ContextMenu>
+                            <MenuItem Header="Copy" Command="{x:Static ApplicationCommands.Copy}"/>
+                          </ContextMenu>
+                        </p:HexBoxPanelA.ContextMenu>
+                      </p:HexBoxPanelA>
                     </Border>
                     <Border Grid.Column="3" Margin="0,0,0,0" UseLayoutRounding="True" IsHitTestVisible="False" Visibility="Collapsed">
                       <ListBox ItemsSource="{Binding ElementName=H,Path=VisibleMarkups,Mode=OneWay}"

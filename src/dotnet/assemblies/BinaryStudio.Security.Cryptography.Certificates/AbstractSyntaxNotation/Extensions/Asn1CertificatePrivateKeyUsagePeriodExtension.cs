@@ -41,7 +41,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 if (value.Length > 0) {
                     var r = new Asn1GeneralTime(value);
                     r.Decode();
-                    return r.Value;
+                    return r.Value.LocalDateTime;
                     }
                 }
             return null;

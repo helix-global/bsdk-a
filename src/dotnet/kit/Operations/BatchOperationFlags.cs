@@ -14,6 +14,7 @@ namespace Operations
         Uninstall = 0x020,
         AbstractSyntaxNotation = 0x040,
         Verify    = 0x080,
-        Report    = 0x100
+        Report    = 0x100,
+        Force     = 0x200
         }
     }

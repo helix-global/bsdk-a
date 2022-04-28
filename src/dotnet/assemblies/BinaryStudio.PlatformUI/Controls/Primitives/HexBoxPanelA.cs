@@ -6,7 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using BinaryStudio.IO;
+using Microsoft.Win32;
 
 namespace BinaryStudio.PlatformUI.Controls.Primitives
     {
@@ -124,6 +127,44 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             {
             Debug.Print("A:OnSelectionChanged");
             base.OnSelectionChanged();
+            }
+
+        protected internal override void OnCanExecuteCommand(Object sender, CanExecuteRoutedEventArgs e) {
+            if (!e.Handled) {
+                if (ReferenceEquals(e.Command, ApplicationCommands.Copy)) {
+                    e.CanExecute = (Selection.Length > 0);
+                    e.Handled = true;
+                    return;
+                    }
+                }
+            }
+
+        protected internal override void OnExecutedCommand(Object sender, ExecutedRoutedEventArgs e) {
+            if (!e.Handled) {
+                if (ReferenceEquals(e.Command, ApplicationCommands.Copy)) {
+                    var range = Selection;
+                    if (range.Length > 0) {
+                        var source = Source;
+                        using (source.StorePosition()) {
+                            var r = new StringBuilder();
+                            var block = new Byte[1024];
+                            source.Seek(range.Start, SeekOrigin.Begin);
+                            var count = range.Length;
+                            for (;count > 0;) {
+                                var c = source.Read(block, 0, Math.Min((Int32)count, block.Length));
+                                if (c == 0) { break; }
+                                for (var i = 0; i < c; i++) {
+                                    r.Append(IsPrintableCharacter(block[i])
+                                        ? OEM.GetString(new Byte[]{block[i] })
+                                        : ".");
+                                    }
+                                count -= c;
+                                }
+                            Clipboard.SetText(r.ToString(), TextDataFormat.UnicodeText);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -12,9 +12,10 @@ CREATE PROCEDURE [dbo].[ImportCmsSignerInfo]
 AS
 BEGIN
   SET NOCOUNT ON;
-  IF (@MessageId IS NOT NULL) AND (@Body IS NOT NULL)
-  BEGIN
-    BEGIN TRANSACTION
+  BEGIN TRY
+    IF @@TRANCOUNT = 0 RAISERROR('No external transaction', 16, 1)
+    IF (@MessageId IS NOT NULL) AND (@Body IS NOT NULL)
+    BEGIN
       DECLARE @IssuerId INT
       DECLARE @HashAlgorithmId INT
       DECLARE @SignatureAlgorithmId INT
@@ -34,19 +35,44 @@ BEGIN
       execute [dbo].[ImportObjectIdentifier] @Value=@SignatureAlgorithm,@Identifier=@SignatureAlgorithmId output
       execute [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId output
       INSERT INTO [dbo].[CmsSignerInfo]
-                 ([MessageId]
-                 ,[Issuer]
-                 ,[IssuerSerialNumber]
-                 ,[SignatureAlgorithm]
-                 ,[HashAlgorithm]
-                 ,[SigningTime])
-           VALUES
-                 (@MessageId
-                 ,@IssuerId
-                 ,@IssuerSerialNumber
-                 ,@SignatureAlgorithmId
-                 ,@HashAlgorithmId
-                 ,@SigningTime)
-    COMMIT
-  END
+                  ([MessageId]
+                  ,[Issuer]
+                  ,[IssuerSerialNumber]
+                  ,[SignatureAlgorithm]
+                  ,[HashAlgorithm]
+                  ,[SigningTime])
+            VALUES
+                  (@MessageId
+                  ,@IssuerId
+                  ,@IssuerSerialNumber
+                  ,@SignatureAlgorithmId
+                  ,@HashAlgorithmId
+                  ,@SigningTime)
+    END
+  END   TRY
+  BEGIN CATCH
+    DECLARE @ErrorMessage NVARCHAR(MAX)
+    DECLARE @ErrorSeverity NVARCHAR(MAX)
+    DECLARE @ErrorState NVARCHAR(MAX)
+    DECLARE @ErrorNumber NVARCHAR(MAX)
+    DECLARE @ErrorLine NVARCHAR(MAX)
+    DECLARE @ErrorProcedure NVARCHAR(MAX)
+
+    SELECT
+      @ErrorMessage   = ERROR_MESSAGE()
+     ,@ErrorSeverity  = CAST(ERROR_SEVERITY() AS NVARCHAR(MAX))
+     ,@ErrorState     = CAST(ERROR_STATE() AS NVARCHAR(MAX))
+     ,@ErrorNumber    = CAST(ERROR_NUMBER() AS NVARCHAR(MAX))
+     ,@ErrorLine      = CAST(ERROR_LINE() AS NVARCHAR(MAX))
+     ,@ErrorProcedure = CAST(ERROR_PROCEDURE() AS NVARCHAR(MAX))
+
+    SET @ErrorMessage = @ErrorMessage +
+      N':{Number='+@ErrorNumber+
+      '},{State='+ @ErrorState +
+      '},{Severity='+ @ErrorSeverity +
+      '},{Line='+ @ErrorLine +
+      '},{Procedure='+ @ErrorProcedure +'}'
+    IF @@TRANCOUNT > 0 ROLLBACK TRAN
+    RAISERROR(@ErrorMessage, 11, 1)
+  END   CATCH
 END

@@ -13,22 +13,24 @@ CREATE PROCEDURE [dbo].[ImportCmsMessage]
 AS
 BEGIN
   SET NOCOUNT ON;
-  IF (@Key IS NOT NULL) AND (@Body IS NOT NULL)
-  BEGIN
-    IF (NOT EXISTS(SELECT TOP 1
-        [a].[ObjectId]
-       FROM [dbo].[CmsMessage] [a]
-        INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-      WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)))
+  BEGIN TRY
+    IF @@TRANCOUNT = 0 RAISERROR('No external transaction', 16, 1)
+    IF (@Key IS NOT NULL) AND (@Body IS NOT NULL)
     BEGIN
-      BEGIN TRANSACTION
+      IF (NOT EXISTS(SELECT TOP 1
+          [a].[ObjectId]
+         FROM [dbo].[CmsMessage] [a]
+          INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
+        WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)))
+      BEGIN
+        INSERT INTO Table_1 ([VALUE],[KEY]) VALUES (@Body,@Key)
         DECLARE @HashAlgorithm NVARCHAR(MAX)
         DECLARE @ContentType NVARCHAR(MAX)
         DECLARE @HashAlgorithmId INT
         DECLARE @ContentTypeId INT
 
         SELECT TOP 1
-           @HashAlgorithm  = [a].value(N'CmsMessage.ContentInfo[1]/CmsSignedDataContentInfo[1]/DigestAlgorithms[1]/X509AlgorithmIdentifier[1]/@Identifier' ,N'NVARCHAR(MAX)')
+            @HashAlgorithm  = [a].value(N'CmsMessage.ContentInfo[1]/CmsSignedDataContentInfo[1]/DigestAlgorithms[1]/X509AlgorithmIdentifier[1]/@Identifier' ,N'NVARCHAR(MAX)')
           ,@ContentType    = [a].value(N'@ContentType' ,N'NVARCHAR(MAX)')
         FROM @Body.nodes(N'CmsMessage') [a]([a])
         execute [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId output
@@ -52,7 +54,7 @@ BEGIN
           BEGIN
             DECLARE @CertificateId INT
             EXECUTE [dbo].[ImportCertificate]
-               @Thumbprint = NULL
+                @Thumbprint = NULL
               ,@Body=@Certificate
               ,@Group=@Group
               ,@CertificateId=@CertificateId OUTPUT
@@ -72,24 +74,48 @@ BEGIN
           BEGIN
             DECLARE @SignerInfoId INT
             EXECUTE [dbo].[ImportCmsSignerInfo]
-               @MessageId = @ObjectId
+                @MessageId = @ObjectId
               ,@Body=@SignerInfo
             FETCH NEXT FROM [cursor] INTO @SignerInfo
           END
         CLOSE [cursor]
         DEALLOCATE [cursor]
-      COMMIT
+      END
+    ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL)
+    BEGIN
+      UPDATE [a]
+        SET [a].[Thumbprint]=@Thumbprint
+      FROM [dbo].[CmsMessage] [a]
+        INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
+      WHERE ([b].[Key]=@Key)
+        AND ([b].[Group]=@Group)
+        AND ([a].[Thumbprint] IS NULL)
     END
-	ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL)
-	BEGIN
-	  UPDATE [a]
-      SET [a].[Thumbprint]=@Thumbprint
-    FROM [dbo].[CmsMessage] [a]
-      INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-    WHERE ([b].[Key]=@Key)
-      AND ([b].[Group]=@Group)
-      AND ([a].[Thumbprint] IS NULL)
-	  RETURN
-	END
-  END
+    END
+  END   TRY
+  BEGIN CATCH
+    DECLARE @ErrorMessage NVARCHAR(MAX)
+    DECLARE @ErrorSeverity NVARCHAR(MAX)
+    DECLARE @ErrorState NVARCHAR(MAX)
+    DECLARE @ErrorNumber NVARCHAR(MAX)
+    DECLARE @ErrorLine NVARCHAR(MAX)
+    DECLARE @ErrorProcedure NVARCHAR(MAX)
+
+    SELECT
+      @ErrorMessage   = ERROR_MESSAGE()
+     ,@ErrorSeverity  = CAST(ERROR_SEVERITY() AS NVARCHAR(MAX))
+     ,@ErrorState     = CAST(ERROR_STATE() AS NVARCHAR(MAX))
+     ,@ErrorNumber    = CAST(ERROR_NUMBER() AS NVARCHAR(MAX))
+     ,@ErrorLine      = CAST(ERROR_LINE() AS NVARCHAR(MAX))
+     ,@ErrorProcedure = CAST(ERROR_PROCEDURE() AS NVARCHAR(MAX))
+
+    SET @ErrorMessage = @ErrorMessage +
+      N':{Number='+@ErrorNumber+
+      '},{State='+ @ErrorState +
+      '},{Severity='+ @ErrorSeverity +
+      '},{Line='+ @ErrorLine +
+      '},{Procedure='+ @ErrorProcedure +'}'
+    IF @@TRANCOUNT > 0 ROLLBACK TRAN
+    RAISERROR(@ErrorMessage, 11, 1)
+  END   CATCH
 END

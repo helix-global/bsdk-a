@@ -23,13 +23,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             }
 
-        internal Asn1GeneralTime(Byte[] source)
+        public Asn1GeneralTime(Byte[] source)
             :base(source)
             {
-            var strvalue = Encoding.ASCII.GetString(source);
-            if (Regex.IsMatch(strvalue, "^\\d{14}Z")) {
-                Value = DateTime.SpecifyKind(DateTime.ParseExact(strvalue.Substring(0,14), "yyyyMMddHHmmss", CultureInfo.CurrentCulture), DateTimeKind.Utc);
-                }
+            Value = Parse(Encoding.ASCII.GetString(source), Asn1ObjectType.GeneralTime).GetValueOrDefault();
+            State |= ObjectState.Decoded;
+            }
+
+        public Asn1GeneralTime(String source)
+            :base(new Byte[0])
+            {
+            Value = Parse(source, Asn1ObjectType.GeneralTime).GetValueOrDefault();
             State |= ObjectState.Decoded;
             }
 
@@ -40,10 +44,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             var r = new Byte[Length];
             Content.Seek(0, SeekOrigin.Begin);
             Content.Read(r, 0, r.Length);
-            var strvalue = Encoding.ASCII.GetString(r);
-            if (Regex.IsMatch(strvalue, "^\\d{14}Z")) {
-                Value = DateTime.SpecifyKind(DateTime.ParseExact(strvalue.Substring(0,14), "yyyyMMddHHmmss", CultureInfo.CurrentCulture), DateTimeKind.Utc);
-                }
+            Value = Parse(Encoding.ASCII.GetString(r), Asn1ObjectType.GeneralTime).GetValueOrDefault();
             State |= ObjectState.Decoded;
             return true;
             }
