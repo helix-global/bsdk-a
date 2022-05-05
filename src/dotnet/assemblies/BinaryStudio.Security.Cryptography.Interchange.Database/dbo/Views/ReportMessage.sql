@@ -8,20 +8,25 @@
 
 
 
+
 CREATE VIEW [dbo].[ReportMessage]
 AS
 SELECT
-   [a].[ObjectId]
-  ,(SELECT TOP 1 [o].[CertificateId] FROM [dbo].[CmsCertificate] [o] WHERE [o].[MessageId]=[a].[ObjectId]) [Certificate]
-  ,(SELECT TOP 1 [dbo].[OidToStr]([o].[Value]) FROM [dbo].[ObjectIdentifier] [o] WHERE [o].[Id]=[a].[HashAlgorithm]) [ContentHashAlgorithm]
-  ,[b].[Key] [Key]
-  ,(SELECT TOP 1 [dbo].[OidToStr]([o].[Value]) FROM [dbo].[ObjectIdentifier] [o] WHERE [o].[Id]=[c].[HashAlgorithm]) [SignerHashAlgorithm]
-  ,(SELECT TOP 1 [dbo].[OidToStr]([o].[Value]) FROM [dbo].[ObjectIdentifier] [o] WHERE [o].[Id]=[c].[SignatureAlgorithm]) [SignerSignatureAlgorithm]
-  ,(SELECT TOP 1 [o].[Value] FROM [dbo].[GeneralName] [o] WHERE [o].[GeneralNameId]=[c].[Issuer]) [SignerIssuer]
+   [cm].[ObjectId]
+  ,(SELECT TOP 1 [cs].[CertificateId] FROM [dbo].[CmsCertificate] [cs] WHERE [cs].[MessageId]=[cm].[ObjectId]) [Certificate]
+  ,(SELECT TOP 1 [dbo].[OidToStr]([oi].[Value]) FROM [dbo].[ObjectIdentifier] [oi] WHERE [oi].[Id]=[cm].[HashAlgorithm]) [ContentHashAlgorithm]
+  ,[o].[Key] [Key]
+  ,(SELECT TOP 1 [dbo].[OidToStr]([oi].[Value]) FROM [dbo].[ObjectIdentifier] [oi] WHERE [oi].[Id]=[c].[HashAlgorithm]) [SignerHashAlgorithm]
+  ,(SELECT TOP 1 [dbo].[OidToStr]([oi].[Value]) FROM [dbo].[ObjectIdentifier] [oi] WHERE [oi].[Id]=[c].[SignatureAlgorithm]) [SignerSignatureAlgorithm]
+  ,(SELECT TOP 1 [gn].[Value] FROM [dbo].[GeneralName] [gn] WHERE [gn].[GeneralNameId]=[c].[Issuer]) [SignerIssuer]
   ,[c].[IssuerSerialNumber]
   ,[c].[SigningTime]
-  ,[a].[Thumbprint]
-  ,[b].[Group]
-FROM [dbo].[CmsMessage] [a] WITH(NOLOCK)
-  INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-  INNER JOIN [dbo].[CmsSignerInfo] [c] ON [c].[MessageId]=[a].[ObjectId]
+  ,[cm].[Thumbprint]
+  ,[o].[Group]
+FROM [dbo].[CmsMessage] [cm] WITH(NOLOCK)
+  INNER 
+	JOIN [dbo].[Object] [o] 
+		ON [o].[ObjectId]=[cm].[ObjectId]
+  INNER 
+	JOIN [dbo].[CmsSignerInfo] [c] 
+		ON [c].[MessageId]=[cm].[ObjectId]

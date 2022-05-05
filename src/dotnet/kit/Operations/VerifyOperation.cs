@@ -34,7 +34,8 @@ namespace Operations
         private volatile Int32 NumberOfErrors = 0;
         private Int32 NumberOfFiles = 1;
         private Int64 FileIndex = 0;
-        private const Int32 NumberOfThreads = 64;
+        private readonly MultiThreadOption MultiThreadOption;
+        private Int32 NumberOfThreads = 1;
 
         private void UpdateTitle()
             {
@@ -53,6 +54,8 @@ namespace Operations
             Policy        = args.OfType<PolicyOption>().FirstOrDefault()?.Value;
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values.FirstOrDefault();
             DateTime      = args.OfType<DateTimeOption>().First().Value;
+            MultiThreadOption = args.OfType<MultiThreadOption>().FirstOrDefault();
+            NumberOfThreads = (MultiThreadOption != null) ? MultiThreadOption.NumberOfThreads : 32;
             if (Policy != null) {
                 switch (Policy) {
                     case "base"    : CertificateChainPolicy = CertificateChainPolicy.CERT_CHAIN_POLICY_BASE;                break;
@@ -92,7 +95,9 @@ namespace Operations
             try
                 {
                 ThreadPool.GetMinThreads(out var prevThreads, out var prevPorts);
-                ThreadPool.SetMinThreads(32, prevPorts);
+                ThreadPool.SetMinThreads(NumberOfThreads, prevPorts);
+                ThreadPool.GetMaxThreads(out prevThreads, out prevPorts);
+                ThreadPool.SetMaxThreads(NumberOfThreads, prevPorts);
                 using (var context = new CryptographicContext(Logger, ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT))
                 using (var store = new X509CombinedCertificateStorage(true,
                         new X509CertificateStorage(X509StoreName.Root, X509StoreLocation.LocalMachine),
@@ -104,7 +109,7 @@ namespace Operations
                             var j = 0;
                             var Files = Directory.GetFiles(folder, pattern, SearchOption.AllDirectories).ToArray();
                             NumberOfFiles = Files.Length;
-                            #if DEBUG
+                            #if DEBUG2
                             foreach (var i in Files.OrderBy(i => i)) {
                                 Execute(context, store, i);
                                 if (j%PURGE == 0)

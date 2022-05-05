@@ -427,30 +427,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         private interface IStatRow
 	        {
             UInt32 SCode { get; }
-            String SignerSignatureAlgorithm { get; }
-            String SignerDigestAlgorithm { get; }
-            String Country { get; }
-            String CertificateSignatureAlgorithm { get; }
-            String CertificateDigestAlgorithm { get; }
             String Organization { get; }
             String Source { get; }
             String ActualDigestMethod { get; }
             String Modifiers { get; }
             String CCryptError { get; }
             String BCryptError { get; }
-            DateTimeRef CertificateNotBefore { get; }
-            DateTimeRef CertificateNotAfter { get; }
-            String CertificateIssuer { get; }
-            String CertificateSubject { get; }
-            String CertificateAuthorityKeyIdentifier { get; }
-            String CertificateSubjectKeyIdentifier { get; }
-            String CertificateThumbprint { get; }
             String ActualContentDigestMethod { get; }
-            DateTimeRef SigningTime { get; }
             String Stream { get; }
-            String IssuerCertificateThumbprint { get; }
-            Int32 MessageSize { get; }
+            String CertificateThumbprint { get; }
+            String CrlThumbprint { get; }
             Int32 ContentSize { get; }
+            Int32 MessageSize { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -806,32 +794,28 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             };
         private class StatRecord
             {
-            [DisplayName("Ошибка")] public Boolean IsError { get;set; }
-            [DisplayName("Алгоритм подписи(Сообщение)")] public String SignerSignatureAlgorithm { get;set; }
-            [DisplayName("Алгоритм хэширования(Сообщение)")] public String SignerDigestAlgorithm { get;set; }
-            [DisplayName("Страна(Код)")] public String CountryCode { get;set; }
-            [DisplayName("Страна(Наименование)")] public String CountryName { get;set; }
-            [DisplayName("Алгоритм подписи(Сертификат)")] public String CertificateSignatureAlgorithm { get;set; }
-            [DisplayName("Алгоритм хэширования(Сертификат)")] public String CertificateDigestAlgorithm { get;set; }
-            [DisplayName("Организация")] public String Organization { get;set; }
-            [DisplayName("Источник ошибки")] public String Source { get;set; }
-            [DisplayName("Используемый aлгоритм хэширования")] public String ActualDigestMethod { get;set; }
-            [DisplayName("Статус CRYPTAPI")] public String CCryptError { get;set; }
-            [DisplayName("Статус BCRYPT")]   public String BCryptError { get;set; }
-            [DisplayName("Модификаторы")] public String Modifiers { get;set; }
-            [DisplayName("Начальная дата периода действия сертификата")] public String CertificateNotBefore { get;set; }
-            [DisplayName("Конечная дата периода действия сертификата")]  public String CertificateNotAfter { get;set; }
-            [DisplayName("Дата подписи")]  public String SigningTime { get;set; }
-            [DisplayName("Издатель")] public String CertificateIssuer { get;set; }
-            public String CertificateAuthorityKeyIdentifier { get;set; }
-            public String CertificateSubjectKeyIdentifier { get;set; }
-            [DisplayName("Исходный файл")] public String Stream { get;set; }
-            [DisplayName("Субъект")] public String CertificateSubject { get;set; }
-            [DisplayName("Актуальный алгоритм хэширования(Содержимое)")] public String ActualContentDigestMethod { get;set; }
-            [DisplayName("Размер сообщения")]   public Int32 MessageSize { get;set; }
-            [DisplayName("Размер содержимого")] public Int32 ContentSize { get;set; }
-            public String CertificateThumbprint { get;set; }
-            public String IssuerCertificateThumbprint { get;set; }
+            //[DisplayName("Организация")]
+            public String Organization { get;set; }
+            //[DisplayName("Источник ошибки")]
+            public String Source { get;set; }
+            //[DisplayName("Используемый aлгоритм хэширования")]
+            public String ActualDigestMethod { get;set; }
+            //[DisplayName("Статус CRYPTAPI")]
+            public String CCryptError { get;set; }
+            //[DisplayName("Статус BCRYPT")]
+            public String BCryptError { get;set; }
+            //[DisplayName("Модификаторы")]
+            public String Modifiers { get;set; }
+            //[DisplayName("Исходный файл")]
+            public String Stream { get;set; }
+            //[DisplayName("Актуальный алгоритм хэширования(Содержимое)")]
+            public String ActualContentDigestMethod { get;set; }
+            //[DisplayName("Размер сообщения")]
+            public Int32 MessageSize { get;set; }
+            //[DisplayName("Размер содержимого")]
+            public Int32 ContentSize { get;set; }
+            public String Certificate { get;set; }
+            public String Crl { get;set; }
             public String SCode { get;set; }
             }
 
@@ -864,51 +848,29 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                         var rows = new List<StatRecord>();
                         for (var i = 0; i < count; i++) {
                             var j = table[i];
-                            var countryCode = j.Country?.ToLowerInvariant();
-                            var signingTime = j.SigningTime;
-                            var countryName = IcaoCountry.TwoLetterCountries.TryGetValue(countryCode, out var country) ? country.RussianShortName : null;
-                            if (countryName == null) {
-                                if (countryCode.Length == 3) {
-                                    countryName = IcaoCountry.ThreeLetterCountries[countryCode];
-                                    }
-                                }
                             rows.Add(new StatRecord
                                 {
-                                IsError = j.SCode != 0,
                                 SCode = j.SCode.ToString("x8"),
-                                CountryCode = countryCode,
-                                CertificateDigestAlgorithm = j.CertificateDigestAlgorithm ?? "NULL",
-                                CertificateSignatureAlgorithm = j.CertificateSignatureAlgorithm ?? "NULL",
-                                SignerDigestAlgorithm = j.SignerDigestAlgorithm ?? "NULL",
-                                SignerSignatureAlgorithm = j.SignerSignatureAlgorithm ?? "NULL",
                                 Organization = j.Organization,
                                 Source = j.Source ?? "NULL",
                                 ActualDigestMethod = j.ActualDigestMethod ?? "NULL",
                                 Modifiers = j.Modifiers,
                                 CCryptError = j.CCryptError,
                                 BCryptError = j.BCryptError,
-                                CertificateIssuer = j.CertificateIssuer ?? "NULL",
-                                CertificateNotAfter = j.CertificateNotAfter.HasValue ? j.CertificateNotAfter.Value.ToString("yyyy-MM-ddTHH:mm:ss") : "NULL",
-                                CertificateNotBefore = j.CertificateNotBefore.HasValue ? j.CertificateNotBefore.Value.ToString("yyyy-MM-ddTHH:mm:ss"): "NULL",
-                                SigningTime = signingTime.HasValue ? (signingTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")) : "NULL",
                                 Stream = !String.IsNullOrWhiteSpace(j.Stream) ? Path.GetFileNameWithoutExtension(j.Stream) : "NULL",
-                                CertificateAuthorityKeyIdentifier = ShortKey(j.CertificateAuthorityKeyIdentifier) ?? "NULL",
-                                CountryName = countryName ?? "NULL",
-                                CertificateSubject = j.CertificateSubject ?? "NULL",
                                 ActualContentDigestMethod = j.ActualContentDigestMethod ?? "NULL",
                                 ContentSize = j.ContentSize,
                                 MessageSize = j.MessageSize,
-                                CertificateThumbprint = j.CertificateThumbprint ?? "NULL",
-                                CertificateSubjectKeyIdentifier = ShortKey(j.CertificateSubjectKeyIdentifier) ?? "NULL",
-                                IssuerCertificateThumbprint = j.IssuerCertificateThumbprint ?? "NULL",
+                                Certificate = j.CertificateThumbprint ?? "NULL",
+                                Crl = j.CrlThumbprint ?? "NULL"
                                 });
                             }
                         var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
                         using (var stream = File.OpenWrite(filename))
-                        using (var target = new StreamWriter(stream, Encoding.UTF8)) {
+                        using (var target = new StreamWriter(stream, Encoding.Unicode)) {
                             var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
                             target.WriteLine($"{String.Join(";", descriptors.Select(i => i.DisplayName))}");
-                            foreach (var row in rows.OrderBy(i => i.CountryCode)) {
+                            foreach (var row in rows.OrderBy(i => i.Organization)) {
                                 target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
                                 }
                             }

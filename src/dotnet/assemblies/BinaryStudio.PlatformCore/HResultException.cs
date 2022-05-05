@@ -40,7 +40,11 @@ namespace BinaryStudio.PlatformComponents.Win32
                     LangId, &r, 0, IntPtr.Zero)) {
                     try
                         {
-                        var o = (new String((Char*)r)).Trim();
+                        var o = (new String((Char*)r)).
+                            Replace("\n", " ").
+                            Replace("\r", " ").
+                            Replace("  ", " ").
+                            Trim();
                         if ((source >= 0xFFFF) || (source < 0))
                             {
                             return $"{o} {{HRESULT:{(HRESULT)source}}}";
@@ -58,16 +62,10 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             catch
                 {
-                if ((source >= 0xFFFF) || (source < 0))
-                    {
-                    return $"{{HRESULT:{(HRESULT)source}}}";
-                    }
-                else
-                    {
-                    return $"{{Win32ErrorCode:{(Win32ErrorCode)source}}}";
-                    }
                 }
-            return NTStatusException.FormatMessage(source);
+            return (source >= 0xFFFF) || (source < 0)
+                ? $"{{HRESULT:{(HRESULT)source}}}"
+                : $"{{Win32ErrorCode:{(Win32ErrorCode)source}}}";
             }
         #endregion
 

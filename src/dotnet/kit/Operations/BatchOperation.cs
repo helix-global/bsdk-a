@@ -452,7 +452,7 @@ namespace Operations
                         command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) { Value = new SqlXml(XElement.Parse(r).CreateReader()) });
                         command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) { Value = source.Thumbprint });
                         command.Parameters.Add(new SqlParameter("@Group", SqlDbType.TinyInt) { Value = group });
-                        command.Parameters.Add(new SqlParameter("@Force", SqlDbType.Bit)     { Value = group });
+                        command.Parameters.Add(new SqlParameter("@Force", SqlDbType.Bit)     { Value = force });
                         command.ExecuteNonQuery();
                         }
                     transaction.Commit();

@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:d:\\icao\\rfid\\*.p7b \"output:{oledb://Data Source=DEV-SR-SQL02\\SQL2008SRV;Initial Catalog=icao;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;Password=escort}\" batch:serialize,group=1,force mt:1",
+      "commandLineArgs": "input:d:\\icao\\rfid\\*.p7b mt:1",
       "remoteDebugEnabled": false,
       "nativeDebugging": false
     }

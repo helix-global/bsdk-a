@@ -32,9 +32,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             UnusedBits = Content.ReadByte();
             content = Content.Clone(Length - 1);
-            State |= ObjectState.DisposeContent;
             length = Length - 1;
+            base.Decode();
             State |= ObjectState.Decoded;
+            State |= ObjectState.DisposeContent;
             return true;
             }
 

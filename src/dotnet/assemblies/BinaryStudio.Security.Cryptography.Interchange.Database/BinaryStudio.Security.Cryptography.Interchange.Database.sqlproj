@@ -111,6 +111,8 @@
     <Build Include="dbo\Views\DecodingFailedInGroup1SucceededWithTheSameInGroup2.sql" />
     <Build Include="dbo\Views\DecodingFailedInGroup1SucceededInSameGroup.sql" />
     <Build Include="dbo\Stored Procedures\DeleteCmsMessage.sql" />
+    <Build Include="dbo\Tables\SCode.sql" />
+    <Build Include="dbo\Tables\Table_1.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

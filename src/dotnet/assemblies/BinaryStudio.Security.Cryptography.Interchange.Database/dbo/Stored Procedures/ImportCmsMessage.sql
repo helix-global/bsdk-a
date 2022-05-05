@@ -9,7 +9,8 @@ CREATE PROCEDURE [dbo].[ImportCmsMessage]
   @Key AS NVARCHAR(MAX),
   @Body AS XML,
   @Thumbprint AS NVARCHAR(MAX),
-  @Group AS TINYINT
+  @Group AS TINYINT,
+  @Force AS BIT
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -17,11 +18,13 @@ BEGIN
     IF @@TRANCOUNT = 0 RAISERROR('No external transaction', 16, 1)
     IF (@Key IS NOT NULL) AND (@Body IS NOT NULL)
     BEGIN
-      IF (NOT EXISTS(SELECT TOP 1
-          [a].[ObjectId]
-         FROM [dbo].[CmsMessage] [a]
-          INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-        WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)))
+      DECLARE @ObjectId  INT
+      SELECT TOP 1
+        @ObjectId = [a].[ObjectId]
+      FROM [dbo].[CmsMessage] [a]
+        INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
+      WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)
+      IF (@ObjectId IS NULL)
       BEGIN
         INSERT INTO Table_1 ([VALUE],[KEY]) VALUES (@Body,@Key)
         DECLARE @HashAlgorithm NVARCHAR(MAX)
@@ -36,7 +39,6 @@ BEGIN
         execute [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId output
         execute [dbo].[ImportObjectIdentifier] @Value=@ContentType,@Identifier=@ContentTypeId output
 
-        DECLARE @ObjectId  INT
         INSERT INTO [dbo].[Object] ([Type],[Body],[Group],[Key]) VALUES (3,@Body,@Group,@Key)
         SET @ObjectId=@@IDENTITY
         INSERT INTO [dbo].[CmsMessage]
@@ -81,7 +83,7 @@ BEGIN
         CLOSE [cursor]
         DEALLOCATE [cursor]
       END
-    ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL)
+    ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL) AND (@Force = 0)
     BEGIN
       UPDATE [a]
         SET [a].[Thumbprint]=@Thumbprint
@@ -90,6 +92,11 @@ BEGIN
       WHERE ([b].[Key]=@Key)
         AND ([b].[Group]=@Group)
         AND ([a].[Thumbprint] IS NULL)
+    END
+    ELSE IF (@Key IS NOT NULL) AND (@Force = 1) AND (@Body IS NOT NULL)
+    BEGIN
+      EXECUTE [dbo].[DeleteCmsMessage] @ObjectId=@ObjectId
+      EXECUTE [dbo].[ImportCmsMessage] @Key,@Body,@Thumbprint,@Group,@Force=0
     END
     END
   END   TRY
