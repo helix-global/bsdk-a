@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Xml;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -37,6 +38,19 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 writer.WriteValue(serializer, nameof(IsCritical), IsCritical);
                 writer.WriteValue(serializer, nameof(Value), Value);
                 }
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Extension");
+            writer.WriteAttributeString(nameof(Identifier), Identifier.ToString());
+            writer.WriteAttributeString(nameof(IsCritical), IsCritical.ToString());
+            if (!String.IsNullOrWhiteSpace(Value)) {
+                writer.WriteAttributeString(nameof(Value), Value);
+                }
+            writer.WriteEndElement();
             }
         }
     }

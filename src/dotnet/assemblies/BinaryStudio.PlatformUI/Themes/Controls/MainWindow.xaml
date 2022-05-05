@@ -5,6 +5,8 @@
   <Style TargetType="{x:Type e:MainWindow}">
     <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
     <Setter Property="Foreground" Value="{DynamicResource WindowTextBrushKey}"/>
+    <Setter Property="ActiveGlowColor" Value="{DynamicResource ActiveGlowColorKey}"/>
+    <Setter Property="InactiveGlowColor" Value="{DynamicResource InactiveGlowColorKey}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type e:MainWindow}">
@@ -16,7 +18,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
-              <c:MainWindowTitleBar Grid.Row="0" BorderThickness="0" Background="{DynamicResource ActiveCaptionBrushKey}">
+              <c:WindowTitleBar Grid.Row="0" BorderThickness="0" Background="{DynamicResource ActiveCaptionBrushKey}" x:Name="TitleBar">
                 <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -40,7 +42,7 @@
                   </StackPanel>
                   <TextBlock Grid.Column="1" Text="{TemplateBinding Title}"  VerticalAlignment="Center" Margin="5,0,5,0" Foreground="{DynamicResource ActiveCaptionTextBrushKey}"/>
                 </Grid>
-              </c:MainWindowTitleBar>
+              </c:WindowTitleBar>
               <Decorator Grid.Row="1">
                 <ContentPresenter Content="{TemplateBinding Menu}"/>
               </Decorator>
@@ -62,6 +64,9 @@
             <Trigger Property="WindowState" Value="Normal">
               <Setter TargetName="RestoreButton"  Property="Visibility" Value="Collapsed"/>
               <Setter TargetName="MaximizeButton" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsActive" Value="False">
+              <Setter TargetName="TitleBar" Property="Background" Value="{DynamicResource InactiveCaptionBrushKey}"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>

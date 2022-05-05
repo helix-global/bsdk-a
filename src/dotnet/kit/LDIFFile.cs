@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
+using BinaryStudio.DirectoryServices;
 
 namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
     {
-    public class LDIFFile
+    internal class LDIFFile : IDirectoryService
         {
         public Version Version { get;private set; }
         public IList<LDIFFileEntry> Entries { get; }
 
-        public LDIFFile(String filename) {
-            if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
-            if (String.IsNullOrWhiteSpace(filename)) { throw new ArgumentOutOfRangeException(nameof(filename)); }
-            if (!File.Exists(filename)) { throw new ArgumentOutOfRangeException(filename); }
-            Entries = Load(LDIFReader.Read(filename));
+        public LDIFFile(IFileService service) {
+            if (service == null) { throw new ArgumentNullException(nameof(service)); }
+            Entries = Load(LDIFReader.Read(service.OpenRead()));
             }
 
         private String ToString(Object source) {
             var r = source.ToString();
             if (source is Byte[]) { r = Encoding.UTF8.GetString((Byte[])source); }
-            r = r.Replace("\\=", "=");
-            r = r.Replace("\\,", ",");
+            //r = r.Replace("\\=", "=");
+            //r = r.Replace("\\,", ",");
             return r;
             }
 
@@ -43,6 +41,16 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
                 r.Add(dn);
                 }
             return r;
+            }
+
+        public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption) {
+            foreach (var entry in Entries) {
+                if (entry.IsFile) {
+                    if (PathUtils.IsMatch(searchpattern, entry.FileName)) {
+                        yield return entry;
+                        }
+                    }
+                }
             }
         }
     }

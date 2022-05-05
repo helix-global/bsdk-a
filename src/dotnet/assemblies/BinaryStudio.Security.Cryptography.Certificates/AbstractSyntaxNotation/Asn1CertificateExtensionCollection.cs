@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     [XmlRoot("Extensions")]
-    public class Asn1CertificateExtensionCollection : Asn1ReadOnlyCollection<Asn1CertificateExtension>, IJsonSerializable
+    public class Asn1CertificateExtensionCollection : Asn1ReadOnlyCollection<IX509CertificateExtension>,
+        IJsonSerializable, IX509CertificateExtensionCollection
         {
         private class X509CertificateExtensionPropertyDescriptor : PropertyDescriptor
             {
             private Object Value { get; }
-            public X509CertificateExtensionPropertyDescriptor(Asn1CertificateExtension source, Attribute[] attributes)
+            public X509CertificateExtensionPropertyDescriptor(IX509CertificateExtension source, Attribute[] attributes)
                 : base(source.Identifier.ToString(), attributes)
                 {
                 Value = source;
@@ -92,6 +95,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return r;
             }
 
+        ///// <summary>Returns an enumerator that iterates through the collection.</summary>
+        ///// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        //public IEnumerator<IX509CertificateExtension> GetEnumerator() {
+        //    foreach (var i in Items)
+        //        {
+        //        yield return i;
+        //        }
+        //    }
+
+        ///// <summary>Returns an enumerator that iterates through the collection.</summary>
+        ///// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        //public IEnumerator<Asn1CertificateExtension> GetEnumerator() {
+        //    foreach (var i in Items)
+        //        {
+        //        yield return i;
+        //        }
+        //    }
+
         /**
          * <summary>Returns a string that represents the current object.</summary>
          * <returns>A string that represents the current object.</returns>
@@ -102,13 +123,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return $"{Resources.Count} = {Count}";
             }
 
-        #region P:this[UInt32]:X509CertificateExtension
-        public Asn1CertificateExtension this[UInt32 i] { get {
+        #region P:this[UInt32]:IX509CertificateExtension
+        public IX509CertificateExtension this[UInt32 i] { get {
             return base[(Int32)i];
             }}
         #endregion
-        #region P:this[String]:X509CertificateExtension
-        public Asn1CertificateExtension this[String key] { get {
+        #region P:this[String]:IX509CertificateExtension
+        public IX509CertificateExtension this[String key] { get {
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
             if (String.IsNullOrWhiteSpace(key)) { throw new ArgumentOutOfRangeException(nameof(key)); }
             foreach (var item in Items) {
@@ -134,7 +155,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValue(serializer, nameof(Count), Count);
                 writer.WritePropertyName("[Self]");
                 using (writer.ArrayScope(serializer)) {
-                    foreach (var item in Items) {
+                    foreach (var item in Items.OfType<Asn1CertificateExtension>()) {
                         item.WriteJson(writer, serializer);
                         }
                     }

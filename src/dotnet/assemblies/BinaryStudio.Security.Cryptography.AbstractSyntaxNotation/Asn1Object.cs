@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define FEATURE_ASN1_INCOMPLETED
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,20 +22,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     [TypeConverter(typeof(Asn1ObjectConverter))]
     public abstract class Asn1Object : IList<Asn1Object>, IEquatable<Asn1Object>,
         IJsonSerializable, IXmlSerializable, IAsn1Object, IServiceProvider,
-        ICustomTypeDescriptor
+        ICustomTypeDescriptor, IDisposable
         {
         [Flags]
-        protected internal enum ObjectState : byte
+        protected internal enum ObjectState : ushort
             {
-            None = 0,
-            ExplicitConstructed = 1,
-            ImplicitConstructed = 2,
-            Failed = 4,
-            Indefinite = 8,
-            Decoded = 16,
-            Building = 32,
-            SealedLength = 64,
-            SealedSize = 128
+            None                    = 0x000,
+            ExplicitConstructed     = 0x001,
+            ImplicitConstructed     = 0x002,
+            Failed                  = 0x004,
+            Indefinite              = 0x008,
+            Decoded                 = 0x010,
+            Disposed                = 0x020,
+            SealedLength            = 0x040,
+            SealedSize              = 0x080,
+            DisposeUnderlyingObject = 0x100,
+            DisposeContent          = 0x200,
+            #if FEATURE_ASN1_INCOMPLETED
+            Incompleted             = 0x400
+            #endif
             }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private ObjectState state;
@@ -42,26 +48,30 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 size;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 length;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal ReadOnlyMappingStream content;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private readonly List<Asn1Object> sequence = new List<Asn1Object>();
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
-        protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
         [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength    { get { return state.HasFlag(ObjectState.Indefinite); }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return state.HasFlag(ObjectState.Indefinite);          }}
+        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return state.HasFlag(ObjectState.Disposed);            }}
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
+        private static Int32 gref;
 
         #region M:Body:Byte[]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
         public virtual Byte[] Body { get {
             using (var target = new MemoryStream())
                 {
-                Write(target);
+                WriteTo(target);
                 return target.ToArray();
                 }
             }}
         #endregion
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         protected internal virtual ObjectState State {
             get { return state; }
             set
@@ -177,10 +187,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * <summary>Gets the number of elements in the collection.</summary>
          * <returns>The number of elements in the collection.</returns>
          * */
-        public virtual Int32 Count
-            {
-            get { return sequence.Count; }
-            }
+        public virtual Int32 Count { get {
+            if (IsDisposed) { throw new ObjectDisposedException("this"); }
+            return sequence.Count;
+            }}
         #endregion
         #region P:ICollection<Asn1Object>.IsReadOnly:Boolean
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Boolean IsReadOnly { get;set; }
@@ -241,9 +251,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
          * <exception cref="NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
          * */
-        public virtual Asn1Object this[Int32 index]
-            {
-            get { return sequence[index]; }
+        public virtual Asn1Object this[Int32 index] {
+            get
+                {
+                if (IsDisposed) { throw new ObjectDisposedException("this"); }
+                return sequence[index];
+                }
             set
                 {
                 if (IsReadOnly) { throw new NotSupportedException(); }
@@ -493,6 +506,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }}
 
         protected Asn1Object(ReadOnlyMappingStream source, Int64 forceoffset)
+            :this()
             {
             state |= ObjectState.SealedLength | ObjectState.SealedSize;
             offset = source.Position - 1;
@@ -515,19 +529,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     }
                 offset += forceoffset;
                 content = source.Clone(length);
+                state |= ObjectState.DisposeContent;
                 source.Seek(length, SeekOrigin.Current);
                 }
             }
 
         internal Asn1Object()
             {
+            Interlocked.Increment(ref gref);
             }
 
         #region M:Decode(IEnumerable<Asn1Object>):Boolean
         private static Boolean Decode(IEnumerable<Asn1Object> items)
             {
             #if TRACE
-            using (TraceManager.Instance.Trace())
             #endif
                 {
                 #if FEATURE_MULTI_THREAD_PROCESSING
@@ -548,7 +563,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal virtual Boolean Decode()
             {
             #if TRACE
-            using (TraceManager.Instance.Trace())
             #endif
                 {
                 if (IsDecoded) { return true;  }
@@ -581,11 +595,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             ln += i.Size;
                             r.Add(i);
                             }
-                        if (flag)
-                            {
+                        if (flag) {
                             size   = sz;
                             length = ln;
+                            if ((offset + length) > content.Length) {
+                                state |= ObjectState.Failed;
+                                return false;
+                                }
                             content = content.Clone(offset, length);
+                            state |= ObjectState.DisposeContent;
                             if (Decode(r))
                                 {
                                 sequence.AddRange(r);
@@ -642,6 +660,21 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             {
                             state |= ObjectState.Decoded;
                             return true;
+                            }
+                        else
+                            {
+                            #if FEATURE_ASN1_INCOMPLETED
+                            if (Decode(r))
+                                {
+                                sequence.AddRange(r);
+                                state |= ObjectState.Decoded;
+                                state |= ObjectState.ImplicitConstructed;
+                                state |= ObjectState.Incompleted;
+                                return true;
+                                }
+                            #endif
+                            state |= ObjectState.Failed;
+                            return false;
                             }
                         }
                     state |= ObjectState.Failed;
@@ -946,6 +979,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:IXmlSerializable.WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         public virtual void WriteXml(XmlWriter writer)
             {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
@@ -1002,10 +1037,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             for (;;)
                 {
+                var offset = source.Position;
                 var i = ReadNext(source, source.Position);
                 if (i == null) { break; }
-                i.Decode();
+                if (!i.IsDecoded) {
+                    if (i.IsFailed || !i.Decode()) {
+                        break;
+                        }
+                    }
                 yield return i;
+                source.Position = offset + i.Size;
                 }
             }
 
@@ -1023,18 +1064,33 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// Loads ASN.1 structure from specified read-only stream and by specified flags.
         /// </summary>
         /// <param name="source">Read only stream.</param>
-        /// <param name="flags">Load flags.</param>
         /// <returns>Returns sequence of ASN.1 objects.</returns>
-        public static IEnumerable<Asn1Object> Load(Stream source, Asn1ReadFlags flags = 0) {
+        public static IEnumerable<Asn1Object> Load(Stream source) {
             if (source == null)  { throw new ArgumentNullException(nameof(source));       }
             if (!source.CanRead) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            return Load(new ReadOnlyStream(source), flags);
+            var ro = source as ReadOnlyMappingStream;
+            return (ro != null)
+                ? Load(ro)
+                : Load(new ReadOnlyStream(source));
             }
 
-        protected internal virtual void Write(Stream target) {
-            WriteHeader(target);
-            WriteContent(target);
+        public virtual void WriteTo(Stream target) {
+            if (IsIndefiniteLength)
+                {
+                Content.Seek(0, SeekOrigin.Begin);
+                Content.CopyTo(target);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                }
+            else
+                {
+                WriteHeader(target);
+                WriteContent(target);
+                }
             }
+
         protected virtual void WriteContent(Stream target) {
             Content.Seek(0, SeekOrigin.Begin);
             Content.CopyTo(target);
@@ -1126,5 +1182,65 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             if (IsIndefiniteLength) { yield return new Byte[4]; }
             }}
+
+        #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected virtual void Dispose(Boolean disposing) {
+            if (!IsDisposed) {
+                lock(this) {
+                    if (sequence != null) {
+                        for (var i = 0; i < sequence.Count; i++) {
+                            sequence[i].Dispose();
+                            sequence[i] = null;
+                            }
+                        sequence.Clear();
+                        sequence = null;
+                        }
+                    //if (state.HasFlag(ObjectState.DisposeContent)) { Dispose(ref content); }
+                    content = null;
+                    state |= ObjectState.Disposed;
+                    Interlocked.Decrement(ref gref);
+                    }
+                }
+            }
+        #endregion
+        #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+            {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            }
+        #endregion
+        #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        ~Asn1Object()
+            {
+            Dispose(false);
+            }
+        #endregion
+
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
+
+        protected static void Dispose<T>(ref T[] o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                for (var i = 0; i < o.Length; i++) {
+                    Dispose(ref o[i]);
+                    }
+                o = default;
+                }
+            }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
+using BinaryStudio.DirectoryServices;
 
 namespace BinaryStudio.IO
     {
@@ -39,11 +39,22 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (count  < 0) { throw new ArgumentOutOfRangeException(nameof(count));  }
             if (buffer.Length - offset < count) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-            if (IsDisposed) { throw new ObjectDisposedException("Object already disposed."); }
+            if (Disposed) { throw new ObjectDisposedException("Object already disposed."); }
             return source.Read(buffer, offset, count);
             }
 
         public override Int64 Length { get { return source.Length; }}
+
+        /// <summary>When overridden in a derived class, gets or sets the position within the current stream.</summary>
+        /// <returns>The current position within the stream.</returns>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        /// <exception cref="T:System.NotSupportedException">The stream does not support seeking.</exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        public override Int64 Position {
+            get { return source.Position;  }
+            set { source.Position = value; }
+            }
+
         protected override Int64 Offset { get; }
 
         public override ReadOnlyMappingStream Clone() {
@@ -65,8 +76,8 @@ namespace BinaryStudio.IO
                 var offset = Position;
                 var assembly = Assembly.GetEntryAssembly();
                 var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
-                var filename = Path.GetTempFileName();
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                var filename = PathUtils.GetTempFileName(folder, "str");
                 if (File.Exists(filename)) { File.Delete(filename); }
                 var block = new Byte[BlockSize];
                 using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
@@ -82,7 +93,26 @@ namespace BinaryStudio.IO
                 source.Seek(offset, SeekOrigin.Begin);
                 return new ReadOnlyFileMappingStream(filename, true);
                 }
-            throw new NotImplementedException();
+            else
+                {
+                var assembly = Assembly.GetEntryAssembly();
+                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                var filename = PathUtils.GetTempFileName(folder, "str");
+                if (File.Exists(filename)) { File.Delete(filename); }
+                var block = new Byte[BlockSize];
+                using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
+                    {
+                    while (length > 0) {
+                        var blockcount = (Int32)Math.Min(block.Length, length);
+                        var sourcecount = source.Read(block, 0, blockcount);
+                        if (sourcecount == 0) { break; }
+                        output.Write(block, 0, sourcecount);
+                        length -= sourcecount;
+                        }
+                    }
+                return new ReadOnlyFileMappingStream(filename, true);
+                }
             }
 
         public override Boolean CanSeek { get { return source.CanSeek; }}
@@ -90,16 +120,18 @@ namespace BinaryStudio.IO
         /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            if (disposing) {
-                if (source != null) {
-                    if (closable)
-                        {
-                        source.Dispose();
+            lock(this) {
+                if (Disposed) {
+                    if (source != null) {
+                        if (closable)
+                            {
+                            source.Dispose();
+                            }
+                        source = null;
                         }
-                    source = null;
                     }
+                base.Dispose(disposing);
                 }
-            base.Dispose(disposing);
             }
         }
     }

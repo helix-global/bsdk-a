@@ -7,6 +7,7 @@ namespace kit.Options.Descriptors
     {
     internal class PinCodeOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "pincode"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

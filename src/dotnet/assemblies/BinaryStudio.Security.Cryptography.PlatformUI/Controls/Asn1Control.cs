@@ -114,6 +114,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
             if (o != null) {
                 try
                     {
+                    if (o.IsDisposed) { throw new ObjectDisposedException(nameof(o)); }
                     var r = new Asn1Certificate(o);
                     if (!r.IsFailed) { return r; }
                     }
@@ -129,6 +130,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
             if (o != null) {
                 try
                     {
+                    if (o.IsDisposed) { throw new ObjectDisposedException(nameof(o)); }
                     var r = new Asn1CertificateRevocationList(o);
                     if (!r.IsFailed) { return r; }
                     }
@@ -144,6 +146,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
             if (o != null) {
                 try
                     {
+                    if (o.IsDisposed) { throw new ObjectDisposedException(nameof(o)); }
                     var r = new CmsMessage(o);
                     if (!r.IsFailed) { return r; }
                     }
@@ -325,7 +328,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
                 };
             if (dialog.ShowDialog(null) == true) {
                 using (var output = File.Create(dialog.FileName)) {
-                    o.Write(output);
+                    o.WriteTo(output);
                     }
                 }
             }
@@ -339,10 +342,11 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
         #region M:Copy(Asn1Object,TextDataFormat)
         private void Copy(Asn1Object o, String type) {
             if (o == null) { throw new ArgumentNullException(nameof(o)); }
+            if (o.IsDisposed) { throw new ObjectDisposedException(nameof(o)); }
             if (type == "BASE64") {
                 Clipboard.Clear();
                 using (var output = new MemoryStream()) {
-                    o.Write(output);
+                    o.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
                     Clipboard.SetText(Convert.ToBase64String(output.ToArray()), TextDataFormat.UnicodeText);
                     }

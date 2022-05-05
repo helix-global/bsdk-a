@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Microsoft.Win32;
 using Path=System.IO.Path;
 
@@ -28,6 +30,17 @@ namespace shell
         private DocumentGroup dockgroup;
         private DocumentManager docmanager;
 
+        static MainWindow()
+            {
+            EventManager.RegisterClassHandler(typeof(MainWindow), CommandSource.OpenBinaryDataEvent, new RoutedEventHandler(OpenBinaryDataExecuted));
+            }
+
+        private static void OpenBinaryDataExecuted(Object sender, RoutedEventArgs e) {
+            if (sender is MainWindow source) {
+                source.OpenBinaryDataExecuted(e);
+                }
+            }
+
         public MainWindow()
             {
             InitializeComponent();
@@ -35,7 +48,7 @@ namespace shell
 
         private void OnLoad(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[0]);
+            Theme.Apply(Theme.Themes[1]);
             UpdateCommandBindings();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {
@@ -59,7 +72,7 @@ namespace shell
 
         private void Initialize()
             {
-            LoadFrom(@"C:\TFS\icao\rfid\unsorted\efsod047.p7b");
+            //LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-04-02-17-42-30.db");
             }
 
         private void LoadFrom(String filename) {
@@ -69,12 +82,44 @@ namespace shell
 
         private void UpdateCommandBindings() {
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));;
+            }
+
+        private void OpenBase64Executed(Object sender, ExecutedRoutedEventArgs e)
+            {
+            var dialog = new OpenFromBase64Dialog
+                {
+                Owner = this
+                };
+            Theme.CurrentTheme.ApplyTo(dialog);
+            if (dialog.ShowDialog() == true)
+                {
+                var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.OutputBytes)).FirstOrDefault());
+                docmanager.Add(o, "?");
+                }
+            }
+
+        private void OpenBinaryDataExecuted(RoutedEventArgs e) {
+            if (e is OpenBinaryDataEventArgs data) {
+                var dialog = new OpenFromBase64Dialog{
+                    Owner = this,
+                    InputBytes = data.Data
+                    };
+                if (dialog.ShowDialog() == true)
+                    {
+                    var o = docmanager.LoadView(Asn1Object.Load(new ReadOnlyMemoryMappingStream(dialog.OutputBytes)).FirstOrDefault());
+                    docmanager.Add(o, "?");
+                    e.Handled = true;
+                    }
+                }
             }
 
         private void ConvertToBase64Executed(Object sender, ExecutedRoutedEventArgs e)
             {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog{
+                Filter = "All Files (*.*)|*.*"
+                };
             if (dialog.ShowDialog(this) == true)
                 {
                 var r = File.ReadAllBytes(dialog.FileName);
@@ -89,7 +134,9 @@ namespace shell
 
         private void OpenExecuted(Object sender, ExecutedRoutedEventArgs e)
             {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog{
+                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db"
+                };
             if (dialog.ShowDialog(this) == true)
                 {
                 LoadFrom(dialog.FileName);

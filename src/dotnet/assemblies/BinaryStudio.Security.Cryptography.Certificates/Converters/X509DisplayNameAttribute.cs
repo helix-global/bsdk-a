@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Converters
          * <returns>The display name.</returns>
          * */
         public override String DisplayName { get {
-            return Resources.ResourceManager.GetString(Key, PlatformSettings.DefaultCulture);
+            return Resources.ResourceManager.GetString(Key, PlatformContext.DefaultCulture);
             }}
         }
     }

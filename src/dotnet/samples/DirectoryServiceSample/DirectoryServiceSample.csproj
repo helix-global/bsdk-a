@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net40</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\assemblies\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+  </ItemGroup>
+</Project>

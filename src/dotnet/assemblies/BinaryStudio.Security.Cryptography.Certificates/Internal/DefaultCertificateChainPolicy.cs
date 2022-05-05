@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
+using System.Linq;
 using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32;
 
@@ -11,16 +10,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     [DebuggerDisplay(@"\{{Policy}\}")]
     internal class DefaultCertificateChainPolicy : X509CertificateChainPolicy
         {
-        private CERT_CHAIN_POLICY Policy { get; }
-        protected CERT_CHAIN_POLICY_FLAGS Flags { get { return 0; }}
+        public override CertificateChainPolicy Policy { get; }
+        protected CERT_CHAIN_POLICY_FLAGS Flags { get; }
 
-        public DefaultCertificateChainPolicy(CERT_CHAIN_POLICY policy) {
+        public DefaultCertificateChainPolicy(CertificateChainPolicy policy, CERT_CHAIN_POLICY_FLAGS flags = 0) {
             Policy = policy;
+            Flags = flags;
             }
 
-        public override unsafe Boolean Verify(ISet<Exception> target, ICryptographicContext context,
-            OidCollection applicationpolicy, OidCollection certificatepolicy,
-            TimeSpan timeout, DateTime datetime, IX509CertificateStorage store,
+        public override unsafe void Verify(ICryptographicContext context,
+            DateTime datetime, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags, ref CERT_CHAIN_CONTEXT chaincontext)
             {
             var policypara = new CERT_CHAIN_POLICY_PARA {
@@ -35,17 +34,56 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 Error = 0,
                 ExtraPolicyStatus = IntPtr.Zero
                 };
-            var r = Validate(out var e, CertVerifyCertificateChainPolicy(
+            Validate(CertVerifyCertificateChainPolicy(
                 new IntPtr((Int32)Policy),
                 ref chaincontext,
                 ref policypara,
                 ref policystatus));
-            if (!r || (e != null)) {
-                target.Add(e);
+            var source = new X509CertificateChainContext(ref chaincontext);
+            if (source.ErrorStatus != 0) {
+                var target = new HashSet<Exception>();
+                foreach (var chain in source) {
+                    try
+                        {
+                        var exceptions = new List<Exception>();
+                        foreach (var chainE in chain) {
+                            try
+                                {
+                                RaiseExceptionForStatus(chainE.ErrorStatus, 0xffffffff);
+                                }
+                            catch (Exception e)
+                                {
+                                e.Data["ChainElement"] = chainE;
+                                exceptions.Add(e);
+                                }
+                            }
+                        try
+                            {
+                            RaiseExceptionForStatus(chain.ErrorStatus, 0x000f0000);
+                            }
+                        catch (Exception e)
+                            {
+                            exceptions.Add(e);
+                            }
+                        if (exceptions.Count > 0) {
+                            throw ((exceptions.Count == 1)
+                                ? exceptions[0]
+                                : new AggregateException(exceptions));
+                            }
+                        }
+                    catch (Exception e)
+                        {
+                        e.Data["Chain"] = chain;
+                        target.Add(e);
+                        }
+                    }
+                if (target.Any())
+                    {
+                    var e = new SecurityException("Certificate chain verification error.", target);
+                    e.Data["Policy"] = Policy;
+                    throw e;
+                    }
                 }
-            return r;
             }
-
-        [DllImport("crypt32.dll", ExactSpelling = true, SetLastError = true)] private static extern Boolean CertVerifyCertificateChainPolicy([In] IntPtr policy, [In] ref CERT_CHAIN_CONTEXT chaincontext, [In] ref CERT_CHAIN_POLICY_PARA policypara, [In][Out] ref CERT_CHAIN_POLICY_STATUS policystatus);
         }
     }

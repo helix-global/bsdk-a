@@ -19,7 +19,7 @@ namespace BinaryStudio.DirectoryServices
                     ? SearchOption.AllDirectories
                     : SearchOption.TopDirectoryOnly))
                 {
-                yield return new FileItem(file);
+                yield return new LocalFile(file);
                 }
             }
         }

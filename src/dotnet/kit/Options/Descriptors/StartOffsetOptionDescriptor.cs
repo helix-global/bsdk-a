@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class StartOffsetOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "start"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

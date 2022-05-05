@@ -2,6 +2,7 @@
     {
     public enum CRYPT_PROVIDER_TYPE
         {
+        FINTECH                 = -2,
         OPENSSL                 = -1,
         PROV_RSA_FULL           =  1,
         PROV_RSA_SIG            =  2,

@@ -11,6 +11,7 @@ namespace BinaryStudio.IO
         private FileMapping mapping;
         protected override Int64 Offset { get; }
         protected Boolean DeleteOnDispose;
+        protected Boolean DisposeMapping;
 
         public ReadOnlyFileMappingStream(String filename)
             :this(filename, false)
@@ -25,9 +26,11 @@ namespace BinaryStudio.IO
             Length = mapping.Size;
             Offset = 0;
             DeleteOnDispose = flags;
+            DisposeMapping = true;
             }
 
-        internal ReadOnlyFileMappingStream(FileMapping mapping, Int64 offset, Int64 length) {
+        internal ReadOnlyFileMappingStream(FileMapping mapping, Int64 offset, Int64 length)
+            {
             if (mapping == null) { throw new ArgumentNullException(nameof(mapping)); }
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (length < 0) { throw new ArgumentOutOfRangeException(nameof(length)); }
@@ -37,7 +40,8 @@ namespace BinaryStudio.IO
             Length = length;
             }
 
-        internal ReadOnlyFileMappingStream(ReadOnlyFileMappingStream source, Int64 offset, Int64 length) {
+        internal ReadOnlyFileMappingStream(ReadOnlyFileMappingStream source, Int64 offset, Int64 length)
+            {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (length < 0) { throw new ArgumentOutOfRangeException(nameof(length)); }
@@ -47,7 +51,8 @@ namespace BinaryStudio.IO
             Length = length;
             }
 
-        internal ReadOnlyFileMappingStream(ReadOnlyFileMappingStream source, Int64 length) {
+        internal ReadOnlyFileMappingStream(ReadOnlyFileMappingStream source, Int64 length)
+            {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (length < 0) {
                 throw new ArgumentOutOfRangeException(nameof(length));
@@ -87,7 +92,7 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (count < 0)  { throw new ArgumentOutOfRangeException(nameof(count));  }
             if (buffer.Length - offset < count) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-            if (IsDisposed) { throw new ObjectDisposedException(nameof(mapping)); }
+            if (Disposed) { throw new ObjectDisposedException(nameof(mapping)); }
                 {
                 var sz = Length - (Position + count);
                 if (sz < 0) { count += (Int32)sz; }
@@ -167,19 +172,18 @@ namespace BinaryStudio.IO
         /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            if (disposing) {
-                if (DeleteOnDispose) {
+            lock(this) {
+                if (!Disposed) {
+                    mapping = null;
                     if (mapping != null) {
-                        var filename = mapping.FileName;
-                        mapping.Dispose();
-                        mapping = null;
-                        if (File.Exists(filename)) {
-                            File.Delete(filename);
+                        if (DisposeMapping) {
+                            mapping.Dispose();
+                            mapping = null;
                             }
                         }
                     }
+                base.Dispose(disposing);
                 }
-            base.Dispose(disposing);
             }
         }
     }

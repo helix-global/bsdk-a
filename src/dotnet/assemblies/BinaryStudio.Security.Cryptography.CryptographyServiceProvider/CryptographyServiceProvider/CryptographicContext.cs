@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -39,7 +40,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public override IntPtr Handle { get; }
         protected internal override ILogger Logger { get; }
-        private readonly ICryptographicContext UnderlyingObject;
+        public String ProviderName { get { return UnderlyingObject.ProviderName; }}
+        public CRYPT_PROVIDER_TYPE ProviderType { get { return UnderlyingObject.ProviderType; }}
+        public Boolean UseMachineKeySet { get { return UnderlyingObject.UseMachineKeySet; }}
+        private ICryptographicContext UnderlyingObject;
 
         /// <summary>
         /// Constructs <see cref="CryptographicContext"/> using specified <paramref name="providertype"/> and flags.
@@ -48,9 +52,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <param name="providertype">Type of provider (<see cref="CRYPT_PROVIDER_TYPE"/>).</param>
         /// <param name="flags">Provider flags.</param>
         public CryptographicContext(ILogger logger, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
-            Logger = logger ?? EmptyLogger;
+            Logger = logger ?? DefaultLogger;
             switch (providertype) {
                 case CRYPT_PROVIDER_TYPE.OPENSSL: UnderlyingObject = new OpenSSLCryptographicContext(Logger, flags); break;
+                case CRYPT_PROVIDER_TYPE.FINTECH: UnderlyingObject = new FintechCryptographicContext(Logger, flags); break;
                 case  0: UnderlyingObject = new DefaultCryptographicContext(Logger, flags); break;
                 default: UnderlyingObject = new SCryptographicContext(Logger, providertype, flags); break;
                 }
@@ -66,9 +71,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.CreateMessageSignature(inputstream, output, certificates, flags, requesthandler);
             }
 
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
-            return UnderlyingObject.VerifyCertificateSignature(out e, subject, issuer, flags);
+            UnderlyingObject.VerifySignature(subject, issuer, flags);
+            }
+
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            UnderlyingObject.VerifySignature(subject, issuer, flags);
             }
 
         public void EncryptMessageBER(Oid algid, IList<IX509Certificate> recipients, Stream inputstream, Stream outputstream)
@@ -81,10 +91,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             UnderlyingObject.EncryptMessageDER(algid, recipients, inputstream, outputstream);
             }
 
-        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder, VerificationPolicy policy)
             {
             UnderlyingObject.VerifyAttachedMessageSignature(
-                input, output, out certificates, finder);
+                input, output, out certificates,
+                finder, policy);
             }
 
         public void VerifyDetachedMessageSignature(Stream input, Stream inputdata, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
@@ -93,7 +104,57 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 input, inputdata, out certificates, finder);
             }
 
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            return UnderlyingObject.VerifySignature(out e, subject, issuer, flags);
+            }
+
         public IEnumerable<ICryptKey> Keys { get { return UnderlyingObject.Keys; }}
+        public IX509CertificateChainPolicy GetChainPolicy(CertificateChainPolicy policy) {
+            var r = UnderlyingObject?.GetChainPolicy(policy);
+            if (r == null) {
+                switch (policy) {
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_BASE:              r = X509CertificateChainPolicy.POLICY_BASE;                break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE:      r = X509CertificateChainPolicy.POLICY_AUTHENTICODE;        break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_AUTHENTICODE_TS:   r = X509CertificateChainPolicy.POLICY_AUTHENTICODE_TS;     break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL:               r = X509CertificateChainPolicy.POLICY_SSL;                 break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_BASIC_CONSTRAINTS: r = X509CertificateChainPolicy.POLICY_BASIC_CONSTRAINTS;   break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_NT_AUTH:           r = X509CertificateChainPolicy.POLICY_NT_AUTH;             break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_MICROSOFT_ROOT:    r = X509CertificateChainPolicy.POLICY_MICROSOFT_ROOT;      break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_EV:                r = X509CertificateChainPolicy.POLICY_EV;                  break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_F12:           r = X509CertificateChainPolicy.POLICY_SSL_F12;             break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_HPKP_HEADER:   r = X509CertificateChainPolicy.POLICY_SSL_HPKP_HEADER;     break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_THIRD_PARTY_ROOT:  r = X509CertificateChainPolicy.POLICY_THIRD_PARTY_ROOT;    break;
+                    case CertificateChainPolicy.CERT_CHAIN_POLICY_SSL_KEY_PIN:       r = X509CertificateChainPolicy.POLICY_SSL_KEY_PIN;         break;
+                    case CertificateChainPolicy.Icao:                                r = X509CertificateChainPolicy.IcaoCertificateChainPolicy; break;
+                    default: throw new ArgumentOutOfRangeException(nameof(policy), policy, null);
+                    }
+                }
+            return r;
+            }
+
+        /// <summary>
+        /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
+        /// </summary>
+        /// <param name="certificate">Certificate to verify.</param>
+        /// <param name="store">Certificate store.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="policy">Certificate policy.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        public void Verify(IX509Certificate certificate, IX509CertificateStorage store, OidCollection applicationpolicy,
+            OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
+            CertificateChainPolicy policy, IntPtr chainengine)
+            {
+            UnderlyingObject.Verify(
+                certificate,store,
+                applicationpolicy,issuancepolicy,
+                timeout,datetime,flags,
+                policy,chainengine);
+            }
 
         static CryptographicContext()
             {
@@ -129,5 +190,15 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             //yield return new RegisteredProviderInfo(CRYPT_PROVIDER_TYPE.OPENSSL);
             //#endif
             }}
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            Dispose(ref UnderlyingObject);
+            base.Dispose(disposing);
+            }
         }
     }

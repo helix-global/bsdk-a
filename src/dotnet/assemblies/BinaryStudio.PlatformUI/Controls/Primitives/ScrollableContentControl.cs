@@ -19,11 +19,22 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             FontWeightProperty.OverrideMetadata(typeof(ScrollableContentControl),new FrameworkPropertyMetadata(FontWeights.Normal, DoTypefaceChanged));
             }
 
+        public static readonly DependencyProperty ScrollInfoHostProperty = DependencyProperty.Register("ScrollInfoHost", typeof(IScrollInfo), typeof(ScrollableContentControl), new PropertyMetadata(default(IScrollInfo)));
+        public IScrollInfo ScrollInfoHost
+            {
+            get { return (IScrollInfo)GetValue(ScrollInfoHostProperty); }
+            set { SetValue(ScrollInfoHostProperty, value); }
+            }
+
         #region M:IScrollInfo.LineUp
         /// <summary>
         /// Scrolls up within content by one logical unit.
         /// </summary>
         void IScrollInfo.LineUp() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.LineUp();
+                return;
+                }
             SetVerticalOffset(Offset.Y - 1);
             }
         #endregion
@@ -32,6 +43,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls down within content by one logical unit.
         /// </summary>
         void IScrollInfo.LineDown() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.LineDown();
+                return;
+                }
             SetVerticalOffset(Math.Round(Offset.Y + 1));
             }
         #endregion
@@ -40,6 +55,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls left within content by one logical unit.
         /// </summary>
         void IScrollInfo.LineLeft() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.LineLeft();
+                return;
+                }
             LineLeft();
             }
         /// <summary>
@@ -54,6 +73,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls right within content by one logical unit.
         /// </summary>
         void IScrollInfo.LineRight() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.LineRight();
+                return;
+                }
             LineRight();
             }
 
@@ -69,6 +92,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls up within content by one page.
         /// </summary>
         void IScrollInfo.PageUp() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.PageUp();
+                return;
+                }
             SetVerticalOffset(Offset.Y - Viewport.Y);
             }
         #endregion
@@ -77,6 +104,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls down within content by one page.
         /// </summary>
         void IScrollInfo.PageDown() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.PageDown();
+                return;
+                }
             SetVerticalOffset(Offset.Y + Viewport.Y);
             }
         #endregion
@@ -85,6 +116,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls left within content by one page.
         /// </summary>
         void IScrollInfo.PageLeft() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.PageLeft();
+                return;
+                }
             SetHorizontalOffset(Offset.X - Viewport.X);
             }
         #endregion
@@ -93,6 +128,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Scrolls right within content by one page.
         /// </summary>
         void IScrollInfo.PageRight() {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.PageRight();
+                return;
+                }
             SetHorizontalOffset(Offset.X + Viewport.X);
             }
         #endregion
@@ -134,6 +173,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// </summary>
         /// <param name="offset">The degree to which content is horizontally offset from the containing viewport.</param>
         void IScrollInfo.SetHorizontalOffset(Double offset) {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.SetHorizontalOffset(offset);
+                return;
+                }
             SetHorizontalOffset(offset);
             }
 
@@ -153,6 +196,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// </summary>
         /// <param name="offset"></param>
         void IScrollInfo.SetVerticalOffset(Double offset) {
+            if (ScrollInfoHost != null) {
+                ScrollInfoHost.SetVerticalOffset(offset);
+                return;
+                }
             SetVerticalOffset(Math.Round(offset));
             }
 
@@ -182,7 +229,9 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
         /// <returns></returns>
         Rect IScrollInfo.MakeVisible(Visual visual, Rect rectangle) {
-            return rectangle;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.MakeVisible(visual, rectangle)
+                : rectangle;
             }
         #endregion
         #region P:IScrollInfo.CanVerticallyScroll:Boolean
@@ -204,8 +253,20 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Gets or sets a value that indicates whether scrolling on the vertical axis is possible.
         /// </summary>
         public Boolean CanVerticallyScroll {
-            get { return (Boolean)GetValue(CanVerticallyScrollProperty); }
-            set { SetValue(CanVerticallyScrollProperty, value); }
+            get
+                {
+                return (ScrollInfoHost != null)
+                    ? ScrollInfoHost.CanVerticallyScroll
+                    : (Boolean) GetValue(CanVerticallyScrollProperty);
+                }
+            set
+                {
+                if (ScrollInfoHost != null) {
+                    ScrollInfoHost.CanVerticallyScroll = value;
+                    return;
+                    }
+                SetValue(CanVerticallyScrollProperty, value);
+                }
             }
         #endregion
         #region P:IScrollInfo.CanHorizontallyScroll:Boolean
@@ -225,8 +286,20 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// Gets or sets a value that indicates whether scrolling on the horizontal axis is possible.
         /// </summary>
         public Boolean CanHorizontallyScroll {
-            get { return (Boolean)GetValue(CanHorizontallyScrollProperty); }
-            set { SetValue(CanHorizontallyScrollProperty, value); }
+            get
+                {
+                return (ScrollInfoHost != null)
+                    ? ScrollInfoHost.CanHorizontallyScroll
+                    : (Boolean) GetValue(CanHorizontallyScrollProperty);
+                }
+            set
+                {
+                if (ScrollInfoHost != null) {
+                    ScrollInfoHost.CanHorizontallyScroll = value;
+                    return;
+                    }
+                SetValue(CanHorizontallyScrollProperty, value);
+                }
             }
         #endregion
         #region P:IScrollInfo.ExtentWidth(ExtentHeight):Vector
@@ -256,14 +329,18 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>Gets the horizontal size of the extent.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the horizontal size of the extent. This property has no default value.</returns>
         Double IScrollInfo.ExtentWidth { get {
-            return Extent.X;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.ExtentHeight
+                : Extent.X;
             }}
         #endregion
         #region P:IScrollInfo.ExtentHeight:Double
         /// <summary>Gets the vertical size of the extent.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the vertical size of the extent.This property has no default value.</returns>
         Double IScrollInfo.ExtentHeight { get {
-            return Extent.Y;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.ExtentHeight
+                : Extent.Y;
             }}
         #endregion
         #endregion
@@ -297,14 +374,18 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>Gets the horizontal size of the viewport for this content.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the horizontal size of the viewport for this content. This property has no default value.</returns>
         Double IScrollInfo.ViewportWidth { get {
-            return Viewport.X;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.ViewportWidth
+                : Viewport.X;
             }}
         #endregion
         #region P:IScrollInfo.ViewportHeight:Double
         /// <summary>Gets the vertical size of the viewport for this content.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the vertical size of the viewport for this content. This property has no default value.</returns>
         public Double ViewportHeight { get {
-            return Viewport.Y;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.ViewportHeight
+                : Viewport.Y;
             }}
         #endregion
         #endregion
@@ -337,52 +418,21 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>Gets the horizontal offset of the scrolled content.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the horizontal offset. This property has no default value.</returns>
         Double IScrollInfo.HorizontalOffset { get {
-            return Offset.X;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.HorizontalOffset
+                : Offset.X;
             }}
         #endregion
         #region P:IScrollInfo.VerticalOffset:Double
         /// <summary>Gets the vertical offset of the scrolled content.</summary>
         /// <returns>A <see cref="T:System.Double" /> that represents, in device independent pixels, the vertical offset of the scrolled content. Valid values are between zero and the <see cref="P:System.Windows.Controls.Primitives.IScrollInfo.ExtentHeight" /> minus the <see cref="P:System.Windows.Controls.Primitives.IScrollInfo.ViewportHeight" />. This property has no default value.</returns>
         Double IScrollInfo.VerticalOffset { get {
-            return Offset.Y;
+            return (ScrollInfoHost != null)
+                ? ScrollInfoHost.VerticalOffset
+                : Offset.Y;
             }}
         #endregion
         #endregion
-        //#region P:IScrollInfo.ScrollOwner:ScrollViewer
-        //private static readonly DependencyPropertyKey ScrollOwnerPropertyKey = DependencyProperty.RegisterReadOnly("ScrollOwner", typeof(ScrollViewer), typeof(ScrollableContentControl), new PropertyMetadata(default(ScrollViewer), OnScrollOwnerChanged));
-        ///// <summary>Identifies the <see cref="ScrollOwner" /> dependency property.</summary>
-        ///// <returns>The identifier for the <see cref="ScrollOwner" /> dependency property.</returns>
-        //public static readonly DependencyProperty ScrollOwnerProperty = ScrollOwnerPropertyKey.DependencyProperty;
-        //private static void OnScrollOwnerChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-        //    var source = (sender as ScrollableContentControl);
-        //    if (source != null) {
-        //        source.OnScrollOwnerChanged(e.OldValue as ScrollViewer, e.NewValue as ScrollViewer);
-        //        }
-        //    }
-
-        //protected virtual void OnScrollOwnerChanged(ScrollViewer o, ScrollViewer n) {
-        //    if (o != null) { o.LayoutUpdated -= OnScrollOwnerLayoutUpdated; }
-        //    if (n != null) { n.LayoutUpdated += OnScrollOwnerLayoutUpdated; }
-        //    OnScrollOwnerChanged();
-        //    }
-
-        //protected virtual void OnScrollOwnerChanged() {
-        //   InvalidateScrollInfo();
-        //    }
-
-        //public ScrollViewer ScrollOwner {
-        //    get { return (ScrollViewer)GetValue(ScrollOwnerProperty); }
-        //    protected set { SetValue(ScrollOwnerPropertyKey, value); }
-        //    }
-
-        ///// <summary>
-        ///// Gets or sets a <see cref="ScrollViewer"/> element that controls scrolling behavior.
-        ///// </summary>
-        //ScrollViewer IScrollInfo.ScrollOwner {
-        //    get { return ScrollOwner; }
-        //    set { ScrollOwner = value; }
-        //    }
-        //#endregion
         #region P:ScrollOwner:ScrollViewer
         public static readonly DependencyProperty ScrollOwnerProperty = DependencyProperty.Register("ScrollOwner", typeof(ScrollViewer), typeof(ScrollableContentControl), new PropertyMetadata(default(ScrollViewer), OnScrollOwnerChanged));
         private static void OnScrollOwnerChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -406,8 +456,20 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }
 
         public ScrollViewer ScrollOwner {
-            get { return (ScrollViewer)GetValue(ScrollOwnerProperty); }
-            set { SetValue(ScrollOwnerProperty, value); }
+            get
+                {
+                return (ScrollInfoHost != null)
+                    ? ScrollInfoHost.ScrollOwner
+                    : (ScrollViewer)GetValue(ScrollOwnerProperty);
+                }
+            set
+                {
+                if (ScrollInfoHost != null) {
+                    ScrollInfoHost.ScrollOwner = value;
+                    return;
+                    }
+                SetValue(ScrollOwnerProperty, value);
+                }
             }
         #endregion
         #region P:PhysicalViewport:Vector
@@ -467,11 +529,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #region P:Typeface:Typeface
         private static readonly DependencyPropertyKey TypefacePropertyKey = DependencyProperty.RegisterReadOnly("Typeface", typeof(Typeface), typeof(ScrollableContentControl), new PropertyMetadata(default(Typeface), OnTypefaceChanged));
         public static readonly DependencyProperty TypefaceProperty = TypefacePropertyKey.DependencyProperty;
-        private static void OnTypefaceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-            {
-            var source = (sender as ScrollableContentControl);
-            if (source != null)
-                {
+        private static void OnTypefaceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is ScrollableContentControl source) {
                 source.OnTypefaceChanged();
                 }
             }
@@ -498,31 +557,6 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             private set { SetValue(TypefacePropertyKey, value); }
             }
         #endregion
-
-        //#region P:ScrollableContentControl.ViewportHeight:Double
-        //public static readonly DependencyProperty ViewportHeightProperty = DependencyProperty.RegisterAttached("ViewportHeight", typeof(Double), typeof(ScrollableContentControl), new PropertyMetadata(default(Double), OnViewportHeightChanged));
-        //public static void SetViewportHeight(DependencyObject source, Double value)
-        //    {
-        //    if (source == null) { throw new ArgumentNullException("source"); }
-        //    source.SetValue(ViewportHeightProperty, value);
-        //    }
-
-        //public static Double GetViewportHeight(DependencyObject source)
-        //    {
-        //    if (source == null) { throw new ArgumentNullException("source"); }
-        //    return (Double)source.GetValue(ViewportHeightProperty);
-        //    }
-        //public Double ViewportHeight {
-        //    get { return GetViewportHeight(this); }
-        //    set { SetViewportHeight(this, value); }
-        //    }
-        //private static void OnViewportHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-        //    var source = (sender as ScrollableContentControl);
-        //    if (source != null) {
-        //        source.Viewport = new Vector(source.Viewport.X, (Double)e.NewValue);
-        //        }
-        //    }
-        //#endregion
         #region P:ScrollableContentControl.ExtentHeight:Double
         public static readonly DependencyProperty ExtentHeightProperty = DependencyProperty.RegisterAttached("ExtentHeight", typeof(Double), typeof(ScrollableContentControl), new PropertyMetadata(default(Double), OnExtentHeightChanged));
         public static void SetExtentHeight(DependencyObject source, Double value)
@@ -541,8 +575,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             set { SetExtentHeight(this, value); }
             }
         private static void OnExtentHeightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as ScrollableContentControl);
-            if (source != null) {
+            if (sender is ScrollableContentControl source) {
                 source.Extent = new Vector(source.Extent.X, (Double)e.NewValue);
                 }
             }
@@ -560,4 +593,5 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             base.OnPropertyChanged(e);
             OnPropertyChanged(e.Property.Name);
             }
-        }    }
+        }
+    }

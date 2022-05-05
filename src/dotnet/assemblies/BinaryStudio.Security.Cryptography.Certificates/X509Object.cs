@@ -5,8 +5,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
@@ -14,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     using CRYPT_INTEGER_BLOB = CRYPT_BLOB;
     using CERT_NAME_BLOB = CRYPT_BLOB;
 
-    public abstract class X509Object : IX509Object, IDisposable, ICustomTypeDescriptor
+    public abstract class X509Object : IX509Object, IDisposable, ICustomTypeDescriptor, ISerializable
         {
         private LocalMemoryManager manager;
         public abstract X509ObjectType ObjectType { get; }
@@ -29,12 +30,26 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             }
 
+        protected X509Object()
+            {
+            }
+
+        protected X509Object(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
+            }
+
         #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing)
             {
             }
         #endregion
         #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
             {
             Dispose(true);
@@ -42,6 +57,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         ~X509Object()
             {
             Dispose(false);
@@ -127,6 +143,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
 
         #if CAPILITE
         [DllImport("capi20", EntryPoint = "GetLastError")]   private static extern Int32 GetLastError();
@@ -293,6 +318,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             EnsureMemoryManager();
             return manager.Alloc(size);
+            }
+
+        /// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
             }
         }
     }

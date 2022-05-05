@@ -3,10 +3,10 @@
 namespace Microsoft.Win32
     {
     [Flags]
-    public enum CertificateChainErrorStatus : int
+    public enum CertificateChainErrorStatus
         {
         CERT_TRUST_NO_ERROR                             = 0x00000000,
-        CERT_TRUST_IS_NOT_TIME_VALID                    = 0x00000001,
+        TrustIsNotTimeValid                    = 0x00000001,
         CERT_TRUST_IS_NOT_TIME_NESTED                   = 0x00000002,
         CERT_TRUST_IS_REVOKED                           = 0x00000004,
         CERT_TRUST_IS_NOT_SIGNATURE_VALID               = 0x00000008,

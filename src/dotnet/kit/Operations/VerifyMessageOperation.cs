@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using BinaryStudio.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Xml;
@@ -71,7 +72,8 @@ namespace Operations
             if (outputfile == null) { throw new ArgumentNullException(nameof(outputfile)); }
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             context.VerifyAttachedMessageSignature(inputfile, outputfile, out var r,
-                new CustomCertificateResolver(StoreName, StoreLocation, output));
+                new CustomCertificateResolver(StoreName, StoreLocation, output),
+                VerificationPolicy.Default);
             foreach (var i in r)
                 {
                 output.WriteLine($"Certificate:{i.Thumbprint}");

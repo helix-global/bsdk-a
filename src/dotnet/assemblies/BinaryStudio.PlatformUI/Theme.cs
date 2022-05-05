@@ -166,7 +166,9 @@ namespace BinaryStudio.PlatformUI
             if (e != null) {
                 var type = e.GetType();
                 foreach (var dictionary in source.MergedDictionaries) { ApplyTo(e, dictionary); }
-                foreach (DictionaryEntry i in source) { e.Resources[i.Key] = i.Value; }
+                foreach (DictionaryEntry i in source) {
+                    e.Resources[i.Key] = i.Value;
+                    }
                 }
             }
         #endregion

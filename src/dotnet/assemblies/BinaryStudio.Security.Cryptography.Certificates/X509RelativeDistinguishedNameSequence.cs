@@ -11,6 +11,9 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates.Converters;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -18,7 +21,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     #if USE_WINFORMS
     [Editor(typeof(NoEditor), typeof(UITypeEditor))]
     #endif
-    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, Object>>, IXmlSerializable
+    public class X509RelativeDistinguishedNameSequence : Asn1ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier, String>>,
+        IXmlSerializable,
+        IX509RelativeDistinguishedNameSequence,
+        IJsonSerializable
         {
         private class X509RelativeDistinguishedNamePropertyDescriptor : PropertyDescriptor
             {
@@ -102,18 +108,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, Object>> source)
+        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, String>> source)
             : base(source)
             {
             }
 
-        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier, String>> source)
-            : base(source.Select(i => new KeyValuePair<Asn1ObjectIdentifier, Object>(i.Key, i.Value)))
-            {
-            }
-
         public X509RelativeDistinguishedNameSequence()
-            : base(new Dictionary<Asn1ObjectIdentifier, Object>())
+            : base(new Dictionary<Asn1ObjectIdentifier, String>())
             {
             }
 
@@ -171,12 +172,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             throw new ArgumentOutOfRangeException(nameof(key));
             }}
 
-        public Boolean TryGetValue(String key, out Object r) {
+        public Boolean TryGetValue(String key, out String r) {
             r = null;
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
             foreach (var item in Items) {
                 if (item.Key.Equals(key)) {
-                    r = item.Value;
+                    r = item.Value?.ToString();
                     return true;
                     }
                 }
@@ -251,6 +252,70 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             WriteRaw(writer, "<![CDATA[");
             writer.WriteCData("!!!!");
             writer.WriteEndElement();
+            }
+
+        Boolean IX509GeneralName.IsEmpty { get {
+            return Count == 0;
+            }}
+
+        public X509GeneralNameType Type { get { return X509GeneralNameType.Directory; }}
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns> <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(IX509GeneralName other) {
+            if (other == null) { return false; }
+            if (other.Type == X509GeneralNameType.Directory) {
+                if (other is IList<KeyValuePair<Asn1ObjectIdentifier,String>> sequence) {
+                    return Equals(sequence);
+                    }
+                }
+            return false;
+            }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns> <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+        public Boolean Equals(IList<KeyValuePair<Asn1ObjectIdentifier,String>> other) {
+            if (other == null) { return false; }
+            var x = this;
+            var y = other;
+            if (x.Count == y.Count) {
+                using (IEnumerator<KeyValuePair<Asn1ObjectIdentifier,String>>
+                    l = x.OrderBy(i => i.Key).GetEnumerator(),
+                    r = y.OrderBy(i => i.Key).GetEnumerator()) {
+                    while (l.MoveNext() && r.MoveNext()) {
+                        if (!l.Current.Key.Equals(r.Current.Key) ||
+                            !l.Current.Value.Equals(r.Current.Value)) {
+                            return false;
+                            }
+                        }
+                    }
+                return true;
+                }
+            return false;
+            }
+
+        public void WriteJson(JsonWriter writer, JsonSerializer serializer) {
+            using (writer.ObjectScope(serializer)) {
+                writer.WriteValue(serializer, "(Self)", ToString());
+                writer.WritePropertyName("[Self]");
+                using (writer.ArrayScope(serializer)) {
+                    var values = Items.ToArray();
+                    var n = values.Max(i => i.Key.ToString().Length);
+                    foreach (var i in values) {
+                        var type = i.Key.ToString();
+                        writer.Formatting = Formatting.Indented;
+                        writer.WriteStartObject();
+                        writer.Formatting = Formatting.None;
+                        writer.WriteValue(serializer, "Type",  type);
+                        writer.WriteIndentSpace(n - type.Length);
+                        writer.WriteValue(serializer, "Value", i.Value);
+                        writer.WriteEndObject();
+                        }
+                    writer.Formatting = Formatting.Indented;
+                    }
+                }
             }
         }
     }

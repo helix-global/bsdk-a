@@ -90,7 +90,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
                 }
             #endregion
 
-            public override Type ComponentType { get { return typeof(X509RelativeDistinguishedNameSequence); }}
+            public override Type ComponentType { get { return typeof(Object); }}
             public override Boolean IsReadOnly { get { return true; }}
             public override Type PropertyType  { get {
                 var value = Instance[Index];

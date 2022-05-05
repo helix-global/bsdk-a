@@ -9,25 +9,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public class Asn1LinkObject<T> : Asn1Object
         where T: Asn1Object
         {
-        [Browsable(false)] public virtual T UnderlyingObject { get; }
-        [Browsable(false)] public override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
-        [Browsable(false)] public override Int64 Offset { get { return UnderlyingObject.Offset; }}
-        [Browsable(false)] public override Int64 Length { get { return UnderlyingObject.Length; }}
-        [Browsable(false)] public override Int64 Size   { get { return UnderlyingObject.Size;   }}
-        [Browsable(false)] public override Int32 Count  { get { return UnderlyingObject.Count;  }}
-        [Browsable(false)] public override ReadOnlyMappingStream Content { get { return UnderlyingObject.Content; }}
-        [Browsable(false)] protected internal override IEnumerable<Byte[]> ContentSequence { get { return UnderlyingObject.ContentSequence; }}
+        private T U;
+        [Browsable(false)] public virtual T UnderlyingObject { get { return U; }}
+        [Browsable(false)] public sealed override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
+        [Browsable(false)] public sealed override Int64 Offset { get { return UnderlyingObject.Offset; }}
+        [Browsable(false)] public sealed override Int64 Length { get { return UnderlyingObject.Length; }}
+        [Browsable(false)] public sealed override Int64 Size   { get { return UnderlyingObject.Size;   }}
+        [Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
+        [Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
+        [Browsable(false)] protected internal sealed override IEnumerable<Byte[]> ContentSequence { get { return UnderlyingObject.ContentSequence; }}
 
         protected Asn1LinkObject(T source)
             {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
-            UnderlyingObject = source;
-            State = source.State;
+            U = source;
             }
 
-        protected internal override void Write(Stream target)
+        public override void WriteTo(Stream target)
             {
-            UnderlyingObject.Write(target);
+            UnderlyingObject.WriteTo(target);
             }
 
         #region P:IList<Asn1Object>.this[Int32]:Asn1Object
@@ -44,6 +44,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             set { UnderlyingObject[index] = value; }
             }
         #endregion
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            base.Dispose(disposing);
+            }
         }
 
     public abstract class Asn1LinkObject : Asn1LinkObject<Asn1Object>

@@ -37,7 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
             }
 
         public static String ToString(X509KeyUsageFlags value) {
-            return ToString(value, PlatformSettings.DefaultCulture);
+            return ToString(value, PlatformContext.DefaultCulture);
             }
 
         public override Boolean CanConvertTo(ITypeDescriptorContext context, Type destinationType)

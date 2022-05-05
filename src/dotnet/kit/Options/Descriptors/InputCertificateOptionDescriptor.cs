@@ -6,6 +6,7 @@ namespace Options.Descriptors
     {
     internal class InputCertificateOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "certificate"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

@@ -102,10 +102,10 @@ namespace BinaryStudio.PlatformUI
             T2 t2;
             ConvertBack((TTarget)value, out t1, out t2, parameter, culture);
             return new Object[]
-            {
+                {
                 t1,
                 t2
-            };
+                };
             }
 
         protected virtual TTarget Convert(T1 value1, T2 value2, Object parameter, CultureInfo culture)

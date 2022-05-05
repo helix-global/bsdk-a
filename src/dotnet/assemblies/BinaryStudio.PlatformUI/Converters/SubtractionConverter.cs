@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace BinaryStudio.PlatformUI.Shell.Controls
+namespace BinaryStudio.PlatformUI
     {
     public class SubtractionConverter : IValueConverter
         {

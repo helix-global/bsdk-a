@@ -37,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
                         }
                     break;
                     }
+                if (line.StartsWith("#")) continue;
                 if (line.Length > 0) {
                     if (line[0] == ' ') {
                         builder.Append(line.Trim());
@@ -44,7 +45,9 @@ namespace BinaryStudio.Security.Cryptography.DataInterchangeFormat
                     else
                         {
                         var i = line.IndexOf(':');
-                        if (i == -1) { throw new ArgumentOutOfRangeException(nameof(reader)); }
+                        if (i == -1) {
+                            throw new ArgumentOutOfRangeException(nameof(reader));
+                            }
                         if (e != null) {
                             e.Value = ToObject(builder);
                             builder = new StringBuilder();

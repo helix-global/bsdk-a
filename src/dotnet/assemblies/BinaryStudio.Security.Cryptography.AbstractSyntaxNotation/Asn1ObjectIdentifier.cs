@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Xml;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Security.Cryptography.Certificates;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -13,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// <summary>
     /// Represents a <see langword="OBJECT IDENTIFIER"/> type.
     /// </summary>
-    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>
+    public class Asn1ObjectIdentifier : Asn1UniversalObject, IEquatable<String>, IObjectIdentifier, IComparable<Asn1ObjectIdentifier>
         {
         /// <summary>
         /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.ObjectIdentifier"/>.
@@ -23,7 +25,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         public String FriendlyName { get {
             var value = ToString();
-            var r = OID.ResourceManager.GetString(value, PlatformSettings.DefaultCulture);
+            var r = OID.ResourceManager.GetString(value, PlatformContext.DefaultCulture);
             return (!String.IsNullOrWhiteSpace(r))
                     ? r
                     : (new Oid(value)).FriendlyName;
@@ -109,6 +111,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
 
+        public Int32 CompareTo(Asn1ObjectIdentifier other)
+            {
+            if (other == null) { return +1; }
+            return ToString().CompareTo(other.ToString());
+            }
+
         /**
          * <summary>Indicates whether the current object is equal to another string object.</summary>
          * <param name="key">An object to compare with this object.</param>
@@ -144,6 +152,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal override Boolean Decode()
             {
             if (IsDecoded) { return true; }
+            if (IsIndefiniteLength) { return false; }
             Content.Seek(0, SeekOrigin.Begin);
             var r = new Byte[Length];
             Content.Read(r, 0, r.Length);
@@ -171,6 +180,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             if (service == typeof(Asn1ObjectIdentifier)) { return this; }
             return base.GetService(service);
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Object");
+            writer.WriteAttributeString(nameof(Class), Class.ToString());
+            if (Offset >= 0) { writer.WriteAttributeString(nameof(Offset), Offset.ToString()); }
+            writer.WriteAttributeString("Type", Type.ToString());
+            writer.WriteString(ToString());
+            writer.WriteEndElement();
             }
         }
     }

@@ -68,5 +68,25 @@ namespace Operations
                 return Find(String.Join(String.Empty, thumbprint.Select(i => i.ToString("X2"))));
                 }
             }
+
+        #region M:ToStoreName(String):X509StoreName?
+        protected static X509StoreName? ToStoreName(String source) {
+            if (source == null) { return X509StoreName.My; }
+            switch (source.ToUpper())
+                {
+                case "ADDRESSBOOK"          : { return X509StoreName.AddressBook;          }
+                case "AUTHROOT"             : { return X509StoreName.AuthRoot;             }
+                case "CERTIFICATEAUTHORITY" : { return X509StoreName.CertificateAuthority; }
+                case "DISALLOWED"           : { return X509StoreName.Disallowed;           }
+                case "MY"                   : { return X509StoreName.My;                   }
+                case "ROOT"                 : { return X509StoreName.Root;                 }
+                case "TRUSTEDPEOPLE"        : { return X509StoreName.TrustedPeople;        }
+                case "TRUSTEDPUBLISHER"     : { return X509StoreName.TrustedPublisher;     }
+                case "TRUSTEDDEVICES"       : { return X509StoreName.TrustedDevices;       }
+                case "NTAUTH"               : { return X509StoreName.NTAuth;               }
+                }
+            return null;
+            }
+        #endregion
         }
     }

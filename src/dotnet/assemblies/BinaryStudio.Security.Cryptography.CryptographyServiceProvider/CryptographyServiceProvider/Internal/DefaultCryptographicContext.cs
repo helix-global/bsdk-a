@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
-using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using BinaryStudio.Serialization;
 using Microsoft.Win32;
 
@@ -21,9 +22,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         public DefaultCryptographicContext(ILogger logger, CryptographicContextFlags flags)
             {
-            Logger = logger ?? EmptyLogger;
+            Logger = logger ?? DefaultLogger;
             this.flags = flags;
             }
+
+        String ICryptographicContext.ProviderName { get { return ".NET Default Cryptographic Context."; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return 0; }}
+        Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
 
         /// <summary>
         /// Creates <see cref="IHashAlgorithm"/> using specified algorithm identifer.
@@ -44,7 +49,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer,CRYPT_VERIFY_CERT_SIGN flags)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer,CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            throw new NotImplementedException();
+            }
+
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             throw new NotImplementedException();
             }
@@ -59,7 +69,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
-        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,IX509CertificateResolver finder)
+        public void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates,IX509CertificateResolver finder, VerificationPolicy policy)
             {
             certificates = EmptyArray<IX509Certificate>.Value;
             if (input == null) { throw new ArgumentNullException(nameof(input)); }
@@ -87,9 +97,35 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             throw new NotImplementedException();
             }
 
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            throw new NotImplementedException();
+            }
+
         public IEnumerable<ICryptKey> Keys { get {
             yield break;
             }}
+
+        IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
+
+        /// <summary>
+        /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
+        /// </summary>
+        /// <param name="certificate">Certificate to verify.</param>
+        /// <param name="store">Certificate store.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="policy">Certificate policy.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        void ICryptographicContext.Verify(IX509Certificate certificate, IX509CertificateStorage store, OidCollection applicationpolicy,
+            OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
+            CertificateChainPolicy policy, IntPtr chainengine)
+            {
+            throw new NotImplementedException();
+            }
 
         private class HashEngine : HashAlgorithm, IHashAlgorithm
             {

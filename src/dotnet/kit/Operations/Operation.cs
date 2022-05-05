@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography;
 using Kit;
 using Options;
@@ -45,6 +46,14 @@ namespace Operations
                 }
             }
 
+        public virtual void ValidatePermission()
+            {
+            }
+
+        public virtual void Break()
+            {
+            }
+
         public abstract void Execute(TextWriter output);
         protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
             return (value == null) || (value.Count == 0);
@@ -62,26 +71,35 @@ namespace Operations
             }
 
         #region M:WriteLine(ConsoleColor,String,Object[])
-        protected void WriteLine(ConsoleColor color, String format, params Object[] args) {
+        protected void WriteLine(TextWriter writer, ConsoleColor color, String format, params Object[] args) {
             using (new ConsoleColorScope(color)) {
-                Out.WriteLine(format, args);
+                writer.WriteLine(format, args);
                 }
             }
         #endregion
         #region M:WriteLine(ConsoleColor,String)
-        protected void WriteLine(ConsoleColor color, String message) {
+        protected void WriteLine(TextWriter writer, ConsoleColor color, String message) {
             using (new ConsoleColorScope(color)) {
-                Out.WriteLine(message);
+                writer.WriteLine(message);
                 }
             }
         #endregion
         #region M:Write(ConsoleColor,String)
-        protected void Write(ConsoleColor color, String message) {
+        protected void Write(TextWriter writer, ConsoleColor color, String message) {
             using (new ConsoleColorScope(color)) {
-                Out.Write(message);
+                writer.Write(message);
                 }
             }
         #endregion
+
+        protected static void Dispose<T>(ref T o)
+            where T: IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = default;
+                }
+            }
 
         protected static void RequestWindowSecureStringEventHandler(Object sender, RequestSecureStringEventArgs e)
             {
@@ -95,6 +113,18 @@ namespace Operations
             e.SecureString.AppendChar('7');
             e.SecureString.AppendChar('8');
             e.StoreSecureString = true;
+            }
+
+        public virtual Object GetService(Object source, Type service)
+            {
+            if (service == typeof(IFileService))      { return DirectoryService.GetService(source, service); }
+            if (service == typeof(IDirectoryService)) { return DirectoryService.GetService(source, service); }
+            return source;
+            }
+
+        public T GetService<T>(Object source)
+            {
+            return (T)GetService(source, typeof(T));
             }
         }
     }

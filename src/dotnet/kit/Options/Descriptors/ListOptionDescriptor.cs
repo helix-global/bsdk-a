@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class ListOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "list"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

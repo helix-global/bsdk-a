@@ -20,10 +20,34 @@ namespace BinaryStudio.PlatformUI.Controls
             return (TextWrapping)source.GetValue(TextWrappingProperty);
             }
         #endregion
+        #region P:TextBox.WatermarkTemplate:DataTemplate
+        public static readonly DependencyProperty WatermarkTemplateProperty = DependencyProperty.RegisterAttached("WatermarkTemplate", typeof(DataTemplate), typeof(TextBox), new PropertyMetadata(default(DataTemplate)));
+        public static void SetWatermarkTemplate(DependencyObject source, DataTemplate value) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            source.SetValue(WatermarkTemplateProperty, value);
+            }
+
+        public static DataTemplate GetWatermarkTemplate(DependencyObject source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return (DataTemplate)source.GetValue(WatermarkTemplateProperty);
+            }
+        #endregion
+        #region P:TextBox.Watermark:Object
+        public static readonly DependencyProperty WatermarkProperty = DependencyProperty.RegisterAttached("Watermark", typeof(Object), typeof(TextBox), new PropertyMetadata(default(Object)));
+        public static void SetWatermark(DependencyObject source, Object value) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            source.SetValue(WatermarkProperty, value);
+            }
+
+        public static Object GetWatermark(DependencyObject source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return (Object)source.GetValue(WatermarkProperty);
+            }
+        #endregion
 
         private static void OnTextWrappingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            if (sender is UITextBox) {
-                ((UITextBox)sender).TextWrapping = (TextWrapping)e.NewValue;
+            if (sender is UITextBox source) {
+                source.TextWrapping = (TextWrapping)e.NewValue;
                 }
             }
         }

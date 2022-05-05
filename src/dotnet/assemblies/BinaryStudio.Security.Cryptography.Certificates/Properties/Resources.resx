@@ -126,6 +126,9 @@
   <data name="9000" xml:space="preserve">
     <value>Container</value>
   </data>
+  <data name="AggregateException" xml:space="preserve">
+    <value>{0}{1}---&amp;gt; (Внутреннее исключение #{2}) {3}{4}{5}</value>
+  </data>
   <data name="CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID" xml:space="preserve">
     <value>A CTL used to create this chain did not have a valid signature.</value>
   </data>

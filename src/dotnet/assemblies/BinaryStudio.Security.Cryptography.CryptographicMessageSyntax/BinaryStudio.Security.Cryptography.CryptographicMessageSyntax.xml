@@ -19,6 +19,10 @@
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsAttribute.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsContentTypeAttribute">
              {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9) 3}
              {1.2.840.113549.1.9.3}
@@ -130,6 +134,10 @@
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsIssuerAndSerialNumber.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsMessage">
             <summary>
             <see cref="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsMessage"/> class represents a CMS structure.
@@ -207,6 +215,34 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsMessage.BinaryStudio#DirectoryServices#IFileService#MoveTo(System.String,System.Boolean)">
+            <summary>Move an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+            <param name="target">The name of the destination file. This cannot be a directory.</param>
+            <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+            <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+            <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsMessage.BinaryStudio#DirectoryServices#IFileService#CopyTo(System.String,System.Boolean)">
+            <summary>Copies an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+            <param name="target">The name of the destination file. This cannot be a directory.</param>
+            <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+            <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+            <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsMessage.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignedDataContentInfo">
             <summary>
             The <see cref="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsContentInfo" /> class represents the <a href="https://datatracker.ietf.org/doc/html/rfc5652#section-5.1">signed-data</a> CMS content.
@@ -258,6 +294,16 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignedDataContentInfo.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignedDataContentInfo.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        </member>
         <member name="T:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignerInfo">
              [RFC5652]
              SignerInfo ::= SEQUENCE
@@ -292,6 +338,10 @@
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignerInfo.ToString">
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsSignerInfo.WriteXml(System.Xml.XmlWriter)">
+            <summary>Converts an object into its XML representation.</summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CmsAttributeCollectionTypeConverter.GetPropertiesInternal(System.ComponentModel.ITypeDescriptorContext,System.Object,System.Attribute[])">
             <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
@@ -347,6 +397,12 @@
             <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType" /> parameter is <see langword="null" />.</exception>
             <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.CSCAMasterList.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.OidTypeConverter.GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext)">
             <summary>Returns whether this object supports properties, using the specified context.</summary>
             <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
@@ -367,6 +423,39 @@
             <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
             <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is <see langword="null"/>.</exception>
             <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsInvalidTypeException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsInvalidTypeException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsInvalidTypeException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsInvalidTypeException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsOperationException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsOperationException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CmsOperationException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CmsOperationException"/> class with a specified error message and references to the inner exceptions that are the cause of this exception.</summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerExceptions">The exceptions that are the cause of the current exception.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="innerExceptions"/> argument is null.</exception>
+            <exception cref="T:System.ArgumentException">An element of <paramref name="innerExceptions"/> is null.</exception>
         </member>
     </members>
 </doc>

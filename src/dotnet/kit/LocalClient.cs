@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
+using Kit;
+using log4net;
 using Operations;
 using Options;
 
 public class LocalClient : ILocalClient
     {
-    private static readonly ILogger Logger = new ConsoleLogger();
+    private static readonly ILogger Logger = new ClientLogger(LogManager.GetLogger(nameof(LocalClient)));
     private Service service;
     private ServiceManager sc;
     private ServiceEndPoint<ICryptographicOperations> co;
+    private InterlockedInternal<Operation> operation = new InterlockedInternal<Operation>();
+    private readonly ManualResetEvent B = new ManualResetEvent(false);
 
     public ICryptographicOperations CryptographicOperations { get {
         if (co == null) {
@@ -27,38 +36,115 @@ public class LocalClient : ILocalClient
         return co.Channel;
         }}
 
-    public Int32 Main(String[] args)
+    Int32 ILocalClient.Main(String[] args)
         {
         try
             {
+            //var X = Asn1Object.Load(@"d:\icao\rfid\us\1507068980.p7b").FirstOrDefault();
             var options = Operation.Parse(args);
             Operation.Logger = Logger;
             Operation.LocalClient = this;
-            Operation operation = new UsageOperation(Console.Out, Console.Error, options);
+            operation.Value = new UsageOperation(Console.Out, Console.Error, options);
+            if (!HasOption(options, typeof(MultiThreadOption))) {
+                options.Add(new MultiThreadOption
+                    {
+                    NumberOfThreads = 64
+                    });
+                }
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
             if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
             if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
+            if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
             if (HasOption(options, typeof(MessageGroupOption))) {
-                        if (HasOption(options, typeof(CreateOption)))  { operation = new CreateMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(VerifyOption)))  { operation = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
-                else if (HasOption(options, typeof(EncryptOption))) { operation = new EncryptMessageOperation(Console.Out, Console.Error, options); }
+                     if (HasOption(options, typeof(CreateOption)))  { operation.Value = new CreateMessageOperation(Console.Out, Console.Error, options);  }
+                else if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(Console.Out, Console.Error, options);  }
+                else if (HasOption(options, typeof(EncryptOption))) { operation.Value = new EncryptMessageOperation(Console.Out, Console.Error, options); }
                 }
-            else if (HasOption(options, typeof(VerifyOption)))            { operation = new VerifyOperation(Console.Out, Console.Error, options);         }
-            else if (HasOption(options, typeof(InfrastructureOption)))    { operation = new InfrastructureOperation(Console.Out, Console.Error, options); }
-            else if (HasOption(options, typeof(HashOption)))              { operation = new HashOperation(Console.Out, Console.Error, options);           }
-            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation = new BatchOperation(Console.Out, Console.Error, options);          }
-            operation.Execute(Console.Out);
-            operation = null;
-            GC.Collect();
+            else if (HasOption(options, typeof(VerifyOption)))            { operation.Value = new VerifyOperation(Console.Out, Console.Error, options);         }
+            else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
+            else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
+            else if (HasOption(options, typeof(SetOption)))               { operation.Value = new SetOperation(Console.Out, Console.Error, options);            }
+            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
+            operation.Value.ValidatePermission();
+            var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
+            if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {
+                Console.WriteLine("Press [ENTER] to resume...");
+                Console.ReadLine();
+                }
+            Task.Factory.StartNew(()=>{
+                try
+                    {
+                    operation.Value.Execute(Console.Out);
+                    }
+                finally
+                    {
+                    }
+                }).Wait();
+            //Console.WriteLine("Press [ENTER] to exit...");
+            //Console.ReadLine();
             return 0;
+            }
+        catch (PrincipalPermissionException)
+            {
+            return Elevate(args);
+            }
+        catch (ThreadInterruptedException) { WriteLine(Console.Out, ConsoleColor.Magenta, "{break}"); return -1; }
+        catch (OperationCanceledException) { WriteLine(Console.Out, ConsoleColor.Magenta, "{break}"); return -1; }
+        catch (AggregateException e) {
+            if (e.InnerExceptions.Count == 1) {
+                if (e.InnerExceptions[0] is OperationCanceledException) {
+                    WriteLine(Console.Out, ConsoleColor.Magenta, "{break}");
+                    return -1;
+                    }
+                if (e.InnerExceptions[0] is PrincipalPermissionException) {
+                    return Elevate(args);
+                    }
+                }
+            Logger.Log(LogLevel.Critical, e);
+            return -1;
             }
         catch (Exception e)
             {
-            Logger.Log(LogLevel.Critical, $"{e}");
+            Logger.Log(LogLevel.Critical, e);
             return -1;
             }
+        finally
+            {
+            B.Set();
+            operation.Value = null;
+            operation = null;
+            }
+        }
+
+    void ILocalClient.OnCancelKeyPress(Object sender, ConsoleCancelEventArgs e) {
+        e.Cancel = true;
+        var r = operation.Value;
+        if (r != null) {
+            r.Break();
+            B.WaitOne();
+            }
+        else
+            {
+            throw new OperationCanceledException();
+            }
+        }
+
+    private static Int32 Elevate(IEnumerable<String> args)
+        {
+        var assembly = Assembly.GetEntryAssembly();
+        var pi = new ProcessStartInfo
+            {
+            UseShellExecute = true,
+            WorkingDirectory = Environment.CurrentDirectory,
+            FileName = assembly.Location,
+            Verb = "runas",
+            Arguments = String.Join(" ", args.Select(i => $@"""{i}"""))
+            };
+        var r = System.Diagnostics.Process.Start(pi);
+        r.WaitForExit();
+        return r.ExitCode;
         }
 
     private static Boolean HasOption(IList<OperationOption> source, Type type) {
@@ -81,7 +167,7 @@ public class LocalClient : ILocalClient
             while (service == null) {
                 var installer = new ServiceInstaller();
                 var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                installer.InstallService(Path.Combine(dir, "srv.exe"), "{kit}", "{kit}");
+                installer.InstallService(Path.Combine(dir, "kit.exe"), "{kit}", "{kit}");
                 service = sc.OpenService("{kit}");
                 }
             if (service.CurrentState != SERVICE_STATE.SERVICE_RUNNING) {
@@ -100,6 +186,27 @@ public class LocalClient : ILocalClient
             }
         }
     #endregion
+    #region M:WriteLine(ConsoleColor,String,Object[])
+    protected void WriteLine(TextWriter writer, ConsoleColor color, String format, params Object[] args) {
+        using (new ConsoleColorScope(color)) {
+            writer.WriteLine(format, args);
+            }
+        }
+    #endregion
+    #region M:WriteLine(ConsoleColor,String)
+    protected void WriteLine(TextWriter writer, ConsoleColor color, String message) {
+        using (new ConsoleColorScope(color)) {
+            writer.WriteLine(message);
+            }
+        }
+    #endregion
+    #region M:Write(ConsoleColor,String)
+    protected void Write(TextWriter writer, ConsoleColor color, String message) {
+        using (new ConsoleColorScope(color)) {
+            writer.Write(message);
+            }
+        }
+    #endregion
 
     /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     void IDisposable.Dispose() {
@@ -111,4 +218,6 @@ public class LocalClient : ILocalClient
         Operation.LocalClient = null;
         Operation.Logger = null;
         }
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto)] private static extern String GetCommandLine();
     }

@@ -59,6 +59,10 @@ namespace BinaryStudio.IO
         public override Int32 ReadTimeout  { get { return 0; }}
         public override Int32 WriteTimeout { get { return 0; }}
 
+        protected ReadOnlyMappingStream()
+            {
+            }
+
         #region M:Flush
         /**
          * <summary>
@@ -97,21 +101,22 @@ namespace BinaryStudio.IO
          * <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
          * <filterpriority>1</filterpriority>
          * */
-        public override Int64 Seek(Int64 offset, SeekOrigin origin)
-            {
-            if ((origin < SeekOrigin.Begin) || (origin > SeekOrigin.End)) { throw new ArgumentOutOfRangeException(nameof(origin)); }
-            if (IsDisposed) { throw new ObjectDisposedException(nameof(IsDisposed)); }
-            switch (origin) {
-                case SeekOrigin.Begin:
-                    {
-                    if (offset < 0)      { throw new ArgumentOutOfRangeException(nameof(offset)); }
-                    if (offset > Length) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-                    position = offset;
-                    return position;
+        public override Int64 Seek(Int64 offset, SeekOrigin origin) {
+            lock (this) {
+                if ((origin < SeekOrigin.Begin) || (origin > SeekOrigin.End)) { throw new ArgumentOutOfRangeException(nameof(origin)); }
+                if (Disposed) { throw new ObjectDisposedException(nameof(Disposed)); }
+                switch (origin) {
+                    case SeekOrigin.Begin:
+                        {
+                        if (offset < 0)      { throw new ArgumentOutOfRangeException(nameof(offset)); }
+                        if (offset > Length) { throw new ArgumentOutOfRangeException(nameof(offset)); }
+                        position = offset;
+                        return position;
+                        }
+                    case SeekOrigin.Current: { return Seek(position + offset, SeekOrigin.Begin); }
+                    case SeekOrigin.End:     { return Seek(Length + offset, SeekOrigin.Begin);   }
+                    default: throw new ArgumentOutOfRangeException(nameof(origin));
                     }
-                case SeekOrigin.Current: { return Seek(position + offset, SeekOrigin.Begin); }
-                case SeekOrigin.End:     { return Seek(Length + offset, SeekOrigin.Begin);   }
-                default: throw new ArgumentOutOfRangeException(nameof(origin));
                 }
             }
         #endregion
@@ -141,10 +146,13 @@ namespace BinaryStudio.IO
          * </summary>
          * <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
          * */
-        protected override void Dispose(Boolean disposing)
-            {
-            IsDisposed = true;
-            base.Dispose(disposing);
+        protected override void Dispose(Boolean disposing) {
+            lock (this) {
+                if (!Disposed) {
+                    base.Dispose(disposing);
+                    Disposed = true;
+                    }
+                }
             }
         #endregion
         #region M:ToArray:Byte[]
@@ -182,6 +190,6 @@ namespace BinaryStudio.IO
         public abstract ReadOnlyMappingStream Clone(Int64 length);
 
         private Int64 position;
-        protected Boolean IsDisposed;
+        protected Boolean Disposed;
         }
     }

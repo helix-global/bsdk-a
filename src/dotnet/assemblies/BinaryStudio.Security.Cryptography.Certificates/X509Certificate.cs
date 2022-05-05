@@ -7,38 +7,45 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.Properties;
 using BinaryStudio.Serialization;
-using Newtonsoft.Json;
-using System.Security;
-using System.Text;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
+using Newtonsoft.Json;
 using Microsoft.Win32;
+
+// ReSharper disable LocalVariableHidesMember
+// ReSharper disable ParameterHidesMember
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
     [Serializable]
     [TypeConverter(typeof(X509CertificateTypeConverter))]
-    public class X509Certificate : X509Object, IX509Certificate, IXmlSerializable, IJsonSerializable
+    public class X509Certificate : X509Object, IX509Certificate, IXmlSerializable, IJsonSerializable, IFileService
         {
         IntPtr context;
         private PublicKey publickey;
+        private Asn1Certificate source;
+        private Boolean disposed;
+        private String _fileName;
 
-        public Asn1Certificate Source { get; }
+        public Asn1Certificate Source { get { return source; }}
         [Browsable(false)] public override IntPtr Handle { get { return context; }}
         [Browsable(false)] public override X509ObjectType ObjectType { get { return X509ObjectType.Certificate; }}
 
@@ -94,7 +101,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String FullQualifiedContainerName { get; }
         public String FriendlyName { get { return Source.ToString(); }}
 
-        String IX509Certificate.Issuer  { get { return Issuer.ToString();  }}
+        IX509RelativeDistinguishedNameSequence IX509Certificate.Issuer  { get { return Issuer;  }}
+        IList<IX509CertificateExtension> IX509Certificate.Extensions { get { return Source.Extensions; }}
+
         String IX509Certificate.Subject { get { return Subject.ToString(); }}
         [Browsable(false)] public RawSecurityDescriptor SecurityDescriptor { get; }
         [Browsable(false)]
@@ -115,12 +124,47 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         public String Country { get { return Source.Country; }}
 
+        protected unsafe X509Certificate(SerializationInfo info, StreamingContext context)
+            :base(info, context)
+            {
+            var source = (IntPtr)info.GetInt64(nameof(Handle));
+            if (source != IntPtr.Zero) {
+                using (new TraceScope()) {
+                    this.context = CertDuplicateCertificateContext(source);
+                    this.source = Load(this.context);
+                    Version = Source.Version;
+                    SerialNumber = Source.SerialNumber.ToString();
+                    Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
+                    Subject = new X509RelativeDistinguishedNameSequence(Source.Subject);
+                    NotAfter  = Source.NotAfter;
+                    NotBefore = Source.NotBefore;
+                    SignatureAlgorithm = new Oid(Source.SignatureAlgorithm.SignatureAlgorithm.ToString());
+                    HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
+                        ? new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString())
+                        : null;
+                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
+                    var r = GetProperty(CERT_KEY_PROV_INFO_PROP_ID, false);
+                    if (r.Length > 0) {
+                        fixed (Byte* bytes = r) {
+                            var pi = (CRYPT_KEY_PROV_INFO*)bytes;
+                            KeySpec = (X509KeySpec)pi->KeySpec;
+                            Container = (pi->ContainerName != null)
+                                ? Marshal.PtrToStringUni((IntPtr)(pi->ContainerName))
+                                : null;
+                            }
+                        }
+                    }
+                }
+            }
+
+        /// <summary>Initializes a new instance of the <see cref="X509Certificate"/> class from specified source.</summary>
+        /// <param name="source">Source of certificate context.</param>
         public unsafe X509Certificate(IntPtr source)
             {
             if (source == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(source)); }
             using (new TraceScope()) {
                 context = CertDuplicateCertificateContext(source);
-                Source = Load(context);
+                this.source = Load(context);
                 Version = Source.Version;
                 SerialNumber = Source.SerialNumber.ToString();
                 Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
@@ -203,27 +247,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        //internal X509Certificate(IntPtr source)
-        //    {
-        //    if (source == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(source)); }
-        //    using (TraceManager.Instance.Trace()) {
-        //        context = source;
-        //        Source = Load(source);
-        //        Version = Source.Version;
-        //        SerialNumber = Source.SerialNumber.ToString();
-        //        Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
-        //        Subject = new X509RelativeDistinguishedNameSequence(Source.Subject);
-        //        NotAfter  = Source.NotAfter;
-        //        NotBefore = Source.NotBefore;
-        //        SignatureAlgorithm = new Oid(Source.SignatureAlgorithm.SignatureAlgorithm.ToString());
-        //        HashAlgorithm = new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString());
-        //        Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
-        //        }
-        //    }
         #region M:Initialize
-        private static unsafe Asn1Certificate Load(IntPtr source)
+        private static unsafe Asn1Certificate Load(IntPtr context)
             {
-            var context = (CERT_CONTEXT*)(IntPtr)source;
+            if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
+            return Load((CERT_CONTEXT*)context);
+            }
+        private static Asn1Certificate Load(Byte[] source)
+            {
+            return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(source)).FirstOrDefault());
+            }
+        private static unsafe Asn1Certificate Load(CERT_CONTEXT* context)
+            {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
             var size  = context->CertEncodedSize;
             var bytes = context->CertEncoded;
             var buffer = new Byte[size];
@@ -232,16 +268,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(buffer)).FirstOrDefault());
             }
-        private static Asn1Certificate Load(Byte[] source)
-            {
-            return new Asn1Certificate(Asn1Object.Load(new ReadOnlyMemoryMappingStream(source)).FirstOrDefault());
-            }
         #endregion
+
+        /// <summary>Initializes a new instance of the <see cref="X509Certificate"/> class from specified source.</summary>
+        /// <param name="source">Source of certificate context.</param>
+        public unsafe X509Certificate(CERT_CONTEXT* source)
+            :this((IntPtr)source)
+            {
+            }
 
         public X509Certificate(Asn1Certificate source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            Source = source;
+            this.source = source;
             var body = source.UnderlyingObject.Body;
             var handle = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, body, body.Length);
             if (handle == IntPtr.Zero)
@@ -276,7 +315,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     Marshal.ThrowExceptionForHR((Int32)hr);
                     }
                 context = handle;
-                Source = Load(source);
+                this.source = Load(source);
                 Version = Source.Version;
                 SerialNumber = Source.SerialNumber.ToString();
                 Issuer  = new X509RelativeDistinguishedNameSequence(Source.Issuer);
@@ -320,7 +359,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("capi20")] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] CertificateContextHandle context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
         #endif
 
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] IntPtr context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty([In] IntPtr context, [In] Int32 property, [In][Out][MarshalAs(UnmanagedType.LPArray)] Byte[] data, [In][Out] ref Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, ref CRYPT_KEY_PROV_INFO data);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty([In] IntPtr context, [In] Int32 property, Int32 flags, IntPtr data);
@@ -328,20 +366,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCertificateContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertFindCRLInStore(IntPtr store, UInt32 CertEncodingType, Int32 FindFlags, Int32 FindType, IntPtr FindPara, IntPtr PrevCrlContext);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
-
-        #region M:GetCertificateChain([In]IntPtr,[In]IntPtr,DateTime,IntPtr,[Ref]CERT_CHAIN_PARA,CERT_CHAIN_FLAGS,CERT_CHAIN_CONTEXT**):Boolean
-        private static unsafe Boolean GetCertificateChain([In] IntPtr chainengine,
-            [In] IntPtr context, DateTime time, IntPtr additionalStore,
-            [In] ref CERT_CHAIN_PARA chainPara, CERT_CHAIN_FLAGS flags,
-            CERT_CHAIN_CONTEXT** chainContext)
-            {
-            var ft = default(FILETIME);
-            *(long*)(&ft) = time.ToFileTime();
-            return CertGetCertificateChain(chainengine,
-                context, ref ft, additionalStore, ref chainPara, flags,
-                IntPtr.Zero, chainContext);
-            }
-        #endregion
 
         private const Int32 CERT_KEY_PROV_INFO_PROP_ID = 2;
         private const Int32 CERT_SHA1_HASH_PROP_ID     = 3;
@@ -360,23 +384,20 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         private const UInt32 CRYPT_SILENT = 0x00000040;
 
         #region M:GetProperty(Int32,Boolean)
-        private Byte[] GetProperty(Int32 property, Boolean flags)
-            {
-            if (flags)
-                {
+        private Byte[] GetProperty(Int32 property, Boolean flags) {
+            if (flags) {
                 var c = 0;
-                Validate(CertGetCertificateContextProperty(Handle, property, null, ref c));
-                var r = new Byte[c];
+                Validate(CertGetCertificateContextProperty(Handle, property, null, ref c)); var r = new Byte[c];
                 Validate(CertGetCertificateContextProperty(Handle, property, r, ref c));
                 return r;
                 }
             else
                 {
                 var c = 0;
-                if (!CertGetCertificateContextProperty(Handle, property, null, ref c)) { return new Byte[0]; }
+                if (!CertGetCertificateContextProperty(Handle, property, null, ref c)) { return EmptyArray<Byte>.Value; }
                 var r = new Byte[c];
                 return !CertGetCertificateContextProperty(Handle, property, r, ref c)
-                    ? new Byte[0]
+                    ? EmptyArray<Byte>.Value
                     : r;
                 }
             }
@@ -412,28 +433,47 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
 
-        #region M:VerifyNotAfter(List<Exception>,DateTime)
-        private void VerifyNotAfter(List<Exception> target, DateTime datetime)
-            {
-            if (NotAfter < datetime)
+        #region M:VerifyNotAfter([Out]Exception,DateTime):Boolean
+        private Boolean VerifyNotAfter(out Exception e, DateTime datetime) {
+            e = null;
+            try
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformSettings.DefaultCulture)));
+                if (NotAfter < datetime) {
+                    throw new CryptographicException(Resources.ResourceManager.GetString("5000", PlatformContext.DefaultCulture));
+                    }
                 }
+            catch (Exception exception)
+                {
+                exception.Data["NotAfter"] = NotAfter.ToString("s");
+                e = exception;
+                return false;
+                }
+            return true;
             }
         #endregion
-        #region M:VerifyNotBefore(List<Exception>,DateTime)
-        private void VerifyNotBefore(List<Exception> target, DateTime datetime)
+        #region M:VerifyNotBefore([Out]Exception,DateTime):Boolean
+        private Boolean VerifyNotBefore(out Exception e, DateTime datetime)
             {
-            if (datetime < NotBefore)
+            e = null;
+            try
                 {
-                target.Add(new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformSettings.DefaultCulture)));
+                if (datetime < NotBefore) {
+                    throw new CryptographicException(Resources.ResourceManager.GetString("5001", PlatformContext.DefaultCulture));
+                    }
                 }
+            catch (Exception exception)
+                {
+                exception.Data["NotBefore"] = NotBefore.ToString("s");
+                e = exception;
+                return false;
+                }
+            return true;
             }
         #endregion
         //#region M:VerifySignature(List<Exception>,ICryptographicContext)
         private static Boolean VerifyCRL(X509Certificate certificate, HashSet<Exception> target, ICryptographicContext context, IntPtr store, ref CertificateChainErrorStatus status, DateTime datetime) {
             if ((store != IntPtr.Zero) && (status != CertificateChainErrorStatus.CERT_TRUST_NO_ERROR)) {
-                var ski = ((Asn1CertificateSubjectKeyIdentifierExtension)certificate.Source.Extensions.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("X");
+                var ski = ((CertificateSubjectKeyIdentifier)certificate.Source.Extensions.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("X");
                 var exceptions = new List<Exception>();
                 var hcrl = IntPtr.Zero;
                 if (!String.IsNullOrWhiteSpace(ski)) {
@@ -444,7 +484,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                             break;
                             }
                         var crl = new X509CertificateRevocationList(hcrl);
-                        var aki = ((Asn1CertificateAuthorityKeyIdentifierExtension)crl.UnderlyingObject.Extensions.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("X");
+                        var aki = ((CertificateAuthorityKeyIdentifier)crl.UnderlyingObject.Extensions.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("X");
                         if (aki == ski) {
                             if (crl.EffectiveDate <= datetime) {
                                 if (crl.NextUpdate != null) {
@@ -465,105 +505,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         //#endregion
 
-        private unsafe IList<Exception> VerifyCertificateChain(ICryptographicContext context, IntPtr chainengine, OidCollection applicationpolicy, OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, IX509CertificateStorage store, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
-            {
-            var chainpara = new CERT_CHAIN_PARA {
-                Size = sizeof(CERT_CHAIN_PARA),
-                };
-
-            CERT_CHAIN_CONTEXT* chaincontext = null;
-            var target = new HashSet<Exception>();
-            var applicationpolicyhandle = LocalMemoryHandle.InvalidHandle;
-            var certificatepolicyhandle = LocalMemoryHandle.InvalidHandle;
-            try
-                {
-                if (!IsNullOrEmpty(applicationpolicy)) {
-                    chainpara.RequestedUsage.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
-                    chainpara.RequestedUsage.Usage.UsageIdentifierCount = applicationpolicy.Count;
-                    chainpara.RequestedUsage.Usage.UsageIdentifierArray = applicationpolicyhandle = CopyToMemory(applicationpolicy);
-                    }
-                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
-                if (!IsNullOrEmpty(certificatepolicy)) {
-                    chainpara.RequestedIssuancePolicy.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
-                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierCount = certificatepolicy.Count;
-                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierArray = certificatepolicyhandle = CopyToMemory(certificatepolicy);
-                    }
-                #endif
-                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
-                chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
-                #endif
-                Validate(GetCertificateChain(chainengine, this.context, datetime,
-                    (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
-                var status = chaincontext->TrustStatus.ErrorStatus;
-                if (policy != null) {
-                    policy.Verify(target, context,
-                        applicationpolicy, certificatepolicy,
-                        timeout, datetime, store, flags: 0,
-                        chaincontext: ref *chaincontext);
-                    }
-                if (status != CertificateChainErrorStatus.CERT_TRUST_NO_ERROR)
-                    {
-                    target.UnionWith(GetExceptionForChainErrorStatus(chaincontext->TrustStatus.ErrorStatus, PlatformSettings.DefaultCulture));
-                    }
-                }
-            finally
-                {
-                certificatepolicyhandle.Dispose();
-                applicationpolicyhandle.Dispose();
-                }
-            return target.ToArray();
-            }
-
-        #region M:Verify(ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy)
-        public void Verify(ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime,CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy) {
-            if (!Verify(out var e, context, store, applicationpolicy, certificatepolicy, timeout, datetime, flags, policy)) {
-                throw e;
-                }
-            }
-        #endregion
-        #region M:Verify(ICryptographicContext,IX509CertificateStorage)
-        public void Verify(ICryptographicContext context, IX509CertificateStorage store)
-            {
-            Verify(context, store, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: null);
-            }
-        #endregion
-        #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage):Boolean
-        public Boolean Verify(out Exception e, ICryptographicContext context, IX509CertificateStorage store)
-            {
-            return Verify(out e,context, store, null, null, TimeSpan.FromSeconds(0), DateTime.Now,
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_END_CERT |
-                CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
-                policy: null);
-            }
-        #endregion
-        #region M:Verify([Out]Exception,ICryptographicContext,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IX509CertificateChainPolicy):Boolean
-        public Boolean Verify(out Exception e, ICryptographicContext context, IX509CertificateStorage store, OidCollection applicationpolicy,OidCollection certificatepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags, IX509CertificateChainPolicy policy)
-            {
-            e = null;
-            using (new TraceScope())
-                {
-                var target = new List<Exception>();
-                VerifyNotAfter(target,  datetime);
-                VerifyNotBefore(target, datetime);
-                target.AddRange(VerifyCertificateChain(context, IntPtr.Zero,
-                    applicationpolicy, certificatepolicy, timeout, datetime,
-                    store,flags,policy
-                    ));
-                if (target.Count > 0) {
-                    e = (target.Count == 0)
-                        ? target[0]
-                        : new AggregateException(target);
-                    return false;
-                    }
-                return true;
-                }
-            }
-        #endregion
         #region M:VerifyPrivateKeyUsagePeriod([Out]Exception):Boolean
         public Boolean VerifyPrivateKeyUsagePeriod(out Exception e)
             {
@@ -618,9 +559,27 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return Source.ToString();
             }
 
-        public void WriteJson(JsonWriter writer, JsonSerializer serializer)
-            {
-            Source.WriteJson(writer, serializer);
+        public void WriteJson(JsonWriter writer, JsonSerializer serializer) {
+            using (writer.ObjectScope(serializer)) {
+                writer.WriteValue(serializer, "(Self)", FriendlyName);
+                writer.WriteValue(serializer, nameof(Version), Version);
+                writer.WriteValue(serializer, nameof(SerialNumber), SerialNumber);
+                writer.WriteValue(serializer, nameof(SignatureAlgorithm), SignatureAlgorithm.FriendlyName);
+                writer.WriteValue(serializer, nameof(Issuer), Issuer);
+                writer.WriteValue(serializer, nameof(Subject), Subject);
+                writer.WriteValue(serializer, nameof(NotBefore), NotBefore);
+                writer.WriteValue(serializer, nameof(NotAfter), NotAfter);
+                writer.WritePropertyName("CertificateProperties");
+                using (writer.ObjectScope(serializer)) {
+                    var r = GetProperty((Int32)CERT_PROP.CERT_KEY_PROV_INFO_PROP_ID, true);
+                    foreach (var id in new HashSet<CERT_PROP>(Enum.GetValues(typeof(CERT_PROP)).OfType<CERT_PROP>())) {
+                        var value = GetProperty((Int32)id, false);
+                        if (value.Length > 0) {
+                            writer.WriteValue(serializer, id.ToString(), Convert.ToBase64String(value));
+                            }
+                        }
+                    }
+                }
             }
 
         /// <summary>This method is reserved and should not be used. When implementing the IXmlSerializable interface, you should return null (Nothing in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" /> to the class.</summary>
@@ -836,7 +795,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             var r = new List<Exception>();
             var n = (UInt32)value;
-            if ((n & (UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID)                 != 0) { r.Add(GetExceptionForChainErrorStatus(nameof(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID),                 culture)); n &= ~(UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_VALID;                 }
+            if ((n & (UInt32)CertificateChainErrorStatus.TrustIsNotTimeValid)                 != 0) { r.Add(GetExceptionForChainErrorStatus(nameof(CertificateChainErrorStatus.TrustIsNotTimeValid),                 culture)); n &= ~(UInt32)CertificateChainErrorStatus.TrustIsNotTimeValid;                 }
             if ((n & (UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED)                != 0) { r.Add(GetExceptionForChainErrorStatus(nameof(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED),                culture)); n &= ~(UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED;                }
             if ((n & (UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED)                        != 0) { r.Add(GetExceptionForChainErrorStatus(nameof(CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED),                        culture)); n &= ~(UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED;                        }
             if ((n & (UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID)            != 0) { r.Add(GetExceptionForChainErrorStatus(nameof(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID),            culture)); n &= ~(UInt32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID;            }
@@ -916,17 +875,21 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
 
-        #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
             using (new TraceScope()) {
-                base.Dispose(disposing);
+                publickey = null;
+                Dispose(ref source);
                 if (context != IntPtr.Zero) {
                     CertFreeCertificateContext(context);
                     context = IntPtr.Zero;
                     }
+                base.Dispose(disposing);
                 }
             }
-        #endregion
 
         public unsafe PublicKey PublicKey { get {
             if (publickey == null) {
@@ -956,5 +919,80 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             return publickey;
             }}
+
+        /// <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+            if (info == null) { throw new ArgumentNullException(nameof(info)); }
+            info.AddValue(nameof(Handle), (Int64)Handle);
+            }
+
+        String IFileService.FileName { get { return $"{FriendlyName}.cer"; }}
+        String IFileService.FullName { get { return ((IFileService)this).FileName; }}
+
+        unsafe Byte[] IFileService.ReadAllBytes()
+            {
+            var src   = (CERT_CONTEXT*)Handle;
+            var size  = src->CertEncodedSize;
+            var bytes = src->CertEncoded;
+            var r = new Byte[size];
+            for (var i = 0U; i < size; ++i) {
+                r[i] = bytes[i];
+                }
+            return r;
+            }
+
+        Stream IFileService.OpenRead()
+            {
+            return new MemoryStream(((IFileService)this).ReadAllBytes());
+            }
+
+        void IFileService.MoveTo(String target) {
+            ((IFileService)this).MoveTo(target, false);
+            }
+
+        /// <summary>Move an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        public void MoveTo(String target, Boolean overwrite)
+            {
+            ((IFileService)this).CopyTo(target, overwrite);
+            }
+
+        /// <summary>Copies an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        void IFileService.CopyTo(String target, Boolean overwrite)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = ((IFileService)this).OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
+                var folder = Path.GetDirectoryName(target);
+                if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
+                    }
+                }
+            }
         }
     }

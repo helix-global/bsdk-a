@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
-    public class ServiceManager : ServiceObject
+    public partial class ServiceManager : ServiceObject
         {
         public override IntPtr Handle { get { return sc; }}
 
@@ -17,18 +17,6 @@ namespace BinaryStudio.PlatformComponents.Win32
             {
             public LUID Luid;
             public UInt32 Attributes;
-            }
-
-        internal struct LUID
-            {
-            public UInt32 LowPart;
-            public Int32  HighPart;
-            }
-
-        private struct TOKEN_PRIVILEGE
-            {
-            public uint PrivilegeCount;
-            public LUID_AND_ATTRIBUTES Privilege;
             }
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr OpenSCManagerW([MarshalAs(UnmanagedType.LPWStr)] [In] String machinename = null, [MarshalAs(UnmanagedType.LPWStr)] [In] String databasename = null, UInt32 desiredaccess = SC_MANAGER_ALL_ACCESS);

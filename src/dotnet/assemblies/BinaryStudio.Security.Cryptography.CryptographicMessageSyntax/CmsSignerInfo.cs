@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -76,10 +77,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                     SignedAttributes.UnionWith(u[i].Select(j => CmsAttribute.From(new CmsAttribute(j))));
                     i++;
                     }
-                SignatureAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)u[i++]);
-                SignatureValue = (Asn1OctetString)u[i++];
-                if (i < c) {
-                    SignedAttributes.UnionWith(u[i].Select(j => CmsAttribute.From(new CmsAttribute(j))));
+                var SignatureAlgorithmSource = u[i++] as Asn1Sequence;
+                if (SignatureAlgorithmSource != null) {
+                    SignatureAlgorithm = new X509AlgorithmIdentifier(SignatureAlgorithmSource);
+                    SignatureValue = (Asn1OctetString)u[i++];
+                    if (i < c) {
+                        SignedAttributes.UnionWith(u[i].Select(j => CmsAttribute.From(new CmsAttribute(j))));
+                        }
                     }
                 }
             }
@@ -93,6 +97,43 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             return SignerIdentifier.ToString();
             }
 
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("CmsSignerInfo");
+            writer.WriteAttributeString(nameof(Version), Version.ToString());
+            if (SignerIdentifier != null) {
+                writer.WriteStartElement("CmsSignerInfo.SignerIdentifier");
+                SignerIdentifier.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (DigestAlgorithm != null) {
+                writer.WriteStartElement("CmsSignerInfo.DigestAlgorithm");
+                DigestAlgorithm.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (SignatureAlgorithm != null) {
+                writer.WriteStartElement("CmsSignerInfo.SignatureAlgorithm");
+                SignatureAlgorithm.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (!IsNullOrEmpty(SignedAttributes)) {
+                writer.WriteStartElement(nameof(SignedAttributes));
+                foreach (var attribute in SignedAttributes) {
+                    attribute.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            if (!IsNullOrEmpty(UnsignedAttributes)) {
+                writer.WriteStartElement(nameof(UnsignedAttributes));
+                foreach (var attribute in UnsignedAttributes) {
+                    attribute.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
+            }
+
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer)
             {
             writer.WriteStartObject();
@@ -100,10 +141,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             writer.WriteValue(serializer, nameof(SignerIdentifier), SignerIdentifier);
             writer.WriteValue(serializer, nameof(DigestAlgorithm), DigestAlgorithm);
             writer.WriteValue(serializer, nameof(SignatureAlgorithm), SignatureAlgorithm);
-            SignatureValue.Content.Seek(0, SeekOrigin.Begin);
-            writer.WriteMultilineHexComment(SignatureValue.Content);
-            writer.WriteBase32PropertyValue(nameof(SignatureValue), SignatureValue.Content.ToArray());
-            //writer.WriteValue(serializer, nameof(SignatureValue), SignatureValue.Content.ToArray().ToString("X"));
+            if (SignatureValue != null) {
+                SignatureValue.Content.Seek(0, SeekOrigin.Begin);
+                writer.WriteMultilineHexComment(SignatureValue.Content);
+                writer.WriteBase32PropertyValue(nameof(SignatureValue), SignatureValue.Content.ToArray());
+                //writer.WriteValue(serializer, nameof(SignatureValue), SignatureValue.Content.ToArray().ToString("X"));
+                }
             #region SignedAttributes
             if (!IsNullOrEmpty(SignedAttributes)) {
                 writer.WritePropertyName(nameof(SignedAttributes));

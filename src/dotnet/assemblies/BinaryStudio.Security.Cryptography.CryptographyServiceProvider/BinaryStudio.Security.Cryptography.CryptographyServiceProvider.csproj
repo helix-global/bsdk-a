@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
     <DefineConstants>TRACE;CODE_ANALYSIS,FEATURE_ROTATE_SIGNATURE2;FEATURE_OPENSSL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

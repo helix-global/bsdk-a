@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class VerifyOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "verify"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

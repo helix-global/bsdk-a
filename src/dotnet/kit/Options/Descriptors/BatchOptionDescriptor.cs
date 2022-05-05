@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class BatchOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "batch"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
@@ -26,7 +27,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("batch:{rename,serialize,extract,group,install,uninstall,asn1}+");
+            output.Write("batch:{rename,serialize,extract,group,install,uninstall,asn1,report}+");
             }
         }
     }

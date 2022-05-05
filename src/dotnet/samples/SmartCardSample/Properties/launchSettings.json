@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SmartCardSample": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

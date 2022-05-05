@@ -73,7 +73,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
         #region M:ToString(Asn1ObjectIdentifier):String
         public static String ToString(Asn1ObjectIdentifier value) {
             var oid = value.ToString();
-            var r = OID.ResourceManager.GetString(oid, PlatformSettings.DefaultCulture);
+            var r = OID.ResourceManager.GetString(oid, PlatformContext.DefaultCulture);
             if (String.IsNullOrEmpty(r)) {
                 r = value.FriendlyName;
                 }
@@ -85,7 +85,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
         #region M:ToString(Oid):String
         public static String ToString(Oid value) {
             var oid = value.Value;
-            var r = OID.ResourceManager.GetString(oid, PlatformSettings.DefaultCulture);
+            var r = OID.ResourceManager.GetString(oid, PlatformContext.DefaultCulture);
             if (String.IsNullOrEmpty(r)) {
                 r = (value).FriendlyName;
                 }

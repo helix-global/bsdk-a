@@ -5,6 +5,7 @@ namespace Options.Descriptors
     {
     internal class IsMessageGroupOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "message"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;

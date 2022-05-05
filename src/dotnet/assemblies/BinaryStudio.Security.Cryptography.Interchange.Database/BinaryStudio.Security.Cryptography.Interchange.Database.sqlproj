@@ -23,6 +23,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <TargetFrameworkProfile />
+    <GenerateCreateScript>True</GenerateCreateScript>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -62,6 +63,7 @@
     <Folder Include="Storage\" />
     <Folder Include="dbo\Views\" />
     <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RelativeDistinguishedNameSequence.sql" />
@@ -73,7 +75,6 @@
     <Build Include="dbo\Tables\RelativeDistinguishedNameSequenceMapping.sql" />
     <Build Include="dbo\Tables\ObjectIdentifier.sql" />
     <Build Include="dbo\Tables\Object.sql" />
-    <Build Include="dbo\Views\CertificateView.sql" />
     <Build Include="dbo\Functions\RelativeDistinguishedNameSequenceToString.sql" />
     <Build Include="dbo\Tables\SubjectKeyIdentifier.sql" />
     <Build Include="dbo\Tables\SubjectAlternativeName.sql" />
@@ -83,7 +84,35 @@
     <Build Include="dbo\Tables\AlternativeName.sql" />
     <Build Include="dbo\Functions\GeneralNameToString.sql" />
     <Build Include="dbo\Tables\CertificateRevocationList.sql" />
-    <Build Include="dbo\Views\CrlView.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCertificateRevocationList.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\Cleanup.sql" />
+    <Build Include="dbo\Views\ReportCertificateRevocationList.sql" />
+    <Build Include="FullTextIndexes.sql" />
+    <Build Include="dbo\Functions\GetShortKey.sql" />
+    <Build Include="dbo\Stored Procedures\ImportRelativeDistinguishedNameSequence.sql" />
+    <Build Include="dbo\Stored Procedures\ImportRelativeDistinguishedName.sql" />
+    <Build Include="dbo\Stored Procedures\ImportObjectIdentifier.sql" />
+    <Build Include="dbo\Stored Procedures\ImportExtensions.sql" />
+    <Build Include="dbo\Stored Procedures\ImportExtension.sql" />
+    <Build Include="dbo\Views\ReportCertificate.sql" />
+    <Build Include="dbo\Views\MessageCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCmsMessage.sql" />
+    <Build Include="dbo\Tables\CmsMessage.sql" />
+    <Build Include="dbo\Tables\CmsSignerInfo.sql" />
+    <Build Include="dbo\Tables\CmsCertificate.sql" />
+    <Build Include="dbo\Stored Procedures\ImportCmsSignerInfo.sql" />
+    <Build Include="dbo\Views\ReportMessage.sql" />
+    <Build Include="dbo\Tables\InputData.sql" />
+    <Build Include="dbo\Tables\Country.sql" />
+    <Build Include="dbo\Tables\ThreeLetterISOCountryCode.sql" />
+    <Build Include="dbo\Views\ReportFailed.sql" />
+    <Build Include="dbo\Tables\DecodingFailed.sql" />
+    <Build Include="dbo\Views\DecodingFailedInGroup1SucceededWithTheSameInGroup2.sql" />
+    <Build Include="dbo\Views\DecodingFailedInGroup1SucceededInSameGroup.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteCmsMessage.sql" />
+    <Build Include="dbo\Tables\SCode.sql" />
+    <Build Include="dbo\Tables\Table_1.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -92,5 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="string_agg.cs" />
+    <Compile Include="dbo\Functions\OidToStr.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="BinaryStudio.Security.Cryptography.Interchange.Database.refactorlog" />
   </ItemGroup>
 </Project>

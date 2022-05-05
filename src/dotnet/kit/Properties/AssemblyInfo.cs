@@ -23,3 +23,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("7749a0c1-d47a-4dd7-b811-b6bd7a8b1029")]
 
 [assembly: AssemblyVersion("1.0.*")]
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]

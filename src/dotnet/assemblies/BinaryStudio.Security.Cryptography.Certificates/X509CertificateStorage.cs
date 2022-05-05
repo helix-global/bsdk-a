@@ -17,23 +17,23 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         #region P:Location:X509StoreLocation
         public X509StoreLocation Location { get {
-            return (storage1 != null)
-                ? storage1.Location
+            return (UnderlyingStorage != null)
+                ? UnderlyingStorage.Location
                 : location;
             }}
         #endregion
         #region P:Name:String
         public String Name { get {
-            return (storage1 != null)
-                ? storage1.Name
+            return (UnderlyingStorage != null)
+                ? UnderlyingStorage.Name
                 : name;
             }}
         #endregion
         #region P:Certificates:IEnumerable<X509Certificate>
         public IEnumerable<X509Certificate> Certificates { get {
             EnsureCore();
-            if (storage1 != null) {
-                foreach (var i in storage1.Certificates) {
+            if (UnderlyingStorage != null) {
+                foreach (var i in UnderlyingStorage.Certificates) {
                     yield return i;
                     }
                 }
@@ -50,15 +50,49 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }}
         #endregion
 
+        public IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+            EnsureCore();
+            if (UnderlyingStorage != null) {
+                foreach (var i in UnderlyingStorage.CertificateRevocationLists) {
+                    yield return i;
+                    }
+                }
+            else
+                {
+                if (store != IntPtr.Zero) {
+                    var i = CertEnumCRLsInStore(store, IntPtr.Zero);
+                    while (i != IntPtr.Zero) {
+                        yield return new X509CertificateRevocationList(i);
+                        i = CertEnumCRLsInStore(store, i);
+                        }
+                    }
+                }
+            }}
+
+        public Boolean IsReadOnly { get {
+            return (UnderlyingStorage != null)
+                ? UnderlyingStorage.IsReadOnly
+                : ReadOnly;
+            }}
+
         public IntPtr Handle {get {
-            return (storage1 != null)
-                ? storage1.Handle
+            return (UnderlyingStorage != null)
+                ? UnderlyingStorage.Handle
                 : store;
             }}
 
         IEnumerable<IX509Certificate> IX509CertificateStorage.Certificates { get {
-            foreach (var certificate in Certificates) {
-                yield return certificate;
+            foreach (var i in Certificates) {
+                yield return i;
+                }
+            }}
+
+        /// <summary>
+        /// Enums all certificate revocation lists in storage.
+        /// </summary>
+        IEnumerable<IX509CertificateRevocationList> IX509CertificateStorage.CertificateRevocationLists { get {
+            foreach (var i in CertificateRevocationLists) {
+                yield return i;
                 }
             }}
 
@@ -93,7 +127,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #endregion
         #region M:EnsureCore
         protected virtual void EnsureCore() {
-            if (storage1 == null) {
+            if (UnderlyingStorage == null) {
                 if (store == IntPtr.Zero) {
                     if (name.Contains("\\")) {
                         store = CertOpenStore(
@@ -111,7 +145,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                             IntPtr.Zero,
                             MapX509StoreFlags(Location,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
                             Name);
-                        return;
                         }
                     #endregion
                     }
@@ -145,7 +178,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
-                 if (storage1 != null) { storage1.Add(o); }
+                 if (UnderlyingStorage != null) { UnderlyingStorage.Add(o); }
             else if (store != IntPtr.Zero) {
                 if (!CertAddCertificateContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero)) {
                     var hr = (HRESULT)(Marshal.GetHRForLastWin32Error());
@@ -159,7 +192,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
-                 if (storage1 != null) { storage1.Add(o); }
+                 if (UnderlyingStorage != null) { UnderlyingStorage.Add(o); }
             else if (store != IntPtr.Zero) {
                 if (!CertAddCRLContextToStore(store, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero)) {
                     var hr = (HRESULT)(Marshal.GetHRForLastWin32Error());
@@ -172,7 +205,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public void Remove(IX509Certificate o) {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
-                 if (storage1 != null) { storage1.Remove(o); }
+                 if (UnderlyingStorage != null) { UnderlyingStorage.Remove(o); }
             else if (store != IntPtr.Zero) {
                 throw new NotImplementedException();
                 }
@@ -184,7 +217,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             EnsureCore();
-                 if (storage1 != null) { storage1.Remove(o); }
+                 if (UnderlyingStorage != null) { UnderlyingStorage.Remove(o); }
             else if (store != IntPtr.Zero) {
                 throw new NotImplementedException();
                 }
@@ -197,8 +230,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (store != IntPtr.Zero) {
                 Validate(CertControlStore(store, 0, CERT_STORE_CTRL_AUTO_RESYNC, IntPtr.Zero));
                 }
-            else if (storage1 != null) {
-                storage1.Commit();
+            else if (UnderlyingStorage != null) {
+                UnderlyingStorage.Commit();
                 }
             }
 
@@ -234,15 +267,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             {
             switch (name)
                 {
-                case X509StoreName.AddressBook:          { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.AuthRoot:             { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.CertificateAuthority: { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.Disallowed:           { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.My:                   { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.Root:                 { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.TrustedPeople:        { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.TrustedPublisher:     { storage1 = new CertificateStorageContext(name, location); } break;
-                case X509StoreName.TrustedDevices:       { storage1 = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.AddressBook:          { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.AuthRoot:             { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.CertificateAuthority: { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.Disallowed:           { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.My:                   { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.Root:                 { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.TrustedPeople:        { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.TrustedPublisher:     { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
+                case X509StoreName.TrustedDevices:       { UnderlyingStorage = new CertificateStorageContext(name, location); } break;
                 default: throw new ArgumentOutOfRangeException(nameof(name), name, null);
                 }
             }
@@ -313,13 +346,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509CertificateStorage(ICryptographicMessage source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            storage1 = new MessageCertificateStorage(source.Handle);
+            UnderlyingStorage = new MessageCertificateStorage(source.Handle);
             }
 
         public X509CertificateStorage(IntPtr source)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            storage1 = new CertificateStorageContext(source);
+            UnderlyingStorage = new CertificateStorageContext(source);
             }
 
         #region M:X509CertificateStorage(IEnumerable<IX509Certificate>)
@@ -348,7 +381,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:Find(CERT_INFO*):X509Certificate
         public unsafe IX509Certificate Find(CERT_INFO* value, out Exception e)
             {
-            return storage1.Find(value, out e);
+            return UnderlyingStorage.Find(value, out e);
             }
         #endregion
         #region M:Validate(Boolean)
@@ -387,10 +420,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
 
-        private CertificateStorage storage1;
+        private CertificateStorage UnderlyingStorage;
         private IntPtr store;
         private String name;
         private X509StoreLocation location;
+        private Boolean ReadOnly;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_SYSTEM_STORE_LOCATION([MarshalAs(UnmanagedType.LPWStr)] String name,CERT_SYSTEM_STORE_FLAGS flags,IntPtr reserved,IntPtr arg);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_SYSTEM_STORE(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, ref CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg);
@@ -399,7 +433,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr hCertStore, [In] uint dwFlags, [In] uint dwCtrlType, [In] IntPtr pvCtrlPara);
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr hCertStore, IntPtr pPrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.Auto,    SetLastError = true)] protected static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] String pvPara);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] IntPtr pvPara);

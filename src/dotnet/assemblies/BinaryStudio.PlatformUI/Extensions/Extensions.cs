@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -633,6 +634,19 @@ namespace BinaryStudio.PlatformUI.Extensions
                         }
                     }
                 }
+            }
+        #endregion
+        #region M:SetBinding(DependencyObject,DependencyProperty,DependencyObject,DependencyProperty,BindingMode):BindingExpressionBase
+        public static BindingExpressionBase SetBinding(this DependencyObject target, DependencyProperty targetProperty, DependencyObject source, DependencyProperty sourceProperty, BindingMode mode) {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            if (sourceProperty != null) {
+                return BindingOperations.SetBinding(target, targetProperty, new Binding() {
+                    Source = source,
+                    Path = new PropertyPath(sourceProperty),
+                    Mode = mode
+                    });
+                }
+            return null;
             }
         #endregion
 

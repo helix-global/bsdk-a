@@ -5,13 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 using BinaryStudio.DataProcessing;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.DirectoryServices;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
+using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -75,9 +79,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </pre>
     /// </remarks>
     [TypeConverter(typeof(ObjectTypeConverter))]
-    public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate
+    public sealed class Asn1Certificate : Asn1SpecificObject, IIcaoCertificate, IFileService
         {
-        private String _thumbprint;
+        private String thumbprint;
+        private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
 
         [Order( 1)] public Int32 Version { get; }
         [Order( 2)] public Asn1ByteArray SerialNumber { get; }
@@ -88,18 +93,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Order( 7)][TypeConverter(typeof(Asn1DateTimeConverter))] public DateTime NotAfter  { get; }
         [Order( 8)] public IAsn1CertificateSubjectPublicKeyInfo SubjectPublicKeyInfo { get; }
         [Order( 9)] public String Country { get; }
-        [Order(10)] public Asn1CertificateExtensionCollection Extensions { get; }
+        [Order(10)] public Asn1CertificateExtensionCollection Extensions { get { return new Asn1CertificateExtensionCollection(extensions); }}
         [Order(11)] 
         public String Thumbprint { get {
-            if (_thumbprint == null) {
+            if (thumbprint == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
-                    UnderlyingObject.Write(output);
+                    UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    _thumbprint = engine.ComputeHash(output).ToString("X");
+                    thumbprint = engine.ComputeHash(output).ToString("x");
                     }
                 }
-            return _thumbprint;
+            return thumbprint;
             }}
 
         public Asn1Certificate(Asn1Object o)
@@ -107,6 +112,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             SubjectPublicKeyInfo = new X509NoCertificateSubjectPublicKeyInfo();
             State |= ObjectState.Failed;
+            State &= ~ObjectState.DisposeUnderlyingObject;
             if (o is Asn1Sequence u)
                 {
                 if ((u[0] is Asn1Sequence) &&
@@ -159,20 +165,22 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             #region Extensions
                             var specific = contextspecifics.FirstOrDefault(i => ((Asn1ContextSpecificObject)i).Type == 3);
                             if (!ReferenceEquals(specific, null)) {
-                                Extensions = new Asn1CertificateExtensionCollection(specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))).ToList());
+                                extensions = specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))).ToArray();
                                 }
                             #endregion
                             Country = GetCountry(Subject) ?? GetCountry(Issuer);
                             EnsureExtendedProperties();
                             State &= ~ObjectState.Failed;
+                            State |= ObjectState.DisposeUnderlyingObject;
                             }
-                        catch (Exception)
+                        catch (Exception e)
                             {
                             #if DEBUG
                             var filename = Path.Combine(@"C:\Failed", Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + ".cer");
                             using (var writer = File.OpenWrite(filename)) {
-                                u.Write(writer);
+                                u.WriteTo(writer);
                                 }
+                            e.Add("FailedFileName", filename);
                             #endif
                             throw;
                             }
@@ -183,8 +191,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         [Browsable(false)]
         public String FriendlyName { get {
-            var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
-            var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var SK = ((CertificateSubjectKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("FL");
+            var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {
                 return ((String.IsNullOrWhiteSpace(AK)))
@@ -199,8 +207,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         [Browsable(false)]
         public String AlternativeFriendlyName { get {
-            var SK = ((Asn1CertificateSubjectKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateSubjectKeyIdentifierExtension))?.Value?.ToString("FL");
-            var AK = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions?.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var SK = ((CertificateSubjectKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateSubjectKeyIdentifier))?.KeyIdentifier?.ToString("FL");
+            var AK = ((CertificateAuthorityKeyIdentifier)Extensions?.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if ((!String.IsNullOrWhiteSpace(SK)))
                 {
                 return ((String.IsNullOrWhiteSpace(AK)))
@@ -213,7 +221,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }}
 
-        private static Boolean FilterGeneral(KeyValuePair<Asn1ObjectIdentifier, Object> source) {
+        private static Boolean FilterGeneral(KeyValuePair<Asn1ObjectIdentifier, String> source) {
             switch (source.Key.ToString()) {
                 case "2.5.4.20":
                 case "2.5.4.9":
@@ -247,9 +255,35 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         #region M:Make(Asn1Object):Asn1RelativeDistinguishedNameSequence
         internal static Asn1RelativeDistinguishedNameSequence Make(Asn1Object source) {
-            return new Asn1RelativeDistinguishedNameSequence(source.
-                Select(i => new KeyValuePair<Asn1ObjectIdentifier, Object>(
-                    (Asn1ObjectIdentifier)i[0][0], i[0][1].ToString())));
+            var r = new List<KeyValuePair<Asn1ObjectIdentifier, String>>();
+            foreach (var i in source) {
+                if (i.Count > 0) {
+                    var j = i[0];
+                    if (j.Count > 1) {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j[0],
+                            j[1].ToString()));
+                        continue;
+                        }
+                    else if (j.Count == 1)
+                        {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j[0],
+                            String.Empty));
+                        continue;
+                        }
+                    if (j is Asn1ObjectIdentifier) {
+                        r.Add(new KeyValuePair<Asn1ObjectIdentifier, String>((Asn1ObjectIdentifier)
+                            j,
+                            i[1].ToString()));
+                        }
+                    }
+                else
+                    {
+                    break;
+                    }
+                }
+            return new Asn1RelativeDistinguishedNameSequence(r);
             }
         #endregion
 
@@ -263,38 +297,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValue(serializer, nameof(Subject), Subject);
                 writer.WriteValue(serializer, nameof(NotBefore), NotBefore);
                 writer.WriteValue(serializer, nameof(NotAfter), NotAfter);
-                var extensions = Extensions;
                 if (!IsNullOrEmpty(extensions)) {
-                    WriteValue(writer, serializer, nameof(Extensions), extensions);
+                    writer.WritePropertyName(nameof(Extensions));
+                    using (writer.ObjectScope(serializer)) {
+                        writer.WriteValue(serializer, "Count", Extensions.Count);
+                        writer.WritePropertyName("(Self)");
+                        using (writer.ArrayScope(serializer)) {
+                            foreach (var i in Extensions.OfType<Asn1CertificateExtension>()) {
+                                i.WriteJson(writer, serializer);
+                                }
+                            }
+                        }
                     }
-                //var array = PublicKey;
-                //writer.WritePropertyName(nameof(PublicKey));
-                //if (array.Length > 50) {
-                //    using (writer.ArrayScope(serializer)) {
-                //        foreach (var value in Convert.ToBase64String(array, Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
-                //            writer.WriteValue(value);
-                //            }
-                //        }
-                //    }
-                //else
-                //    {
-                //    writer.WriteValue(array);
-                //    }
-                //array = PublicKeyParameters;
-                //writer.WritePropertyName(nameof(PublicKeyParameters));
-                //if (array.Length > 50)
-                //    {
-                //    writer.WriteRaw(" \"");
-                //    foreach (var value in Convert.ToBase64String(Content.ToArray(), Base64FormattingOptions.InsertLineBreaks).Split('\n')) {
-                //        writer.WriteIndent();
-                //        writer.WriteRaw($"         {value}");
-                //        }
-                //    writer.WriteRawValue("\"");
-                //    }
-                //else
-                //    {
-                //    writer.WriteValue(array);
-                //    }
                 var icao = (IIcaoCertificate)this;
                 if (icao.Type != IcaoCertificateType.None) {
                     writer.WritePropertyName("ICAO");
@@ -317,12 +331,126 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         private static String GetCountry(Asn1RelativeDistinguishedNameSequence source) {
-            return source.TryGetValue("2.5.4.6", out var r)
+            var o = source.TryGetValue("2.5.4.6", out var r)
                 ? r.ToString().ToLower()
                 : null;
+            if (o != null) {
+                if (o.Length == 3) {
+                    o = IcaoCountry.ThreeLetterCountries[o];
+                    }
+                }
+            return o;
             }
 
         IcaoCertificateType IIcaoCertificate.Type { get; }
         [Browsable(false)] public override Byte[] Body { get { return base.Body; }}
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Dispose(ref extensions);
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
+                }
+            }
+
+        String IFileService.FileName { get { return $"{FriendlyName}.cer"; }}
+        String IFileService.FullName { get { return ((IFileService)this).FileName; }}
+
+        Byte[] IFileService.ReadAllBytes() {
+            using (var r = new MemoryStream()) {
+                WriteTo(r);
+                return r.ToArray();
+                }
+            }
+
+        Stream IFileService.OpenRead()
+            {
+            return new MemoryStream(((IFileService)this).ReadAllBytes());
+            }
+
+        void IFileService.MoveTo(String target)
+            {
+            ((IFileService)this).MoveTo(target, false);
+            }
+
+        /// <summary>Move an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        void IFileService.MoveTo(String target, Boolean overwrite)
+            {
+            ((IFileService)this).CopyTo(target, overwrite);
+            }
+
+        /// <summary>Copies an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+        /// <param name="target">The name of the destination file. This cannot be a directory.</param>
+        /// <param name="overwrite"><see langword="true"/> if the destination file can be overwritten; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. -or-  <paramref name="target"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="target"/> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars"/>.  -or-  <paramref name="target"/> specifies a directory.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <see langword="null"/>.</exception>
+        /// <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length.</exception>
+        /// <exception cref="T:System.IO.DirectoryNotFoundException">The path specified in <paramref name="target"/> is invalid (for example, it is on an unmapped drive).</exception>
+        /// <exception cref="T:System.IO.IOException"><paramref name="target"/> exists and <paramref name="overwrite"/> is <see langword="false"/>. -or- An I/O error has occurred.</exception>
+        /// <exception cref="T:System.NotSupportedException"><paramref name="target"/> is in an invalid format.</exception>
+        void IFileService.CopyTo(String target, Boolean overwrite)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            using (var sourcestream = ((IFileService)this).OpenRead()) {
+                if (File.Exists(target)) {
+                    if (!overwrite) { throw new IOException(); }
+                    File.Delete(target);
+                    }
+                var folder = Path.GetDirectoryName(target);
+                if (!String.IsNullOrWhiteSpace(folder) && !Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
+                using (var targetstream = File.OpenWrite(target)) {
+                    sourcestream.CopyTo(targetstream);
+                    }
+                }
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Certificate");
+            writer.WriteAttributeString(nameof(NotBefore), NotBefore.ToString("o"));
+            writer.WriteAttributeString(nameof(NotAfter),  NotAfter.ToString("o"));
+            writer.WriteAttributeString(nameof(Thumbprint), Thumbprint);
+            if (!String.IsNullOrWhiteSpace(Country)) { writer.WriteAttributeString(nameof(Country), Country); }
+            if (SerialNumber != null) { writer.WriteAttributeString(nameof(SerialNumber), SerialNumber.Value.ToString("x")); }
+            if ((Issuer != null) && (Issuer.Count > 0)) {
+                writer.WriteStartElement("Certificate.Issuer");
+                Issuer.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if ((Subject != null) && (Subject.Count > 0)) {
+                writer.WriteStartElement("Certificate.Subject");
+                Subject.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (!IsNullOrEmpty(Extensions)) {
+                writer.WriteStartElement(nameof(Extensions));
+                foreach (var extension in Extensions.OfType<Asn1CertificateExtension>()){
+                    extension.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            if (SignatureAlgorithm != null) {
+                writer.WriteStartElement("Certificate.SignatureAlgorithm");
+                SignatureAlgorithm.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
+            }
         }
     }

@@ -1,5 +1,6 @@
 ﻿//#define FEATURE_CRYPT_VERIFY_CERTIFICATE_SIGNATURE_EX
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -16,12 +17,12 @@ using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Diagnostics;
 using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Internal.Fintech;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties;
-using BinaryStudio.Security.Cryptography.Win32;
 using BinaryStudio.Serialization;
 using Microsoft.Win32;
 #if NET40
@@ -37,6 +38,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     #endif
     public partial class SCryptographicContext : CryptographicObject, ICryptographicContext
         {
+        String ICryptographicContext.ProviderName { get { return Name; }}
+        CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return Type; }}
+
         static SCryptographicContext()
             {
             RegisterCustomCryptographicMessageProvider(new FintechCryptographicMessageProvider());
@@ -340,40 +344,85 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return context;
             }
         #endregion
-        #region M:VerifyCertificateSignature(IX509Certificate,IX509Certificate)
-        private void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer)
+        #region M:VerifySignature(IX509Certificate,IX509Certificate)
+        private void VerifySignature(IX509Certificate subject, IX509Certificate issuer)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
-            if (!VerifyCertificateSignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
+            if (!VerifySignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
                 throw e;
                 }
             }
         #endregion
-        #region M:VerifyObjectSignature(IX509Object,IX509Certificate)
-        public void VerifyObjectSignature(IX509Object source, IX509Certificate signer)
+        #region M:VerifySignature(IX509CertificateRevocationList,IX509Certificate)
+        private void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            if (!VerifySignature(out var e, subject, issuer, CRYPT_VERIFY_CERT_SIGN.NONE)) {
+                throw e;
+                }
+            }
+        #endregion
+        #region M:VerifySignature(IX509Object,IX509Certificate)
+        public void VerifySignature(IX509Object source, IX509Certificate signer)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (signer == null) { throw new ArgumentNullException(nameof(signer)); }
             switch (source.ObjectType)
                 {
-                case X509ObjectType.Certificate: { VerifyCertificateSignature((IX509Certificate)source, signer); } break;
+                case X509ObjectType.Certificate: { VerifySignature((IX509Certificate)source, signer); } break;
+                case X509ObjectType.Crl:         { VerifySignature((IX509CertificateRevocationList)source, signer); } break;
                 default: { throw new ArgumentOutOfRangeException(nameof(source)); }
                 }
             }
         #endregion
-        #region M:VerifyCertificateSignature(IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
-        public void VerifyCertificateSignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        #region M:VerifySignature(IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
+        public void VerifySignature(IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
-            if (!VerifyCertificateSignature(out var e, subject, issuer, flags)) {
+            if (!VerifySignature(out var e, subject, issuer, flags)) {
                 throw e;
                 }
             }
         #endregion
-        #region M:VerifyCertificateSignature([Out]Exception,IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
-        public Boolean VerifyCertificateSignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+        #region M:VerifySignature(IX509CertificateRevocationList,IX509Certificate,CRYPT_VERIFY_CERT_SIGN)
+        public void VerifySignature(IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            if (!VerifySignature(out var e, subject, issuer, flags)) {
+                throw e;
+                }
+            }
+        #endregion
+        #region M:VerifySignature([Out]Exception,IX509Certificate,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
+        public Boolean VerifySignature(out Exception e, IX509Certificate subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
+            {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
+            #if FEATURE_CRYPT_VERIFY_CERTIFICATE_SIGNATURE_EX
+            return Validate(out e, EntryPoint.CryptVerifyCertificateSignatureEx(handle,
+                X509_ASN_ENCODING,
+                CRYPT_VERIFY_CERT_SIGN_SUBJECT.CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT, subject.Handle,
+                CRYPT_VERIFY_CERT_SIGN_ISSUER.CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, issuer.Handle,
+                flags, IntPtr.Zero));
+            #else
+            using (var key = ImportPublicKey(out e, issuer.Handle)) {
+                if ((e != null) || (key == null)) { return false; }
+                using (var engine = (CryptHashAlgorithm)CreateHashAlgorithm(issuer.HashAlgorithm)) {
+                    engine.HashCore(subject.GetSigningStream());
+                    return engine.VerifySignature(out e,
+                        subject.SignatureValue,
+                        key);
+                    }
+                }
+            #endif
+            }
+        #endregion
+        #region M:VerifySignature([Out]Exception,IX509CertificateRevocationList,IX509Certificate,CRYPT_VERIFY_CERT_SIGN):Boolean
+        public Boolean VerifySignature(out Exception e, IX509CertificateRevocationList subject, IX509Certificate issuer, CRYPT_VERIFY_CERT_SIGN flags)
             {
             if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
             if (issuer  == null) { throw new ArgumentNullException(nameof(issuer));  }
@@ -407,7 +456,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 throw new ArgumentOutOfRangeException(
                     paramName: nameof(flags),
                     message: String.Format(
-                        PlatformSettings.DefaultCulture,
+                        PlatformContext.DefaultCulture,
                         Resources.Cryptography_InvalidFlagCombination,
                             nameof(CryptographicMessageFlags.Attached) + "," +
                             nameof(CryptographicMessageFlags.Detached)));
@@ -584,7 +633,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
         #endregion
         #region M:VerifyAttachedMessageSignature(Stream,Stream,[Out]IList<IX509Certificate>,IX509CertificateResolver)
-        public unsafe void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder)
+        public unsafe void VerifyAttachedMessageSignature(Stream input, Stream output, out IList<IX509Certificate> certificates, IX509CertificateResolver finder, VerificationPolicy policy)
             {
             if (input == null) { throw new ArgumentNullException(nameof(input));   }
             certificates = new List<IX509Certificate>();
@@ -706,7 +755,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             Asn1Object.DecodeLength(input);
                             try
                                 {
-                                VerifyAttachedMessageSignature(input, output, out certificates, finder);
+                                VerifyAttachedMessageSignature(input, output, out certificates, finder, policy);
                                 }
                             catch (Exception z)
                                 {
@@ -741,7 +790,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (input   == null) { throw new ArgumentNullException(nameof(input)); }
             using (new TraceScope()) {
                 using (var inputstream = new MemoryStream(input)) {
-                    VerifyAttachedMessageSignature(inputstream, null, out signers, finder);
+                    VerifyAttachedMessageSignature(inputstream, null,
+                        out signers, finder, VerificationPolicy.Default);
                     }
                 }
             }
@@ -950,12 +1000,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
-        //#region M:OnPercentageChanged(Double)
-        //protected void OnPercentageChanged(Double value, ProgressState state)
-        //    {
-        //    PercentageChanged?.Invoke(this, new PercentageChangedEventArgs(value, state));
-        //    }
-        //#endregion
 
         #if UBUNTU
         #if CAPILITE
@@ -1013,6 +1057,21 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgGetParam(IntPtr msg, CMSG_PARAM parameter, Int32 signerindex, [MarshalAs(UnmanagedType.LPArray)] Byte[] data, ref Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, IntPtr ctrlpara);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgControl(IntPtr msg, CRYPT_MESSAGE_FLAGS flags, CMSG_CTRL ctrltype, ref CMSG_CTRL_DECRYPT_PARA ctrlpara);
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain([In] IntPtr chainEngine, [In] IntPtr context, [In] ref FILETIME time, [In] IntPtr additionalStore, [In] ref CERT_CHAIN_PARA chainPara, [In] CERT_CHAIN_FLAGS flags, [In] IntPtr reserved, [In][Out] CERT_CHAIN_CONTEXT** chainContext);
+
+        #region M:GetCertificateChain([In]IntPtr,[In]IntPtr,DateTime,IntPtr,[Ref]CERT_CHAIN_PARA,CERT_CHAIN_FLAGS,CERT_CHAIN_CONTEXT**):Boolean
+        private static unsafe Boolean GetCertificateChain([In] IntPtr chainengine,
+            [In] IntPtr context, DateTime time, IntPtr additionalStore,
+            [In] ref CERT_CHAIN_PARA chainPara, CERT_CHAIN_FLAGS flags,
+            CERT_CHAIN_CONTEXT** chainContext)
+            {
+            var ft = default(FILETIME);
+            *(long*)(&ft) = time.ToFileTime();
+            return CertGetCertificateChain(chainengine,
+                context, ref ft, additionalStore, ref chainPara, flags,
+                IntPtr.Zero, chainContext);
+            }
+        #endregion
         #endif
 
         private const Int32 CRYPT_FIRST = 1;
@@ -1282,12 +1341,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             }
 
         public static String GetOidFriendlyName(String oid) {
-            return GetOidFriendlyName(oid, PlatformSettings.DefaultCulture);
+            return GetOidFriendlyName(oid, PlatformContext.DefaultCulture);
             }
 
         public static unsafe String GetOidFriendlyName(String oid, CultureInfo culture) {
             #if !UBUNTU
-            var lcid = (UInt16)(culture ?? PlatformSettings.DefaultCulture).LCID;
+            var lcid = (UInt16)(culture ?? PlatformContext.DefaultCulture).LCID;
             SetThreadUILanguage(lcid);
             #endif
             var r = CryptFindOIDInfo(CRYPT_OID_INFO_TYPE.CRYPT_OID_INFO_OID_KEY, Marshal.StringToHGlobalAnsi(oid), 0);
@@ -1354,5 +1413,97 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 yield return i;
                 }
             }}
+
+        IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
+
+        /// <summary>
+        /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
+        /// </summary>
+        /// <param name="certificate">Certificate to verify.</param>
+        /// <param name="store">Certificate store.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="policy">Certificate policy.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        public unsafe void Verify(IX509Certificate certificate, IX509CertificateStorage store, OidCollection applicationpolicy,
+            OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime, CERT_CHAIN_FLAGS flags,
+            CertificateChainPolicy policy, IntPtr chainengine)
+            {
+            var chainpara = new CERT_CHAIN_PARA {
+                Size = sizeof(CERT_CHAIN_PARA)
+                };
+
+            CERT_CHAIN_CONTEXT* chaincontext = null;
+            var applicationpolicyhandle = LocalMemoryHandle.InvalidHandle;
+            var certificatepolicyhandle = LocalMemoryHandle.InvalidHandle;
+            try
+                {
+                if (!IsNullOrEmpty(applicationpolicy)) {
+                    chainpara.RequestedUsage.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierCount = applicationpolicy.Count;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierArray = applicationpolicyhandle = CopyToMemory(applicationpolicy);
+                    }
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                if (!IsNullOrEmpty(certificatepolicy)) {
+                    chainpara.RequestedIssuancePolicy.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierCount = certificatepolicy.Count;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierArray = certificatepolicyhandle = CopyToMemory(certificatepolicy);
+                    }
+                #endif
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
+                #endif
+                try
+                    {
+                    Validate(GetCertificateChain(chainengine, certificate.Handle, datetime, (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
+                    ((ICryptographicContext)this).GetChainPolicy(policy)?.Verify(this,
+                        datetime, store, flags: 0,
+                        chaincontext: ref *chaincontext);
+                    }
+                 catch (Exception e)
+                    {
+                    throw;
+                    }
+                }
+            finally
+                {
+                certificatepolicyhandle.Dispose();
+                applicationpolicyhandle.Dispose();
+                }
+            }
+
+        #region M:IsNullOrEmpty(ICollection):Boolean
+        private static Boolean IsNullOrEmpty(ICollection source)
+            {
+            return (source == null) || (source.Count == 0);
+            }
+        #endregion
+        #region M:CopyToMemory(OidCollection):LocalMemoryHandle
+        private static unsafe LocalMemoryHandle CopyToMemory(OidCollection values) {
+            var items = values.OfType<Oid>().Select(i => i.Value).ToArray();
+            var n = items.Length*IntPtr.Size;
+            var offset = n;
+            foreach (var i in items) {
+                n += i.Length + 1;
+                }
+            var r = LocalMemoryHandle.Alloc(n);
+            var p = (IntPtr)r;
+            var c = p;
+            for (var i = 0; i < items.Length; i++) {
+                *(IntPtr*)(void*)c = p + offset;
+                for (var j = 0; j < items[i].Length; j++) {
+                    *(Byte*)(p + offset) = (Byte)items[i][j];
+                    ++offset;
+                    }
+                *(Byte*)(p + offset) = 0;
+                ++offset;
+                c += IntPtr.Size;
+                }
+            return r;
+            }
+        #endregion
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -6,5 +7,6 @@ namespace BinaryStudio.Security.Cryptography
         {
         IntPtr Handle { get; }
         String Container { get; }
+        IX509Certificate Certificate { get; }
         }
     }

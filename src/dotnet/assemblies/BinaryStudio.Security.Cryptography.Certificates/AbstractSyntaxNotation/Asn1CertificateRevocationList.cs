@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Xml;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
@@ -12,34 +15,39 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     public sealed class Asn1CertificateRevocationList : Asn1LinkObject
         {
-        private String _thumbprint;
+        private String ThumbprintProperty;
+        private static Int32 gref;
+        private Asn1CertificateRevocationListEntry[] entries = EmptyArray<Asn1CertificateRevocationListEntry>.Value;
+        private Asn1CertificateExtension[] extensions = EmptyArray<Asn1CertificateExtension>.Value;
 
         public DateTime  EffectiveDate { get; }
         public DateTime? NextUpdate { get; }
-        public Asn1RelativeDistinguishedNameSequence Issuer { get; }
-        public X509AlgorithmIdentifier SignatureAlgorithm { get; }
+        public Asn1RelativeDistinguishedNameSequence Issuer { get;private set; }
+        public X509AlgorithmIdentifier SignatureAlgorithm { get;private set; }
         public Int32 Version { get; }
-        public IList<Asn1CertificateRevocationListEntry> Entries { get; }
-        public Asn1CertificateExtensionCollection Extensions { get; }
-        public Asn1BitString Signature { get; }
+        public IList<Asn1CertificateRevocationListEntry> Entries { get { return entries; }}
+        public Asn1CertificateExtensionCollection Extensions { get { return new Asn1CertificateExtensionCollection(extensions); }}
+        public Asn1BitString Signature { get;private set; }
         public String Country { get; }
 
         public String Thumbprint { get {
-            if (_thumbprint == null) {
+            if (ThumbprintProperty == null) {
                 using (var engine = SHA1.Create())
                 using(var output = new MemoryStream()) {
-                    UnderlyingObject.Write(output);
+                    UnderlyingObject.WriteTo(output);
                     output.Seek(0, SeekOrigin.Begin);
-                    _thumbprint = engine.ComputeHash(output).ToString("X");
+                    ThumbprintProperty = engine.ComputeHash(output).ToString("x");
                     }
                 }
-            return _thumbprint;
+            return ThumbprintProperty;
             }}
 
         public Asn1CertificateRevocationList(Asn1Object o)
             : base(o)
             {
+            Interlocked.Increment(ref gref);
             State |= ObjectState.Failed;
+            State &= ~ObjectState.DisposeUnderlyingObject;
             if (o is Asn1Sequence u)
                 {
                 if (u.Count == 3)
@@ -48,11 +56,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         (u[1] is Asn1Sequence) &&
                         (u[2] is Asn1BitString))
                         {
-                        Extensions = new Asn1CertificateExtensionCollection();
                         Version = (Int32)(Asn1Integer)u[0][0];
                         SignatureAlgorithm = new X509AlgorithmIdentifier((Asn1Sequence)o[0][1]);
                         Issuer = new Asn1RelativeDistinguishedNameSequence(o[0][2].
-                            Select(j => new KeyValuePair<Asn1ObjectIdentifier, Object>(
+                            Select(j => new KeyValuePair<Asn1ObjectIdentifier, String>(
                                 (Asn1ObjectIdentifier)j[0][0], j[0][1].ToString())));
                         EffectiveDate = (Asn1Time)o[0][3];
                         var i = 4;
@@ -60,24 +67,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             NextUpdate = (Asn1Time)o[0][4];
                             i++;
                             }
-                        Entries = new Asn1CertificateRevocationListEntry[0];
                         if (o[0][i] is Asn1Sequence) {
                             var r = new List<Asn1CertificateRevocationListEntry>();
                             foreach (var e in o[0][i]) {
                                 r.Add(new Asn1CertificateRevocationListEntry(e));
                                 }
-                            Entries = r;
+                            entries = r.ToArray();
                             i++;
                             }
                         if (o[0][i] is Asn1ContextSpecificObject) {
                             var specific = (Asn1ContextSpecificObject)o[0][i];
                             if (specific.Type == 0) {
-                                Extensions = new Asn1CertificateExtensionCollection(o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToList());
+                                extensions = o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToArray();
                                 }
                             }
                         Signature = (Asn1BitString)o[2];
                         Country = GetCountry(Issuer);
                         State &= ~ObjectState.Failed;
+                        State |= ObjectState.DisposeUnderlyingObject;
                         }
                     }
                 }
@@ -97,7 +104,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #endregion
 
         public String FriendlyName { get {
-            var K = ((Asn1CertificateAuthorityKeyIdentifierExtension)Extensions.FirstOrDefault(i => i is Asn1CertificateAuthorityKeyIdentifierExtension))?.KeyIdentifier?.ToString("FL");
+            var K = ((CertificateAuthorityKeyIdentifier)Extensions.FirstOrDefault(i => i is CertificateAuthorityKeyIdentifier))?.KeyIdentifier?.ToString("FL");
             if (String.IsNullOrWhiteSpace(K))
                 {
                 return (NextUpdate != null)
@@ -143,6 +150,49 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return source.TryGetValue("2.5.4.6", out var r)
                 ? r.ToString().ToLower()
                 : null;
+            }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Interlocked.Decrement(ref gref);
+                lock (this)
+                    {
+                    Dispose(ref entries);
+                    Dispose(ref extensions);
+                    Issuer = null;
+                    Signature = null;
+                    SignatureAlgorithm = null;
+                    }
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
+                }
+            }
+
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("CertificateRevocationList");
+            if (!String.IsNullOrWhiteSpace(Country)) { writer.WriteAttributeString(nameof(Country), Country); }
+            writer.WriteAttributeString(nameof(EffectiveDate), EffectiveDate.ToString("O"));
+            if (NextUpdate != null) { writer.WriteAttributeString(nameof(NextUpdate), NextUpdate.Value.ToString("O")); }
+            writer.WriteAttributeString(nameof(Thumbprint), Thumbprint);
+            if ((Issuer != null) && (Issuer.Count > 0)) {
+                writer.WriteStartElement("CertificateRevocationList.Issuer");
+                Issuer.WriteXml(writer);
+                writer.WriteEndElement();
+                }
+            if (!IsNullOrEmpty(Extensions)) {
+                writer.WriteStartElement(nameof(Extensions));
+                foreach (var extension in Extensions.OfType<Asn1CertificateExtension>()){
+                    extension.WriteXml(writer);
+                    }
+                writer.WriteEndElement();
+                }
+            writer.WriteEndElement();
             }
         }
     }

@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.Interchange
             if (other == null) { return false; }
             var x = other.Select(i => new KeyValuePair<String,String>(i.Key.ToString(), i.Value.ToString())).OrderBy(i => i.Key).ToArray();
             var y = RelativeDistinguishedNameSequenceMapping.
-                Select(i => new KeyValuePair<String,String>(i.RelativeDistinguishedName.ObjectIdentifier.Value, i.RelativeDistinguishedName.String.Value)).OrderBy(i=> i.Key).ToArray();
+                Select(i => new KeyValuePair<String,String>(i.RelativeDistinguishedName.ObjectIdentifier?.Value, i.RelativeDistinguishedName.String?.Value)).OrderBy(i=> i.Key).ToArray();
             if (x.Length != y.Length) { return false; }
             for (var i = 0; i < x.Length; i++) {
                 if (x[i].Key != y[i].Key) { return false; }

@@ -22,7 +22,7 @@
   <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="{x:Type MenuItem}">
     <Decorator SnapsToDevicePixels="True">
       <Decorator.Resources>
-        <c:SubtractionConverter x:Key="SubtractionConverter" Subtrahend="2"/>
+        <u:SubtractionConverter x:Key="SubtractionConverter" Subtrahend="2"/>
       </Decorator.Resources>
       <Grid>
         <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade"

@@ -51,14 +51,23 @@
   <SolidColorBrush x:Key="AccentPictureOutlineBrushKey"               Color="#FF414141"/>
   <SolidColorBrush x:Key="AccentLightGreenBrushKey"                   Color="#FF75e582"/>
   <SolidColorBrush x:Key="AccentLightBlueBrushKey"                    Color="#FFc4dafb"/>
+  <SolidColorBrush x:Key="AccentRedBrushKey"                          Color="#FFA1260D"/>
   <SolidColorBrush x:Key="AccentBlueBrushKey"                         Color="#ff1c97ea"/>
   <SolidColorBrush x:Key="GlyphButtonHoverBackgroundBrushKey"         Color="#ff3e3e40"/>
   <SolidColorBrush x:Key="GlyphButtonBorderBrushKey"                  Color="#ff3e3e40"/>
   <SolidColorBrush x:Key="GlyphForegroundBrushKey"                    Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="DockSiteAdornerForegroundBrushKey"          Color="#ff007acc"/>
+  <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrushKey"     Color="#FF4b4b4d"/>
+  <SolidColorBrush x:Key="DataGridNullTextBrushKey"                   Color="#FF908b02"/>
+  <SolidColorBrush x:Key="ButtonBackgroundBrushKey"                   Color="#FF1b1b1c"/>
+  <SolidColorBrush x:Key="ButtonBorderBrushKey"                       Color="#ff555555"/>
+  <SolidColorBrush x:Key="ButtonMouseOverBorderBrushKey"              Color="#ff007acc"/>
+  <SolidColorBrush x:Key="ButtonMouseOverBackgroundBrushKey"          Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="ButtonDefaultBackgroundBrushKey"            Color="#ff3f3f46"/>
+  <SolidColorBrush x:Key="ButtonPressedBackgroundBrushKey"            Color="#ff007acc"/>
+  <Color x:Key="ActiveGlowColorKey">#FF3399FF</Color>
+  <Color x:Key="InactiveGlowColorKey">#ff3e3e40</Color>
   <Color x:Key="ControlDarkDarkColorKey">#FF3F3F46</Color>
   <Color x:Key="ControlLightColorKey">#FF1D1D20</Color>
-  <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrushKey"     Color="#FF4b4b4d"/>
-  <!--<Color x:Key="ControlDarkDarkColorKey">Red</Color>-->
 </ResourceDictionary>
   

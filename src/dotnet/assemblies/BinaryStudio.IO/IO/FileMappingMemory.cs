@@ -41,6 +41,13 @@ namespace BinaryStudio.IO
                 : null;
             }
 
+        public static unsafe explicit operator IntPtr(FileMappingMemory source)
+            {
+            return (source.Handle != null)
+                ? (IntPtr)(void*)source.Handle
+                : IntPtr.Zero;
+            }
+
         [DllImport("kernel32.dll", SetLastError = true)][SecurityCritical, SuppressUnmanagedCodeSecurity] private static extern ViewOfFileHandle MapViewOfFile(FileMappingHandle filemappingobject, FileMappingAccess desiredaccess, UInt32 fileoffsethigh, UInt32 fileoffsetlow, IntPtr numberofbytestomap);
 
         public override String ToString()

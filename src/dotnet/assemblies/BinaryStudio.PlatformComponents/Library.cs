@@ -16,16 +16,31 @@ namespace BinaryStudio.PlatformComponents
         protected IDictionary<String, IntPtr> Entries { get; }
         protected SharedObject SharedObject { get;private set; }
 
-        private String FilePath { get; }
+        protected virtual String FilePath { get; }
         public  String FileName { get; }
 
+        #region M:Dispose<T>([Ref]T)
+        protected void Dispose<T>(ref T o)
+            where T: class, IDisposable
+            {
+            if (o != null) {
+                o.Dispose();
+                o = null;
+                }
+            }
+        #endregion
         #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing) {
             if (disposing) {
                 }
             }
         #endregion
         #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
             {
             Dispose(true);
@@ -33,19 +48,25 @@ namespace BinaryStudio.PlatformComponents
             }
         #endregion
         #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
         ~Library()
             {
             Dispose(false);
             }
         #endregion
 
+        protected Library()
+            {
+            Entries = new Dictionary<String, IntPtr>();
+            }
+
         protected Library(String filepath)
+            :this()
             {
             if (filepath == null) { throw new ArgumentNullException(nameof(filepath)); }
             if (String.IsNullOrWhiteSpace(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
             FilePath = filepath;
             FileName = Path.GetFileName(FilePath);
-            Entries = new Dictionary<String, IntPtr>();
             }
 
         [DllImport("version.dll",  CharSet = CharSet.Auto,    SetLastError = true)] private static extern Int32 GetFileVersionInfoSize(String filename, out IntPtr handle);
@@ -53,7 +74,7 @@ namespace BinaryStudio.PlatformComponents
         [DllImport("version.dll",  CharSet = CharSet.Auto,    SetLastError = true)] private static extern unsafe Boolean VerQueryValue([MarshalAs(UnmanagedType.LPArray)] Byte[] block, String query, out VS_FIXEDFILEINFO* fileinfo, out Int32 size);
 
         #region M:EnsureCore
-        private void EnsureCore() {
+        protected virtual void EnsureCore() {
             if (SharedObject == null) {
                 SharedObject = SharedObject.Create(FilePath);
                 }
@@ -62,12 +83,14 @@ namespace BinaryStudio.PlatformComponents
         #region M:EnsureProcedure<T>(String,[Ref]T):T
         protected T EnsureProcedure<T>(String name, ref T value) {
             if (value == null) {
-                EnsureCore();
-                if (!Entries.TryGetValue(name, out var r)) {
-                    r = SharedObject.Get(name);
-                    Entries.Add(name, r);
+                lock(this) {
+                    EnsureCore();
+                    if (!Entries.TryGetValue(name, out var r)) {
+                        r = SharedObject.Get(name);
+                        Entries.Add(name, r);
+                        }
+                    value = (T)(Object)Marshal.GetDelegateForFunctionPointer(r, typeof(T));
                     }
-                value = (T)(Object)Marshal.GetDelegateForFunctionPointer(r, typeof(T));
                 }
             return value;
             }
@@ -284,7 +307,7 @@ namespace BinaryStudio.PlatformComponents
             }
         #endregion
         #region M:GetVersion(String)
-        private static unsafe Version GetVersion(String filepath) {
+        public static unsafe Version GetVersion(String filepath) {
             switch (Environment.OSVersion.Platform)
                 {
                 case PlatformID.Win32S:

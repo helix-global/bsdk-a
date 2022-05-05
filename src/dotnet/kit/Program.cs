@@ -12,10 +12,14 @@ using System.Xml.Serialization;
 using BinaryStudio.PortableExecutable;
 using BinaryStudio.Serialization;
 using BinaryStudio.Diagnostics;
+using BinaryStudio.Diagnostics.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using kit;
+using log4net;
 using Newtonsoft.Json;
-using Operations;
 using Options;
+using srv;
 #if USE_WINDOWS_API_CODE_PACK
 using Microsoft.WindowsAPICodePack.Taskbar;
 #endif
@@ -25,6 +29,7 @@ namespace Kit
     {
     public class Program
         {
+        private static readonly ILogger logger = new ClientLogger(LogManager.GetLogger(nameof(Program)));
         #if USE_WINDOWS_API_CODE_PACK
         internal static TaskbarManager taskbar = TaskbarManager.Instance;
         #endif
@@ -58,6 +63,12 @@ namespace Kit
                 }
             }
         #endregion
+        protected static void Validate(Boolean status) {
+            if (!status) {
+                throw PlatformContext.GetExceptionForHR(Marshal.GetLastWin32Error());
+                }
+            }
+
         internal static void InternalLoad(String[] args)
             {
             try
@@ -215,12 +226,64 @@ namespace Kit
 
         [MTAThread]
         internal static void Main(String[] args) {
-            Int32 exitcode;
-            using (var client = new LocalClient())
+            var color = Console.ForegroundColor;
+            try
                 {
-                exitcode = client.Main(args);
+                if (PlatformContext.IsParentProcess("kit.exe")) {
+                    FreeConsole();
+                    Validate(AttachConsole(-1));
+                    }
+
+                Int32 exitcode;
+                using (var client = PlatformContext.IsRunningUnderServiceControl
+                        ? (ILocalClient)(new LocalService())
+                        : (ILocalClient )(new LocalClient()))
+                    {
+                    //Console.CancelKeyPress += client.OnCancelKeyPress;
+                    exitcode = client.Main(args);
+                    //Console.CancelKeyPress -= client.OnCancelKeyPress;
+                    }
+                Environment.ExitCode = exitcode;
                 }
-            Environment.ExitCode = exitcode;
+            catch (ThreadInterruptedException)
+                {
+                Console.WriteLine("{Break}");
+                Environment.ExitCode = -1;
+                }
+            catch (Exception e)
+                {
+                Console.WriteLine(e);
+                logger.Log(LogLevel.Error, e);
+                Environment.ExitCode = -1;
+                }
+            finally
+                {
+                Console.ForegroundColor = color;
+                }
+            }
+
+        private static String JsonSerialize(Object o) {
+            var r = new StringBuilder();
+            using (var output = new StringWriter(r)) {
+                using (var writer = new JsonTextWriter(output){
+                        Formatting = Formatting.Indented,
+                        Indentation = 2,
+                        IndentChar = ' '
+                        })
+                    {
+                    var serializer = new JsonSerializer();
+                    if (o is IJsonSerializable serializable)
+                        {
+                        serializable.WriteJson(writer, serializer);
+                        }
+                    else
+                        {
+                        serializer.Serialize(writer, o);
+                        }
+                    writer.Flush();
+                    }
+                }
+            return r.ToString();
             }
 
         #region M:GetFolderAbsolutePath(String):String
@@ -247,6 +310,7 @@ namespace Kit
         #endregion
 
         [DllImport("kernel32.dll")] private static extern IntPtr GetConsoleWindow();
+        
 
         public static IntPtr WindowHandle { get {
             var r = GetConsoleWindow();
@@ -303,5 +367,16 @@ namespace Kit
         [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Ansi)] private static extern IntPtr GetProcAddress(IntPtr module, String procedure);
         [DllImport("kernel32.dll")] private static extern Int32 GetProcessId(IntPtr handle);
         [DllImport("kernel32.dll")] private static extern IntPtr GetCurrentProcess();
+        [DllImport("kernel32.dll")] private static extern Boolean AttachConsole(Int32 process);
+        [DllImport("kernel32.dll")] private static extern Boolean FreeConsole();
+        [DllImport("kernel32.dll")] private static extern Boolean AllocConsole();
+        [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe UInt32 NtQueryInformationProcess(IntPtr process, Int32 iclass, void* pi, UInt32 pisz, out UInt32 r);
+
+        private const Int32 ProcessBasicInformation = 0;
+        private const Int32 ProcessDebugPort = 7;
+        private const Int32 ProcessWow64Information = 26;
+        private const Int32 ProcessImageFileName = 27;
+        private const Int32 ProcessBreakOnTermination = 29;
+        private const Int32 PROCESS_QUERY_INFORMATION          = 0x0400;
         }
     }

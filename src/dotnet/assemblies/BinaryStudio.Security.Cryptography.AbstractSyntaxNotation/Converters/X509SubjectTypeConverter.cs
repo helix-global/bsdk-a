@@ -28,7 +28,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
         public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType) {
             if (value is X509SubjectType) {
                 if (destinationType == typeof(String)) {
-                    return ToString((X509SubjectType)value, PlatformSettings.DefaultCulture);
+                    return ToString((X509SubjectType)value, PlatformContext.DefaultCulture);
                     }
                 }
             return value;
@@ -51,7 +51,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
             }
 
         public static String ToString(X509SubjectType value) {
-            return ToString(value, PlatformSettings.DefaultCulture);
+            return ToString(value, PlatformContext.DefaultCulture);
             }
 
         #if FEATURE_WPF_VALUE_CONVERTER

@@ -88,6 +88,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}{1}---&amp;gt; (Внутреннее исключение #{2}) {3}{4}{5}.
+        /// </summary>
+        internal static string AggregateException {
+            get {
+                return ResourceManager.GetString("AggregateException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A CTL used to create this chain did not have a valid signature..
         /// </summary>
         internal static string CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID {

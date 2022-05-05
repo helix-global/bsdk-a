@@ -7,11 +7,12 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Xml;
 using System.Xml.Serialization;
 using BinaryStudio.DataProcessing;
-using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -20,22 +21,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [DebuggerDisplay(@"\{{" + nameof(ToString) + @"(),nq}\}")]
     [TypeConverter(typeof(ObjectTypeConverter))]
     [XmlRoot("Extension")]
-    public class Asn1CertificateExtension : Asn1LinkObject
+    public class Asn1CertificateExtension : Asn1LinkObject, IX509CertificateExtension
         {
-        [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(Identifier))] public Asn1ObjectIdentifier Identifier { get; }
+        [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(Identifier))] public Asn1ObjectIdentifier Identifier { get;private set; }
         [Asn1DisplayName(nameof(Asn1CertificateExtension) + "." + nameof(IsCritical))][TypeConverter(typeof(X509BooleanConverter))] public Boolean IsCritical { get; }
 
-        [Browsable(false)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
-        [Browsable(false)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
-        [Browsable(false)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
-        [Browsable(false)] public override Int32 Count { get { return base.Count; }}
-        [Browsable(false)] public override Int64 Size { get { return base.Size; }}
-        [Browsable(false)] public override Int64 Length { get { return base.Length; }}
-        [Browsable(false)] public override Int64 Offset { get { return base.Offset; }}
-        [Browsable(false)] public override Asn1ObjectClass Class { get { return base.Class; } }
-        [Browsable(false)] public override ReadOnlyMappingStream Content { get { return base.Content; }}
-        [Browsable(false)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
-        [Browsable(false)] public Asn1OctetString Body { get; }
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get;private set; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IObjectIdentifier IX509CertificateExtension.Identifier { get { return Identifier; }}
 
         protected internal Asn1CertificateExtension(Asn1Object source)
             : base(source)
@@ -77,16 +74,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         public static Asn1CertificateExtension From(Asn1CertificateExtension source) {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
-            EnsureFactory();
-            using (ReadLock(syncobject)) {
-                if (types.TryGetValue(source.Identifier.ToString(), out var type)) {
-                    if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
-                        var r = (Asn1CertificateExtension)Activator.CreateInstance(type, source);
-                        return r;
+            try
+                {
+                EnsureFactory();
+                using (ReadLock(syncobject)) {
+                    if (types.TryGetValue(source.Identifier.ToString(), out var type)) {
+                        if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
+                            var r = (Asn1CertificateExtension)Activator.CreateInstance(type, source);
+                            return r;
+                            }
                         }
                     }
+                return source;
                 }
-            return source;
+            catch (Exception e)
+                {
+                e.Data["Identifier"] = source.Identifier.ToString();
+                e.Data["IsCritical"] = source.IsCritical;
+                throw;
+                }
             }
 
         #region M:EnsureFactory
@@ -106,6 +112,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             }
         #endregion
 
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer)
+            {
+            writer.WriteStartElement("Extension");
+            writer.WriteAttributeString(nameof(Identifier), Identifier.ToString());
+            writer.WriteAttributeString(nameof(IsCritical), IsCritical.ToString());
+            writer.WriteEndElement();
+            }
+
         public override void WriteJson(JsonWriter writer, JsonSerializer serializer) {
             throw new NotImplementedException(Identifier.ToString());
             using (writer.ObjectScope(serializer)) {
@@ -113,6 +129,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(serializer, nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(serializer, nameof(IsCritical), IsCritical);
+                }
+            }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing)
+            {
+            if (!State.HasFlag(ObjectState.Disposed)) {
+                Identifier = null;
+                Body = null;
+                base.Dispose(disposing);
+                State |= ObjectState.Disposed;
                 }
             }
         }

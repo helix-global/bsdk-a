@@ -7,6 +7,7 @@ namespace kit.Options.Descriptors
     {
     internal class OutputTypeOptionDescriptor : OptionDescriptor
         {
+        public override String OptionName { get { return "output-type"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
