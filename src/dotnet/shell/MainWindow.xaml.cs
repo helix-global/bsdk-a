@@ -73,6 +73,7 @@ namespace shell
         private void Initialize()
             {
             //LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-04-02-17-42-30.db");
+            docmanager.AddCertificateStoreManagement();
             }
 
         private void LoadFrom(String filename) {

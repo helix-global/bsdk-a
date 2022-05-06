@@ -7,7 +7,7 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
     {
     [TemplatePart(Name = "PART_TabPanel", Type = typeof(ReorderTabPanel))]
     [TemplatePart(Name = "PART_ContentPanel", Type = typeof(FrameworkElement))]
-    [TemplatePart(Name = "PART_TabPopupButton", Type = typeof(DropDownButton))]
+    [TemplatePart(Name = "PART_TabPopupButton", Type = typeof(GlyphDropDownButton))]
     public class DocumentGroupControl : GroupControl
         {
         private UInt32 _lastAccessOrder = 1;
@@ -95,7 +95,7 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
 
         public void ShowTabListPopup()
             {
-            var templateChild = GetTemplateChild("PART_TabPopupButton") as DropDownButton;
+            var templateChild = GetTemplateChild("PART_TabPopupButton") as GlyphDropDownButton;
             if (templateChild == null)
                 return;
             templateChild.ShowDropDown();

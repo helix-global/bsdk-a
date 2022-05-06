@@ -24,6 +24,15 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Royale">
+      <Private>true</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>

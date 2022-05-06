@@ -8,6 +8,7 @@ using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
+using BinaryStudio.Security.Cryptography.PlatformUI.Controls;
 using BinaryStudio.Security.Cryptography.PlatformUI.Views;
 
 namespace shell
@@ -144,6 +145,14 @@ namespace shell
             Add(source);
             }
         #endregion
+
+        public void AddCertificateStoreManagement()
+            {
+            Add(new View<CertificateStoreManagementControl>(new CertificateStoreManagementControl())
+                {
+                Title = "Certificates"
+                });
+            }
 
         #region M:ReadCrt(Asn1Object):Asn1Certificate
         private static Asn1Certificate ReadCrt(Asn1Object o) {

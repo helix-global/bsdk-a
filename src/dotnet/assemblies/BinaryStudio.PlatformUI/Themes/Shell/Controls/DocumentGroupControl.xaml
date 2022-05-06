@@ -48,7 +48,7 @@
                 </e:DockTarget>
                 <DockPanel Margin="0,0,0,3" LastChildFill="False" Grid.Row="0" Grid.Column="1"
                            d:DataContext="{d:DesignInstance u:ViewGroup}">
-                  <e:DropDownButton x:Name="PART_TabPopupButton" ClickMode="Press" Width="14" Height="14" DockPanel.Dock="Bottom"
+                  <e:GlyphDropDownButton x:Name="PART_TabPopupButton" ClickMode="Press" Width="14" Height="14" DockPanel.Dock="Bottom"
                                     HoverBackground="{DynamicResource ControlDarkBrushKey}"
                                     HoverBorderBrush="{DynamicResource ControlDarkBrushKey}"
                                     PressedBackground="{DynamicResource ControlDarkBrushKey}"
@@ -56,18 +56,18 @@
                                     HoverBorderThickness="1"
                                     PressedBorderThickness="1"
                                     IsChecked="{Binding Path=ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}">
-                    <e:DropDownButton.Resources>
+                    <e:GlyphDropDownButton.Resources>
                       <CollectionViewSource x:Key="ContextMenuItemSource" Source="{Binding Path=VisibleChildren}">
                         <CollectionViewSource.SortDescriptions>
                           <c:SortDescription Direction="Ascending" PropertyName="Title" />
                         </CollectionViewSource.SortDescriptions>
                       </CollectionViewSource>
-                    </e:DropDownButton.Resources>
+                    </e:GlyphDropDownButton.Resources>
                     <StackPanel Orientation="Vertical" Width="8" Height="8">
                       <Path Fill="{DynamicResource WindowTextBrushKey}" Width="8" Height="4" Data="M0,0L8,0 8,2 0,2 0,0" SnapsToDevicePixels="True" Visibility="{Binding ElementName=PART_TabPanel, Path=HasOverflowItems, Converter={StaticResource BooleanToHiddenVisibilityConverter}}" Name="DropDownButtonBar"/>
                       <Path Fill="{DynamicResource WindowTextBrushKey}" Width="8" Height="4" Data="F1M0,0L4,4 8,0 0,0z"  SnapsToDevicePixels="True" />
                     </StackPanel>
-                    <e:DropDownButton.ContextMenu>
+                    <e:GlyphDropDownButton.ContextMenu>
                       <ContextMenu DataContext="{StaticResource ContextMenuItemSource}" IsTextSearchEnabled="True" TextSearch.TextPath="Title" ItemsSource="{Binding}">
                         <ContextMenu.ItemContainerStyle>
                           <Style TargetType="{x:Type MenuItem}">
@@ -83,8 +83,8 @@
                           </DataTemplate>
                         </ContextMenu.ItemTemplate>
                       </ContextMenu>
-                    </e:DropDownButton.ContextMenu>
-                  </e:DropDownButton>
+                    </e:GlyphDropDownButton.ContextMenu>
+                  </e:GlyphDropDownButton>
                 </DockPanel>
                 <Border Name="PART_ContentPanel" Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                   <ContentPresenter Name="PART_SelectedContentHost"

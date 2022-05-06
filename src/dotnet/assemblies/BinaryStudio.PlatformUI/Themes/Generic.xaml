@@ -1,13 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Controls"
-    xmlns:p="clr-namespace:BinaryStudio.PlatformUI.Controls.Primitives"
-    xmlns:m="clr-namespace:BinaryStudio.PlatformUI.Controls.Markups"
-    xmlns:u="clr-namespace:BinaryStudio.PlatformUI"
-    xmlns:s="clr-namespace:System;assembly=mscorlib"
-    xmlns:r="clr-namespace:BinaryStudio.PlatformUI.Properties"
-    xmlns:c="clr-namespace:BinaryStudio.PlatformUI.Converters">
+    xmlns:p="clr-namespace:BinaryStudio.PlatformUI.Controls.Primitives">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/SplitterItemsControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/SplitterGrip.xaml"/>

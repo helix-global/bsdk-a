@@ -5,8 +5,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
 namespace BinaryStudio.PlatformUI.Shell.Controls {
-    public class DropDownButton : GlyphButton {
-        public DropDownButton() {
+    public class GlyphDropDownButton : GlyphButton {
+        public GlyphDropDownButton() {
             ContextMenuOpening += OnContextMenuOpening;
             Click += OnClick;
             SetResourceReference(StyleProperty, typeof(GlyphButton));
