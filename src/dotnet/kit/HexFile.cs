@@ -25,7 +25,12 @@ internal class HexFile : IFileService
             }
         }
 
-    public String FileName { get { return $"{IdentifyDocumentId}.hex"; }}
+    public String FileName { get {
+        return (String.IsNullOrWhiteSpace(EFName))
+            ? $"{IdentifyDocumentId}.hex"
+            : $"{IdentifyDocumentId}{{{EFName}}}.hex";
+        }}
+
     public String FullName { get { return Path.Combine(Folder,FileName); }}
     public String DocumentCategoryName { get; set; }
     public String CountryName { get; set; }
@@ -41,15 +46,17 @@ internal class HexFile : IFileService
     public String DataTypeId { get; set; }
     public String Order { get; set; }
     public String Dense { get; set; }
+    public Int32? XmlSize { get;set; }
+    public String EFName { get;set; }
 
     Byte[] IFileService.ReadAllBytes()
         {
-        return Body;
+        return Body ?? new Byte[0];
         }
 
     Stream IFileService.OpenRead()
         {
-        return new MemoryStream(Body);
+        return new MemoryStream(Body ?? new Byte[0]);
         }
 
     void IFileService.MoveTo(String target)

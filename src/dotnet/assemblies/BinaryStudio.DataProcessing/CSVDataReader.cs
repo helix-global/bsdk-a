@@ -333,6 +333,7 @@ namespace BinaryStudio.DataProcessing
         /// <returns>true if there are more rows; otherwise, false.</returns>
         public Boolean Read() {
             if (Reader != null) {
+                if (Reader.Peek() == -1) { return false; }
                 if (!Flags.HasFlag(CSVDataReaderFlags.HasMultiLineValue))
                     {
                     String line;
@@ -415,20 +416,31 @@ namespace BinaryStudio.DataProcessing
                                     {
                                     DataRow[fieldindex] = ToObject(builder.ToString(), typeof(String));
                                     builder.Clear();
-                                    break;
+                                    fieldindex++;
+                                    continue;
                                     }
                                 }
                             else
                                 {
+                                if (fieldindex == FieldCount - 1) {
+                                    if (c == '\r') {
+                                        if (Reader.Peek() == '\n') {
+                                            Reader.Read();
+                                            }
+                                        DataRow[fieldindex] = ToObject(builder.ToString(), typeof(String));
+                                        break;
+                                        }
+                                    }
                                 builder.Append((char)c);
                                 }
                             }
                         if (c == -1) {
                             DataRow[fieldindex] = builder.ToString();
-                            break;
+                            return (fieldindex == FieldCount - 1);
                             }
                         fieldindex++;
                         }
+                    return true;
                     }
                 }
             return false;
