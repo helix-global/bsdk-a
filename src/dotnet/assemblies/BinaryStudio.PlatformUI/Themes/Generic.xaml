@@ -43,5 +43,6 @@
 
   <Style TargetType="{x:Type p:RangeSelectionTrackingControl}">
   </Style>
+
 </ResourceDictionary>
 

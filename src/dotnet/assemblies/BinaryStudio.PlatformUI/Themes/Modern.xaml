@@ -5,6 +5,7 @@
     <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Classic;component/Themes/Classic.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/ProgressBar.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/DropDownButton.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/DataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TreeView.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/ScrollViewer.xaml"/>
