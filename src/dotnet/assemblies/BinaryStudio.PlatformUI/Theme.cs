@@ -42,9 +42,14 @@ namespace BinaryStudio.PlatformUI
             }
 
         public static Theme[] Themes = {
-            new Theme("NormalColor", "Modern.NormalColor.xaml"),
-            new Theme("Dark",        "Modern.Dark.xaml"),
-            new Theme("Light",       "Modern.Light.xaml"),
+            new Theme("Classic",            "Classic.xaml"),
+            new Theme("Luna.HomeStead",     "Luna.HomeStead.xaml"),
+            new Theme("Luna.Metallic",      "Luna.Metallic.xaml"),
+            new Theme("Luna.NormalColor",   "Luna.NormalColor.xaml"),
+            new Theme("Royale.NormalColor", "Royale.NormalColor.xaml"),
+            new Theme("NormalColor",        "Modern.NormalColor.xaml"),
+            new Theme("Dark",               "Modern.Dark.xaml"),
+            new Theme("Light",              "Modern.Light.xaml"),
             };
 
         public static event EventHandler ThemeApply;
@@ -71,6 +76,19 @@ namespace BinaryStudio.PlatformUI
                     ThemeApply(source, EventArgs.Empty);
                     }
                 }
+            }
+        #endregion
+        #region M:Apply(String)
+        public static void Apply(String source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (String.IsNullOrWhiteSpace(source)) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            foreach (var theme in Themes) {
+                if (String.Equals(theme.Name, source, StringComparison.OrdinalIgnoreCase)) {
+                    Apply(theme);
+                    return;
+                    }
+                }
+            throw new ArgumentOutOfRangeException(nameof(source));
             }
         #endregion
         #region M:LoadResourceDictionary(String):ResourceDictionary
