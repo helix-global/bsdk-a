@@ -89,9 +89,9 @@ internal class HexCSVGroupService : IDirectoryService
                     var Order                = ToString(reader,"Ord");
                     var Dense                = ToString(reader,"DENSE");
                     var XmlSize              = ToInt32(reader,"XML_SIZE");
-                    var CHIP_1D              = ToArray(ToString(reader["CHIP_1D"]));
-                    var CHIP_77              = ToArray(ToString(reader["CHIP_77"]));
-                    var CHIP_E040            = ToArray(ToString(reader["CHIP_E040"]));
+                    var CHIP_1D              = ToArray(ToString(reader,"CHIP_1D"));
+                    var CHIP_77              = ToArray(ToString(reader,"CHIP_77"));
+                    var CHIP_E040            = ToArray(ToString(reader,"CHIP_E040"));
 
                     var r = new HexFile(CHIP_1D,
                         IdentifyDocumentId, fileindex,

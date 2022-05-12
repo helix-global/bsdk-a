@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BinaryStudio.PlatformUI.Controls;
 using Microsoft.Win32;
 
 namespace BinaryStudio.PlatformUI
@@ -19,6 +20,7 @@ namespace BinaryStudio.PlatformUI
     public class Theme : DependencyObject
         {
         private readonly IDictionary<Type, Style> styles = new Dictionary<Type, Style>();
+        private static ResourceKey ToolBarDropDownButtonStyleKeyInternal;
 
         #region P:CurrentTheme:Theme
         public static Theme CurrentTheme { get; private set; }
@@ -46,6 +48,9 @@ namespace BinaryStudio.PlatformUI
             };
 
         public static event EventHandler ThemeApply;
+        public static ResourceKey ToolBarDropDownButtonStyleKey { get{
+            return ToolBarDropDownButtonStyleKeyInternal = ToolBarDropDownButtonStyleKeyInternal??new ComponentResourceKey(typeof(DropDownButton), nameof(ToolBarDropDownButtonStyleKey));
+            }}
 
         #region M:Apply
         public static void Apply() {
@@ -225,7 +230,6 @@ namespace BinaryStudio.PlatformUI
 
         static Theme()
             {
-
             }
         }
     }

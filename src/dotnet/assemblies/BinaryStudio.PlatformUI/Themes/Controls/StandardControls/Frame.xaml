@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Media.Effects">
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Media.Effects"
+                    xmlns:u="clr-namespace:BinaryStudio.PlatformUI.Controls"
+                    xmlns:p="clr-namespace:BinaryStudio.PlatformUI">
   <Style TargetType="{x:Type Frame}" x:Key="{x:Type Frame}">
     <Setter Property="Template">
       <Setter.Value>
@@ -13,83 +15,15 @@
               </Grid.RowDefinitions>
               <ContentPresenter x:Name="PART_FrameCP" Grid.Row="0" Grid.RowSpan="2"/>
               <ToolBar Grid.Row="0" Visibility="Hidden" x:Name="PART_FrameBT">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                  </Grid.ColumnDefinitions>
-                  <Button IsEnabled="{TemplateBinding CanGoBack}">
-                    <Button.Style>
-                      <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
-                        <Setter Property="BorderBrush" Value="{DynamicResource ControlBrushKey}"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="SnapsToDevicePixels" Value="True"/>
-                        <Setter Property="Padding" Value="2"/>
-                        <Setter Property="Template">
-                          <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                              <Grid>
-                                <Grid.ColumnDefinitions>
-                                  <ColumnDefinition/>
-                                  <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        Background="{TemplateBinding Background}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                        Grid.Column="0">
-                                  <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                    Margin="{TemplateBinding Padding}"
-                                                    x:Name="Content"/>
-                                </Border>
-                                <Border Grid.Column="1" Margin="0,0,0,0"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        Background="{TemplateBinding Background}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                  <Path Data="M0 0 L 2.5 2.5 L 5 0"
-                                        Fill="{DynamicResource ControlTextBrushKey}"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Stroke="{DynamicResource ControlTextBrushKey}"
-                                        StrokeThickness="0.5"
-                                        UseLayoutRounding="True"/>
-                                </Border>
-                              </Grid>
-                              <ControlTemplate.Triggers>
-                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                  <Setter Property="BorderBrush" Value="{DynamicResource HotTrackBrushKey}"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                  <Setter Property="Background" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                  <Setter Property="Background" Value="{DynamicResource HotTrackBrushKey}"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                  <Setter TargetName="Content" Property="Effect">
-                                    <Setter.Value>
-                                      <e:GrayscaleEffect/>
-                                    </Setter.Value>
-                                  </Setter>
-                                </Trigger>
-                              </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                          </Setter.Value>
-                        </Setter>
-                      </Style>
-                    </Button.Style>
-                    <Viewbox Width="16" Height="16">
-                      <Rectangle Width="16" Height="16">
-                        <Rectangle.Fill>
-                          <DrawingBrush Drawing="{DynamicResource PictureBackward}"/>
-                        </Rectangle.Fill>
-                      </Rectangle>
-                    </Viewbox>
-                  </Button>
-                </Grid>
+                <u:DropDownButton Style="{DynamicResource {x:Static p:Theme.ToolBarDropDownButtonStyleKey}}">
+                  <Viewbox Width="16" Height="16">
+                    <Rectangle Width="16" Height="16">
+                      <Rectangle.Fill>
+                        <DrawingBrush Drawing="{DynamicResource PictureBackward}"/>
+                      </Rectangle.Fill>
+                    </Rectangle>
+                  </Viewbox>
+                </u:DropDownButton>
                 <Button IsEnabled="{TemplateBinding CanGoForward}">
                   <Viewbox Width="16" Height="16">
                     <Rectangle Width="16" Height="16">
