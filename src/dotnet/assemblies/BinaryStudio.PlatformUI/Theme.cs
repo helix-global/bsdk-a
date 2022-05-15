@@ -47,6 +47,7 @@ namespace BinaryStudio.PlatformUI
             new Theme("Luna.Metallic",      "Luna.Metallic.xaml"),
             new Theme("Luna.NormalColor",   "Luna.NormalColor.xaml"),
             new Theme("Royale.NormalColor", "Royale.NormalColor.xaml"),
+            new Theme("Aero",               "Aero.NormalColor.xaml"),
             new Theme("NormalColor",        "Modern.NormalColor.xaml"),
             new Theme("Dark",               "Modern.Dark.xaml"),
             new Theme("Light",              "Modern.Light.xaml"),
@@ -59,7 +60,7 @@ namespace BinaryStudio.PlatformUI
 
         #region M:Apply
         public static void Apply() {
-            Apply(Themes[1]);
+            Apply(Themes[0]);
             }
         #endregion
         #region M:Apply(Theme)
@@ -244,6 +245,11 @@ namespace BinaryStudio.PlatformUI
             //        TryDestroyHandle();
             //        }
             //    }
+            }
+
+        public override String ToString()
+            {
+            return Name;
             }
 
         static Theme()

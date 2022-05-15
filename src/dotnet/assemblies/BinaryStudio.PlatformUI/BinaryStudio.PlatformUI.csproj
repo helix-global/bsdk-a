@@ -63,4 +63,12 @@
     <Resource Include="Resources\TopLeft.png" />
     <Resource Include="Resources\TopRight.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Classic\DropDownButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Themes\Classic\PropertyGridControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
 </Project>

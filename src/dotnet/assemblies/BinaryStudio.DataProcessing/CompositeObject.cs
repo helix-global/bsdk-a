@@ -62,22 +62,24 @@ namespace BinaryStudio.DataProcessing
             return TypeDescriptor.GetDefaultProperty(Source.GetType());
             }
         #endregion
-
-        object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
-        {
-            throw new NotImplementedException();
-        }
-
+        #region M:ICustomTypeDescriptor.GetEditor(Type):Object
+        Object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
+            {
+            return TypeDescriptor.GetEditor(Source, editorBaseType);
+            }
+        #endregion
+        #region M:ICustomTypeDescriptor.GetEvents:EventDescriptorCollection
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
-        {
+            {
             throw new NotImplementedException();
-        }
-
+            }
+        #endregion
+        #region M:ICustomTypeDescriptor.GetEvents(Attribute[]):EventDescriptorCollection
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
-        {
+            {
             throw new NotImplementedException();
-        }
-
+            }
+        #endregion
         #region M:ICustomTypeDescriptor.GetProperties:PropertyDescriptorCollection
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties() {
             return ((ICustomTypeDescriptor)this).GetProperties(null);

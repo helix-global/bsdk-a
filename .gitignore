@@ -101,3 +101,6 @@
 /src/dotnet/testing/UnitTests.BinaryStudio.DirectoryServices/obj
 /src/dotnet/testing/UnitTests.BinaryStudio.AbstractSyntaxNotation/bin/Debug/net40
 /src/dotnet/testing/UnitTests.BinaryStudio.AbstractSyntaxNotation/obj
+/src/dotnet/samples/PlatformUISample/bin/Debug/net40
+/src/dotnet/samples/PlatformUISample/obj
+/src/dotnet/samples/PlatformUISample/Controls/Button.xaml

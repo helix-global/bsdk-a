@@ -4,5 +4,9 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Classic;component/Themes/Classic.xaml"/>
     <ResourceDictionary Source="Generic.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Classic/Button.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Classic/DropDownButton.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Classic/Menu.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Classic/PropertyGridControl.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
