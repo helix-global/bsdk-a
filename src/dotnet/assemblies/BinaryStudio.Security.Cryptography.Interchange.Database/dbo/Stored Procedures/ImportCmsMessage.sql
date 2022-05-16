@@ -7,9 +7,10 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[ImportCmsMessage]
   @Key AS NVARCHAR(MAX),
+  @ShortFileIdentifier VARCHAR(50),
   @Body AS XML,
   @Thumbprint AS NVARCHAR(MAX),
-  @Group AS TINYINT,
+  @Group NVARCHAR(50),
   @Force AS BIT
 AS
 BEGIN
@@ -23,23 +24,25 @@ BEGIN
         @ObjectId = [a].[ObjectId]
       FROM [dbo].[CmsMessage] [a]
         INNER JOIN [dbo].[Object] [b] ON [b].[ObjectId]=[a].[ObjectId]
-      WHERE ([b].[Key]=@Key) AND ([b].[Group]=@Group)
+      WHERE ([b].[Key]=@Key)
+        AND ([b].[Group]=@Group)
+        AND ([b].[ShortFileIdentifier]=@ShortFileIdentifier)
       IF (@ObjectId IS NULL)
       BEGIN
-        INSERT INTO Table_1 ([VALUE],[KEY]) VALUES (@Body,@Key)
+        --INSERT INTO Table_1 ([VALUE],[KEY]) VALUES (@Body,@Key)
         DECLARE @HashAlgorithm NVARCHAR(MAX)
         DECLARE @ContentType NVARCHAR(MAX)
         DECLARE @HashAlgorithmId INT
         DECLARE @ContentTypeId INT
 
         SELECT TOP 1
-            @HashAlgorithm  = [a].value(N'CmsMessage.ContentInfo[1]/CmsSignedDataContentInfo[1]/DigestAlgorithms[1]/X509AlgorithmIdentifier[1]/@Identifier' ,N'NVARCHAR(MAX)')
+           @HashAlgorithm  = [a].value(N'CmsMessage.ContentInfo[1]/CmsSignedDataContentInfo[1]/DigestAlgorithms[1]/X509AlgorithmIdentifier[1]/@Identifier' ,N'NVARCHAR(MAX)')
           ,@ContentType    = [a].value(N'@ContentType' ,N'NVARCHAR(MAX)')
         FROM @Body.nodes(N'CmsMessage') [a]([a])
-        execute [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId output
-        execute [dbo].[ImportObjectIdentifier] @Value=@ContentType,@Identifier=@ContentTypeId output
+        EXECUTE [dbo].[ImportObjectIdentifier] @Value=@HashAlgorithm,@Identifier=@HashAlgorithmId OUTPUT
+        EXECUTE [dbo].[ImportObjectIdentifier] @Value=@ContentType,@Identifier=@ContentTypeId OUTPUT
 
-        INSERT INTO [dbo].[Object] ([Type],[Body],[Group],[Key]) VALUES (3,@Body,@Group,@Key)
+        INSERT INTO [dbo].[Object] ([Type],[Body],[Group],[Key],[ShortFileIdentifier]) VALUES (3,@Body,@Group,@Key,@ShortFileIdentifier)
         SET @ObjectId=@@IDENTITY
         INSERT INTO [dbo].[CmsMessage]
           ([ObjectId],[ContentType],[HashAlgorithm],[Thumbprint]) VALUES
@@ -56,7 +59,7 @@ BEGIN
           BEGIN
             DECLARE @CertificateId INT
             EXECUTE [dbo].[ImportCertificate]
-                @Thumbprint = NULL
+               @Thumbprint = NULL
               ,@Body=@Certificate
               ,@Group=@Group
               ,@CertificateId=@CertificateId OUTPUT
@@ -76,14 +79,14 @@ BEGIN
           BEGIN
             DECLARE @SignerInfoId INT
             EXECUTE [dbo].[ImportCmsSignerInfo]
-                @MessageId = @ObjectId
+               @MessageId = @ObjectId
               ,@Body=@SignerInfo
             FETCH NEXT FROM [cursor] INTO @SignerInfo
           END
         CLOSE [cursor]
         DEALLOCATE [cursor]
       END
-    ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL) AND (@Force = 0)
+    ELSE IF (@Thumbprint IS NOT NULL) AND (@Key IS NOT NULL) AND (@Force = 0) AND (@ShortFileIdentifier IS NOT NULL)
     BEGIN
       UPDATE [a]
         SET [a].[Thumbprint]=@Thumbprint
@@ -92,11 +95,12 @@ BEGIN
       WHERE ([b].[Key]=@Key)
         AND ([b].[Group]=@Group)
         AND ([a].[Thumbprint] IS NULL)
+        AND ([b].[ShortFileIdentifier]=@ShortFileIdentifier)
     END
     ELSE IF (@Key IS NOT NULL) AND (@Force = 1) AND (@Body IS NOT NULL)
     BEGIN
       EXECUTE [dbo].[DeleteCmsMessage] @ObjectId=@ObjectId
-      EXECUTE [dbo].[ImportCmsMessage] @Key,@Body,@Thumbprint,@Group,@Force=0
+      EXECUTE [dbo].[ImportCmsMessage] @Key,@ShortFileIdentifier,@Body,@Thumbprint,@Group,@Force=0
     END
     END
   END   TRY

@@ -15,7 +15,7 @@
               </Grid.RowDefinitions>
               <ContentPresenter x:Name="PART_FrameCP" Grid.Row="0" Grid.RowSpan="2"/>
               <ToolBar Grid.Row="0" Visibility="Hidden" x:Name="PART_FrameBT">
-                <u:DropDownButton Style="{DynamicResource {x:Static p:Theme.ToolBarDropDownButtonStyleKey}}">
+                <u:DropDownButton>
                   <Viewbox Width="16" Height="16">
                     <Rectangle Width="16" Height="16">
                       <Rectangle.Fill>

@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[DecodingFailed] (
     [Id]    INT            IDENTITY (1, 1) NOT NULL,
-    [Key]   NVARCHAR (255) NULL,
-    [Group] INT            NOT NULL,
+    [Key]   NVARCHAR(255)  NULL,
+    [ShortFileIdentifier]  VARCHAR (50) NULL,
+    [Group] NVARCHAR(50)   NOT NULL,
     CONSTRAINT [Failed_PK] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

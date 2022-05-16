@@ -113,6 +113,8 @@
     <Build Include="dbo\Stored Procedures\DeleteCmsMessage.sql" />
     <Build Include="dbo\Tables\SCode.sql" />
     <Build Include="dbo\Tables\Table_1.sql" />
+    <Build Include="dbo\Views\DecodingFailedInGroup2SucceededInSameGroup.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG3.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:C:\\icao\\20220316.hexcsv output:c:\\icao\\rfid batch:extract,group=1 quarantine:c:\\failed",
+      "commandLineArgs": "input:D:\\icao\\20220512.hexcsv output:d:\\icao\\rfid_5 batch:extract,group=5 quarantine:c:\\failed_5",
       "remoteDebugEnabled": false,
       "nativeDebugging": false
     }

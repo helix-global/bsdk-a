@@ -2,8 +2,9 @@
     [ObjectId] INT            IDENTITY (1, 1) NOT NULL,
     [Type]     TINYINT        NOT NULL,
     [Body]     XML            NULL,
-    [Group]    TINYINT        NULL,
+    [Group]    NVARCHAR(50)   NULL,
     [Key]      NVARCHAR (MAX) NULL,
+    [ShortFileIdentifier]  VARCHAR (50) NULL,
     CONSTRAINT [Object_PK] PRIMARY KEY CLUSTERED ([ObjectId] ASC)
 );
 

@@ -7,7 +7,7 @@
 CREATE PROCEDURE [dbo].[ImportCertificate]
   @Thumbprint AS NVARCHAR(MAX),
   @Body AS XML,
-  @Group TINYINT=NULL,
+  @Group NVARCHAR(50)=NULL,
   @CertificateId INT=NULL OUTPUT
 AS
 BEGIN
