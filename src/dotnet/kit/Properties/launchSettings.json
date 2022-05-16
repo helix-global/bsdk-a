@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:D:\\icao\\20220512.hexcsv output:d:\\icao\\rfid_5 batch:extract,group=5 quarantine:c:\\failed_5",
+      "commandLineArgs": "input:d:\\icao\\rfid_5\\*.p7b \"output:{oledb://Data Source=DEV-SR-SQL02\\SQL2008SRV;Initial Catalog=icao;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;Password=escort}\" batch:serialize,group=шумилкино{доп} mt:1",
       "remoteDebugEnabled": false,
       "nativeDebugging": false
     }
