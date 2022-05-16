@@ -206,18 +206,23 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             exceptions.Add(From(e));
                             }
                         }
+                    Marshal.FinalReleaseComObject(innerExceptions);
                     }
                 var errorinfo = exception as IErrorInfo;
                 r = (exceptions.Count == 1)
                     ? exceptions[0]
                     : Make(errorinfo?.GetDescription(), exceptions, stacktrace, scode, basetype, source);
+                if (errorinfo != null)
+                    {
+                    Marshal.FinalReleaseComObject(errorinfo);
+                    }
                 }
             else if (exception.InnerException != null)
                 {
                 r = Make(exception.Message, new []{
                     From(exception.InnerException)
                     }, stacktrace, scode, basetype, source);
-                //Marshal.FinalReleaseComObject(exception.InnerException);
+                Marshal.FinalReleaseComObject(exception.InnerException);
                 }
             else
                 {
@@ -241,7 +246,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 SetErrorInfo(0, IntPtr.Zero);
                 if (i != null)
                     {
-                    //Marshal.FinalReleaseComObject(i);
+                    Marshal.FinalReleaseComObject(i);
                     }
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
@@ -864,6 +869,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 Certificate = j.CertificateThumbprint ?? "NULL",
                                 Crl = j.CrlThumbprint ?? "NULL"
                                 });
+                            Marshal.FinalReleaseComObject(j);
                             }
                         var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
                         using (var stream = File.OpenWrite(filename))
@@ -874,7 +880,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
                                 }
                             }
-                        Dispose(ref table);
+                        Marshal.FinalReleaseComObject(table);
                         }
                     }
                 catch (Exception e)

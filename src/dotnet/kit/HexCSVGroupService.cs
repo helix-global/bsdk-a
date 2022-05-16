@@ -64,7 +64,7 @@ internal class HexCSVGroupService : IDirectoryService
         var filename = $"hexgroup-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
         using (var stream = File.OpenWrite(filename))
         using (var target = new StreamWriter(stream, Encoding.UTF8)) {
-            target.WriteLine("IdentifyDocumentId;DocumentCategoryName;CountryName;CountryICAO;Year;Month;RegisterCode;RegisterNumber;IssueDate;ValidToDate;InscribeId;DataFormatId;DataTypeId;Order;Dense;XmlSize,Size,EFName");
+            target.WriteLine("IdentifyDocumentId;DocumentCategoryName;CountryName;CountryICAO;Year;Month;RegisterCode;RegisterNumber;IssueDate;ValidToDate;InscribeId;DataFormatId;DataTypeId;Order;Dense;XmlSize;Size;EFName");
             using (var sourcestream = Source.OpenRead())
             using (var reader = new CSVDataReader(
                     new StreamReader(sourcestream, Encoding.GetEncoding(culture.TextInfo.ANSICodePage)), ";",
@@ -115,7 +115,7 @@ internal class HexCSVGroupService : IDirectoryService
                         EFName = "1d"
                         };
                     if (PathUtils.IsMatch(searchpattern, r.FileName)) {
-                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{r.Body?.Length.ToString()??"NULL"}");
+                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{XmlSize};{r.Body?.Length.ToString()??"NULL"};1d");
                         if (r.Body != null) {
                             yield return r;
                             }
@@ -142,7 +142,7 @@ internal class HexCSVGroupService : IDirectoryService
                         EFName = "77"
                         };
                     if (PathUtils.IsMatch(searchpattern, r.FileName)) {
-                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{r.Body?.Length.ToString()??"NULL"}");
+                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{XmlSize};{r.Body?.Length.ToString()??"NULL"};77");
                         if (r.Body != null) {
                             yield return r;
                             }
@@ -169,7 +169,7 @@ internal class HexCSVGroupService : IDirectoryService
                         EFName = "e040"
                         };
                     if (PathUtils.IsMatch(searchpattern, r.FileName)) {
-                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{r.Body?.Length.ToString()??"NULL"}");
+                        target.WriteLine($"{r.IdentifyDocumentId};{DocumentCategoryName};{CountryName};{CountryICAO};{Year};{Month};{RegisterCode};{RegisterNumber};{IssueDate};{ValidToDate};{InscribeId};{DataFormatId};{DataTypeId};{Order};{Dense};{XmlSize};{r.Body?.Length.ToString()??"NULL"};e040");
                         if (r.Body != null) {
                             yield return r;
                             }
