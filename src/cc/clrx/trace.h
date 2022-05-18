@@ -9,10 +9,10 @@
 #define Asn1Sequence      0x10
 #define ASN1_EOC   0x00
 
-#define BER_ENC_UNI (0 << 6)
-#define BER_ENC_APP (1 << 6)
-#define BER_ENC_CON (2 << 6)
-#define BER_ENC_PRI (3 << 6)
+#define Universal       (0 << 6)
+#define Application     (1 << 6)
+#define ContextSpecific (2 << 6)
+#define Private         (3 << 6)
 #define Asn1ExplicitConstructed 0x20
 
 #define nameof(expr) #expr
@@ -37,6 +37,14 @@ private:
             get<0>(value),
             get<1>(value));
         }
+    template<class T> static void Pack(vector<uint8_t>& target, const pair<int,T>& value) {
+        vector<uint8_t> o;
+        Pack(o, value.second);
+        packT(o, Application | value.first);
+        PackSequence(target,
+            get<0>(value),
+            get<1>(value));
+        }
     template<class T> static void Pack(vector<uint8_t>& o, const T& value);
     template<class T, class... P> static void Pack(vector<uint8_t>& o, const T& frst, const P&... args) {
         Pack(o, frst);
@@ -45,16 +53,16 @@ private:
     template<class... P> static void PackSequence(vector<uint8_t>& o, const P&... args) {
         vector<uint8_t> target;
         Pack(target, args...);
-        PackType(o, Asn1Sequence | Asn1ExplicitConstructed);
-        PackSize(o, target.size());
-        PackBody(o, target);
+        packT(o, Asn1Sequence | Asn1ExplicitConstructed);
+        packS(o, target.size());
+        packB(o, target);
         }
 private:
     static void PackValue(vector<uint8_t>& o, const uint8_t* buffer, size_t count);
-    static void PackBody(vector<uint8_t>& target, const uint8_t* source, size_t count);
-    static void PackBody(vector<uint8_t>& target, const vector<uint8_t>& source);
-    static void PackSize(vector<uint8_t>& target, size_t value);
-    static void PackType(vector<uint8_t>& target, uint8_t type);
+    static void packB(vector<uint8_t>& target, const uint8_t* source, size_t count);
+    static void packB(vector<uint8_t>& target, const vector<uint8_t>& source);
+    static void packS(vector<uint8_t>& target, size_t value);
+    static void packT(vector<uint8_t>& target, uint8_t type);
 public:
     template<class... P> void Enter(LONG& scope, P... args) {
         vector<uint8_t> target;

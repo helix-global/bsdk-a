@@ -317,14 +317,73 @@ HRESULT Module::AttachDetours()
     I(SCardWriteCacheA);
     I(SCardWriteCacheW);
 
-    ATTACH(SCardConnectW);
-    ATTACH(SCardConnectA);
-    ATTACH(SCardTransmit);
+    ATTACH(SCardGetReaderDeviceInstanceIdA);
+    ATTACH(SCardGetReaderDeviceInstanceIdW);
+    ATTACH(SCardAddReaderToGroupA);
+    ATTACH(SCardAddReaderToGroupW);
+    ATTACH(SCardAudit);
+    ATTACH(SCardBeginTransaction);
     ATTACH(SCardCancel);
+    ATTACH(SCardConnectA);
+    ATTACH(SCardConnectW);
     ATTACH(SCardControl);
     ATTACH(SCardDisconnect);
     ATTACH(SCardEndTransaction);
     ATTACH(SCardEstablishContext);
+    ATTACH(SCardForgetCardTypeA);
+    ATTACH(SCardForgetCardTypeW);
+    ATTACH(SCardForgetReaderA);
+    ATTACH(SCardForgetReaderW);
+    ATTACH(SCardForgetReaderGroupA);
+    ATTACH(SCardForgetReaderGroupW);
+    ATTACH(SCardFreeMemory);
+    ATTACH(SCardGetAttrib);
+    ATTACH(SCardGetCardTypeProviderNameA);
+    ATTACH(SCardGetCardTypeProviderNameW);
+    ATTACH(SCardGetDeviceTypeIdA);
+    ATTACH(SCardGetDeviceTypeIdW);
+    ATTACH(SCardGetProviderIdA);
+    ATTACH(SCardGetProviderIdW);
+    ATTACH(SCardGetReaderIconA);
+    ATTACH(SCardGetReaderIconW);
+    ATTACH(SCardGetStatusChangeA);
+    ATTACH(SCardGetStatusChangeW);
+    ATTACH(SCardGetTransmitCount);
+    ATTACH(SCardIntroduceCardTypeA);
+    ATTACH(SCardIntroduceCardTypeW);
+    ATTACH(SCardIntroduceReaderA);
+    ATTACH(SCardIntroduceReaderW);
+    ATTACH(SCardIntroduceReaderGroupA);
+    ATTACH(SCardIntroduceReaderGroupW);
+    ATTACH(SCardIsValidContext);
+    ATTACH(SCardListCardsA);
+    ATTACH(SCardListCardsW);
+    ATTACH(SCardListInterfacesA);
+    ATTACH(SCardListInterfacesW);
+    ATTACH(SCardListReaderGroupsA);
+    ATTACH(SCardListReaderGroupsW);
+    ATTACH(SCardListReadersA);
+    ATTACH(SCardListReadersW);
+    ATTACH(SCardListReadersWithDeviceInstanceIdA);
+    ATTACH(SCardListReadersWithDeviceInstanceIdW);
+    ATTACH(SCardLocateCardsA);
+    ATTACH(SCardLocateCardsW);
+    ATTACH(SCardLocateCardsByATRA);
+    ATTACH(SCardLocateCardsByATRW);
+    ATTACH(SCardReadCacheA);
+    ATTACH(SCardReadCacheW);
+    ATTACH(SCardReconnect);
+    ATTACH(SCardReleaseContext);
+    ATTACH(SCardRemoveReaderFromGroupA);
+    ATTACH(SCardRemoveReaderFromGroupW);
+    ATTACH(SCardSetAttrib);
+    ATTACH(SCardSetCardTypeProviderNameA);
+    ATTACH(SCardSetCardTypeProviderNameW);
+    ATTACH(SCardStatusA);
+    ATTACH(SCardStatusW);
+    ATTACH(SCardTransmit);
+    ATTACH(SCardWriteCacheA);
+    ATTACH(SCardWriteCacheW);
 
     PVOID *ppbFailedPointer = nullptr;
     return DetourTransactionCommitEx(&ppbFailedPointer);
@@ -340,15 +399,73 @@ HRESULT Module::DetachDetours()
     DetourUpdateThread(GetCurrentThread());
     DetourSetIgnoreTooSmall(TRUE);
 
-    DETACH(SCardConnectW);
-    DETACH(SCardConnectA);
-    DETACH(SCardTransmit);
+    DETACH(SCardGetReaderDeviceInstanceIdA);
+    DETACH(SCardGetReaderDeviceInstanceIdW);
+    DETACH(SCardAddReaderToGroupA);
+    DETACH(SCardAddReaderToGroupW);
+    DETACH(SCardAudit);
     DETACH(SCardBeginTransaction);
     DETACH(SCardCancel);
+    DETACH(SCardConnectA);
+    DETACH(SCardConnectW);
     DETACH(SCardControl);
     DETACH(SCardDisconnect);
     DETACH(SCardEndTransaction);
     DETACH(SCardEstablishContext);
+    DETACH(SCardForgetCardTypeA);
+    DETACH(SCardForgetCardTypeW);
+    DETACH(SCardForgetReaderA);
+    DETACH(SCardForgetReaderW);
+    DETACH(SCardForgetReaderGroupA);
+    DETACH(SCardForgetReaderGroupW);
+    DETACH(SCardFreeMemory);
+    DETACH(SCardGetAttrib);
+    DETACH(SCardGetCardTypeProviderNameA);
+    DETACH(SCardGetCardTypeProviderNameW);
+    DETACH(SCardGetDeviceTypeIdA);
+    DETACH(SCardGetDeviceTypeIdW);
+    DETACH(SCardGetProviderIdA);
+    DETACH(SCardGetProviderIdW);
+    DETACH(SCardGetReaderIconA);
+    DETACH(SCardGetReaderIconW);
+    DETACH(SCardGetStatusChangeA);
+    DETACH(SCardGetStatusChangeW);
+    DETACH(SCardGetTransmitCount);
+    DETACH(SCardIntroduceCardTypeA);
+    DETACH(SCardIntroduceCardTypeW);
+    DETACH(SCardIntroduceReaderA);
+    DETACH(SCardIntroduceReaderW);
+    DETACH(SCardIntroduceReaderGroupA);
+    DETACH(SCardIntroduceReaderGroupW);
+    DETACH(SCardIsValidContext);
+    DETACH(SCardListCardsA);
+    DETACH(SCardListCardsW);
+    DETACH(SCardListInterfacesA);
+    DETACH(SCardListInterfacesW);
+    DETACH(SCardListReaderGroupsA);
+    DETACH(SCardListReaderGroupsW);
+    DETACH(SCardListReadersA);
+    DETACH(SCardListReadersW);
+    DETACH(SCardListReadersWithDeviceInstanceIdA);
+    DETACH(SCardListReadersWithDeviceInstanceIdW);
+    DETACH(SCardLocateCardsA);
+    DETACH(SCardLocateCardsW);
+    DETACH(SCardLocateCardsByATRA);
+    DETACH(SCardLocateCardsByATRW);
+    DETACH(SCardReadCacheA);
+    DETACH(SCardReadCacheW);
+    DETACH(SCardReconnect);
+    DETACH(SCardReleaseContext);
+    DETACH(SCardRemoveReaderFromGroupA);
+    DETACH(SCardRemoveReaderFromGroupW);
+    DETACH(SCardSetAttrib);
+    DETACH(SCardSetCardTypeProviderNameA);
+    DETACH(SCardSetCardTypeProviderNameW);
+    DETACH(SCardStatusA);
+    DETACH(SCardStatusW);
+    DETACH(SCardTransmit);
+    DETACH(SCardWriteCacheA);
+    DETACH(SCardWriteCacheW);
 
     if (DetourTransactionCommit()) {
         PVOID *ppbFailedPointer = nullptr;
@@ -379,6 +496,7 @@ VOID DetDetach(PVOID *o, PVOID mine, const char* psz)
 
 VOID DetAttach(PVOID *o, PVOID mine, const char* psz)
     {
+    if ((o != nullptr) && (*o == nullptr)) { return; }
     PVOID pvReal = nullptr;
     if (o == nullptr) {
         o = &pvReal;
@@ -412,7 +530,7 @@ LONG WINAPI H(SCardConnectA)(const SCARDCONTEXT Context, const LPCSTR Reader,
     const DWORD ShareMode, const DWORD PreferredProtocols,
     LPSCARDHANDLE Card, LPDWORD ActiveProtocol)
     {
-    TraceDescriptor D(nameof(SCardConnectW),"SCardConnectA(SCARDCONTEXT,LPCSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD):LONG");
+    TraceDescriptor D(nameof(SCardConnectA),"SCardConnectA(SCARDCONTEXT,LPCSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD):LONG");
     LONG scope = 0;
     LONG r = 0;
     TRY
@@ -487,7 +605,7 @@ LONG WINAPI H(SCardControl)(SCARDHANDLE Card,DWORD ControlCode,LPCVOID InBuffer,
         r = O(SCardControl)(Card,ControlCode,InBuffer,InBufferSize,OutBuffer,OutBufferSize,BytesReturned);
     FINALLY
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r, Card,vector<uint8_t>(LPBYTE(OutBuffer),LPBYTE(OutBuffer) + OutBufferSize),BytesReturned)
+            ? D.Leave(scope, S_OK, r, Card)
             : D.Leave(scope, r,    r);
     END
     return r;
@@ -531,13 +649,1083 @@ LONG WINAPI H(SCardEstablishContext)(DWORD Scope,LPCVOID,LPCVOID,LPSCARDCONTEXT 
     LONG scope = 0;
     LONG r = 0;
     TRY
-        D.Enter(scope,Scope);
+        D.Enter(scope,
+            make_pair(0,Scope)
+            );
         r = O(SCardEstablishContext)(Scope,nullptr,nullptr,Context);
     FINALLY
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r, Scope,Context)
+            ? D.Leave(scope, S_OK, r,
+                make_pair(0,Scope),
+                make_pair(3,Context))
             : D.Leave(scope, r,    r);
     END
     return r;
     }
+
+LONG WINAPI H(SCardAddReaderToGroupA)(SCARDCONTEXT Context,LPCSTR ReaderName,LPCSTR GroupName)
+    {
+    TraceDescriptor D(nameof(SCardAddReaderToGroupA),"SCardAddReaderToGroupA(SCARDCONTEXT,LPCSTR,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,ReaderName,GroupName);
+        r = O(SCardAddReaderToGroupA)(Context,ReaderName,GroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardAddReaderToGroupW)(SCARDCONTEXT Context,LPCWSTR ReaderName,LPCWSTR GroupName)
+    {
+    TraceDescriptor D(nameof(SCardAddReaderToGroupW),"SCardAddReaderToGroupA(SCARDCONTEXT,LPCWSTR,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,ReaderName,GroupName);
+        r = O(SCardAddReaderToGroupW)(Context,ReaderName,GroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardAudit)(SCARDCONTEXT Context,DWORD Event)
+    {
+    TraceDescriptor D(nameof(SCardAudit),"SCardAudit(SCARDCONTEXT,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,Event);
+        r = O(SCardAudit)(Context,Event);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetCardTypeA)(SCARDCONTEXT Context,LPCSTR CardName)
+    {
+    TraceDescriptor D(nameof(SCardForgetCardTypeA),"SCardForgetCardTypeA(SCARDCONTEXT,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,CardName);
+        r = O(SCardForgetCardTypeA)(Context,CardName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetCardTypeW)(SCARDCONTEXT Context,LPCWSTR CardName)
+    {
+    TraceDescriptor D(nameof(SCardForgetCardTypeW),"SCardForgetCardTypeW(SCARDCONTEXT,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,CardName);
+        r = O(SCardForgetCardTypeW)(Context,CardName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetReaderA)(SCARDCONTEXT Context,LPCSTR ReaderName)
+    {
+    TraceDescriptor D(nameof(SCardForgetReaderA),"SCardForgetReaderA(SCARDCONTEXT,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,ReaderName);
+        r = O(SCardForgetReaderA)(Context,ReaderName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetReaderW)(SCARDCONTEXT Context,LPCWSTR ReaderName)
+    {
+    TraceDescriptor D(nameof(SCardForgetReaderW),"SCardForgetReaderW(SCARDCONTEXT,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,ReaderName);
+        r = O(SCardForgetReaderW)(Context,ReaderName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetReaderGroupA)(SCARDCONTEXT Context,LPCSTR GroupName)
+    {
+    TraceDescriptor D(nameof(SCardForgetReaderGroupA),"SCardForgetReaderGroupA(SCARDCONTEXT,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,GroupName);
+        r = O(SCardForgetReaderGroupA)(Context,GroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardForgetReaderGroupW)(SCARDCONTEXT Context,LPCWSTR GroupName)
+    {
+    TraceDescriptor D(nameof(SCardForgetReaderGroupW),"SCardForgetReaderGroupW(SCARDCONTEXT,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,GroupName);
+        r = O(SCardForgetReaderGroupW)(Context,GroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardFreeMemory)(SCARDCONTEXT Context,LPCVOID Mem)
+    {
+    TraceDescriptor D(nameof(SCardFreeMemory),"SCardFreeMemory(SCARDCONTEXT,LPCVOID):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,(DWORD_PTR)Mem);
+        r = O(SCardFreeMemory)(Context,Mem);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetAttrib)(SCARDHANDLE Card,DWORD AttrId,LPBYTE Attr,LPDWORD AttrLen)
+    {
+    TraceDescriptor D(nameof(SCardGetAttrib),"SCardGetAttrib(SCARDHANDLE,DWORD,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Card,AttrId);
+        r = O(SCardGetAttrib)(Card,AttrId,Attr,AttrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Card)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetCardTypeProviderNameA)(SCARDCONTEXT hContext,LPCSTR szCardName,DWORD dwProviderId,CHAR *szProvider,LPDWORD pcchProvider)
+    {
+    TraceDescriptor D(nameof(SCardGetCardTypeProviderNameA),"SCardGetCardTypeProviderNameA(SCARDCONTEXT,LPCSTR,DWORD,CHAR*,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwProviderId,szProvider);
+        r = O(SCardGetCardTypeProviderNameA)(hContext,szCardName,dwProviderId,szProvider,pcchProvider);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pcchProvider)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetCardTypeProviderNameW)(SCARDCONTEXT hContext,LPCWSTR szCardName,DWORD dwProviderId,WCHAR *szProvider,LPDWORD pcchProvider)
+    {
+    TraceDescriptor D(nameof(SCardGetCardTypeProviderNameW),"SCardGetCardTypeProviderNameW(SCARDCONTEXT,LPCWSTR,DWORD,WCHAR*,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwProviderId,szProvider);
+        r = O(SCardGetCardTypeProviderNameW)(hContext,szCardName,dwProviderId,szProvider,pcchProvider);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pcchProvider)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetDeviceTypeIdA)(SCARDCONTEXT hContext,LPCSTR szReaderName, LPDWORD pdwDeviceTypeId)
+    {
+    TraceDescriptor D(nameof(SCardGetDeviceTypeIdA),"SCardGetDeviceTypeIdA(SCARDCONTEXT,LPCSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName);
+        r = O(SCardGetDeviceTypeIdA)(hContext,szReaderName,pdwDeviceTypeId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pdwDeviceTypeId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetDeviceTypeIdW)(SCARDCONTEXT hContext,LPCWSTR szReaderName, LPDWORD pdwDeviceTypeId)
+    {
+    TraceDescriptor D(nameof(SCardGetDeviceTypeIdW),"SCardGetDeviceTypeIdW(SCARDCONTEXT,LPCWSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName);
+        r = O(SCardGetDeviceTypeIdW)(hContext,szReaderName,pdwDeviceTypeId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pdwDeviceTypeId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetProviderIdA)(SCARDCONTEXT hContext,LPCSTR szCard,LPGUID pguidProviderId)
+    {
+    TraceDescriptor D(nameof(SCardGetProviderIdA),"SCardGetProviderIdA(SCARDCONTEXT,LPCSTR,LPGUID):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCard);
+        r = O(SCardGetProviderIdA)(hContext,szCard,pguidProviderId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pguidProviderId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetProviderIdW)(SCARDCONTEXT hContext,LPCWSTR szCard,LPGUID pguidProviderId)
+    {
+    TraceDescriptor D(nameof(SCardGetProviderIdW),"SCardGetProviderIdW(SCARDCONTEXT,LPCWSTR,LPGUID):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCard);
+        r = O(SCardGetProviderIdW)(hContext,szCard,pguidProviderId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pguidProviderId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetReaderDeviceInstanceIdA)(SCARDCONTEXT hContext,LPCSTR szReaderName,LPSTR szDeviceInstanceId,LPDWORD pcchDeviceInstanceId)
+    {
+    TraceDescriptor D(nameof(SCardGetReaderDeviceInstanceIdA),"SCardGetReaderDeviceInstanceIdA(SCARDCONTEXT,LPCSTR,LPSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szDeviceInstanceId);
+        r = O(SCardGetReaderDeviceInstanceIdA)(hContext,szReaderName,szDeviceInstanceId,pcchDeviceInstanceId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pcchDeviceInstanceId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetReaderDeviceInstanceIdW)(SCARDCONTEXT hContext,LPCWSTR szReaderName,LPWSTR szDeviceInstanceId,LPDWORD pcchDeviceInstanceId)
+    {
+    TraceDescriptor D(nameof(SCardGetReaderDeviceInstanceIdW),"SCardGetReaderDeviceInstanceIdW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szDeviceInstanceId);
+        r = O(SCardGetReaderDeviceInstanceIdW)(hContext,szReaderName,szDeviceInstanceId,pcchDeviceInstanceId);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext,pcchDeviceInstanceId)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetReaderIconA)(SCARDCONTEXT hContext,LPCSTR szReaderName,LPBYTE pbIcon,LPDWORD pcbIcon)
+    {
+    TraceDescriptor D(nameof(SCardGetReaderIconA),"SCardGetReaderIconA(SCARDCONTEXT,LPCSTR,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName);
+        r = O(SCardGetReaderIconA)(hContext,szReaderName,pbIcon,pcbIcon);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetReaderIconW)(SCARDCONTEXT hContext,LPCWSTR szReaderName,LPBYTE pbIcon,LPDWORD pcbIcon)
+    {
+    TraceDescriptor D(nameof(SCardGetReaderIconW),"SCardGetReaderIconW(SCARDCONTEXT,LPCWSTR,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName);
+        r = O(SCardGetReaderIconW)(hContext,szReaderName,pbIcon,pcbIcon);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetStatusChangeA)(SCARDCONTEXT hContext,DWORD dwTimeout,LPSCARD_READERSTATEA rgReaderStates,DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardGetStatusChangeA),"SCardGetStatusChangeA(SCARDCONTEXT,DWORD,LPSCARD_READERSTATEA,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,dwTimeout,cReaders);
+        r = O(SCardGetStatusChangeA)(hContext,dwTimeout,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetStatusChangeW)(SCARDCONTEXT hContext,DWORD dwTimeout,LPSCARD_READERSTATEW rgReaderStates,DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardGetStatusChangeW),"SCardGetStatusChangeW(SCARDCONTEXT,DWORD,LPSCARD_READERSTATEW,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,dwTimeout,cReaders);
+        r = O(SCardGetStatusChangeW)(hContext,dwTimeout,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardGetTransmitCount)(SCARDHANDLE hCard,LPDWORD pcTransmitCount)
+    {
+    TraceDescriptor D(nameof(SCardGetTransmitCount),"SCardGetTransmitCount(SCARDHANDLE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hCard);
+        r = O(SCardGetTransmitCount)(hCard,pcTransmitCount);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hCard)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceCardTypeA)(
+    SCARDCONTEXT hContext,
+    LPCSTR szCardName,
+    LPCGUID pguidPrimaryProvider,
+    LPCGUID rgguidInterfaces,
+    DWORD dwInterfaceCount,
+    LPCBYTE pbAtr,
+    LPCBYTE pbAtrMask,
+    DWORD cbAtrLen)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceCardTypeA),"SCardIntroduceCardTypeA(SCARDCONTEXT,LPCSTR ,LPCGUID,LPCGUID,DWORD,LPCBYTE,LPCBYTE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwInterfaceCount,cbAtrLen);
+        r = O(SCardIntroduceCardTypeA)(hContext,szCardName,pguidPrimaryProvider,rgguidInterfaces,dwInterfaceCount,pbAtr,pbAtrMask,cbAtrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceCardTypeW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR szCardName,
+    LPCGUID pguidPrimaryProvider,
+    LPCGUID rgguidInterfaces,
+    DWORD dwInterfaceCount,
+    LPCBYTE pbAtr,
+    LPCBYTE pbAtrMask,
+    DWORD cbAtrLen)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceCardTypeW),"SCardIntroduceCardTypeW(SCARDCONTEXT,LPCWSTR,LPCGUID,LPCGUID,DWORD,LPCBYTE,LPCBYTE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwInterfaceCount,cbAtrLen);
+        r = O(SCardIntroduceCardTypeW)(hContext,szCardName,pguidPrimaryProvider,rgguidInterfaces,dwInterfaceCount,pbAtr,pbAtrMask,cbAtrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceReaderA)(SCARDCONTEXT hContext,LPCSTR szReaderName,LPCSTR szDeviceName)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceReaderA),"SCardIntroduceReaderA(SCARDCONTEXT,LPCSTR,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szDeviceName);
+        r = O(SCardIntroduceReaderA)(hContext,szReaderName,szDeviceName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceReaderW)(SCARDCONTEXT hContext,LPCWSTR szReaderName,LPCWSTR szDeviceName)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceReaderW),"SCardIntroduceReaderW(SCARDCONTEXT,LPCWSTR,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szDeviceName);
+        r = O(SCardIntroduceReaderW)(hContext,szReaderName,szDeviceName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceReaderGroupA)(SCARDCONTEXT hContext,LPCSTR szGroupName)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceReaderGroupA),"SCardIntroduceReaderGroupA(SCARDCONTEXT,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szGroupName);
+        r = O(SCardIntroduceReaderGroupA)(hContext,szGroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIntroduceReaderGroupW)(SCARDCONTEXT hContext,LPCWSTR szGroupName)
+    {
+    TraceDescriptor D(nameof(SCardIntroduceReaderGroupW),"SCardIntroduceReaderGroupW(SCARDCONTEXT,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szGroupName);
+        r = O(SCardIntroduceReaderGroupW)(hContext,szGroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardIsValidContext)(SCARDCONTEXT hContext)
+    {
+    TraceDescriptor D(nameof(SCardIsValidContext),"SCardIsValidContext(SCARDCONTEXT):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardIsValidContext)(hContext);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListCardsA)(
+    SCARDCONTEXT hContext,
+    LPCBYTE pbAtr,
+    LPCGUID rgquidInterfaces,
+    DWORD cguidInterfaceCount,
+    CHAR *mszCards,
+    LPDWORD pcchCards)
+    {
+    TraceDescriptor D(nameof(SCardListCardsA),"SCardListCardsA(SCARDCONTEXT,LPCBYTE,LPCGUID,DWORD,CHAR*,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardListCardsA)(hContext,pbAtr,rgquidInterfaces,cguidInterfaceCount,mszCards,pcchCards);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListCardsW)(
+    SCARDCONTEXT hContext,
+    LPCBYTE pbAtr,
+    LPCGUID rgquidInterfaces,
+    DWORD cguidInterfaceCount,
+    WCHAR *mszCards,
+    LPDWORD pcchCards)
+    {
+    TraceDescriptor D(nameof(SCardListCardsW),"SCardListCardsW(SCARDCONTEXT,LPCBYTE,LPCGUID,DWORD,WCHAR*,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardListCardsW)(hContext,pbAtr,rgquidInterfaces,cguidInterfaceCount,mszCards,pcchCards);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListInterfacesA)(
+    SCARDCONTEXT hContext,
+    LPCSTR szCard,
+    LPGUID pguidInterfaces,
+    LPDWORD pcguidInterfaces)
+    {
+    TraceDescriptor D(nameof(SCardListInterfacesA),"SCardListInterfacesA(SCARDCONTEXT,LPCSTR,LPGUID,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCard);
+        r = O(SCardListInterfacesA)(hContext,szCard,pguidInterfaces,pcguidInterfaces);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListInterfacesW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR szCard,
+    LPGUID pguidInterfaces,
+    LPDWORD pcguidInterfaces)
+    {
+    TraceDescriptor D(nameof(SCardListInterfacesW),"SCardListInterfacesW(SCARDCONTEXT,LPCWSTR,LPGUID,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCard);
+        r = O(SCardListInterfacesW)(hContext,szCard,pguidInterfaces,pcguidInterfaces);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReaderGroupsA)(
+    SCARDCONTEXT hContext,
+    LPSTR mszGroups,
+    LPDWORD pcchGroups)
+    {
+    TraceDescriptor D(nameof(SCardListReaderGroupsA),"SCardListReaderGroupsA(SCARDCONTEXT,LPSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszGroups);
+        r = O(SCardListReaderGroupsA)(hContext,mszGroups,pcchGroups);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReaderGroupsW)(
+    SCARDCONTEXT hContext,
+    LPWSTR mszGroups,
+    LPDWORD pcchGroups)
+    {
+    TraceDescriptor D(nameof(SCardListReaderGroupsW),"SCardListReaderGroupsW(SCARDCONTEXT,LPWSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszGroups);
+        r = O(SCardListReaderGroupsW)(hContext,mszGroups,pcchGroups);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReadersA)(
+    SCARDCONTEXT hContext,
+    LPCSTR mszGroups,
+    LPSTR mszReaders,
+    LPDWORD pcchReaders)
+    {
+    TraceDescriptor D(nameof(SCardListReadersA),"SCardListReadersA(SCARDCONTEXT,LPCSTR,LPSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszGroups,mszReaders);
+        r = O(SCardListReadersA)(hContext,mszGroups,mszReaders,pcchReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReadersW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR mszGroups,
+    LPWSTR mszReaders,
+    LPDWORD pcchReaders)
+    {
+    TraceDescriptor D(nameof(SCardListReadersW),"SCardListReadersW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszGroups,mszReaders);
+        r = O(SCardListReadersW)(hContext,mszGroups,mszReaders,pcchReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReadersWithDeviceInstanceIdA)(
+    SCARDCONTEXT hContext,
+    LPCSTR szDeviceInstanceId,
+    LPSTR mszReaders,
+    LPDWORD pcchReaders)
+    {
+    TraceDescriptor D(nameof(SCardListReadersWithDeviceInstanceIdA),"SCardListReadersWithDeviceInstanceIdA(SCARDCONTEXT,LPCSTR,LPSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szDeviceInstanceId,mszReaders);
+        r = O(SCardListReadersWithDeviceInstanceIdA)(hContext,szDeviceInstanceId,mszReaders,pcchReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardListReadersWithDeviceInstanceIdW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR szDeviceInstanceId,
+    LPWSTR mszReaders,
+    LPDWORD pcchReaders)
+    {
+    TraceDescriptor D(nameof(SCardListReadersWithDeviceInstanceIdW),"SCardListReadersWithDeviceInstanceIdW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szDeviceInstanceId,mszReaders);
+        r = O(SCardListReadersWithDeviceInstanceIdW)(hContext,szDeviceInstanceId,mszReaders,pcchReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardLocateCardsA)(
+    SCARDCONTEXT hContext,
+    LPCSTR mszCards,
+    LPSCARD_READERSTATEA rgReaderStates,
+    DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardLocateCardsA),"SCardLocateCardsA(SCARDCONTEXT,LPCSTR,LPSCARD_READERSTATEA,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszCards);
+        r = O(SCardLocateCardsA)(hContext,mszCards,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardLocateCardsW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR mszCards,
+    LPSCARD_READERSTATEW rgReaderStates,
+    DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardLocateCardsW),"SCardLocateCardsW(SCARDCONTEXT,LPCWSTR,LPSCARD_READERSTATEW,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,mszCards);
+        r = O(SCardLocateCardsW)(hContext,mszCards,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardLocateCardsByATRA)(
+    SCARDCONTEXT hContext,
+    LPSCARD_ATRMASK rgAtrMasks,
+    DWORD cAtrs,
+    LPSCARD_READERSTATEA rgReaderStates,
+    DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardLocateCardsByATRA),"SCardLocateCardsByATRA(SCARDCONTEXT,LPSCARD_ATRMASK,DWORD,LPSCARD_READERSTATEA,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardLocateCardsByATRA)(hContext,rgAtrMasks,cAtrs,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardLocateCardsByATRW)(
+    SCARDCONTEXT hContext,
+    LPSCARD_ATRMASK rgAtrMasks,
+    DWORD cAtrs,
+    LPSCARD_READERSTATEW rgReaderStates,
+    DWORD cReaders)
+    {
+    TraceDescriptor D(nameof(SCardLocateCardsByATRW),"SCardLocateCardsByATRW(SCARDCONTEXT,LPSCARD_ATRMASK,DWORD,LPSCARD_READERSTATEW,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardLocateCardsByATRW)(hContext,rgAtrMasks,cAtrs,rgReaderStates,cReaders);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardReadCacheA)(
+    SCARDCONTEXT hContext,
+    UUID *CardIdentifier,
+    DWORD FreshnessCounter,
+    LPSTR LookupName,
+    PBYTE Data,
+    DWORD *DataLen)
+    {
+    TraceDescriptor D(nameof(SCardReadCacheA),"SCardReadCacheA(SCARDCONTEXT,UUID*,DWORD,LPSTR,PBYTE,DWORD*):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardReadCacheA)(hContext,CardIdentifier,FreshnessCounter,LookupName,Data,DataLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardReadCacheW)(
+    SCARDCONTEXT hContext,
+    UUID *CardIdentifier,
+    DWORD FreshnessCounter,
+    LPWSTR LookupName,
+    PBYTE Data,
+    DWORD *DataLen)
+    {
+    TraceDescriptor D(nameof(SCardReadCacheW),"SCardReadCacheW(SCARDCONTEXT,UUID*,DWORD,LPWSTR,PBYTE,DWORD*):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardReadCacheW)(hContext,CardIdentifier,FreshnessCounter,LookupName,Data,DataLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardReconnect)(
+    SCARDHANDLE hCard,
+    DWORD dwShareMode,
+    DWORD dwPreferredProtocols,
+    DWORD dwInitialization,
+    LPDWORD pdwActiveProtocol)
+    {
+    TraceDescriptor D(nameof(SCardReconnect),"SCardReconnect(SCARDHANDLE,DWORD,DWORD,DWORD,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hCard,dwShareMode,dwPreferredProtocols,dwInitialization);
+        r = O(SCardReconnect)(hCard,dwShareMode,dwPreferredProtocols,dwInitialization,pdwActiveProtocol);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hCard)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardReleaseContext)(SCARDCONTEXT hContext)
+    {
+    TraceDescriptor D(nameof(SCardReleaseContext),"SCardReleaseContext(SCARDCONTEXT):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardReleaseContext)(hContext);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardRemoveReaderFromGroupA)(
+    _In_ SCARDCONTEXT hContext,
+    _In_ LPCSTR szReaderName,
+    _In_ LPCSTR szGroupName)
+    {
+    TraceDescriptor D(nameof(SCardRemoveReaderFromGroupA),"SCardRemoveReaderFromGroupA(SCARDCONTEXT,LPCSTR,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szGroupName);
+        r = O(SCardRemoveReaderFromGroupA)(hContext,szReaderName,szGroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardRemoveReaderFromGroupW)(
+    _In_ SCARDCONTEXT hContext,
+    _In_ LPCWSTR szReaderName,
+    _In_ LPCWSTR szGroupName)
+    {
+    TraceDescriptor D(nameof(SCardRemoveReaderFromGroupW),"SCardRemoveReaderFromGroupW(SCARDCONTEXT,LPCWSTR,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szReaderName,szGroupName);
+        r = O(SCardRemoveReaderFromGroupW)(hContext,szReaderName,szGroupName);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardSetAttrib)(
+    SCARDHANDLE hCard,
+    DWORD dwAttrId,
+    LPCBYTE pbAttr,
+    DWORD cbAttrLen)
+    {
+    TraceDescriptor D(nameof(SCardSetAttrib),"SCardSetAttrib(SCARDHANDLE,DWORD,LPCBYTE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hCard,dwAttrId);
+        r = O(SCardSetAttrib)(hCard,dwAttrId,pbAttr,cbAttrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hCard)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardSetCardTypeProviderNameA)(
+    SCARDCONTEXT hContext,
+    LPCSTR szCardName,
+    DWORD dwProviderId,
+    LPCSTR szProvider)
+    {
+    TraceDescriptor D(nameof(SCardSetCardTypeProviderNameA),"SCardSetCardTypeProviderNameA(SCARDCONTEXT,LPCSTR,DWORD,LPCSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwProviderId,szProvider);
+        r = O(SCardSetCardTypeProviderNameA)(hContext,szCardName,dwProviderId,szProvider);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardSetCardTypeProviderNameW)(
+    SCARDCONTEXT hContext,
+    LPCWSTR szCardName,
+    DWORD dwProviderId,
+    LPCWSTR szProvider)
+    {
+    TraceDescriptor D(nameof(SCardSetCardTypeProviderNameW),"SCardSetCardTypeProviderNameW(SCARDCONTEXT,LPCWSTR,DWORD,LPCWSTR):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext,szCardName,dwProviderId,szProvider);
+        r = O(SCardSetCardTypeProviderNameW)(hContext,szCardName,dwProviderId,szProvider);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardStatusA)(
+    SCARDHANDLE hCard,
+    LPSTR mszReaderNames,
+    LPDWORD pcchReaderLen,
+    LPDWORD pdwState,
+    LPDWORD pdwProtocol,
+    LPBYTE pbAtr,
+    LPDWORD pcbAtrLen)
+    {
+    TraceDescriptor D(nameof(SCardStatusA),"SCardStatusA(SCARDHANDLE,LPSTR,LPDWORD,LPDWORD,LPDWORD,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hCard,mszReaderNames);
+        r = O(SCardStatusA)(hCard,mszReaderNames,pcchReaderLen,pdwState,pdwProtocol,pbAtr,pcbAtrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hCard)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardStatusW)(
+    SCARDHANDLE hCard,
+    LPWSTR mszReaderNames,
+    LPDWORD pcchReaderLen,
+    LPDWORD pdwState,
+    LPDWORD pdwProtocol,
+    LPBYTE pbAtr,
+    LPDWORD pcbAtrLen)
+    {
+    TraceDescriptor D(nameof(SCardStatusW),"SCardStatusW(SCARDHANDLE,LPWSTR,LPDWORD,LPDWORD,LPDWORD,LPBYTE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hCard,mszReaderNames);
+        r = O(SCardStatusW)(hCard,mszReaderNames,pcchReaderLen,pdwState,pdwProtocol,pbAtr,pcbAtrLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hCard)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardWriteCacheA)(
+    SCARDCONTEXT hContext,
+    UUID *CardIdentifier,
+    DWORD FreshnessCounter,
+    LPSTR LookupName,
+    PBYTE Data,
+    DWORD DataLen)
+    {
+    TraceDescriptor D(nameof(SCardWriteCacheA),"SCardWriteCacheA(SCARDCONTEXT,UUID*,DWORD,LPSTR,PBYTE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardWriteCacheA)(hContext,CardIdentifier,FreshnessCounter,LookupName,Data,DataLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardWriteCacheW)(
+    SCARDCONTEXT hContext,
+    UUID *CardIdentifier,
+    DWORD FreshnessCounter,
+    LPWSTR LookupName,
+    PBYTE Data,
+    DWORD DataLen)
+    {
+    TraceDescriptor D(nameof(SCardWriteCacheW),"SCardWriteCacheW(SCARDCONTEXT,UUID*,DWORD,LPWSTR,PBYTE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,hContext);
+        r = O(SCardWriteCacheW)(hContext,CardIdentifier,FreshnessCounter,LookupName,Data,DataLen);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, hContext)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
 #endif

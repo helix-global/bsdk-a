@@ -60,8 +60,8 @@ void PopParentId()
 
 template <>
 void TraceDescriptor::Pack(vector<uint8_t>& target, const nullptr_t&) {
-    PackType(target,Asn1Null);
-    PackSize(target,0x00);
+    packT(target,Asn1Null);
+    packS(target,0x00);
     }
 
 template <>
@@ -72,8 +72,8 @@ void TraceDescriptor::Pack(vector<uint8_t>& target, const string& value) {
         }
     else
         {
-        PackType(target,Asn1GeneralString);
-        PackSize(target,value.size());
+        packT(target,Asn1GeneralString);
+        packS(target,value.size());
         for (const auto& i:value) {
             target.emplace_back(i);
             }
@@ -88,8 +88,8 @@ void TraceDescriptor::Pack(vector<uint8_t>& target, const wstring& value) {
         }
     else
         {
-        PackType(target,Asn1UnicodeString);
-        PackSize(target,value.size()*2);
+        packT(target,Asn1UnicodeString);
+        packS(target,value.size()*2);
         for (const auto& i:value) {
             target.emplace_back(i >> 8);
             target.emplace_back(i & 0xff);
@@ -105,7 +105,21 @@ void TraceDescriptor::Pack(vector<uint8_t>& target, wchar_t const* const& value)
     }
 
 template <>
+void TraceDescriptor::Pack(vector<uint8_t>& target, wchar_t* const& value) {
+    (value != nullptr)
+        ? Pack(target, wstring(value))
+        : Pack(target, nullptr);
+    }
+
+template <>
 void TraceDescriptor::Pack(vector<uint8_t>& target, char const* const& value) {
+    (value != nullptr)
+        ? Pack(target, string(value))
+        : Pack(target, nullptr);
+    }
+
+template <>
+void TraceDescriptor::Pack(vector<uint8_t>& target, char* const& value) {
     (value != nullptr)
         ? Pack(target, string(value))
         : Pack(target, nullptr);
@@ -130,11 +144,13 @@ void TraceDescriptor::Pack(vector<uint8_t>& target, T* const & value) { \
         : Pack(target,nullptr); \
     }
 
+PACK(INT)
 PACK(LONG)
 PACK(ULONG)
 PACK(ULONGLONG)
+PACK(IID)
 
-void TraceDescriptor::PackSize(vector<uint8_t>& target, const size_t value) {
+void TraceDescriptor::packS(vector<uint8_t>& target, const size_t value) {
     if ((value >= 0) && (value < 0x80)) {
         target.emplace_back(uint8_t(value & 0xff));
         return;
@@ -156,17 +172,17 @@ void TraceDescriptor::PackSize(vector<uint8_t>& target, const size_t value) {
         }
     }
 
-void TraceDescriptor::PackType(vector<uint8_t>& target, const uint8_t type) {
+void TraceDescriptor::packT(vector<uint8_t>& target, const uint8_t type) {
     target.emplace_back(type);
     }
 
-void TraceDescriptor::PackBody(vector<uint8_t>& target, const vector<uint8_t>& source) {
+void TraceDescriptor::packB(vector<uint8_t>& target, const vector<uint8_t>& source) {
     for (const auto& i: source) {
         target.emplace_back(i);
         }
     }
 
-void TraceDescriptor::PackBody(vector<uint8_t>& target, const uint8_t* source, const size_t count) {
+void TraceDescriptor::packB(vector<uint8_t>& target, const uint8_t* source, const size_t count) {
     for (size_t i = 0; i < count; i++) {
         target.emplace_back(
             source[i]);
@@ -178,9 +194,9 @@ void TraceDescriptor::PackValue(
     const size_t count)
     {
     if (source != nullptr) {
-        PackType(target, Asn1OctetString);
-        PackSize(target, count);
-        PackBody(target, source, count);
+        packT(target, Asn1OctetString);
+        packS(target, count);
+        packB(target, source, count);
         }
     else
         {
