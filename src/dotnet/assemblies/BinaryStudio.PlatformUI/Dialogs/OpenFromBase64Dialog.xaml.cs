@@ -149,7 +149,7 @@ namespace BinaryStudio.PlatformUI
 
         private void OpenFromBase64Dialog_OnLoaded(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[1]);
+            //Theme.Apply(Theme.Themes[1]);
             }
         }
     }

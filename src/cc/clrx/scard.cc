@@ -391,18 +391,9 @@ ObjectValue DecodeSelectResponse(const vector<uint8_t>& request,const vector<uin
 
 template <>
 void TraceDescriptor::Pack(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) {
-    if (value != nullptr) {
-        PackType(target,ASN1_SEQ);
-        PackSize(target,(size_t)(-1));
-        Pack(target, value->dwProtocol);
-        Pack(target, value->cbPciLength);
-        PackType(target,ASN1_EOC);
-        }
-    else
-        {
-        PackType(target,ASN1_NULL);
-        PackSize(target,0x00);
-        }
+    (value != nullptr)
+        ? PackSequence(target,value->dwProtocol,value->cbPciLength)
+        : Pack(target,nullptr);
     }
 
 template <>

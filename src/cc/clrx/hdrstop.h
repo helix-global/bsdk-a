@@ -25,6 +25,7 @@
 #include <sstream>
 #include <map>
 #include <vector>
+#include <tuple>
 #pragma warning(pop)
 
 #ifdef USE_MSDETOURS

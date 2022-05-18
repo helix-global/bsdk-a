@@ -48,7 +48,7 @@ namespace shell
 
         private void OnLoad(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[1]);
+            Theme.Apply(Theme.Themes[7]);
             UpdateCommandBindings();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {
@@ -72,8 +72,8 @@ namespace shell
 
         private void Initialize()
             {
-            //LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-04-02-17-42-30.db");
-            docmanager.AddCertificateStoreManagement();
+            LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-05-17-18-03-17.db");
+            //docmanager.AddCertificateStoreManagement();
             }
 
         private void LoadFrom(String filename) {

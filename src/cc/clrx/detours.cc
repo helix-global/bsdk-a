@@ -33,13 +33,30 @@ VOID DetAttach(PVOID*,PVOID,const char*);
 #define ToString(E)         E##ToString
 
 typedef LONG(WINAPI* T(SCardConnectW))(SCARDCONTEXT,LPCWSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD);
+typedef LONG(WINAPI* T(SCardConnectA))(SCARDCONTEXT,LPCSTR ,DWORD,DWORD,LPSCARDHANDLE,LPDWORD);
 typedef LONG(WINAPI* T(SCardTransmit))(SCARDHANDLE,LPCSCARD_IO_REQUEST,LPCBYTE,DWORD,LPSCARD_IO_REQUEST,LPBYTE,LPDWORD);
+typedef LONG(WINAPI* T(SCardBeginTransaction))(SCARDHANDLE);
+typedef LONG(WINAPI* T(SCardCancel))(SCARDHANDLE);
+typedef LONG(WINAPI* T(SCardControl))(SCARDHANDLE,DWORD,LPCVOID,DWORD,LPVOID,DWORD,LPDWORD);
+typedef LONG(WINAPI* T(SCardDisconnect))(SCARDHANDLE,DWORD);
+typedef LONG(WINAPI* T(SCardEndTransaction))(SCARDHANDLE,DWORD);
 
+T(SCardConnectA) O(SCardConnectA) = nullptr;
 T(SCardConnectW) O(SCardConnectW) = nullptr;
 T(SCardTransmit) O(SCardTransmit) = nullptr;
+T(SCardBeginTransaction) O(SCardBeginTransaction) = nullptr;
+T(SCardCancel)  O(SCardCancel)  = nullptr;
+T(SCardControl) O(SCardControl) = nullptr;
+T(SCardDisconnect) O(SCardDisconnect) = nullptr;
 
 LONG WINAPI H(SCardConnectW)(SCARDCONTEXT,LPCWSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD);
+LONG WINAPI H(SCardConnectA)(SCARDCONTEXT,LPCSTR ,DWORD,DWORD,LPSCARDHANDLE,LPDWORD);
 LONG WINAPI H(SCardTransmit)(SCARDHANDLE,LPCSCARD_IO_REQUEST,LPCBYTE,DWORD,LPSCARD_IO_REQUEST,LPBYTE,LPDWORD);
+LONG WINAPI H(SCardBeginTransaction)(SCARDHANDLE);
+LONG WINAPI H(SCardCancel)(SCARDHANDLE);
+LONG WINAPI H(SCardControl)(SCARDHANDLE,DWORD,LPCVOID,DWORD,LPVOID,DWORD,LPDWORD);
+LONG WINAPI H(SCardDisconnect)(SCARDHANDLE,DWORD);
+
 #endif
 
 HRESULT Module::AttachDetours()
@@ -49,11 +66,20 @@ HRESULT Module::AttachDetours()
     DetourUpdateThread(GetCurrentThread());
     DetourSetIgnoreTooSmall(TRUE);
 
+    O(SCardConnectA) = GetProcAddressT(WinSCard,SCardConnectA);
     O(SCardConnectW) = GetProcAddressT(WinSCard,SCardConnectW);
     O(SCardTransmit) = GetProcAddressT(WinSCard,SCardTransmit);
+    O(SCardBeginTransaction) = GetProcAddressT(WinSCard,SCardBeginTransaction);
+    O(SCardCancel)  = GetProcAddressT(WinSCard,SCardCancel);
+    O(SCardControl) = GetProcAddressT(WinSCard,SCardControl);
+    O(SCardDisconnect) = GetProcAddressT(WinSCard,SCardDisconnect);
 
     ATTACH(SCardConnectW);
+    ATTACH(SCardConnectA);
     ATTACH(SCardTransmit);
+    ATTACH(SCardCancel);
+    ATTACH(SCardControl);
+    ATTACH(SCardDisconnect);
 
     PVOID *ppbFailedPointer = nullptr;
     return DetourTransactionCommitEx(&ppbFailedPointer);
@@ -70,7 +96,12 @@ HRESULT Module::DetachDetours()
     DetourSetIgnoreTooSmall(TRUE);
 
     DETACH(SCardConnectW);
+    DETACH(SCardConnectA);
     DETACH(SCardTransmit);
+    DETACH(SCardBeginTransaction);
+    DETACH(SCardCancel);
+    DETACH(SCardControl);
+    DETACH(SCardDisconnect);
 
     if (DetourTransactionCommit()) {
         PVOID *ppbFailedPointer = nullptr;
@@ -112,7 +143,10 @@ VOID DetAttach(PVOID *o, PVOID mine, const char* psz)
         }
     }
 
-LONG WINAPI H(SCardConnectW)(SCARDCONTEXT Context,LPCWSTR Reader,DWORD ShareMode,DWORD PreferredProtocols,LPSCARDHANDLE Card,LPDWORD ActiveProtocol) {
+LONG WINAPI H(SCardConnectW)(const SCARDCONTEXT Context, const LPCWSTR Reader,
+    const DWORD ShareMode, const DWORD PreferredProtocols,
+    LPSCARDHANDLE Card, LPDWORD ActiveProtocol)
+    {
     TraceDescriptor D(nameof(SCardConnectW),"SCardConnectW(SCARDCONTEXT,LPCWSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD):LONG");
     LONG scope = 0;
     LONG r = 0;
@@ -127,8 +161,27 @@ LONG WINAPI H(SCardConnectW)(SCARDCONTEXT Context,LPCWSTR Reader,DWORD ShareMode
     return r;
     }
 
-LONG WINAPI H(SCardTransmit)(SCARDHANDLE Card,LPCSCARD_IO_REQUEST SendPci,LPCBYTE SendBuffer,DWORD SendLength,
-                             LPSCARD_IO_REQUEST RecvPci,LPBYTE RecvBuffer,LPDWORD RecvLength)
+LONG WINAPI H(SCardConnectA)(const SCARDCONTEXT Context, const LPCSTR Reader,
+    const DWORD ShareMode, const DWORD PreferredProtocols,
+    LPSCARDHANDLE Card, LPDWORD ActiveProtocol)
+    {
+    TraceDescriptor D(nameof(SCardConnectW),"SCardConnectA(SCARDCONTEXT,LPCSTR,DWORD,DWORD,LPSCARDHANDLE,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context,Reader,ShareMode,PreferredProtocols);
+        r = O(SCardConnectA)(Context,Reader,ShareMode,PreferredProtocols,Card,ActiveProtocol);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context,Card,ActiveProtocol)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardTransmit)(const SCARDHANDLE Card,LPCSCARD_IO_REQUEST SendPci,
+    LPCBYTE SendBuffer,const DWORD SendLength, LPSCARD_IO_REQUEST RecvPci,
+    LPBYTE RecvBuffer,LPDWORD RecvLength)
     {
     TraceDescriptor D(nameof(SCardTransmit),"SCardTransmit(SCARDHANDLE,LPCSCARD_IO_REQUEST,LPCBYTE,DWORD,LPSCARD_IO_REQUEST,LPBYTE,LPDWORD):LONG");
     LONG scope = 0;
@@ -136,31 +189,6 @@ LONG WINAPI H(SCardTransmit)(SCARDHANDLE Card,LPCSCARD_IO_REQUEST SendPci,LPCBYT
     TRY
         D.Enter(scope,Card,SendPci,vector<uint8_t>(SendBuffer,SendBuffer + SendLength));
         r = O(SCardTransmit)(Card,SendPci,SendBuffer,SendLength,RecvPci,RecvBuffer,RecvLength);
-        //if (r == 0) {
-        //    #ifdef _WIN64
-        //    LoggingSource::Log(LoggingSeverity::Debug, {
-        //        {"Response", nameof(SCardTransmit)},
-        //        {"Parameters", {
-        //            {nameof(Card),Any::FormatMessage("%016I64x", Card)},
-        //            {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
-        //            {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
-        //            {nameof(RecvPci),RecvPci},
-        //            {"{RetVal}", (scode(r)).str()}
-        //            }
-        //        }});
-        //    #else
-        //    LoggingSource::Log(LoggingSeverity::Debug, {
-        //        {"Response", nameof(SCardTransmit)},
-        //        {"Parameters", {
-        //            {nameof(Card),Any::FormatMessage("%08I32x", Card)},
-        //            {nameof(RecvBuffer),{RecvBuffer,RecvLength}},
-        //            {"RecvBuffer{Decoded}",ScardDecoder::DecodeTransmitResponse(SendPci->dwProtocol,{SendBuffer,SendLength},{RecvBuffer,*RecvLength})},
-        //            {nameof(RecvPci),RecvPci},
-        //            {"{RetVal}", (scode(r)).str()}
-        //            }
-        //        }});
-        //    #endif
-        //    }
     FINALLY
         r = (r == SCARD_S_SUCCESS)
             ? D.Leave(scope, S_OK, r, Card,RecvPci,vector<uint8_t>(RecvBuffer,RecvBuffer + *RecvLength))
@@ -168,4 +196,70 @@ LONG WINAPI H(SCardTransmit)(SCARDHANDLE Card,LPCSCARD_IO_REQUEST SendPci,LPCBYT
     END
     return r;
     }
+
+LONG WINAPI H(SCardBeginTransaction)(const SCARDCONTEXT Context)
+    {
+    TraceDescriptor D(nameof(SCardBeginTransaction),"SCardBeginTransaction(SCARDCONTEXT):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context);
+        r = O(SCardBeginTransaction)(Context);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardCancel)(const SCARDCONTEXT Context)
+    {
+    TraceDescriptor D(nameof(SCardCancel),"SCardCancel(SCARDCONTEXT):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Context);
+        r = O(SCardCancel)(Context);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Context)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardControl)(SCARDHANDLE Card,DWORD ControlCode,LPCVOID InBuffer,
+    DWORD InBufferSize,LPVOID OutBuffer,DWORD OutBufferSize,LPDWORD BytesReturned)
+    {
+    TraceDescriptor D(nameof(SCardControl),"SCardControl(SCARDHANDLE,DWORD,LPCVOID,DWORD,LPVOID,DWORD,LPDWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Card,ControlCode,vector<uint8_t>(LPCBYTE(InBuffer),LPCBYTE(InBuffer) + InBufferSize));
+        r = O(SCardControl)(Card,ControlCode,InBuffer,InBufferSize,OutBuffer,OutBufferSize,BytesReturned);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Card,vector<uint8_t>(LPBYTE(OutBuffer),LPBYTE(OutBuffer) + OutBufferSize),BytesReturned)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
+LONG WINAPI H(SCardDisconnect)(SCARDHANDLE Card,DWORD Disposition)
+    {
+    TraceDescriptor D(nameof(SCardDisconnect),"SCardDisconnect(SCARDHANDLE,DWORD):LONG");
+    LONG scope = 0;
+    LONG r = 0;
+    TRY
+        D.Enter(scope,Card,Disposition);
+        r = O(SCardDisconnect)(Card,Disposition);
+    FINALLY
+        r = (r == SCARD_S_SUCCESS)
+            ? D.Leave(scope, S_OK, r, Card)
+            : D.Leave(scope, r,    r);
+    END
+    return r;
+    }
+
 #endif

@@ -38,10 +38,22 @@ namespace BinaryStudio.DataProcessing
             Expression = Expression.Constant(this);
             using (var command = Source.Connection.CreateCommand()) {
                 command.CommandTimeout = Source.CommandTimeout;
-                command.CommandText = $@"
-                    SELECT
-                        TOP 1 *
-                    FROM ({Source.CommandText}) a_{AliasSuffix}";
+                switch (command.GetType().Name) {
+                    case "SQLiteCommand":
+                        {
+                        command.CommandText = $@"
+                            SELECT * FROM ({Source.CommandText}) a_{AliasSuffix}
+                            LIMIT 1";
+                        }
+                        break;
+                    default:
+                        {
+                        command.CommandText = $@"
+                            SELECT TOP 1 *
+                            FROM ({Source.CommandText}) a_{AliasSuffix}";
+                        }
+                        break;
+                    }
                 using (var reader = command.ExecuteReader()) {
                     if (reader.Read()) {
                         var fieldcount = reader.FieldCount;
@@ -81,12 +93,21 @@ namespace BinaryStudio.DataProcessing
                     command.CommandText = $@"
                         SELECT COUNT(*)
                         FROM ({Source.CommandText}) a_{AliasSuffix}";
-                    CachedCount = (Int32)command.ExecuteScalar();
+                    var r = command.ExecuteScalar();
+                    CachedCount = ToInt32(r).GetValueOrDefault();
                     }
                 }
             return CachedCount;
             }}
 
+        private static Int32? ToInt32(Object value)
+            {
+            if ((value == null) || (value is DBNull)) { return null; }
+            if (value is IConvertible i) { return i.ToInt32(null); }
+            return Int32.TryParse(value.ToString(), out var r)
+                ? r
+                : new Int32?();
+            }
 
         /// <summary>Adds an item to the <see cref="T:System.Collections.IList"/>.</summary>
         /// <returns>The position into which the new element was inserted, or -1 to indicate that the item was not inserted into the collection,</returns>
@@ -209,8 +230,8 @@ namespace BinaryStudio.DataProcessing
                     using (var reader = command.ExecuteReader()) {
                         while (reader.Read()) {
                             var values = new Object[Columns.Count];
-                            for (var i = 1; i < fieldcount; i++) {
-                                values[i-1] = reader[i];
+                            for (var i = 0; i < fieldcount; i++) {
+                                values[i] = reader[i + 1];
                                 }
                             target.Values.Add(new DBQueryRow(this, Columns,(Int64)reader[0],values));
                             }
