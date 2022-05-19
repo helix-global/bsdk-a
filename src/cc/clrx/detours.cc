@@ -649,15 +649,11 @@ LONG WINAPI H(SCardEstablishContext)(DWORD Scope,LPCVOID,LPCVOID,LPSCARDCONTEXT 
     LONG scope = 0;
     LONG r = 0;
     TRY
-        D.Enter(scope,
-            make_pair(0,Scope)
-            );
+        D.Enter(scope,Scope);
         r = O(SCardEstablishContext)(Scope,nullptr,nullptr,Context);
     FINALLY
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r,
-                make_pair(0,Scope),
-                make_pair(3,Context))
+            ? D.Leave(scope, S_OK,r,Scope,Context)
             : D.Leave(scope, r,    r);
     END
     return r;
@@ -1318,20 +1314,17 @@ LONG WINAPI H(SCardListReadersA)(
     }
 
 LONG WINAPI H(SCardListReadersW)(
-    SCARDCONTEXT hContext,
-    LPCWSTR mszGroups,
-    LPWSTR mszReaders,
-    LPDWORD pcchReaders)
+    SCARDCONTEXT Context,LPCWSTR Groups,LPWSTR Readers, LPDWORD ReaderCount)
     {
     TraceDescriptor D(nameof(SCardListReadersW),"SCardListReadersW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG");
     LONG scope = 0;
     LONG r = 0;
     TRY
-        D.Enter(scope,hContext,mszGroups,mszReaders);
-        r = O(SCardListReadersW)(hContext,mszGroups,mszReaders,pcchReaders);
+        D.Enter(scope,Context,Groups,Readers,ReaderCount);
+        r = O(SCardListReadersW)(Context,Groups,Readers,ReaderCount);
     FINALLY
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r, hContext)
+            ? D.Leave(scope, S_OK, r,Context)
             : D.Leave(scope, r,    r);
     END
     return r;

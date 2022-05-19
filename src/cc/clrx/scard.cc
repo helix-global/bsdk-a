@@ -21,15 +21,17 @@
 #define GetProcAddressT(Module,E)  (T(E))GetProcAddress(Module,#E)
 
 template <>
-void TraceDescriptor::Pack(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) {
-    (value != nullptr)
-        ? PackSequence(target,value->dwProtocol,value->cbPciLength)
-        : Pack(target,nullptr);
+TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) {
+    return (value != nullptr)
+        ? packGI(target,
+            make_tuple(1,value->dwProtocol),
+            make_tuple(2,value->cbPciLength))
+        : packD(target,nullptr);
     }
 
 template <>
-void TraceDescriptor::Pack(vector<uint8_t>& target, const_ref(LPSCARD_IO_REQUEST) value) {
-    Pack(target,const_cast<LPCSCARD_IO_REQUEST>(value));
+TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPSCARD_IO_REQUEST) value) {
+    return packD(target,const_cast<LPCSCARD_IO_REQUEST>(value));
     }
 
 #endif
