@@ -97,9 +97,24 @@ namespace shell
                             }));
                     }
                 }
-            else if (source is SQLiteConnection sqlitec)
-                {
-                r.Add(new View<SQLiteConnectionSchemeBrowser>(new SQLiteConnectionSchemeBrowser(sqlitec))); return r;
+            else if (source is SQLiteConnection sqlitec) {
+                var scheme = new SQLiteConnectionSchemeBrowser(sqlitec);
+                if (scheme.TableDescriptors.Any(i => i.TableName == "TraceInfo")) {
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = new ETraceInfo(sqlitec)
+                            }));
+                    }
+                else
+                    {
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = scheme
+                            }));
+                    }
+                return r;
                 }
             else
                 {

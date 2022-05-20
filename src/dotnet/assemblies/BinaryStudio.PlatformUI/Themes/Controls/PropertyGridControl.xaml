@@ -379,12 +379,12 @@
                                         <ColumnDefinition/>
                                       </Grid.ColumnDefinitions>
                                       <ToggleButton Grid.Column="0"
-                                                Name="Expander"
-                                                Width="20"
-                                                VerticalAlignment="Top"
-                                                Margin="{Binding Margin}"
-                                                IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Style="{StaticResource ExpandOrCollapseToggleButtonStyle}"/>
+                                                    Name="Expander"
+                                                    Width="20"
+                                                    VerticalAlignment="Top"
+                                                    Margin="{Binding Margin}"
+                                                    IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Style="{StaticResource ExpandOrCollapseToggleButtonStyle}"/>
                                       <Grid Grid.Column="1">
                                         <TextBlock Text="{Binding DisplayName}"
                                                Foreground="{TemplateBinding Foreground}"

@@ -6,7 +6,6 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/ProgressBar.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/DropDownButton.xaml"/>
-    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/DataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TreeView.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/ScrollViewer.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/TabControl.xaml"/>
@@ -17,6 +16,8 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/StatusBar.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/Frame.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/StandardControls/ToolBar.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/DataGrid.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TreeDataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Geometries.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="Accent3BrushKey"                        Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>

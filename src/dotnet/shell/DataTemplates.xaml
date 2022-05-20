@@ -5,6 +5,17 @@
                     xmlns:std="clr-namespace:System;assembly=mscorlib"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
   <u:CopyTo x:Key="RowHeaderTemplate" Key="RowHeaderTemplate"/>
+  <DataTemplate DataType="{x:Type e:ETraceInfo}">
+    <u:TreeDataGrid ItemsSource="{Binding Entries}"
+                    VirtualizingStackPanel.IsVirtualizing="True"
+                    AutoGenerateColumns="False"
+                    HierarchicalDataBinding="{Binding Entries}">
+      <u:TreeDataGrid.Columns>
+        <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
+        <DataGridTextColumn Header="Name" Binding="{Binding ShortName}"/>
+      </u:TreeDataGrid.Columns>
+    </u:TreeDataGrid>
+  </DataTemplate>
   <DataTemplate DataType="{x:Type e:SQLiteConnectionSchemeBrowser}">
     <Decorator>
       <Grid>
@@ -107,11 +118,11 @@
           <Border.Resources>
           </Border.Resources>
           <u:DataGrid ItemsSource="{Binding SelectedTable}"
-                    CanUserSortColumns="False"
-                    HeadersVisibility="All"
-                    ScrollViewer.CanContentScroll="True"
-                    ScrollViewer.IsDeferredScrollingEnabled="True"
-                    VirtualizingStackPanel.IsVirtualizing="True">
+                      CanUserSortColumns="False"
+                      HeadersVisibility="All"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.IsDeferredScrollingEnabled="True"
+                      VirtualizingStackPanel.IsVirtualizing="True">
             <u:DataGrid.RowHeaderTemplate>
               <DataTemplate>
                 <Border DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGridRow}}" HorizontalAlignment="Right">
@@ -131,27 +142,6 @@
                 </u:DataTemplateSelector.Templates>
               </u:DataTemplateSelector>
             </u:DataGridOptions.ColumnHeaderTemplateSelector>
-            <!--<u:DataGrid.DefaultDataGridTextColumnEditingElementStyle>
-              <Style TargetType="{x:Type TextBox}">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="IsReadOnly" Value="True"/>
-                <Setter Property="IsReadOnlyCaretVisible" Value="True"/>
-              </Style>
-            </u:DataGrid.DefaultDataGridTextColumnEditingElementStyle>-->
-            <!--<u:DataGridOptions.CellTemplateSelector>
-              <u:DataTemplateSelector>
-                <u:DataTemplateSelector.Templates>
-                  <DataTemplate DataType="{x:Type u:DBQueryRow}">
-                    <TextBlock Padding="5,0,5,0"
-                               VerticalAlignment="Top"
-                               Text="{Binding Mode=OneWay}"
-                               TextTrimming="CharacterEllipsis"/>
-                  </DataTemplate>
-                </u:DataTemplateSelector.Templates>
-              </u:DataTemplateSelector>
-            </u:DataGridOptions.CellTemplateSelector>-->
           </u:DataGrid>
         </Border>
       </Grid>

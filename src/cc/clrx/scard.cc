@@ -21,16 +21,28 @@
 #define GetProcAddressT(Module,E)  (T(E))GetProcAddress(Module,#E)
 
 template <>
-TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) {
+const TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPCSCARD_IO_REQUEST) value) const {
     return (value != nullptr)
-        ? packGI(target,
-            make_tuple(1,value->dwProtocol),
-            make_tuple(2,value->cbPciLength))
+        ? packG(target,Asn1PrivateStruct,
+            value->dwProtocol,
+            value->cbPciLength)
         : packD(target,nullptr);
     }
 
 template <>
-TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPSCARD_IO_REQUEST) value) {
+const TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPSCARD_READERSTATEA) value) const {
+    return (value != nullptr)
+        ? packG(target,Asn1PrivateStruct,
+            value->szReader,
+            DWORD_PTR(value->pvUserData),
+            value->dwCurrentState,
+            value->dwEventState,
+            vector<BYTE>(value->rgbAtr,value->rgbAtr+value->cbAtr))
+        : packD(target,nullptr);
+    }
+
+template <>
+const TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const_ref(LPSCARD_IO_REQUEST) value) const {
     return packD(target,const_cast<LPCSCARD_IO_REQUEST>(value));
     }
 

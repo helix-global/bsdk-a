@@ -59,85 +59,44 @@ void PopParentId()
     }
 
 template <>
-TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const nullptr_t&) {
+const TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const nullptr_t&) const
+    {
     packT(target,Asn1Null);
     packS(target,0x00);
     return *this;
     }
 
 template <>
-TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const string& value) {
-    if (value.empty())
-        {
-        packD(target, nullptr);
-        }
-    else
-        {
-        packT(target,Asn1GeneralString);
-        packS(target,value.size());
-        for (const auto& i:value) {
-            target.emplace_back(i);
-            }
-        }
-    return *this;
-    }
-
-template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const wstring& value) {
-    if (value.empty())
-        {
-        packD(target, nullptr);
-        }
-    else
-        {
-        packT(target,Asn1UnicodeString);
-        packS(target,value.size()*2);
-        for (const auto& i:value) {
-            target.emplace_back(i >> 8);
-            target.emplace_back(i & 0xff);
-            }
-        }
-    return *this;
-    }
-
-template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t const* const& value) {
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t const* const& value) const {
     return (value != nullptr)
         ? packD(target, wstring(value))
         : packD(target, nullptr);
     }
 
 template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t* const& value) {
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t* const& value) const {
     return (value != nullptr)
         ? packD(target, wstring(value))
         : packD(target, nullptr);
     }
 
 template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char const* const& value) {
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char const* const& value) const {
     return (value != nullptr)
         ? packD(target, string(value))
         : packD(target, nullptr);
     }
 
 template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char* const& value) {
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char* const& value) const {
     return (value != nullptr)
         ? packD(target, string(value))
         : packD(target, nullptr);
-    }
-
-template <>
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const vector<uint8_t>& value) {
-    return (value.empty())
-        ? packD(target, nullptr)
-        : PackValue(target, &value[0],value.size());
     }
 
 #define PACK(T) \
 template <> \
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const T& value) { \
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const T& value) const { \
     vector<uint8_t> o; \
     packB(o, (const uint8_t*)&value, sizeof(T)); \
     packT(target, Asn1PrivateDirect); \
@@ -146,7 +105,7 @@ TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const T& value
     return *this; \
     } \
 template <> \
-TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, T* const & value) { \
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, T* const & value) const { \
     vector<uint8_t> o; \
     if (value == nullptr) { return packD(target,nullptr); } \
     packD(o, *value); \
@@ -201,9 +160,9 @@ void TraceDescriptor::packB(vector<uint8_t>& target, const uint8_t* source, cons
         }
     }
 
-TraceDescriptor& TraceDescriptor::PackValue(
+const TraceDescriptor& TraceDescriptor::PackValue(
     vector<uint8_t>& target, const uint8_t* source,
-    const size_t count)
+    const size_t count) const
     {
     if (source != nullptr) {
         packT(target, Asn1OctetString);
@@ -281,15 +240,15 @@ HRESULT TraceDescriptor::EnterI(LONG& scope, const vector<uint8_t>& target, cons
     return S_OK;
     }
 
-HRESULT TraceDescriptor::LeaveI(const LONG scope,HRESULT scode, const vector<uint8_t>& target, const NullableReference<LONG64>&)
-    {
+HRESULT TraceDescriptor::LeaveI(const LONG scope,HRESULT scode, const vector<uint8_t>& target, const NullableReference<LONG64>&) const {
     int status;
     if (scope == 0)            { return E_INVALIDARG;           }
     if (DataSource == nullptr) { return COR_E_INVALIDOPERATION; }
     PopParentId();
     if (LeaveStatement == nullptr) {
         if ((status = sqlite3_prepare_v2(DataSource,
-            "INSERT INTO TraceInfo([EntryTime],[LeavePoint],[Parameters],[SCode]) VALUES (@EntryTime,@LeavePoint,@Parameters,@SCode)",
+            "INSERT INTO TraceInfo([EntryTime],[LeavePoint],[Parameters],[SCode],[ShortName]) \
+                    VALUES        (@EntryTime, @LeavePoint, @Parameters, @SCode, @ShortName)",
             -1, &LeaveStatement, nullptr)) != SQLITE_OK) {
             return COR_E_INVALIDOPERATION;
             }
@@ -300,6 +259,9 @@ HRESULT TraceDescriptor::LeaveI(const LONG scope,HRESULT scode, const vector<uin
         ? sqlite3_bind_blob64(LeaveStatement, 3,&target[0],target.size(),nullptr)
         : sqlite3_bind_null  (LeaveStatement, 3)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
     if ((status = sqlite3_bind_int(LeaveStatement, 4, scode)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
+        if ((status = !ShortName.empty()
+            ? sqlite3_bind_text(InsertStatement, 5, ShortName.c_str(), -1, SQLITE_TRANSIENT)
+            : sqlite3_bind_null(InsertStatement, 5)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
     if ((status = sqlite3_step(LeaveStatement)) != SQLITE_DONE) { return COR_E_INVALIDOPERATION; }
     sqlite3_reset(LeaveStatement);
     return S_OK;

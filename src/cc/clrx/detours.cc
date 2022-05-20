@@ -22,6 +22,9 @@
 #define TRY       __try     {
 #define FINALLY } __finally {
 #define END     }
+#define try       __try     {
+#define finally } __finally {
+#define end     }
 #define GetProcAddressT(Module,E)  (T(E))GetProcAddress(Module,#E)
 
 ModuleSafeHandle WinSCard(LoadLibraryA("winscard.dll"));
@@ -648,14 +651,14 @@ LONG WINAPI H(SCardEstablishContext)(DWORD Scope,LPCVOID,LPCVOID,LPSCARDCONTEXT 
     TraceDescriptor D(nameof(SCardEstablishContext),"SCardEstablishContext(DWORD,LPCVOID,LPCVOID,LPSCARDCONTEXT):LONG");
     LONG scope = 0;
     LONG r = 0;
-    TRY
+    try
         D.Enter(scope,Scope);
         r = O(SCardEstablishContext)(Scope,nullptr,nullptr,Context);
-    FINALLY
+    finally
         r = (r == SCARD_S_SUCCESS)
             ? D.Leave(scope, S_OK,r,Scope,Context)
             : D.Leave(scope, r,    r);
-    END
+    end
     return r;
     }
 
@@ -1293,42 +1296,45 @@ LONG WINAPI H(SCardListReaderGroupsW)(
     return r;
     }
 
-LONG WINAPI H(SCardListReadersA)(
-    SCARDCONTEXT hContext,
-    LPCSTR mszGroups,
-    LPSTR mszReaders,
-    LPDWORD pcchReaders)
+template<class T, class E>
+LONG SCardListReadersT(const TraceDescriptor& D, T EntryPoint, SCARDCONTEXT hContext,const E* mszGroups,E* mszReaders,LPDWORD pcchReaders)
     {
-    TraceDescriptor D(nameof(SCardListReadersA),"SCardListReadersA(SCARDCONTEXT,LPCSTR,LPSTR,LPDWORD):LONG");
-    LONG scope = 0;
+    LONG Scope = 0;
     LONG r = 0;
-    TRY
-        D.Enter(scope,hContext,mszGroups,mszReaders);
-        r = O(SCardListReadersA)(hContext,mszGroups,mszReaders,pcchReaders);
-    FINALLY
+    auto IsAutoAllocate = false;
+    try
+        D.Enter(Scope,hContext,mszGroups,mszReaders,pcchReaders);
+        IsAutoAllocate = (pcchReaders != nullptr)
+            ? *pcchReaders == SCARD_AUTOALLOCATE
+            : false;
+        r = EntryPoint(hContext,mszGroups,mszReaders,pcchReaders);
+    finally
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r, hContext)
-            : D.Leave(scope, r,    r);
-    END
+            ? D.Leave(Scope, S_OK, r,hContext, ((pcchReaders != nullptr) && (mszReaders != nullptr))
+                ? (IsAutoAllocate)
+                    ? vector<E>(*(E**)mszReaders,*(E**)mszReaders + *pcchReaders)
+                    : vector<E>(mszReaders,mszReaders + *pcchReaders)
+                : vector<E>())
+            : D.Leave(Scope, r, r);
+    end
     return r;
     }
-
-LONG WINAPI H(SCardListReadersW)(
-    SCARDCONTEXT Context,LPCWSTR Groups,LPWSTR Readers, LPDWORD ReaderCount)
+#pragma region SCardListReadersA
+LONG WINAPI H(SCardListReadersA)(SCARDCONTEXT hContext,LPCSTR mszGroups,LPSTR mszReaders,LPDWORD pcchReaders)
     {
-    TraceDescriptor D(nameof(SCardListReadersW),"SCardListReadersW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG");
-    LONG scope = 0;
-    LONG r = 0;
-    TRY
-        D.Enter(scope,Context,Groups,Readers,ReaderCount);
-        r = O(SCardListReadersW)(Context,Groups,Readers,ReaderCount);
-    FINALLY
-        r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r,Context)
-            : D.Leave(scope, r,    r);
-    END
-    return r;
+    return SCardListReadersT(
+        TraceDescriptor(nameof(SCardListReadersA),"SCardListReadersA(SCARDCONTEXT,LPCSTR,LPSTR,LPDWORD):LONG"),
+        O(SCardListReadersA),hContext,mszGroups,mszReaders,pcchReaders);
     }
+#pragma endregion
+#pragma region SCardListReadersW
+LONG WINAPI H(SCardListReadersW)(SCARDCONTEXT hContext,LPCWSTR mszGroups,LPWSTR mszReaders,LPDWORD pcchReaders)
+    {
+    return SCardListReadersT(
+        TraceDescriptor(nameof(SCardListReadersW),"SCardListReadersW(SCARDCONTEXT,LPCWSTR,LPWSTR,LPDWORD):LONG"),
+        O(SCardListReadersW),hContext,mszGroups,mszReaders,pcchReaders);
+    }
+#pragma endregion
 
 LONG WINAPI H(SCardListReadersWithDeviceInstanceIdA)(
     SCARDCONTEXT hContext,
@@ -1370,45 +1376,44 @@ LONG WINAPI H(SCardListReadersWithDeviceInstanceIdW)(
     return r;
     }
 
-LONG WINAPI H(SCardLocateCardsA)(
-    SCARDCONTEXT hContext,
-    LPCSTR mszCards,
-    LPSCARD_READERSTATEA rgReaderStates,
-    DWORD cReaders)
-    {
+#pragma region SCardLocateCardsA
+LONG WINAPI H(SCardLocateCardsA)(SCARDCONTEXT hContext,LPCSTR mszCards,LPSCARD_READERSTATEA rgReaderStates,DWORD cReaders) {
     TraceDescriptor D(nameof(SCardLocateCardsA),"SCardLocateCardsA(SCARDCONTEXT,LPCSTR,LPSCARD_READERSTATEA,DWORD):LONG");
     LONG scope = 0;
     LONG r = 0;
-    TRY
-        D.Enter(scope,hContext,mszCards);
+    list<LPSCARD_READERSTATEA> States;
+    try
+        if (rgReaderStates != nullptr) {
+            for (DWORD i = 0; i < cReaders; i++) {
+                States.push_back(&rgReaderStates[i]);
+                }
+            }
+        D.Enter(scope,hContext,mszCards,States,cReaders);
         r = O(SCardLocateCardsA)(hContext,mszCards,rgReaderStates,cReaders);
-    FINALLY
+    finally
         r = (r == SCARD_S_SUCCESS)
-            ? D.Leave(scope, S_OK, r, hContext)
+            ? D.Leave(scope, S_OK, r, hContext,States,cReaders)
             : D.Leave(scope, r,    r);
-    END
+    end
     return r;
     }
-
-LONG WINAPI H(SCardLocateCardsW)(
-    SCARDCONTEXT hContext,
-    LPCWSTR mszCards,
-    LPSCARD_READERSTATEW rgReaderStates,
-    DWORD cReaders)
-    {
+#pragma endregion
+#pragma region SCardLocateCardsW
+LONG WINAPI H(SCardLocateCardsW)(SCARDCONTEXT hContext,LPCWSTR mszCards,LPSCARD_READERSTATEW rgReaderStates,DWORD cReaders) {
     TraceDescriptor D(nameof(SCardLocateCardsW),"SCardLocateCardsW(SCARDCONTEXT,LPCWSTR,LPSCARD_READERSTATEW,DWORD):LONG");
     LONG scope = 0;
     LONG r = 0;
-    TRY
+    try
         D.Enter(scope,hContext,mszCards);
         r = O(SCardLocateCardsW)(hContext,mszCards,rgReaderStates,cReaders);
-    FINALLY
+    finally
         r = (r == SCARD_S_SUCCESS)
             ? D.Leave(scope, S_OK, r, hContext)
             : D.Leave(scope, r,    r);
-    END
+    end
     return r;
     }
+#pragma endregion
 
 LONG WINAPI H(SCardLocateCardsByATRA)(
     SCARDCONTEXT hContext,
@@ -1677,13 +1682,7 @@ LONG WINAPI H(SCardStatusW)(
     return r;
     }
 
-LONG WINAPI H(SCardWriteCacheA)(
-    SCARDCONTEXT hContext,
-    UUID *CardIdentifier,
-    DWORD FreshnessCounter,
-    LPSTR LookupName,
-    PBYTE Data,
-    DWORD DataLen)
+LONG WINAPI H(SCardWriteCacheA)(SCARDCONTEXT hContext,UUID *CardIdentifier,DWORD FreshnessCounter,LPSTR LookupName,PBYTE Data,DWORD DataLen)
     {
     TraceDescriptor D(nameof(SCardWriteCacheA),"SCardWriteCacheA(SCARDCONTEXT,UUID*,DWORD,LPSTR,PBYTE,DWORD):LONG");
     LONG scope = 0;
@@ -1699,13 +1698,7 @@ LONG WINAPI H(SCardWriteCacheA)(
     return r;
     }
 
-LONG WINAPI H(SCardWriteCacheW)(
-    SCARDCONTEXT hContext,
-    UUID *CardIdentifier,
-    DWORD FreshnessCounter,
-    LPWSTR LookupName,
-    PBYTE Data,
-    DWORD DataLen)
+LONG WINAPI H(SCardWriteCacheW)(SCARDCONTEXT hContext,UUID *CardIdentifier,DWORD FreshnessCounter,LPWSTR LookupName,PBYTE Data,DWORD DataLen)
     {
     TraceDescriptor D(nameof(SCardWriteCacheW),"SCardWriteCacheW(SCARDCONTEXT,UUID*,DWORD,LPWSTR,PBYTE,DWORD):LONG");
     LONG scope = 0;
