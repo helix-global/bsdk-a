@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
-    public class TreeDataGrid : DataGrid
+    public class TreeDataGrid : TreeView
         {
         static TreeDataGrid()
             {
@@ -25,13 +25,19 @@ namespace BinaryStudio.PlatformUI.Controls
 
         public TreeDataGrid()
             {
+            Columns = new ObservableCollection<TreeDataGridColumn>();
             }
+
+        public ObservableCollection<TreeDataGridColumn> Columns { get; }
 
         /// <summary>Instantiates a new <see cref="T:System.Windows.Controls.DataGridRow" />.</summary>
         /// <returns>The row that is the container.</returns>
         protected override DependencyObject GetContainerForItemOverride()
             {
-            return new TreeDataGridRow();
+            return new TreeDataGridRow
+                {
+                TreeDataGridOwner = this
+                };
             }
 
         /// <summary>Prepares a new row for the specified item.</summary>
@@ -39,7 +45,7 @@ namespace BinaryStudio.PlatformUI.Controls
         /// <param name="item">The data item that the row contains.</param>
         protected override void PrepareContainerForItemOverride(DependencyObject element, Object item) {
             base.PrepareContainerForItemOverride(element, item);
-            BindingOperations.SetBinding(element, TreeDataGridRow.ItemsSourceProperty, HierarchicalDataBinding);
+            //BindingOperations.SetBinding(element, TreeDataGridRow.ItemsSourceProperty, HierarchicalDataBinding);
             }
 
         /// <summary>When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.</summary>
@@ -50,7 +56,7 @@ namespace BinaryStudio.PlatformUI.Controls
             //OnItemsSourceChanged();
             }
 
-        public virtual BindingBase HierarchicalDataBinding { get;set; }
+        //public virtual BindingBase HierarchicalDataBinding { get;set; }
 
         //private TreeView ItemsHost;
         }

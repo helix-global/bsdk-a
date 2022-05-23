@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
-    public class TreeDataGridCellsPresenter : DataGridCellsPresenter
+    public class TreeDataGridCellsPresenter : ItemsControl
         {
         static TreeDataGridCellsPresenter()
             {
@@ -24,8 +27,39 @@ namespace BinaryStudio.PlatformUI.Controls
         protected override void PrepareContainerForItemOverride(DependencyObject element, Object item) {
             base.PrepareContainerForItemOverride(element, item);
             if (element is TreeDataGridCell cell) {
-                cell.CellIndex = ItemContainerGenerator.IndexFromContainer(element);
+                var index = ItemContainerGenerator.IndexFromContainer(element);
+                cell.Column = TreeDataGridRowOwner?.TreeDataGridOwner?.Columns[index];
+                cell.CellIndex = index;
+                cell.Column?.PrepareCell(cell);
                 }
             }
+
+        /// <summary>Invoked whenever the effective value of any dependency property on this <see cref="T:System.Windows.FrameworkElement" /> has been updated. The specific dependency property that changed is reported in the arguments parameter. Overrides <see cref="M:System.Windows.DependencyObject.OnPropertyChanged(System.Windows.DependencyPropertyChangedEventArgs)" />.</summary>
+        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+            {
+            base.OnPropertyChanged(e);
+            if (ReferenceEquals(e.Property,DataContextProperty)) {
+                OnDataContextChanged();
+                }
+            }
+
+        /// <summary>When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.</summary>
+        public override void OnApplyTemplate() {
+            base.OnApplyTemplate();
+            if (TreeDataGridRowOwner == null) {
+                TreeDataGridRowOwner = this.FindAncestor<TreeDataGridRow>();
+                OnDataContextChanged();
+                }
+            }
+
+        private void OnDataContextChanged()
+            {
+            ItemsSource = (TreeDataGridRowOwner != null)
+                ? TreeDataGridRowOwner.TreeDataGridOwner.Columns.Select(i => DataContext)
+                : null;
+            }
+
+        internal TreeDataGridRow TreeDataGridRowOwner;
         }
     }

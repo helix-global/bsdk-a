@@ -8,7 +8,6 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/SplitterItem.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/RoutedCommandButton.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/ProgressRing.xaml"/>
-    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/PropertyGridControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/SplitterResizePreviewWindow.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideChannelControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideGroupControl.xaml"/>

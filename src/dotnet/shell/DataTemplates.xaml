@@ -7,12 +7,18 @@
   <u:CopyTo x:Key="RowHeaderTemplate" Key="RowHeaderTemplate"/>
   <DataTemplate DataType="{x:Type e:ETraceInfo}">
     <u:TreeDataGrid ItemsSource="{Binding Entries}"
-                    VirtualizingStackPanel.IsVirtualizing="True"
-                    AutoGenerateColumns="False"
-                    HierarchicalDataBinding="{Binding Entries}">
+                    VirtualizingStackPanel.IsVirtualizing="True">
+      <u:TreeDataGrid.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type e:ETraceInfoEntry}" ItemsSource="{Binding Entries}">
+          <TextBlock Text="{Binding ShortName,Mode=OneWay}"/>
+        </HierarchicalDataTemplate>
+        <DataTemplate DataType="std:String">
+          <TextBlock Text="{Binding}" Margin="5,0,5,0" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+      </u:TreeDataGrid.Resources>
       <u:TreeDataGrid.Columns>
-        <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
-        <DataGridTextColumn Header="Name" Binding="{Binding ShortName}"/>
+        <u:TreeDataGridTextColumn Header="Name" Binding="{Binding ShortName}"/>
+        <u:TreeDataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
       </u:TreeDataGrid.Columns>
     </u:TreeDataGrid>
   </DataTemplate>
