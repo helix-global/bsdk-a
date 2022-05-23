@@ -864,7 +864,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 });
                             Marshal.FinalReleaseComObject(j);
                             }
-                        var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
+                        var filename = $"{FintechCryptographicContext.ReportPrefix}csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
                         using (var stream = File.OpenWrite(filename))
                         using (var target = new StreamWriter(stream, Encoding.Unicode)) {
                             var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();

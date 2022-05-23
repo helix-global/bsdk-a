@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal class FintechCryptographicContext : CryptographicObject, ICryptographicContext
+    public class FintechCryptographicContext : CryptographicObject, ICryptographicContext
         {
         private IntPtr _handle;
         protected internal override ILogger Logger { get; }
@@ -18,6 +18,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         String ICryptographicContext.ProviderName { get { return "Fintech Cryptographic Library Context."; }}
         CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return CRYPT_PROVIDER_TYPE.FINTECH; }}
         Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
+        public static String ReportPrefix { get;set; }
 
         /// <summary>
         /// Constructs <see cref="FintechCryptographicContext"/> instance using <paramref name="flags"/>.

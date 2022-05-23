@@ -12,6 +12,7 @@ using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
 using Kit;
@@ -50,6 +51,9 @@ public class LocalClient : ILocalClient
                     {
                     NumberOfThreads = 64
                     });
+                }
+            if (HasOption(options, typeof(ReportOption))) {
+                FintechCryptographicContext.ReportPrefix = options.OfType<ReportOption>().First().Prefix;
                 }
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }

@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:c:\\icao\\*.7z filter:*.cer batch:install mt:1 storelocation:LocalMachine storename:Root",
+      "commandLineArgs": "input:C:\\icao\\rfid_2_4\\*{e040}.hex verify mt:1 policy:icao provider:-2",
       "remoteDebugEnabled": false,
       "nativeDebugging": true
     }
