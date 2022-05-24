@@ -17,8 +17,9 @@
         </DataTemplate>
       </u:TreeDataGrid.Resources>
       <u:TreeDataGrid.Columns>
-        <u:TreeDataGridTextColumn Header="Name" Binding="{Binding ShortName}"/>
-        <u:TreeDataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
+        <u:TreeDataGridTextColumn Width="200" Header="Name"     Binding="{Binding ShortName}"/>
+        <u:TreeDataGridTextColumn Width="200" Header="Duration" Binding="{Binding Duration}"/>
+        <u:TreeDataGridTextColumn Width="300" Header="Duration" Binding="{Binding Duration}"/>
       </u:TreeDataGrid.Columns>
     </u:TreeDataGrid>
   </DataTemplate>

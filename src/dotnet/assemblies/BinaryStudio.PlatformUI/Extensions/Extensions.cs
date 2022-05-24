@@ -649,6 +649,20 @@ namespace BinaryStudio.PlatformUI.Extensions
             return null;
             }
         #endregion
+        #region M:SetBinding(DependencyObject,DependencyProperty,DependencyObject,DependencyProperty,BindingMode,IValueConverter):BindingExpressionBase
+        public static BindingExpressionBase SetBinding(this DependencyObject target, DependencyProperty targetProperty, DependencyObject source, DependencyProperty sourceProperty, BindingMode mode, IValueConverter converter) {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            if (sourceProperty != null) {
+                return BindingOperations.SetBinding(target, targetProperty, new Binding() {
+                    Source = source,
+                    Path = new PropertyPath(sourceProperty),
+                    Mode = mode,
+                    Converter = converter
+                    });
+                }
+            return null;
+            }
+        #endregion
 
         public static void UpdateDataSourceProperty(this FrameworkElement element, String propertyname, Object value)
             {

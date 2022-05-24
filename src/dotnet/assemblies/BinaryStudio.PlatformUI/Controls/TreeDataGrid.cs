@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -26,6 +27,16 @@ namespace BinaryStudio.PlatformUI.Controls
         public TreeDataGrid()
             {
             Columns = new ObservableCollection<TreeDataGridColumn>();
+            Columns.CollectionChanged += OnColumnsCollectionChanged;
+            }
+
+        private void OnColumnsCollectionChanged(Object sender, NotifyCollectionChangedEventArgs e) {
+            var i = 0;
+            foreach (var column in Columns) {
+                column.ColumnIndex = i;
+                column.IsLastColumn = i == Columns.Count - 1;
+                i++;
+                }
             }
 
         public ObservableCollection<TreeDataGridColumn> Columns { get; }

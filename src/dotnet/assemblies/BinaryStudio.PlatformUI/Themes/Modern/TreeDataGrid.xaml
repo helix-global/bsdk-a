@@ -109,7 +109,8 @@
                   </Grid>
                 </ControlTemplate>
               </ScrollViewer.Template>
-              <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="0,0,-1,0"/>
+              <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="0,0,-1,0"
+                              VirtualizingStackPanel.IsVirtualizing="True"/>
             </ScrollViewer>
           </Border>
         </ControlTemplate>
@@ -329,9 +330,17 @@
             <ContentControl Style="{Binding HeaderStyle}"
                             Content="{Binding Header}"
                             ContentTemplate="{Binding HeaderTemplate}"/>
-            <Thumb x:Name="PART_LeftHeaderGripper"  HorizontalAlignment="Left"/>
             <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right"/>
           </Grid>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsLastColumn,Mode=OneWay}" Value="True"/>
+                <Condition Binding="{Binding Width.IsStar,Mode=OneWay}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="PART_RightHeaderGripper" Property="Visibility" Value="Collapsed"/>
+            </MultiDataTrigger>
+          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>

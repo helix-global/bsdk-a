@@ -63,6 +63,24 @@ namespace BinaryStudio.PlatformUI.Controls
             set { SetValue(WidthProperty, value); }
             }
         #endregion
+        #region P:ColumnIndex:Int32
+        private static readonly DependencyPropertyKey IndexPropertyKey = DependencyProperty.RegisterReadOnly("ColumnIndex", typeof(Int32), typeof(TreeDataGridColumn), new PropertyMetadata(default(Int32)));
+        public static readonly DependencyProperty ColumnIndexProperty = IndexPropertyKey.DependencyProperty;
+        public Int32 ColumnIndex
+            {
+            get { return (Int32)GetValue(ColumnIndexProperty); }
+            internal set { SetValue(IndexPropertyKey, value); }
+            }
+        #endregion
+        #region P:IsLastColumn:Boolean
+        private static readonly DependencyPropertyKey IsLastColumnPropertyKey = DependencyProperty.RegisterReadOnly("IsLastColumn", typeof(Boolean), typeof(TreeDataGridColumn), new PropertyMetadata(default(Boolean)));
+        public static readonly DependencyProperty IsLastColumnProperty = IsLastColumnPropertyKey.DependencyProperty;
+        public Boolean IsLastColumn
+            {
+            get { return (Boolean)GetValue(IsLastColumnProperty); }
+            internal set { SetValue(IsLastColumnPropertyKey, value); }
+            }
+        #endregion
 
         public abstract void PrepareCell(TreeDataGridCell target);
         }

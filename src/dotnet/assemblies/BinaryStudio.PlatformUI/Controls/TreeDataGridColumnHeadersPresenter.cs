@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Controls
@@ -28,12 +30,17 @@ namespace BinaryStudio.PlatformUI.Controls
             if ((ItemsHost != null) && (TreeDataGridOwner != null)) {
                 ItemsHost.ColumnDefinitions.Clear();
                 foreach (var column in TreeDataGridOwner.Columns) {
-                    ItemsHost.ColumnDefinitions.Add(new ColumnDefinition());
+                    var target = new ColumnDefinition();
+                    ItemsHost.ColumnDefinitions.Add(target);
+                    target.SetBinding(ColumnDefinition.MaxWidthProperty, column, TreeDataGridColumn.MaxWidthProperty, BindingMode.OneWay);
+                    target.SetBinding(ColumnDefinition.MinWidthProperty, column, TreeDataGridColumn.MinWidthProperty, BindingMode.OneWay);
+                    target.SetBinding(ColumnDefinition.WidthProperty, column, TreeDataGridColumn.WidthProperty, BindingMode.OneWay, new TreeDataGridLengthConverter());
                     }
                 }
             }
 
         private void OnItemsHostLayoutUpdated(Object sender, EventArgs e) {
+            Debug.Print("OnItemsHostLayoutUpdated");
             if (TreeDataGridOwner != null) {
                 var i = 0;
                 foreach (var column in ItemsHost.ColumnDefinitions) {
@@ -60,10 +67,8 @@ namespace BinaryStudio.PlatformUI.Controls
             if (element is UIElement u) {
                 Grid.SetColumn(u, index);
                 }
-            
             if (element is TreeDataGridColumnHeader header) {
-                
-                //header.Column = 
+                header.Column = TreeDataGridOwner.Columns[index];
                 }
             }
 
