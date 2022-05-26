@@ -1,12 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
     public class TreeDataGridBoundColumn : TreeDataGridColumn
         {
-        protected internal TreeDataGrid DataGridOwner { get;internal set; }
         public virtual BindingBase Binding { get;set; }
 
         public override void PrepareCell(TreeDataGridCell target) {

@@ -29,7 +29,7 @@ namespace BinaryStudio.PlatformUI.Controls
             if (element is TreeDataGridCell cell) {
                 var index = ItemContainerGenerator.IndexFromContainer(element);
                 cell.Column = TreeDataGridRowOwner?.TreeDataGridOwner?.Columns[index];
-                cell.CellIndex = index;
+                cell.TreeDataGridRowOwner = TreeDataGridRowOwner;
                 cell.Column?.PrepareCell(cell);
                 }
             }

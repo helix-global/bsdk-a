@@ -374,7 +374,7 @@ namespace Operations
                                     if (!PathUtils.IsSame(service.FullName, Path.Combine(targetfolder, service.FileName))) {
                                         service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
                                         }
-                                    //((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
+                                    ((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
                                     ((IFileService)cms).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".p7b")), true);
                                     status = FileOperation.Max(status, FileOperationStatus.Success);
                                     return status;

@@ -151,24 +151,61 @@ namespace BinaryStudio.PlatformUI.Extensions
             return obj1;
             }
 
-        public static T FindDescendantReverse<T>(this DependencyObject obj) where T : class {
-            if (obj == null)
-                return default(T);
-            var obj1 = default(T);
-            for (var childIndex = VisualTreeHelper.GetChildrenCount(obj) - 1; childIndex >= 0; --childIndex) {
-                var child = VisualTreeHelper.GetChild(obj, childIndex);
-                if (child != null) {
-                    obj1 = child as T;
-                    if (obj1 == null) {
-                        obj1 = child.FindDescendantReverse<T>();
-                        if (obj1 != null)
-                            break;
+        public static IEnumerable<DependencyObject> DescendantReverse(this DependencyObject source) {
+            if (source != null) {
+                var c = VisualTreeHelper.GetChildrenCount(source);
+                for (var i = c - 1; i >= 0; --i) {
+                    var r = VisualTreeHelper.GetChild(source, i);
+                    if (r != null) {
+                        foreach (var j in DescendantReverse(r)) {
+                            yield return j;
+                            }
+                        yield return r;
                         }
-                    else
-                        break;
                     }
                 }
-            return obj1;
+            }
+
+        public static IEnumerable<DependencyObject> Descendants(this DependencyObject source) {
+            if (source != null) {
+                var c = VisualTreeHelper.GetChildrenCount(source);
+                for (var i = 0; i < c; ++i) {
+                    var r = VisualTreeHelper.GetChild(source, i);
+                    if (r != null) {
+                        yield return r;
+                        foreach (var j in Descendants(r)) {
+                            yield return j;
+                            }
+                        }
+                    }
+                }
+            }
+
+        public static T FindDescendantReverse<T>(this DependencyObject source)
+            where T : class
+            {
+            if (source == null) { return default(T); }
+            var r = default(T);
+            var count = VisualTreeHelper.GetChildrenCount(source);
+            for (var i = count - 1; i >= 0; --i) {
+                var child = VisualTreeHelper.GetChild(source, i);
+                if (child != null) {
+                    r = child as T;
+                    if (r == null) {
+                        r = child.FindDescendantReverse<T>();
+                        if (r != null)
+                            {
+                            break;
+                            }
+                            
+                        }
+                    else
+                        {
+                        break;
+                        }
+                    }
+                }
+            return r;
             }
 
         public static IEnumerable<T> FindDescendants<T>(this DependencyObject obj) where T : class {

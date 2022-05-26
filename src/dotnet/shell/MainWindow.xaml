@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:u="http://schemas.helix.global"
-        xmlns:shell="clr-namespace:shell"
+        xmlns:e="clr-namespace:shell"
+        xmlns:win32="clr-namespace:Microsoft.Win32;assembly=mscorlib"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
@@ -37,8 +38,16 @@
     <Menu Grid.Row="0">
       <MenuItem Header="FILE">
         <MenuItem Header="Open..." Command="Open"/>
-        <MenuItem Header="Convert to BASE64..." Command="{x:Static shell:DocumentCommands.ConvertToBase64}"/>
-        <MenuItem Header="Open from BASE64..."  Command="{x:Static shell:DocumentCommands.OpenBase64}"/>
+        <MenuItem Header="Convert to BASE64..." Command="{x:Static e:DocumentCommands.ConvertToBase64}"/>
+        <MenuItem Header="Open from BASE64..."  Command="{x:Static e:DocumentCommands.OpenBase64}"/>
+        <MenuItem Header="Registry">
+          <MenuItem Header="HKEY_CLASSES_ROOT"     Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.ClassesRoot}"/>
+          <MenuItem Header="HKEY_CURRENT_USER"     Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.CurrentUser}"/>
+          <MenuItem Header="HKEY_LOCAL_MACHINE"    Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.LocalMachine}"/>
+          <MenuItem Header="HKEY_USERS"            Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.Users}"/>
+          <MenuItem Header="HKEY_CURRENT_CONFIG"   Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.CurrentConfig}"/>
+          <MenuItem Header="HKEY_PERFORMANCE_DATA" Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.PerformanceData}"/>
+        </MenuItem>
       </MenuItem>
       <MenuItem Header="HELP">
         <MenuItem Header="About..."/>

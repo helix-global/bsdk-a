@@ -6,6 +6,8 @@ namespace BinaryStudio.PlatformUI.Controls
     {
     public abstract class TreeDataGridColumn : DependencyObject
         {
+        protected internal TreeDataGrid DataGridOwner { get;internal set; }
+
         #region P:ActualWidth:Double
         private static readonly DependencyPropertyKey ActualWidthPropertyKey = DependencyProperty.RegisterReadOnly("ActualWidth", typeof(Double), typeof(TreeDataGridColumn), new PropertyMetadata(default(Double)));
         public static readonly DependencyProperty ActualWidthProperty = ActualWidthPropertyKey.DependencyProperty;

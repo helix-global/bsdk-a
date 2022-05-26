@@ -10,6 +10,7 @@ using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using BinaryStudio.Security.Cryptography.PlatformUI.Controls;
 using BinaryStudio.Security.Cryptography.PlatformUI.Views;
+using Microsoft.Win32;
 
 namespace shell
     {
@@ -99,7 +100,7 @@ namespace shell
                 }
             else if (source is SQLiteConnection sqlitec) {
                 var scheme = new SQLiteConnectionSchemeBrowser(sqlitec);
-                if (scheme.TableDescriptors.Any(i => i.TableName == "TraceInfo")) {
+                if (scheme.TableDescriptors.Any(i => i.TableName == "TraceInfo2")) {
                     r.Add(new View<Object>(
                         new ContentControl
                             {
@@ -115,6 +116,14 @@ namespace shell
                             }));
                     }
                 return r;
+                }
+            else if (source is RegistryKey regkey)
+                {
+                r.Add(new View<Object>(
+                    new ContentControl
+                        {
+                        Content = new ERegistryKey(regkey)
+                        }));
                 }
             else
                 {

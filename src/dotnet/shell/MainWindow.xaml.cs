@@ -20,6 +20,8 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Microsoft.Win32;
 using Path=System.IO.Path;
 
+#pragma warning disable 1591
+
 namespace shell
     {
     /// <summary>
@@ -72,6 +74,7 @@ namespace shell
 
         private void Initialize()
             {
+            OpenRegistryKeyExecuted(Registry.CurrentConfig);
             LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
             //docmanager.AddCertificateStoreManagement();
             }
@@ -85,6 +88,18 @@ namespace shell
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenRegistryKey, OpenRegistryKeyExecuted,CanExecuteAllways));;
+            }
+
+        private void OpenRegistryKeyExecuted(Object e)
+            {
+            var o = docmanager.LoadView(e);
+            docmanager.Add(o, e.ToString());
+            }
+
+        private void OpenRegistryKeyExecuted(Object sender, ExecutedRoutedEventArgs e)
+            {
+            OpenRegistryKeyExecuted(e.Parameter);
             }
 
         private void OpenBase64Executed(Object sender, ExecutedRoutedEventArgs e)

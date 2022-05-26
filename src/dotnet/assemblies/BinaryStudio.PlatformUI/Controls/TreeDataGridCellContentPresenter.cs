@@ -6,12 +6,17 @@ namespace BinaryStudio.PlatformUI.Controls
     {
     public class TreeDataGridCellContentPresenter : Control
         {
-        #region P:DisplayTemplate:DataTemplate
-        public static readonly DependencyProperty DisplayTemplateProperty = DependencyProperty.Register("DisplayTemplate", typeof(DataTemplate), typeof(TreeDataGridCellContentPresenter), new PropertyMetadata(default(DataTemplate)));
-        public DataTemplate DisplayTemplate
+        #region P:CellTemplate:DataTemplate
+        public static readonly DependencyProperty CellTemplateProperty = DependencyProperty.Register("CellTemplate", typeof(DataTemplate), typeof(TreeDataGridCellContentPresenter), new PropertyMetadata(default(DataTemplate),OnCellTemplateChanged));
+        private static void OnCellTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             {
-            get { return (DataTemplate)GetValue(DisplayTemplateProperty); }
-            set { SetValue(DisplayTemplateProperty, value); }
+            return;
+            }
+
+        public DataTemplate CellTemplate
+            {
+            get { return (DataTemplate)GetValue(CellTemplateProperty); }
+            set { SetValue(CellTemplateProperty, value); }
             }
         #endregion
         #region P:EditTemplate:DataTemplate

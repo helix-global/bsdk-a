@@ -444,6 +444,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String CrlThumbprint { get; }
             Int32 ContentSize { get; }
             Int32 MessageSize { get; }
+            Int32 Depth { get; }
             Int32 Flags { get; }
 	        }
 
@@ -813,6 +814,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             public Int32 Flags { get;set; }
             public String Certificate { get;set; }
             public String Crl { get;set; }
+            public Int32 Depth { get;set; }
             public String SCode { get;set; }
             }
 
@@ -860,7 +862,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 MessageSize = j.MessageSize,
                                 Certificate = j.CertificateThumbprint ?? "NULL",
                                 Crl = j.CrlThumbprint ?? "NULL",
-                                Flags = j.Flags
+                                Flags = j.Flags,
+                                Depth = j.Depth
                                 });
                             Marshal.FinalReleaseComObject(j);
                             }

@@ -40,7 +40,7 @@ namespace BinaryStudio.PlatformUI.Controls
             }
 
         private void OnItemsHostLayoutUpdated(Object sender, EventArgs e) {
-            Debug.Print("OnItemsHostLayoutUpdated");
+            //Debug.Print("OnItemsHostLayoutUpdated");
             if (TreeDataGridOwner != null) {
                 var i = 0;
                 foreach (var column in ItemsHost.ColumnDefinitions) {
