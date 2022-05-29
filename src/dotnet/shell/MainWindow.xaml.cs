@@ -75,7 +75,7 @@ namespace shell
         private void Initialize()
             {
             OpenRegistryKeyExecuted(Registry.CurrentConfig);
-            LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
+            //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
             //docmanager.AddCertificateStoreManagement();
             }
 
