@@ -115,6 +115,12 @@
     <Build Include="dbo\Tables\Table_1.sql" />
     <Build Include="dbo\Views\DecodingFailedInGroup2SucceededInSameGroup.sql" />
     <Build Include="dbo\Stored Procedures\ReportG3.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG2.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG1.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteCertificateRevocationList.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteSubjectKeyIdentifier.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteExtension.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteAuthorityKeyIdentifier.sql" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\OID.Designer.cs">

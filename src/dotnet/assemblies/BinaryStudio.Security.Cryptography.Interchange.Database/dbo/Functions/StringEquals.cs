@@ -32,6 +32,16 @@ public partial class UserDefinedFunctions
         }
 
     [SqlFunction]
+    public static SqlString TraceIndentString(SqlInt32 level, SqlInt32 value)
+        {
+        if (level.IsNull) { return String.Empty; }
+        var count = value.IsNull
+            ? 1
+            : value.Value;
+        return new String(' ', level.Value*count);
+        }
+
+    [SqlFunction]
     public static SqlString StringFormat1(SqlString format, Object arg0)
         {
         return String.Format(format.Value, arg0);
