@@ -74,8 +74,9 @@ namespace shell
 
         private void Initialize()
             {
-            OpenRegistryKeyExecuted(Registry.CurrentConfig);
-            LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
+            ObjectIdentifierInfoExecuted(null,null);
+            //OpenRegistryKeyExecuted(Registry.CurrentConfig);
+            //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
             //docmanager.AddCertificateStoreManagement();
             }
 
@@ -87,8 +88,15 @@ namespace shell
         private void UpdateCommandBindings() {
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));;
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenRegistryKey, OpenRegistryKeyExecuted,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenRegistryKey, OpenRegistryKeyExecuted,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ObjectIdentifierInfo, ObjectIdentifierInfoExecuted,CanExecuteAllways));
+            }
+
+        private void ObjectIdentifierInfoExecuted(Object sender, ExecutedRoutedEventArgs e)
+            {
+            var o = docmanager.LoadView(new EObjectIdentiferInfo());
+            docmanager.Add(o, "Object Identifer Info");
             }
 
         private void OpenRegistryKeyExecuted(Object e)

@@ -24,7 +24,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
          * */
         public override String ToString()
             {
+            #if NET35
+            return String.Join(String.Empty, Value.Select(i => i.ToString("X2")).ToArray());
+            #else
             return String.Join(String.Empty, Value.Select(i => i.ToString("X2")));
+            #endif
             }
         }
     }

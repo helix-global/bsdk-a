@@ -55,9 +55,15 @@ namespace BinaryStudio.Diagnostics
                     Console.WriteLine("  ARGS:");
                     var c = args.Count;
                     for (var i = 0; i < c; i++) {
+                        #if NET35
+                        Console.WriteLine("    [{0:D2}]:Size={1},Value={2}", i,
+                            args[i].Size,
+                            String.Join(String.Empty,args[i].Value.Select(j => j.ToString("X2")).ToArray()));
+                        #else
                         Console.WriteLine("    [{0:D2}]:Size={1},Value={2}", i,
                             args[i].Size,
                             String.Join(String.Empty,args[i].Value.Select(j => j.ToString("X2"))));
+                        #endif
                         }
                     }
                 }
@@ -403,9 +409,15 @@ namespace BinaryStudio.Diagnostics
         private static String GetShortName(String value, IDictionary<String,String> shortnames)
             {
             if (shortnames.TryGetValue(value, out var r)) {
+                #if NET35
+                if (!String.IsNullOrEmpty(r)) {
+                    return r;
+                    }
+                #else
                 if (!String.IsNullOrWhiteSpace(r)) {
                     return r;
                     }
+                #endif
                 }
             var values = value.Split(new Char[]{'.' }, StringSplitOptions.RemoveEmptyEntries);
             return (values.Length > 0)

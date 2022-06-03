@@ -1578,4 +1578,97 @@
   <data name="1.2.840.10045.1.1" xml:space="preserve">
     <value>prime-field</value>
   </data>
+  <data name="1.2.643.2.2.21" xml:space="preserve">
+    <value>GOST 28147-89</value>
+  </data>
+  <data name="1.2.643.2.2.30.2" xml:space="preserve">
+    <value>GOST R 34.11-94, hash parameters 1</value>
+  </data>
+  <data name="1.2.643.2.2.30.3" xml:space="preserve">
+    <value>GOST R 34.11-94, hash parameters 2</value>
+  </data>
+  <data name="1.2.643.2.2.30.4" xml:space="preserve">
+    <value>GOST R 34.11-94, hash parameters 3</value>
+  </data>
+  <data name="1.2.643.2.2.31.1" xml:space="preserve">
+    <value>GOST 28147-89, default parameters</value>
+  </data>
+  <data name="1.2.643.2.2.31.12" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters TC26 A</value>
+  </data>
+  <data name="1.2.643.2.2.31.13" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters TC26 B</value>
+  </data>
+  <data name="1.2.643.2.2.31.14" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters TC26 C</value>
+  </data>
+  <data name="1.2.643.2.2.31.2" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters 1</value>
+  </data>
+  <data name="1.2.643.2.2.31.3" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters 2</value>
+  </data>
+  <data name="1.2.643.2.2.31.4" xml:space="preserve">
+    <value>GOST 28147-89, cipher parameters 3</value>
+  </data>
+  <data name="1.2.643.2.2.31.5" xml:space="preserve">
+    <value>GOST 28147-89, Oscar 1.1 parameters</value>
+  </data>
+  <data name="1.2.643.2.2.31.6" xml:space="preserve">
+    <value>GOST 28147-89, Oscar 1.0 parameters</value>
+  </data>
+  <data name="1.2.643.2.2.34.1" xml:space="preserve">
+    <value>TLS traffic audit</value>
+  </data>
+  <data name="1.2.643.2.2.34.2" xml:space="preserve">
+    <value>Registration Authority temporary access</value>
+  </data>
+  <data name="1.2.643.2.2.34.3" xml:space="preserve">
+    <value>Internet server content signature</value>
+  </data>
+  <data name="1.2.643.2.2.4" xml:space="preserve">
+    <value>GOST R 34.10-94</value>
+  </data>
+  <data name="1.2.643.2.2.9" xml:space="preserve">
+    <value>GOST R 34.11-94</value>
+  </data>
+  <data name="1.2.643.2.2.98" xml:space="preserve">
+    <value>GOST R 34.10-2001 DH</value>
+  </data>
+  <data name="1.2.643.7.1.1.1.1" xml:space="preserve">
+    <value>GOST R 34.10-2012 256 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.1.2" xml:space="preserve">
+    <value>GOST R 34.10-2012 512 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.2.2" xml:space="preserve">
+    <value>GOST R 34.11-2012 256 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.2.3" xml:space="preserve">
+    <value>GOST R 34.11-2012 512 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.3.2" xml:space="preserve">
+    <value>GOST R 34.11-2012/34.10-2012 256 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.3.3" xml:space="preserve">
+    <value>GOST R 34.11-2012/34.10-2012 512 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.6.1" xml:space="preserve">
+    <value>GOST R 34.10-2012 DH 256 bit</value>
+  </data>
+  <data name="1.2.643.7.1.1.6.2" xml:space="preserve">
+    <value>GOST R 34.10-2012 DH 512 bit</value>
+  </data>
+  <data name="1.2.643.7.1.2.1.1.1" xml:space="preserve">
+    <value>GOST R 34.10-2012 256 bit, parameters TC26 A</value>
+  </data>
+  <data name="1.2.643.7.1.2.1.2.1" xml:space="preserve">
+    <value>GOST R 34.10-2012 512 bit, default parameters</value>
+  </data>
+  <data name="1.2.643.7.1.2.1.2.2" xml:space="preserve">
+    <value>GOST R 34.10-2012 512 bit, parameters TC26 B</value>
+  </data>
+  <data name="1.2.643.7.1.2.1.2.3" xml:space="preserve">
+    <value>GOST R 34.10-2012 512 bit, parameters TC26 C</value>
+  </data>
 </root>

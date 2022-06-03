@@ -64,7 +64,11 @@ namespace BinaryStudio.PlatformComponents
             :this()
             {
             if (filepath == null) { throw new ArgumentNullException(nameof(filepath)); }
+            #if NET35
+            if (String.IsNullOrEmpty(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
+            #else
             if (String.IsNullOrWhiteSpace(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
+            #endif
             FilePath = filepath;
             FileName = Path.GetFileName(FilePath);
             }
@@ -281,7 +285,11 @@ namespace BinaryStudio.PlatformComponents
         public static T LoadLibrary<T>(String filepath)
             {
             if (filepath == null) { throw new ArgumentNullException(nameof(filepath)); }
+            #if NET35
+            if (String.IsNullOrEmpty(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
+            #else
             if (String.IsNullOrWhiteSpace(filepath)) { throw new ArgumentOutOfRangeException(nameof(filepath)); }
+            #endif
             var filename = Path.GetFileNameWithoutExtension(filepath);
             var type = typeof(T);
             var assemblyname = new AssemblyName($"{{{filename}}}"){ Version = GetVersion(filepath) };

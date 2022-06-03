@@ -164,9 +164,9 @@ namespace Operations
                             }
                         }
                     fileservice.MoveTo(targetfilename, true);
-                    File.SetCreationTime(targetfilename, source.NotBefore);
-                    File.SetLastWriteTime(targetfilename, source.NotBefore);
-                    File.SetLastAccessTime(targetfilename, source.NotBefore);
+                    PathUtils.SetCreationTime(targetfilename, source.NotBefore);
+                    PathUtils.SetLastWriteTime(targetfilename, source.NotBefore);
+                    PathUtils.SetLastAccessTime(targetfilename, source.NotBefore);
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
@@ -203,9 +203,9 @@ namespace Operations
                             }
                         }
                     fileservice.MoveTo(targetfilename, true);
-                    File.SetCreationTime(targetfilename, source.EffectiveDate);
-                    File.SetLastWriteTime(targetfilename, source.EffectiveDate);
-                    File.SetLastAccessTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetCreationTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetLastWriteTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetLastAccessTime(targetfilename, source.EffectiveDate);
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {

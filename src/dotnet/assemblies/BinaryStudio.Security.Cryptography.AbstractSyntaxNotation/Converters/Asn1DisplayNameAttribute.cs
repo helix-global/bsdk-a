@@ -21,7 +21,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
         public override String DisplayName { get {
             #if DEBUG
             var r = Resources.ResourceManager.GetString(Key, PlatformContext.DefaultCulture);
+            #if NET35
+            Debug.Assert(!String.IsNullOrEmpty(r));
+            #else
             Debug.Assert(!String.IsNullOrWhiteSpace(r));
+            #endif
             return r;
             #else
             return Resources.ResourceManager.GetString(Key, LocalizationManager.DefaultCulture);

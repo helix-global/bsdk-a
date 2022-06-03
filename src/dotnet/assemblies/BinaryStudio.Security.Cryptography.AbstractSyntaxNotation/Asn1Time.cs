@@ -64,9 +64,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             else
                 {
                 var LocalTime = Value.LocalDateTime;
+                #if NET35
+                var TimeZone = (Toffset > TimeSpan.Zero)
+                    ? ("+" + Toffset.ToString())
+                    : ("-" + Toffset.ToString());
+                #else
                 var TimeZone = (Toffset > TimeSpan.Zero)
                     ? ("+" + Toffset.ToString(@"hh\:mm"))
                     : ("-" + Toffset.ToString(@"hh\:mm"));
+                #endif
                 return String.Format("{0}{1}",
                     (LocalTime.Millisecond > 0)
                         ? LocalTime.ToString("yyyy-MM-ddTHH:mm:ss.fffffff")
@@ -119,7 +125,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         //    }
 
         protected static DateTimeOffset? Parse(String value, Asn1ObjectType type) {
+            #if NET35
+            if (String.IsNullOrEmpty(value)) { return null; }
+            #else
             if (String.IsNullOrWhiteSpace(value)) { return null; }
+            #endif
             if (type == Asn1ObjectType.UtcTime)
                 {
                 /*

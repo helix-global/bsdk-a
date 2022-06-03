@@ -1,12 +1,14 @@
 ﻿
 
 
+
 --<ScriptOptions statementTerminator="GO"/>
 
 CREATE VIEW [dbo].[ReportCertificateRevocationList]
 AS
 SELECT
-   [a].[Country]
+   [a].[ObjectId]
+  ,[a].[Country]
   ,[a].[EffectiveDate]
   ,[a].[NextUpdate]
   ,(SELECT TOP 1 [b].[Value]

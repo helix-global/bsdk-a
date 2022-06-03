@@ -49,6 +49,9 @@
           <MenuItem Header="HKEY_PERFORMANCE_DATA" Command="{x:Static e:DocumentCommands.OpenRegistryKey}" CommandParameter="{x:Static win32:Registry.PerformanceData}"/>
         </MenuItem>
       </MenuItem>
+      <MenuItem Header="WINDOW">
+        <MenuItem Header="Object Identifier Information" Command="{x:Static e:DocumentCommands.ObjectIdentifierInfo}"/>
+      </MenuItem>
       <MenuItem Header="HELP">
         <MenuItem Header="About..."/>
       </MenuItem>

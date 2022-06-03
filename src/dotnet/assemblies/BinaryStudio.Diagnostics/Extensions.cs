@@ -229,7 +229,11 @@ namespace BinaryStudio.Diagnostics
             if ((value != null) && (value.Length > 0)) {
                 writer.WritePropertyName(propertyname);
                 if (value.Length <= 16) {
+                    #if NET35
+                    writer.WriteValue(String.Join(String.Empty, value.Select(i => i.ToString("X2")).ToArray()));
+                    #else
                     writer.WriteValue(String.Join(String.Empty, value.Select(i => i.ToString("X2"))));
+                    #endif
                     return;
                     }
                 var buffer = new Byte[16];
@@ -311,6 +315,19 @@ namespace BinaryStudio.Diagnostics
         private static String ToString(this Byte[] source, String format) {
             if (source == null) { return null; }
             var c = source.Length;
+            #if NET35
+            switch (format)
+                {
+                case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2")).ToArray()); }
+                case "x" : { return String.Join(String.Empty, source.Select(i => i.ToString("x2")).ToArray()); }
+                case "FL":
+                    {
+                    return (c > 1)
+                        ? $"{source[0]:X2}{source[c - 1]:X2}"
+                        : String.Join(String.Empty, source.Select(i => i.ToString("X2")).ToArray());
+                    }
+                }
+            #else
             switch (format)
                 {
                 case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2"))); }
@@ -322,6 +339,7 @@ namespace BinaryStudio.Diagnostics
                         : String.Join(String.Empty, source.Select(i => i.ToString("X2")));
                     }
                 }
+            #endif
             return source.ToString();
             }
         #endregion

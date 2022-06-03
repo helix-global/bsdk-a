@@ -9,6 +9,7 @@
 
 
 
+
 CREATE VIEW [dbo].[ReportMessage]
 AS
 SELECT
@@ -23,6 +24,7 @@ SELECT
   ,[c].[SigningTime]
   ,[cm].[Thumbprint]
   ,[o].[Group]
+  ,[o].[ShortFileIdentifier]
 FROM [dbo].[CmsMessage] [cm] WITH(NOLOCK)
   INNER 
 	JOIN [dbo].[Object] [o] 

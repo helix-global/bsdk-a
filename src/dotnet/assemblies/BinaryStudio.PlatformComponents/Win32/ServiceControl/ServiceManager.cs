@@ -146,7 +146,11 @@ namespace BinaryStudio.PlatformComponents.Win32
 
         public Service OpenService(String servicename) {
             if (servicename == null) { throw new ArgumentNullException(nameof(servicename)); }
+            #if NET35
+            if (String.IsNullOrEmpty(servicename)) { throw new ArgumentOutOfRangeException(nameof(servicename)); }
+            #else
             if (String.IsNullOrWhiteSpace(servicename)) { throw new ArgumentOutOfRangeException(nameof(servicename)); }
+            #endif
             var r = OpenServiceW(sc, servicename, SC_MANAGER_ALL_ACCESS);
             return (r != IntPtr.Zero)
                 ? new Service(this, r)

@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -985,7 +986,21 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             using (var sourcestream = ((IFileService)this).OpenRead()) {
                 if (File.Exists(target)) {
                     if (!overwrite) { throw new IOException(); }
-                    File.Delete(target);
+                    while (true)
+                        {
+                        try
+                            {
+                            File.Delete(target);
+                            break;
+                            }
+                        catch (IOException e) {
+                            if (Marshal.GetHRForException(e) == (Int32)HRESULT.ERROR_SHARING_VIOLATION) {
+                                Thread.Sleep(1000);
+                                continue;
+                                }
+                            throw;
+                            }
+                        }
                     }
                 var folder = Path.GetDirectoryName(target);
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }

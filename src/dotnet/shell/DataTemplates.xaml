@@ -2,9 +2,33 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:e="clr-namespace:shell"
                     xmlns:u="http://schemas.helix.global"
-                    xmlns:std="clr-namespace:System;assembly=mscorlib"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+                    xmlns:std="clr-namespace:System;assembly=mscorlib">
   <u:CopyTo x:Key="CopyTo" Key="TreeDataGridTemplateColumn"/>
+  <DataTemplate DataType="{x:Type e:EObjectIdentiferInfo}">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <GroupBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Header="Input Object Identifier">
+        <TextBox BorderThickness="0" Text="{Binding InputText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+      </GroupBox>
+      <GroupBox Grid.Column="1" Grid.Row="0" Header="Object Identifier Friendly Name (System)">
+        <TextBox BorderThickness="0" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding FriendlyNameFromSystem,Mode=OneWay}"/>
+      </GroupBox>
+      <GroupBox Grid.Column="1" Grid.Row="1" Header="Object Identifier Friendly Name (Library-English)">
+        <TextBox BorderThickness="0" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding FriendlyNameFromLibraryEnglish,Mode=OneWay}"/>
+      </GroupBox>
+      <GroupBox Grid.Column="1" Grid.Row="2" Header="Object Identifier Friendly Name (Library-Russian)">
+        <TextBox BorderThickness="0" IsReadOnly="True" IsReadOnlyCaretVisible="True" Text="{Binding FriendlyNameFromLibraryRussian,Mode=OneWay}"/>
+      </GroupBox>
+    </Grid>
+  </DataTemplate>
   <DataTemplate DataType="{x:Type e:ERegistryKey}">
     <u:TreeDataGrid ItemsSource="{Binding Children}">
       <u:TreeDataGrid.Resources>

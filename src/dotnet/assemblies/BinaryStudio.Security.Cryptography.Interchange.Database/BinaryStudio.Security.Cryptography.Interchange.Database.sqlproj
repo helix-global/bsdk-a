@@ -117,6 +117,21 @@
     <Build Include="dbo\Stored Procedures\ReportG3.sql" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\OID.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OID.resx</DependentUpon>
+    </Compile>
+    <Compile Include="dbo\Functions\StringEquals.cs" />
+    <Compile Include="dbo\Functions\ObjectEquals.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\OID.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OID.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />

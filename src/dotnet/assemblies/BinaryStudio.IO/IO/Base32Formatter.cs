@@ -50,12 +50,16 @@ namespace BinaryStudio.IO
             var buffer = new Byte[16];
             var offset = 0;
             if (flags != Base32FormattingFlags.None) {
+                #if NET35
+                if (((flags & Base32FormattingFlags.Offset) == Base32FormattingFlags.Offset) && ((flags & Base32FormattingFlags.Header) == Base32FormattingFlags.Header))
+                #else
                 if (flags.HasFlag(Base32FormattingFlags.Offset) && flags.HasFlag(Base32FormattingFlags.Header))
+                #endif
                     {
                     yield return " OFFSET   00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F      ASCII      ";
                     yield return "---------------------------------------------------------------------------";
                     }
-                else if (flags.HasFlag(Base32FormattingFlags.Header))
+                else if ((flags & Base32FormattingFlags.Header) == Base32FormattingFlags.Header)
                     {
                     yield return "00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F      ASCII      ";
                     yield return "-----------------------------------------------------------------";
@@ -65,7 +69,7 @@ namespace BinaryStudio.IO
                 var length = source.Read(buffer, 0, 16);
                 if (length == 0) { break; }
                 var output = FormatInternal(buffer, length);
-                if (flags.HasFlag(Base32FormattingFlags.Offset))
+                if ((flags & Base32FormattingFlags.Offset) == Base32FormattingFlags.Offset)
                     {
                     yield return $"{offset:X8}  {output}";
                     }
@@ -80,12 +84,12 @@ namespace BinaryStudio.IO
         public static IEnumerable<String> Format(Byte[] source, Int32 length, Int32 offset, Base32FormattingFlags flags) {
             var buffer = new Byte[16];
             if (flags != Base32FormattingFlags.None) {
-                if (flags.HasFlag(Base32FormattingFlags.Offset) && flags.HasFlag(Base32FormattingFlags.Header))
+                if (((flags & Base32FormattingFlags.Offset) == Base32FormattingFlags.Offset) && ((flags & Base32FormattingFlags.Header) == Base32FormattingFlags.Header))
                     {
                     yield return " OFFSET   00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F      ASCII      ";
                     yield return "---------------------------------------------------------------------------";
                     }
-                else if (flags.HasFlag(Base32FormattingFlags.Header))
+                else if ((flags & Base32FormattingFlags.Header) == Base32FormattingFlags.Header)
                     {
                     yield return "00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F      ASCII      ";
                     yield return "-----------------------------------------------------------------";
@@ -95,7 +99,7 @@ namespace BinaryStudio.IO
                 if (length >= 16) {
                     Array.Copy(source, offset, buffer, 0, 16);
                     var output = FormatInternal(buffer, 16);
-                    if (flags.HasFlag(Base32FormattingFlags.Offset))
+                    if ((flags & Base32FormattingFlags.Offset) == Base32FormattingFlags.Offset)
                         {
                         yield return $"{offset:X8}  {output}";
                         }
@@ -111,7 +115,7 @@ namespace BinaryStudio.IO
                     {
                     Array.Copy(source, offset, buffer, 0, length);
                     var output = FormatInternal(buffer, length);
-                    if (flags.HasFlag(Base32FormattingFlags.Offset))
+                    if ((flags & Base32FormattingFlags.Offset) == Base32FormattingFlags.Offset)
                         {
                         yield return $"{offset:X8}  {output}";
                         }

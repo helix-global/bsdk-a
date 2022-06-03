@@ -19,6 +19,7 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TreeDataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TreeView.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/PropertyGridControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/GroupBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Geometries.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="Accent3BrushKey"                        Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>

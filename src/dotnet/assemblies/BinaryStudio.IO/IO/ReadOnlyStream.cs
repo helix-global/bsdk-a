@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using BinaryStudio.DirectoryServices;
@@ -10,6 +11,7 @@ namespace BinaryStudio.IO
         private Stream source;
         private readonly Boolean closable;
         private const Int32 BlockSize = 10;
+        private readonly Int32 ProcessId = Process.GetCurrentProcess().Id;
 
         public ReadOnlyStream(Stream source)
             :this(source, true)
@@ -75,10 +77,9 @@ namespace BinaryStudio.IO
             if (CanSeek) {
                 var offset = Position;
                 var assembly = Assembly.GetEntryAssembly();
-                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
+                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName},{ProcessId}}}");
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
                 var filename = PathUtils.GetTempFileName(folder, "str");
-                if (File.Exists(filename)) { File.Delete(filename); }
                 var block = new Byte[BlockSize];
                 using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
                     {
@@ -96,10 +97,9 @@ namespace BinaryStudio.IO
             else
                 {
                 var assembly = Assembly.GetEntryAssembly();
-                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName}}}");
+                var folder = Path.Combine(Path.GetTempPath(), $"{{{assembly.FullName},{ProcessId}}}");
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
                 var filename = PathUtils.GetTempFileName(folder, "str");
-                if (File.Exists(filename)) { File.Delete(filename); }
                 var block = new Byte[BlockSize];
                 using (var output = File.OpenWrite(filename = Path.Combine(folder, Path.GetFileName(filename))))
                     {

@@ -93,9 +93,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region M:WriteInteger(Int32)
         public void WriteInteger(Int32 value)
             {
+            #if NET35
+            #else
             WriteInteger((BigInteger)value);
+            #endif
             }
         #endregion
+        #if !NET35
         #region M:WriteInteger(BigInteger)
         public void WriteInteger(BigInteger value)
             {
@@ -105,6 +109,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             target.Write(buffer, 0, buffer.Length);
             }
         #endregion
+        #endif
 
         public void WriteStartOctetString()
             {

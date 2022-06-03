@@ -8,3 +8,11 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_SubjectKeyIdentifier_47_421576540__K1_3]
+    ON [dbo].[SubjectKeyIdentifier]([ExtensionId] ASC)
+    INCLUDE([ShortKey]);
+

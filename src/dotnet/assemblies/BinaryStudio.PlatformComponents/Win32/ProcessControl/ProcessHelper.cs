@@ -200,9 +200,15 @@ namespace BinaryStudio.PlatformComponents.Win32
 
         public static IList<ProcessInfo> GetProcesses()
             {
+            #if NET35
+            return (IntPtr.Size == sizeof(Int64))
+                ? GetProcesses64()
+                : GetProcesses32();
+            #else
             return Environment.Is64BitProcess
                 ? GetProcesses64()
                 : GetProcesses32();
+            #endif
             }
 
         public const Int32 ProcessBasicInformation   =  0;

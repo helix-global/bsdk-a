@@ -18,9 +18,11 @@
     [XmlSize]              INT           NULL,
     [Size]                 INT           NULL,
     [ShortFileIdentifier]  VARCHAR (50)  NULL,
-    [Group]                NVARCHAR(50)  NULL,
+    [Group]                NVARCHAR (50) NULL,
     CONSTRAINT [InputData_PK] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 
@@ -85,4 +87,30 @@ CREATE STATISTICS [_dta_stat_1926402032_5_2]
 GO
 CREATE STATISTICS [_dta_stat_1926402032_18_5_2]
     ON [dbo].[InputData]([Group], [CountryICAO], [IdentifyDocumentId]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_InputData_47_2002926307__K20_K2_K1_K19_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18]
+    ON [dbo].[InputData]([Group] ASC, [IdentifyDocumentId] ASC, [Id] ASC, [ShortFileIdentifier] ASC)
+    INCLUDE([DocumentCategoryName], [CountryName], [CountryICAO], [Year], [Month], [RegisterCode], [RegisterNumber], [IssueDate], [ValidToDate], [InscribeId], [DataFormatId], [DataTypeId], [Order], [Dense], [XmlSize], [Size]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_2002926307_20_19]
+    ON [dbo].[InputData]([Group], [ShortFileIdentifier]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_2002926307_2_20_19]
+    ON [dbo].[InputData]([IdentifyDocumentId], [Group], [ShortFileIdentifier]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_2002926307_2_1_20_19]
+    ON [dbo].[InputData]([IdentifyDocumentId], [Id], [Group], [ShortFileIdentifier]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_2002926307_1_19_2]
+    ON [dbo].[InputData]([Id], [ShortFileIdentifier], [IdentifyDocumentId]);
 

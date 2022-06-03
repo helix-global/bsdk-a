@@ -31,11 +31,19 @@ namespace BinaryStudio.DataProcessing
             DelimiterLength = Delimiter.Length;
             Reader = reader;
             Culture = culture ?? CultureInfo.CurrentCulture;
+            #if NET35
+            Columns = new List<DataColumn>(
+                ((flags & CSVDataReaderFlags.FirstRowContainsFieldNames) != CSVDataReaderFlags.FirstRowContainsFieldNames)
+                    ? columns
+                    : new DataColumn[0]
+                );
+            #else
             Columns = new List<DataColumn>(
                 (!flags.HasFlag(CSVDataReaderFlags.FirstRowContainsFieldNames)
                     ? columns
                     : new DataColumn[0]
                 ));
+            #endif
             Flags  = flags;
             Offset = offset;
             FieldCount = -1;
@@ -334,7 +342,11 @@ namespace BinaryStudio.DataProcessing
         public Boolean Read() {
             if (Reader != null) {
                 if (Reader.Peek() == -1) { return false; }
+                #if NET35
+                if ((Flags  & CSVDataReaderFlags.HasMultiLineValue) != CSVDataReaderFlags.HasMultiLineValue)
+                #else
                 if (!Flags.HasFlag(CSVDataReaderFlags.HasMultiLineValue))
+                #endif
                     {
                     String line;
                     while ((line = ReadLine(Reader,NewLine)) != null) {
@@ -344,7 +356,11 @@ namespace BinaryStudio.DataProcessing
                         if (CurrentIndex < Offset) { continue; }
                         var values = line.Split(new[] { Delimiter }, StringSplitOptions.None);
                         if (Columns.Count == 0) {
+                            #if NET35
+                            if ((Flags & CSVDataReaderFlags.FirstRowContainsFieldNames) == CSVDataReaderFlags.FirstRowContainsFieldNames) {
+                            #else
                             if (Flags.HasFlag(CSVDataReaderFlags.FirstRowContainsFieldNames)) {
+                            #endif
                                 Columns.AddRange(values.Select(i => new DataColumn(i, typeof(String))).ToArray());
                                 FieldCount = Columns.Count;
                                 continue;
@@ -377,10 +393,19 @@ namespace BinaryStudio.DataProcessing
                 else
                     {
                     var builder = new StringBuilder();
+                    #if NET35
+                    if ((Flags & CSVDataReaderFlags.FirstRowContainsFieldNames)==CSVDataReaderFlags.FirstRowContainsFieldNames) { throw new InvalidOperationException(); }
+                    #else
                     if (!Flags.HasFlag(CSVDataReaderFlags.FirstRowContainsFieldNames)) { throw new InvalidOperationException(); }
+                    #endif
                     if (DelimiterLength == 0) { throw new InvalidOperationException(); }
+                    #if NET35
+                    if (((Flags & CSVDataReaderFlags.FirstRowContainsFieldNames)==CSVDataReaderFlags.FirstRowContainsFieldNames) &&
+                        ((State & FieldNamesFetched) != FieldNamesFetched))
+                    #else
                     if (Flags.HasFlag(CSVDataReaderFlags.FirstRowContainsFieldNames) &&
                         ((State & FieldNamesFetched) != FieldNamesFetched))
+                    #endif
                         {
                         String line;
                         while ((line = ReadLine(Reader,NewLine)) != null) {
@@ -415,7 +440,11 @@ namespace BinaryStudio.DataProcessing
                                 else
                                     {
                                     DataRow[fieldindex] = ToObject(builder.ToString(), typeof(String));
+                                    #if NET35
+                                    builder = new StringBuilder();
+                                    #else
                                     builder.Clear();
+                                    #endif
                                     fieldindex++;
                                     continue;
                                     }

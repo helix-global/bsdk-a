@@ -26,9 +26,15 @@ namespace BinaryStudio.Diagnostics
                     }
                 else if (value is Byte[]) {
                     var r = (Byte[])value;
+                    #if NET35
+                    e.Data[key] = (r.Length <= 64)
+                        ? "{base32}:" + String.Join(String.Empty, r.Select(i => i.ToString("x2")).ToArray())
+                        : "{base64}:" + LineBefore(Convert.ToBase64String(r, Base64FormattingOptions.InsertLineBreaks));
+                    #else
                     e.Data[key] = (r.Length <= 64)
                         ? "{base32}:" + String.Join(String.Empty, r.Select(i => i.ToString("x2")))
                         : "{base64}:" + LineBefore(Convert.ToBase64String(r, Base64FormattingOptions.InsertLineBreaks));
+                    #endif
                     }
                 else
                     {
@@ -101,13 +107,21 @@ namespace BinaryStudio.Diagnostics
             {
             public String Message { get; }
             public Int32? ExceptionIndex { get; }
+            #if NET35
+            public IDictionary<Object,HashSet<Object>> ExceptionData { get; }
+            #else
             public IDictionary<Object,ISet<Object>> ExceptionData { get; }
+            #endif
             public IList<Exception> Exceptions { get; }
             public ExceptionBlock(String message, Int32? index)
                 {
                 Message = message;
                 ExceptionIndex = index;
+                #if NET35
+                ExceptionData = new Dictionary<Object, HashSet<Object>>();
+                #else
                 ExceptionData = new Dictionary<Object, ISet<Object>>();
+                #endif
                 Exceptions = new List<Exception>();
                 }
 
@@ -199,9 +213,15 @@ namespace BinaryStudio.Diagnostics
                 }
             var d = (index - 1).ToString().Length;
             var offset = new String(' ', d - 1); 
+            #if NET35
+            target.WriteLine(String.Join("\n", messages.Select(i =>{
+                return $"{left} {{{i.Item2.ToString($"D{d}")}}} {i.Item1}";
+                }).ToArray()));
+            #else
             target.WriteLine(String.Join("\n", messages.Select(i =>{
                 return $"{left} {{{i.Item2.ToString($"D{d}")}}} {i.Item1}";
                 })));
+            #endif
             target.WriteLine($"{left}{offset}        # Exception stack trace:");
             foreach (var block in blocks) {
                 target.WriteLine((block.ExceptionIndex != null)

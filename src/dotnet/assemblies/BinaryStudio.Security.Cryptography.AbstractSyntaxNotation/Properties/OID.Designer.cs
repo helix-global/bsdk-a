@@ -178,6 +178,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89.
+        /// </summary>
+        public static string _1_2_643_2_2_21 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GOST R 34.10/34.11-2001.
         /// </summary>
         public static string _1_2_643_2_2_3 {
@@ -196,6 +205,141 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-94, hash parameters 1.
+        /// </summary>
+        public static string _1_2_643_2_2_30_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.30.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-94, hash parameters 2.
+        /// </summary>
+        public static string _1_2_643_2_2_30_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.30.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-94, hash parameters 3.
+        /// </summary>
+        public static string _1_2_643_2_2_30_4 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.30.4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, default parameters.
+        /// </summary>
+        public static string _1_2_643_2_2_31_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters TC26 A.
+        /// </summary>
+        public static string _1_2_643_2_2_31_12 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters TC26 B.
+        /// </summary>
+        public static string _1_2_643_2_2_31_13 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters TC26 C.
+        /// </summary>
+        public static string _1_2_643_2_2_31_14 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters 1.
+        /// </summary>
+        public static string _1_2_643_2_2_31_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters 2.
+        /// </summary>
+        public static string _1_2_643_2_2_31_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, cipher parameters 3.
+        /// </summary>
+        public static string _1_2_643_2_2_31_4 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, Oscar 1.1 parameters.
+        /// </summary>
+        public static string _1_2_643_2_2_31_5 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST 28147-89, Oscar 1.0 parameters.
+        /// </summary>
+        public static string _1_2_643_2_2_31_6 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.31.6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TLS traffic audit.
+        /// </summary>
+        public static string _1_2_643_2_2_34_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.34.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Authority temporary access.
+        /// </summary>
+        public static string _1_2_643_2_2_34_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.34.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internet server content signature.
+        /// </summary>
+        public static string _1_2_643_2_2_34_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.34.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GOST R 3410-2001 CryptoPro-XchA.
         /// </summary>
         public static string _1_2_643_2_2_36_0 {
@@ -205,11 +349,146 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-94.
+        /// </summary>
+        public static string _1_2_643_2_2_4 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-94.
+        /// </summary>
+        public static string _1_2_643_2_2_9 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2001 DH.
+        /// </summary>
+        public static string _1_2_643_2_2_98 {
+            get {
+                return ResourceManager.GetString("1.2.643.2.2.98", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to INN.
         /// </summary>
         public static string _1_2_643_3_131_1_1 {
             get {
                 return ResourceManager.GetString("1.2.643.3.131.1.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 256 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_1_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.1.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 512 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_1_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.1.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-2012 256 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_2_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.2.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-2012 512 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_2_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.2.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-2012/34.10-2012 256 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_3_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.3.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.11-2012/34.10-2012 512 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_3_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.3.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 DH 256 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_6_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.6.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 DH 512 bit.
+        /// </summary>
+        public static string _1_2_643_7_1_1_6_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.1.6.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 256 bit, parameters TC26 A.
+        /// </summary>
+        public static string _1_2_643_7_1_2_1_1_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.2.1.1.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 512 bit, default parameters.
+        /// </summary>
+        public static string _1_2_643_7_1_2_1_2_1 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.2.1.2.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 512 bit, parameters TC26 B.
+        /// </summary>
+        public static string _1_2_643_7_1_2_1_2_2 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.2.1.2.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GOST R 34.10-2012 512 bit, parameters TC26 C.
+        /// </summary>
+        public static string _1_2_643_7_1_2_1_2_3 {
+            get {
+                return ResourceManager.GetString("1.2.643.7.1.2.1.2.3", resourceCulture);
             }
         }
         
