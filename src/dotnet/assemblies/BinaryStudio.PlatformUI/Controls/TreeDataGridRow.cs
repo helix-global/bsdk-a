@@ -39,6 +39,12 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
 
+        protected override void OnSelected(RoutedEventArgs e)
+            {
+            base.OnSelected(e);
+
+            }
+
         #region P:Level:Int32
         private static readonly DependencyPropertyKey LevelPropertyKey = DependencyProperty.RegisterReadOnly("Level", typeof(Int32), typeof(TreeDataGridRow), new PropertyMetadata(default(Int32)));
         public static readonly DependencyProperty LevelProperty = LevelPropertyKey.DependencyProperty;
@@ -57,7 +63,6 @@ namespace BinaryStudio.PlatformUI.Controls
             internal set { SetValue(RowIndexPropertyKey, value); }
             }
         #endregion
-        
 
         /// <summary>When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.</summary>
         public override void OnApplyTemplate()
