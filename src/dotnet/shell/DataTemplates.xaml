@@ -2,8 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:e="clr-namespace:shell"
                     xmlns:u="http://schemas.helix.global"
-                    xmlns:std="clr-namespace:System;assembly=mscorlib">
+                    xmlns:std="clr-namespace:System;assembly=mscorlib"
+                    xmlns:a="http://icsharpcode.net/sharpdevelop/avalonedit">
   <u:CopyTo x:Key="CopyTo" Key="TreeDataGridTemplateColumn"/>
+  <DataTemplate DataType="{x:Type e:XmlTextDocumentSource}">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <a:TextEditor u:TextBox.TextSource="{Binding Source,Mode=OneWay}"
+                    SyntaxHighlighting="{}{xml}"/>
+    </Grid>
+  </DataTemplate>
   <DataTemplate DataType="{x:Type e:EObjectIdentiferInfo}">
     <Grid>
       <Grid.ColumnDefinitions>

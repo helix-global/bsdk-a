@@ -143,7 +143,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
                         ? new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString())
                         : null;
-                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
+                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("x2")));
                     var r = GetProperty(CERT_KEY_PROV_INFO_PROP_ID, false);
                     if (r.Length > 0) {
                         fixed (Byte* bytes = r) {

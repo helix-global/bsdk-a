@@ -3,7 +3,7 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
   </ResourceDictionary.MergedDictionaries>
-  
+
   <SolidColorBrush x:Key="Accent3BrushKey"                            Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
   <SolidColorBrush x:Key="ActiveBorderBrushKey"                       Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
   <SolidColorBrush x:Key="ActiveCaptionBrushKey"                      Color="#FF2d2d30"/>
@@ -14,7 +14,7 @@
   <SolidColorBrush x:Key="ControlDarkDarkBrushKey"                    Color="#FF3F3F46"/>
   <SolidColorBrush x:Key="ControlLightBrushKey"                       Color="#FF1D1D20"/>
   <SolidColorBrush x:Key="ControlLightLightBrushKey"                  Color="#FF0D0D10"/>
-  <SolidColorBrush x:Key="ControlTextBrushKey"                        Color="#FFcccccc"/>
+  <SolidColorBrush x:Key="ControlTextBrushKey"                        Color="#ffcccccc"/>
   <SolidColorBrush x:Key="DesktopBrushKey"                            Color="{DynamicResource {x:Static SystemColors.DesktopColorKey}}"/>
   <SolidColorBrush x:Key="GradientActiveCaptionBrushKey"              Color="{DynamicResource {x:Static SystemColors.GradientActiveCaptionColorKey}}"/>
   <SolidColorBrush x:Key="GradientInactiveCaptionBrushKey"            Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
@@ -37,7 +37,7 @@
   <SolidColorBrush x:Key="MenuHighlightBrushKey"                      Color="#FF4b4b4d"/>
   <SolidColorBrush x:Key="MenuTextBrushKey"                           Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="ScrollBarBrushKey"                          Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}"/>
-  <SolidColorBrush x:Key="WindowBrushKey"                             Color="#FF1b1b1c"/>
+  <SolidColorBrush x:Key="WindowBrushKey"                             Color="#ff2b2b2b"/>
   <SolidColorBrush x:Key="WindowFrameBrushKey"                        Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
   <SolidColorBrush x:Key="WindowTextBrushKey"                         Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="SelectionBrush"                             Color="#FFF1F1F1"/>
@@ -73,6 +73,7 @@
   <Color x:Key="InactiveGlowColorKey">#ff3e3e40</Color>
   <Color x:Key="ControlDarkDarkColorKey">#FF3F3F46</Color>
   <Color x:Key="ControlLightColorKey">#FF1D1D20</Color>
+  <Color x:Key="HighlightTextColorKey">#FFF1F1F1</Color>
 
   <DrawingGroup x:Key="PictureBackward">
     <DrawingGroup.Children>
@@ -90,5 +91,69 @@
       <GeometryDrawing Brush="#FF313135" Geometry="F1M9,11L7,11 9,9 4,9 4,7 9,7 7,5 9,5 12,8z" />
     </DrawingGroup.Children>
   </DrawingGroup>
+  <XmlDataProvider x:Key="xml.xshd" IsAsynchronous="False">
+    <x:XData>
+      <SyntaxDefinition name="XML" extensions=".xml;.xsl;.xslt;.xsd;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.ilproj;.booproj;.build;.xfrm;.targets;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ps1xml;.nuspec"
+                        xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+        <Color foreground="#ff57a64a" name="Comment" exampleText="&lt;!-- comment --&gt;" />
+        <Color foreground="#ffe9d585" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
+        <Color foreground="#ff569cd6" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
+        <Color foreground="#ffc8c8c8" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
+        <Color foreground="#ff569cd6" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="#ff92caf4" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="#ffc8c8c8" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="Teal" name="Entity" exampleText="index.aspx?a=1&amp;amp;b=2" />
+        <Color foreground="Olive" name="BrokenEntity" exampleText="index.aspx?a=1&amp;b=2" />
+        <RuleSet>
+          <Span color="Comment" multiline="true">
+            <Begin>&lt;!--</Begin>
+            <End>--&gt;</End>
+          </Span>
+          <Span color="CData" multiline="true">
+            <Begin>&lt;!\[CDATA\[</Begin>
+            <End>]]&gt;</End>
+          </Span>
+          <Span color="DocType" multiline="true">
+            <Begin>&lt;!DOCTYPE</Begin>
+            <End>&gt;</End>
+          </Span>
+          <Span color="XmlDeclaration" multiline="true">
+            <Begin>&lt;\?</Begin>
+            <End>\?&gt;</End>
+          </Span>
+          <Span color="XmlTag" multiline="true">
+            <Begin>&lt;</Begin>
+            <End>&gt;</End>
+            <RuleSet>
+              <!-- Treat the position before '<' as end, as that's not a valid character in attribute names and indicates the user forgot a closing quote. -->
+              <Span color="AttributeValue" multiline="true" ruleSet="EntitySet">
+                <Begin>"</Begin>
+                <End>"|(?=&lt;)</End>
+              </Span>
+              <Span color="AttributeValue" multiline="true" ruleSet="EntitySet">
+                <Begin>'</Begin>
+                <End>'|(?=&lt;)</End>
+              </Span>
+              <Rule color="AttributeName">[\d\w_\-\.]+(?=(\s*=))</Rule>
+              <Rule color="AttributeValue">=</Rule>
+            </RuleSet>
+          </Span>
+          <Import ruleSet="EntitySet"/>
+        </RuleSet>
+        <RuleSet name="EntitySet">
+          <Rule color="Entity">
+            &amp;
+          [\w\d\#]+
+          ;
+          </Rule>
+          <Rule color="BrokenEntity">
+            &amp;
+          [\w\d\#]*
+          #missing ;
+          </Rule>
+        </RuleSet>
+      </SyntaxDefinition>
+    </x:XData>
+  </XmlDataProvider>
 </ResourceDictionary>
   

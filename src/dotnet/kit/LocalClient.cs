@@ -53,7 +53,7 @@ public class LocalClient : ILocalClient
                     });
                 }
             if (HasOption(options, typeof(ReportOption))) {
-                FintechCryptographicContext.ReportPrefix = options.OfType<ReportOption>().First().Prefix;
+                FintechCryptographicContext.ReportPrefix = options.OfType<ReportOption>().First().ReportPrefix;
                 }
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
@@ -70,7 +70,8 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
             else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
             else if (HasOption(options, typeof(SetOption)))               { operation.Value = new SetOperation(Console.Out, Console.Error, options);            }
-            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
+            else if (HasOption(options, typeof(InputFileOrFolderOption)) && HasOption(options, typeof(BatchOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options); }
+            else if (HasOption(options, typeof(ReportOption)))            { operation.Value = new ReportOperation(Console.Out, Console.Error, options);         }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
             if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {

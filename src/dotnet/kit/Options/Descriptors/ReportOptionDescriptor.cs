@@ -26,7 +26,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("report:{prefix={prefix-name}}");
+            output.Write("report:{prefix={prefix-name};{name={report-name}}");
             }
         }
     }

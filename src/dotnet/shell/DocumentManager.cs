@@ -56,8 +56,8 @@ namespace shell
         public Object LoadObject(String filename) {
             try
                 {
-                var o = LoadSQLiteDatabase(filename);
-                if (o != null) { return o; }
+                var o = (Object)DocumentSource.Load(filename); if (o != null) { return o; }
+                o = LoadSQLiteDatabase(filename);              if (o != null) { return o; }
                 o = Max(
                     Asn1Object.Load(filename,Asn1ReadFlags.IgnoreLeadLineEnding).ToArray(),
                     Asn1Object.Load(filename).ToArray());

@@ -1416,6 +1416,61 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) { return null; }
 
+        /// <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
+        /// <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
+        /// <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        /// <returns>Returns chain context created.</returns>
+        public unsafe IX509CertificateChainContext GetCertificateChain(IX509Certificate certificate, IX509CertificateStorage store,
+            OidCollection applicationpolicy, OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime,
+            CERT_CHAIN_FLAGS flags, IntPtr chainengine)
+            {
+            var chainpara = new CERT_CHAIN_PARA {
+                Size = sizeof(CERT_CHAIN_PARA)
+                };
+
+            CERT_CHAIN_CONTEXT* chaincontext = null;
+            var applicationpolicyhandle = LocalMemoryHandle.InvalidHandle;
+            var certificatepolicyhandle = LocalMemoryHandle.InvalidHandle;
+            try
+                {
+                if (!IsNullOrEmpty(applicationpolicy)) {
+                    chainpara.RequestedUsage.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierCount = applicationpolicy.Count;
+                    chainpara.RequestedUsage.Usage.UsageIdentifierArray = applicationpolicyhandle = CopyToMemory(applicationpolicy);
+                    }
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                if (!IsNullOrEmpty(certificatepolicy)) {
+                    chainpara.RequestedIssuancePolicy.Type = USAGE_MATCH_TYPE.USAGE_MATCH_TYPE_AND;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierCount = certificatepolicy.Count;
+                    chainpara.RequestedIssuancePolicy.Usage.UsageIdentifierArray = certificatepolicyhandle = CopyToMemory(certificatepolicy);
+                    }
+                #endif
+                #if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
+                chainpara.UrlRetrievalTimeout = (Int32)Math.Floor(timeout.TotalMilliseconds);
+                #endif
+                try
+                    {
+                    Validate(GetCertificateChain(chainengine, certificate.Handle, datetime, (store != null) ? store.Handle : IntPtr.Zero, ref chainpara, flags, &chaincontext));
+                    return new X509CertificateChainContext(chaincontext);
+                    }
+                 catch (Exception e)
+                    {
+                    throw;
+                    }
+                }
+            finally
+                {
+                certificatepolicyhandle.Dispose();
+                applicationpolicyhandle.Dispose();
+                }
+            }
+
         /// <summary>
         /// Verify a certificate using certificate chain to check its validity, including its compliance with any specified validity policy criteria.
         /// </summary>
