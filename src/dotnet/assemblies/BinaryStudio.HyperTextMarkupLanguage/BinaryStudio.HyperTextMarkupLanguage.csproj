@@ -2,7 +2,4 @@
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Properties\Reporting\" />
-  </ItemGroup>
 </Project>

@@ -108,3 +108,7 @@
 /src/dotnet/assemblies/BinaryStudio.LanguageService/obj
 /src/dotnet/assemblies/BinaryStudio.ReportingServices/bin
 /src/dotnet/assemblies/BinaryStudio.ReportingServices/obj
+/src/dotnet/assemblies/BinaryStudio.HyperTextMarkupLanguage/bin
+/src/dotnet/assemblies/BinaryStudio.HyperTextMarkupLanguage/obj
+/src/dotnet/xsdsc/bin
+/src/dotnet/xsdsc/obj

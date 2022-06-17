@@ -4,7 +4,7 @@
       "commandName": "Project",
       "commandLineArgs": "input:D:\\icao\\rfid_6 report:name=chain-report",
       "remoteDebugEnabled": false,
-      "nativeDebugging": true
+      "nativeDebugging": false
     }
   }
 }

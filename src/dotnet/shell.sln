@@ -120,6 +120,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.LanguageServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.ReportingServices", "assemblies\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj", "{90BC5233-8186-4218-BD20-986102C9E212}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xsdsc", "xsdsc\xsdsc.csproj", "{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.HyperTextMarkupLanguage", "assemblies\BinaryStudio.HyperTextMarkupLanguage\BinaryStudio.HyperTextMarkupLanguage.csproj", "{0E0484CB-704F-45F4-BFC6-08CB8CD60937}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -626,6 +630,30 @@ Global
 		{90BC5233-8186-4218-BD20-986102C9E212}.Release|x64.Build.0 = Release|Any CPU
 		{90BC5233-8186-4218-BD20-986102C9E212}.Release|x86.ActiveCfg = Release|Any CPU
 		{90BC5233-8186-4218-BD20-986102C9E212}.Release|x86.Build.0 = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|x64.Build.0 = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Debug|x86.Build.0 = Debug|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|x64.ActiveCfg = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|x64.Build.0 = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|x86.ActiveCfg = Release|Any CPU
+		{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}.Release|x86.Build.0 = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Debug|x86.Build.0 = Debug|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x64.Build.0 = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -667,6 +695,7 @@ Global
 		{95C099B3-4023-4621-BA4F-28A07F5A9B89} = {1383B170-18CB-4B70-AFB4-EB0F4890F40E}
 		{D153A1E0-BFF4-4E5A-856D-F861AC6E6405} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{90BC5233-8186-4218-BD20-986102C9E212} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{0E0484CB-704F-45F4-BFC6-08CB8CD60937} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}

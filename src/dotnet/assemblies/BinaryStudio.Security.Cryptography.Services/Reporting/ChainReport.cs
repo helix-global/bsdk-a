@@ -6,6 +6,7 @@ using System.Windows.Media;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.ReportingServices.FormattingObjects;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using DocumentFormat.OpenXml;
@@ -13,6 +14,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Win32;
 using Color = System.Windows.Media.Color;
+using FOTable = BinaryStudio.ReportingServices.FormattingObjects.Table;
 
 namespace BinaryStudio.Security.Cryptography.Services.Reporting
     {
@@ -110,6 +112,23 @@ namespace BinaryStudio.Security.Cryptography.Services.Reporting
             }
 
         private void BuildReport(IDictionary<String,CertificateInfo> data) {
+            var D = new Root();
+            PageSequence PageSequence;
+            FOTable Table;
+            TableBody TableBody;
+            D.PageSequence.Add(PageSequence = new PageSequence());
+            PageSequence.Flow.Block.Add(Table = new FOTable{
+                TableHeader = new TableHeader()
+                });
+            Table.TableBody.Add(TableBody = new TableBody{
+                
+                });
+            Table.TableHeader.TableRow.Add(new TableRow());
+            Table.TableHeader.TableRow.Add(new TableRow());
+            var r = D.Serialize();
+            }
+
+        private void BuildReport3(IDictionary<String,CertificateInfo> data) {
             var reportsource = new ExcelReportSource();
             var reportsheet = reportsource[0];
             var RowIndex = 0;
