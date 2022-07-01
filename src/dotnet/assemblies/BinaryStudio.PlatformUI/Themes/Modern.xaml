@@ -19,6 +19,8 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TreeDataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TreeView.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/PropertyGridControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/XYViewport.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/XYViewport.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/GroupBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TextEditor.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Geometries.xaml"/>
