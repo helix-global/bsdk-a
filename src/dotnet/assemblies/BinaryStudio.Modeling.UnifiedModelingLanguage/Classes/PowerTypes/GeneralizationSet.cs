@@ -1,0 +1,1 @@
+﻿using System;namespace BinaryStudio.Modeling.UnifiedModelingLanguage    {    public interface GeneralizationSet : PackageableElement        {        Generalization[] Generalization { get; }        Boolean IsCovering { get; }        Boolean IsDisjoint { get; }        Classifier Powertype { get; }        }    }
