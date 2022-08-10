@@ -6,6 +6,6 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
         {
         Boolean AllowSubstitutable { get; }
         Classifier[] ConstrainingClassifier { get; }
-        Classifier ParameteredElement { get; }
+        new Classifier ParameteredElement { get; }
         }
     }

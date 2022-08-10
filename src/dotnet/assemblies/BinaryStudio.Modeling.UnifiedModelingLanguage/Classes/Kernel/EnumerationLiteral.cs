@@ -2,7 +2,7 @@
     {
     public interface EnumerationLiteral : InstanceSpecification
         {
-        Enumeration Classifier { get; }
+        new Enumeration Classifier { get; }
         Enumeration Enumeration { get; }
         }
     }

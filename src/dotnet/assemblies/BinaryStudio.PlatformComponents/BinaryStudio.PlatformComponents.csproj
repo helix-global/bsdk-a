@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net40;net35</TargetFrameworks>
+    <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>TRACE;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
   </PropertyGroup>

@@ -2,7 +2,7 @@
     {
     public interface TimeInterval : Interval
         {
-        TimeExpression Max { get; }
-        TimeExpression Min { get; }
+        new TimeExpression Max { get; }
+        new TimeExpression Min { get; }
         }
     }

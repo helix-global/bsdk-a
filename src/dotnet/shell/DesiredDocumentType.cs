@@ -3,7 +3,8 @@
     internal enum DesiredDocumentType
         {
         Binary,
-        XmlFile,
-        TextFile
+        XML,
+        TextFile,
+        EMX
         }
     }

@@ -2,6 +2,6 @@
     {
     public interface DestroyLinkAction : WriteLinkAction
         {
-        LinkEndDestructionData[] EndData { get; }
+        new LinkEndDestructionData[] EndData { get; }
         }
     }

@@ -2,6 +2,6 @@
     {
     public interface ConnectableElementTemplateParameter : TemplateParameter
         {
-        ConnectableElement ParameteredElement { get; }
+        new ConnectableElement ParameteredElement { get; }
         }
     }

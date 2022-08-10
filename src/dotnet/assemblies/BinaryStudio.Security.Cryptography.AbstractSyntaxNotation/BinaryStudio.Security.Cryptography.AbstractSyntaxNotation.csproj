@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net40;net35</TargetFrameworks>
+    <TargetFrameworks>net40</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>FEATURE_MULTI_THREAD_PROCESSING;TRACE</DefineConstants>
     <DocumentationFile>BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.xml</DocumentationFile>

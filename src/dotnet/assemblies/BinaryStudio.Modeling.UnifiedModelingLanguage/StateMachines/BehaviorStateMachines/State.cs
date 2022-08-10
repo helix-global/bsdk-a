@@ -15,7 +15,7 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
         Boolean IsSimple { get; }
         Boolean IsSubmachineState { get; }
         State RedefinedState { get; }
-        Classifier RedefinitionContext { get; }
+        new Classifier RedefinitionContext { get; }
         Region[] Region { get; }
         Constraint StateInvariant { get; }
         StateMachine Submachine { get; }

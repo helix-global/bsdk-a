@@ -2,6 +2,6 @@
     {
     public partial interface ConnectableElement : ParameterableElement
         {
-        ConnectableElementTemplateParameter TemplateParameter { get; }
+        new ConnectableElementTemplateParameter TemplateParameter { get; }
         }
     }

@@ -7,7 +7,7 @@
         Constraint Guard { get; }
         TransitionKind Kind { get; }
         Transition RedefinedTransition { get; }
-        Classifier RedefinitionContext { get; }
+        new Classifier RedefinitionContext { get; }
         Vertex Source { get; }
         Vertex Target { get; }
         Trigger[] Trigger { get; }

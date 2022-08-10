@@ -5,6 +5,6 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
     public interface DurationConstraint : IntervalConstraint
         {
         Boolean FirstEvent { get; }
-        DurationInterval Specification { get; }
+        new DurationInterval Specification { get; }
         }
     }

@@ -6,7 +6,7 @@ namespace shell
     {
     internal abstract class DocumentSource
         {
-        public Object Source { get; }
+        public virtual Object Source { get; }
         public DesiredDocumentType Type { get; }
         protected DocumentSource(Object source, DesiredDocumentType type)
             {
@@ -22,7 +22,16 @@ namespace shell
         public static DocumentSource Load(String source) {
             if (String.IsNullOrWhiteSpace(source)) { throw new NotSupportedException(); }
             if (File.Exists(source)) {
-                #region DesiredDocumentType.XmlFile
+                switch (Path.GetExtension(source).ToLowerInvariant()) {
+                    case ".emx":
+                        {
+                        var Target = new XmlDocument();
+                        Target.Load(source);
+                        return new EMXDocumentSource(Target);
+                        }
+                        break;
+                    }
+                #region XML
                     {
                     var Target = new XmlDocument();
                     try

@@ -2,6 +2,6 @@
     {
     public interface OperationTemplateParameter : TemplateParameter
         {
-        Operation ParameteredElement { get; }
+        new Operation ParameteredElement { get; }
         }
     }

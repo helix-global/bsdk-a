@@ -5,7 +5,7 @@ namespace shell
     internal class XmlTextDocumentSource : DocumentSource
         {
         public XmlTextDocumentSource(Object source)
-            :base(source, DesiredDocumentType.XmlFile)
+            :base(source, DesiredDocumentType.XML)
             {
             }
         }

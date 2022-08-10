@@ -112,3 +112,6 @@
 /src/dotnet/assemblies/BinaryStudio.HyperTextMarkupLanguage/obj
 /src/dotnet/xsdsc/bin
 /src/dotnet/xsdsc/obj
+/.vs
+/src/dotnet/assemblies/BinaryStudio.Modeling.PlatformUI/obj
+/src/dotnet/samples/XYViewportSample/obj

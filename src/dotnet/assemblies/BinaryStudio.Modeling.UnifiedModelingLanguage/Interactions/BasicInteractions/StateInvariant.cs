@@ -2,7 +2,7 @@
     {
     public interface StateInvariant : InteractionFragment
         {
-        Lifeline Covered { get; }
+        new Lifeline Covered { get; }
         Constraint Invariant { get; }
         }
     }

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net40</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework.Aero">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Classic">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Royale">
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

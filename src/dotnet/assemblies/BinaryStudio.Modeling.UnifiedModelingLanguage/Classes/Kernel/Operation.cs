@@ -12,10 +12,10 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
         Boolean IsQuery { get; }
         Boolean IsUnique { get; }
         Integer Lower { get; }
-        Parameter[] OwnedParameter { get; }
+        new Parameter[] OwnedParameter { get; }
         Constraint[] Postcondition { get; }
         Constraint[] Precondition { get; }
-        Type[] RaisedException { get; }
+        new Type[] RaisedException { get; }
         Operation[] RedefinedOperation { get; }
         Type Type { get; }
         UnlimitedNatural Upper { get; }

@@ -2,7 +2,7 @@
     {
     public interface DurationInterval : Interval
         {
-        Duration Max { get; }
-        Duration Min { get; }
+        new Duration Max { get; }
+        new Duration Min { get; }
         }
     }

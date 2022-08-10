@@ -2,6 +2,6 @@
     {
     public interface IntervalConstraint : Constraint
         {
-        Interval Specification { get; }
+        new Interval Specification { get; }
         }
     }

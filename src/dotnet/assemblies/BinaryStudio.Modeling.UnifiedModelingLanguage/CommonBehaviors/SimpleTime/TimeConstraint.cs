@@ -5,6 +5,6 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
     public interface TimeConstraint : IntervalConstraint
         {
         Boolean FirstEvent { get; }
-        TimeInterval Specification { get; }
+        new TimeInterval Specification { get; }
         }
     }

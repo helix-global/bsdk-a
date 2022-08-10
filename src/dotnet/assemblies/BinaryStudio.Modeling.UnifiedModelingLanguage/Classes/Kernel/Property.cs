@@ -14,7 +14,7 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage
         Boolean IsDerived { get; }
         Boolean IsDerivedUnion { get; }
         Boolean IsID { get; }
-        Boolean IsReadOnly { get; }
+        new Boolean IsReadOnly { get; }
         Property Opposite { get; }
         Association OwningAssociation { get; }
         Property[] RedefinedProperty { get; }

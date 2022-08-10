@@ -2,6 +2,6 @@
     {
     public partial interface Operation : TemplateableElement, ParameterableElement
         {
-        OperationTemplateParameter TemplateParameter { get; }
+        new OperationTemplateParameter TemplateParameter { get; }
         }
     }

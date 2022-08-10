@@ -2,7 +2,7 @@
     {
     public partial interface StructuredActivityNode : Namespace, ExecutableNode, ActivityGroup
         {
-        Activity Activity { get; }
+        new Activity Activity { get; }
         ActivityNode[] Node { get; }
         Variable[] Variable { get; }
         }

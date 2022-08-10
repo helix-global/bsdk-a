@@ -116,13 +116,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.Abst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatformUISample", "samples\PlatformUISample\PlatformUISample.csproj", "{95C099B3-4023-4621-BA4F-28A07F5A9B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.LanguageService", "assemblies\BinaryStudio.LanguageService\BinaryStudio.LanguageService.csproj", "{D153A1E0-BFF4-4E5A-856D-F861AC6E6405}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.LanguageService", "assemblies\BinaryStudio.LanguageService\BinaryStudio.LanguageService.csproj", "{D153A1E0-BFF4-4E5A-856D-F861AC6E6405}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.ReportingServices", "assemblies\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj", "{90BC5233-8186-4218-BD20-986102C9E212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.ReportingServices", "assemblies\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj", "{90BC5233-8186-4218-BD20-986102C9E212}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xsdsc", "xsdsc\xsdsc.csproj", "{7DF6E9DB-8F79-41B9-864B-7EE0E114C731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.HyperTextMarkupLanguage", "assemblies\BinaryStudio.HyperTextMarkupLanguage\BinaryStudio.HyperTextMarkupLanguage.csproj", "{0E0484CB-704F-45F4-BFC6-08CB8CD60937}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.HyperTextMarkupLanguage", "assemblies\BinaryStudio.HyperTextMarkupLanguage\BinaryStudio.HyperTextMarkupLanguage.csproj", "{0E0484CB-704F-45F4-BFC6-08CB8CD60937}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.PlatformUI", "assemblies\BinaryStudio.Modeling.PlatformUI\BinaryStudio.Modeling.PlatformUI.csproj", "{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XYViewportSample", "samples\XYViewportSample\XYViewportSample.csproj", "{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -654,6 +658,30 @@ Global
 		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x64.Build.0 = Release|Any CPU
 		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x86.ActiveCfg = Release|Any CPU
 		{0E0484CB-704F-45F4-BFC6-08CB8CD60937}.Release|x86.Build.0 = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|x64.Build.0 = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130}.Release|x86.Build.0 = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|x64.Build.0 = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -696,6 +724,8 @@ Global
 		{D153A1E0-BFF4-4E5A-856D-F861AC6E6405} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{90BC5233-8186-4218-BD20-986102C9E212} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
 		{0E0484CB-704F-45F4-BFC6-08CB8CD60937} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{D7BEB26B-DCAF-41E9-9AE5-EF35D2F00130} = {B1E6CF1F-BD69-4A99-981E-9EA903D67456}
+		{DB93A1C2-DE29-46EA-BD08-0A096D74B98D} = {1383B170-18CB-4B70-AFB4-EB0F4890F40E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1470102-A940-48D5-B2FE-92674D2DE414}

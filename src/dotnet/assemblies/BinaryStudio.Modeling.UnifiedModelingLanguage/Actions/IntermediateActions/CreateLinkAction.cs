@@ -2,6 +2,6 @@
     {
     public interface CreateLinkAction : WriteLinkAction
         {
-        LinkEndCreationData[] EndData { get; }
+        new LinkEndCreationData[] EndData { get; }
         }
     }

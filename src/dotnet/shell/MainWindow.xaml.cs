@@ -13,10 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 using Path=System.IO.Path;
 
@@ -52,6 +56,7 @@ namespace shell
             {
             Theme.Apply(Theme.Themes[7]);
             UpdateCommandBindings();
+            LoadSyntaxHighlighting();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {
                 Profile.DockRoot.Children.Add(new DocumentGroupContainer
@@ -74,7 +79,8 @@ namespace shell
 
         private void Initialize()
             {
-            ObjectIdentifierInfoExecuted(null,null);
+            LoadFrom(@"C:\TFS\bsdk\mdl\atl30\atl30.emx");
+            //ObjectIdentifierInfoExecuted(null,null);
             //OpenRegistryKeyExecuted(Registry.CurrentConfig);
             //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
             //docmanager.AddCertificateStoreManagement();
@@ -159,7 +165,7 @@ namespace shell
         private void OpenExecuted(Object sender, ExecutedRoutedEventArgs e)
             {
             var dialog = new OpenFileDialog{
-                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db"
+                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db|Model Files (*.emx)|*.emx"
                 };
             if (dialog.ShowDialog(this) == true)
                 {
@@ -171,6 +177,19 @@ namespace shell
             {
             e.CanExecute = true;
             e.Handled = true;
+            }
+
+        private static void LoadSyntaxHighlighting(String source) {
+            if (Application.Current.Resources[$"{source}.xshd"] is XmlDataProvider provider) {
+                using (var reader = new XmlNodeReader(provider.Document)) {
+                    var highlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    HighlightingManager.Instance.RegisterHighlighting($"{{{source}}}", new [] { ".custor" }, highlighting);
+                    }
+                }
+            }
+
+        private static void LoadSyntaxHighlighting() {
+            LoadSyntaxHighlighting("xml");
             }
         }
     }

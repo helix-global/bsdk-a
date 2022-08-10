@@ -3,7 +3,7 @@
 <?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
 <?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Default="http:///schemas/Default/1" xmlns:Rose="http:///schemas/Rose/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.1/notation" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.2/Umlnotation" xsi:schemaLocation="http:///schemas/Default/1 pathmap://UML2_MSL_PROFILES/Default.epx#_IN8k8MmBEdqBcN1R6EvWUw?Default/Default? http:///schemas/Rose/0 pathmap://ROSE_PROFILES/Rose.epx#_1X_lka_4Edq0nPCvg604YA?Rose/Rose?">
-  <uml:Model xmi:id="38BAC29F0074" name="atl30">
+  <uml:Model xmi:id="38BAC29F0074" name="atl30" visibility="protected">
     <packageImport xmi:id="_56EQoPk4EeyI0J3WuI-uTw">
       <importedPackage xmi:type="uml:Model" href="pathmap://ROSE_LIBRARIES/RoseCppDatatypes.emx#_YZ5AsFKbEdmRuMDTJ25wMw?RoseCppDatatypes?"/>
     </packageImport>
@@ -48,7 +48,7 @@
             <styles xmi:type="notation:TextStyle" xmi:id="_6bVKovk4EeyI0J3WuI-uTw"/>
             <styles xmi:type="notation:LineTypeStyle" xmi:id="_6bVKo_k4EeyI0J3WuI-uTw"/>
             <element xsi:nil="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6bVKpPk4EeyI0J3WuI-uTw" x="6121" y="2692" width="6180" height="2201"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6bVKpPk4EeyI0J3WuI-uTw" x="6204" y="5544" width="6180" height="2201"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_6SSjYvk4EeyI0J3WuI-uTw" description="These classes that are inherited from by ATL classes.  "/>
           <element xsi:nil="true"/>
@@ -63,7 +63,7 @@
           </edges>
         </contents>
       </eAnnotations>
-      <packagedElement xmi:type="uml:Package" xmi:id="_38BAC29F007438AC7D7603D0" name="ATL 3.0">
+      <packagedElement xmi:type="uml:Package" xmi:id="_38BAC29F007438AC7D7603D0" name="ATL 3.0" visibility="package">
         <eAnnotations xmi:id="_6SQuMPk4EeyI0J3WuI-uTw" source="uml2.diagrams" references="_38BAC29F007438B47D4C0353">
           <contents xmi:type="notation:Diagram" xmi:id="_38BAC29F007438B47D4C0353" type="Class" name="ATL 3.0">
             <children xmi:id="_6bBooPk4EeyI0J3WuI-uTw" element="_38BAC29F007438B474E80228">
