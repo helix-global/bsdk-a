@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global">
+  <ControlTemplate x:Key="TextBox">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <TextBox Text="TextBox" x:Name="TargetTextBox"/>
+      <u:PropertyGridControl Grid.Column="1" SelectedObject="{Binding Path=.,ElementName=TargetTextBox,Mode=OneWay}"/>
+    </Grid>
+  </ControlTemplate>
+</ResourceDictionary>

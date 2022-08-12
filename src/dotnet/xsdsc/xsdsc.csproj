@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <RootNamespace>XSDSC</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+</Project>

@@ -12,6 +12,7 @@ using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Services;
 using kit;
 using Kit;
@@ -51,6 +52,9 @@ public class LocalClient : ILocalClient
                     NumberOfThreads = 64
                     });
                 }
+            if (HasOption(options, typeof(ReportOption))) {
+                FintechCryptographicContext.ReportPrefix = options.OfType<ReportOption>().First().ReportPrefix;
+                }
             if (!HasOption(options, typeof(ProviderTypeOption)))  { options.Add(new ProviderTypeOption(80));                             }
             if (!HasOption(options, typeof(StoreLocationOption))) { options.Add(new StoreLocationOption(X509StoreLocation.CurrentUser)); }
             if (!HasOption(options, typeof(StoreNameOption)))     { options.Add(new StoreNameOption(nameof(X509StoreName.My)));          }
@@ -66,7 +70,8 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(Console.Out, Console.Error, options); }
             else if (HasOption(options, typeof(HashOption)))              { operation.Value = new HashOperation(Console.Out, Console.Error, options);           }
             else if (HasOption(options, typeof(SetOption)))               { operation.Value = new SetOperation(Console.Out, Console.Error, options);            }
-            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options);          }
+            else if (HasOption(options, typeof(InputFileOrFolderOption)) && HasOption(options, typeof(BatchOption))) { operation.Value = new BatchOperation(Console.Out, Console.Error, options); }
+            else if (HasOption(options, typeof(ReportOption)))            { operation.Value = new ReportOperation(Console.Out, Console.Error, options);         }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
             if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {

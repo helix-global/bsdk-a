@@ -206,7 +206,7 @@ namespace BinaryStudio.DataProcessing
                     }
                 var descriptor = TypeDescriptor.GetDefaultProperty(value);
                 if (descriptor != null) {
-                    var r = descriptor.GetValue(value);
+                    var r = descriptor.GetValue(GetPropertyOwner(value, descriptor));
                     if (r != null) {
                         var converter = descriptor.Converter
                             ?? TypeDescriptor.GetConverter(r)
@@ -231,6 +231,12 @@ namespace BinaryStudio.DataProcessing
                 : Resources.ObjectTypeConverterFalse;
             }
         #endregion
+
+        private static Object GetPropertyOwner(Object source, PropertyDescriptor descriptor) {
+            return (source is ICustomTypeDescriptor service)
+                ? service.GetPropertyOwner(descriptor)
+                : source;
+            }
 
         private static readonly IComparer<PropertyDescriptor> DefaultComparer = new PropertyDescriptorComparer();
         private class PropertyDescriptorComparer : IComparer<PropertyDescriptor>

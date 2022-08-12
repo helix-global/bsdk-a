@@ -15,18 +15,18 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     [Serializable]
     public class X509CertificateChainElement :
             IExceptionSerializable,
-            IX509CertificateChainStatus,
+            IX509CertificateChainElement,
             ISerializable
         {
         /// <summary>
         /// Certificate associated with current chain element.
         /// </summary>
-        public X509Certificate Certificate { get; }
+        public IX509Certificate Certificate { get; }
 
         /// <summary>
         /// CRL associated with current chain element.
         /// </summary>
-        public X509CertificateRevocationList CertificateRevocationList { get; }
+        public IX509CertificateRevocationList CertificateRevocationList { get; }
 
         /// <summary>Initializes a new instance of the <see cref="X509CertificateChainElement"/> class from specified source.</summary>
         /// <param name="source">Source of chain element.</param>

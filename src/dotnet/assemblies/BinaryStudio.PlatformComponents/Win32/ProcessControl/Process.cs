@@ -149,7 +149,11 @@ namespace BinaryStudio.PlatformComponents.Win32
 
         #region M:CopyTo(IntPtr,SystemProcessInformation):SystemProcessInformation
         private static unsafe SystemProcessInformation CopyTo(IntPtr source, SystemProcessInformation target) {
+            #if NET35
+            if (IntPtr.Size == 8)
+            #else
             if (Environment.Is64BitProcess)
+            #endif
                 {
                 var r = (SYSTEM_PROCESS_INFORMATION64*)source;
                 target.NextEntryOffset = r->NextEntryOffset;
@@ -286,7 +290,11 @@ namespace BinaryStudio.PlatformComponents.Win32
 
         private unsafe Process MergeFrom(ref ProcessBasicInformation source) {
             if (source.PebBaseAddress != IntPtr.Zero) {
+                #if NET35
+                if (IntPtr.Size == sizeof(Int64)) {
+                #else
                 if (Environment.Is64BitProcess) {
+                #endif
                     var peb = (PEB64*)source.PebBaseAddress;
                     BeingDebugged = peb->BeingDebugged > 0;
                     }

@@ -1,0 +1,24 @@
+﻿<Window x:Class="XYViewportSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XYViewportSample"
+        xmlns:u="http://schemas.helix.global"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        Background="{DynamicResource ControlBrushKey}"
+        Foreground="{DynamicResource ControlTextBrushKey}"
+        Loaded="MainWindow_OnLoaded">
+  <Grid>
+    <Border BorderBrush="White" BorderThickness="1">
+      <u:XYViewport Margin="5">
+        <Border Width="50" Height="50" Background="Aquamarine" u:XYViewport.Left="100" u:XYViewport.Top="100"/>
+        <Border Width="50" Height="50" Background="Khaki" u:XYViewport.Left="200" u:XYViewport.Top="200"/>
+        <Border Width="50" Height="50" Background="DarkSalmon" u:XYViewport.Left="2000" u:XYViewport.Top="200"/>
+      </u:XYViewport>
+    </Border>
+  </Grid>
+</Window>

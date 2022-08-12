@@ -451,6 +451,8 @@
                                         </DrawingBrush>
                                       </Setter.Value>
                                     </Setter>
+                                    <Setter TargetName="TypeMarker" Property="Width"  Value="14"/>
+                                    <Setter TargetName="TypeMarker" Property="Height" Value="14"/>
                                   </DataTrigger>
                                   <DataTrigger Binding="{Binding Type,Mode=OneWay}" Value="EndOfContent">
                                     <Setter TargetName="TypeMarker" Property="Fill">

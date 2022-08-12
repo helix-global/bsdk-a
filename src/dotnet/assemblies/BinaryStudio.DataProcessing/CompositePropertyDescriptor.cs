@@ -20,7 +20,11 @@ namespace BinaryStudio.DataProcessing
             : base(name, attributes) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
+            #if NET35
+            Source = new CompositeObject(source, descriptors.Select(i => new CompositePropertyDescriptor(i, i.DisplayName.Substring(name.Length + 1))).OfType<PropertyDescriptor>(), name);
+            #else
             Source = new CompositeObject(source, descriptors.Select(i => new CompositePropertyDescriptor(i, i.DisplayName.Substring(name.Length + 1))), name);
+            #endif
             }
 
         /// <summary>

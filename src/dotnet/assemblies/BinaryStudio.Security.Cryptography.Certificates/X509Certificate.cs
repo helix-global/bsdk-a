@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -142,7 +143,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
                         ? new Oid(Source.SignatureAlgorithm.HashAlgorithm.ToString())
                         : null;
-                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("X2")));
+                    Thumbprint = String.Join(String.Empty, GetProperty(CERT_HASH_PROP_ID, true).Select(i => i.ToString("x2")));
                     var r = GetProperty(CERT_KEY_PROV_INFO_PROP_ID, false);
                     if (r.Length > 0) {
                         fixed (Byte* bytes = r) {
@@ -985,7 +986,21 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             using (var sourcestream = ((IFileService)this).OpenRead()) {
                 if (File.Exists(target)) {
                     if (!overwrite) { throw new IOException(); }
-                    File.Delete(target);
+                    while (true)
+                        {
+                        try
+                            {
+                            File.Delete(target);
+                            break;
+                            }
+                        catch (IOException e) {
+                            if (Marshal.GetHRForException(e) == (Int32)HRESULT.ERROR_SHARING_VIOLATION) {
+                                Thread.Sleep(1000);
+                                continue;
+                                }
+                            throw;
+                            }
+                        }
                     }
                 var folder = Path.GetDirectoryName(target);
                 if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }

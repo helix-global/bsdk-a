@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BinaryStudio.PlatformUI.Controls;
 using Microsoft.Win32;
 
 namespace BinaryStudio.PlatformUI
@@ -19,6 +20,7 @@ namespace BinaryStudio.PlatformUI
     public class Theme : DependencyObject
         {
         private readonly IDictionary<Type, Style> styles = new Dictionary<Type, Style>();
+        private static ResourceKey ToolBarDropDownButtonStyleKeyInternal;
 
         #region P:CurrentTheme:Theme
         public static Theme CurrentTheme { get; private set; }
@@ -40,16 +42,25 @@ namespace BinaryStudio.PlatformUI
             }
 
         public static Theme[] Themes = {
-            new Theme("NormalColor", "Modern.NormalColor.xaml"),
-            new Theme("Dark",        "Modern.Dark.xaml"),
-            new Theme("Light",       "Modern.Light.xaml"),
+            new Theme("Classic",            "Classic.xaml"),
+            new Theme("Luna.HomeStead",     "Luna.HomeStead.xaml"),
+            new Theme("Luna.Metallic",      "Luna.Metallic.xaml"),
+            new Theme("Luna.NormalColor",   "Luna.NormalColor.xaml"),
+            new Theme("Royale.NormalColor", "Royale.NormalColor.xaml"),
+            new Theme("Aero",               "Aero.NormalColor.xaml"),
+            new Theme("NormalColor",        "Modern.NormalColor.xaml"),
+            new Theme("Dark",               "Modern.Dark.xaml"),
+            new Theme("Light",              "Modern.Light.xaml"),
             };
 
         public static event EventHandler ThemeApply;
+        public static ResourceKey ToolBarDropDownButtonStyleKey { get{
+            return ToolBarDropDownButtonStyleKeyInternal = ToolBarDropDownButtonStyleKeyInternal??new ComponentResourceKey(typeof(DropDownButton), nameof(ToolBarDropDownButtonStyleKey));
+            }}
 
         #region M:Apply
         public static void Apply() {
-            Apply(Themes[1]);
+            Apply(Themes[0]);
             }
         #endregion
         #region M:Apply(Theme)
@@ -66,6 +77,19 @@ namespace BinaryStudio.PlatformUI
                     ThemeApply(source, EventArgs.Empty);
                     }
                 }
+            }
+        #endregion
+        #region M:Apply(String)
+        public static void Apply(String source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (String.IsNullOrWhiteSpace(source)) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            foreach (var theme in Themes) {
+                if (String.Equals(theme.Name, source, StringComparison.OrdinalIgnoreCase)) {
+                    Apply(theme);
+                    return;
+                    }
+                }
+            throw new ArgumentOutOfRangeException(nameof(source));
             }
         #endregion
         #region M:LoadResourceDictionary(String):ResourceDictionary
@@ -223,9 +247,13 @@ namespace BinaryStudio.PlatformUI
             //    }
             }
 
+        public override String ToString()
+            {
+            return Name;
+            }
+
         static Theme()
             {
-
             }
         }
     }

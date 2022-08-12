@@ -59,46 +59,69 @@ void PopParentId()
     }
 
 template <>
-void TraceDescriptor::Pack(vector<uint8_t>& o, wchar_t const* const& value) {
-    PackValue(o,(uint8_t*)value, (wcslen(value) + 1)*2);
+const TraceDescriptor& TraceDescriptor::packD(vector<uint8_t>& target, const nullptr_t&) const
+    {
+    packT(target,Asn1Null);
+    packS(target,0x00);
+    return *this;
     }
 
 template <>
-void TraceDescriptor::Pack(vector<uint8_t>& target, const vector<uint8_t>& value) {
-    if (value.empty())
-        {
-        PackType(target,ASN1_NULL);
-        PackSize(target,0x00);
-        }
-    else
-        {
-        PackValue(target, &value[0],value.size());
-        }
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t const* const& value) const {
+    return (value != nullptr)
+        ? packD(target, wstring(value))
+        : packD(target, nullptr);
+    }
+
+template <>
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, wchar_t* const& value) const {
+    return (value != nullptr)
+        ? packD(target, wstring(value))
+        : packD(target, nullptr);
+    }
+
+template <>
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char const* const& value) const {
+    return (value != nullptr)
+        ? packD(target, string(value))
+        : packD(target, nullptr);
+    }
+
+template <>
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, char* const& value) const {
+    return (value != nullptr)
+        ? packD(target, string(value))
+        : packD(target, nullptr);
     }
 
 #define PACK(T) \
 template <> \
-void TraceDescriptor::Pack(vector<uint8_t>& o, const T& value) { \
-    PackValue(o,(uint8_t*)&value, sizeof(T)); \
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, const T& value) const { \
+    vector<uint8_t> o; \
+    packB(o, (const uint8_t*)&value, sizeof(T)); \
+    packT(target, Asn1PrivateDirect); \
+    packS(target, o.size()); \
+    packB(target, o); \
+    return *this; \
     } \
 template <> \
-void TraceDescriptor::Pack(vector<uint8_t>& target, T* const & value) { \
-    if (value != nullptr) \
-        { \
-        Pack(target,*value); \
-        } \
-    else \
-        { \
-        PackType(target,ASN1_NULL); \
-        PackSize(target,0x00); \
-        } \
+const TraceDescriptor&  TraceDescriptor::packD(vector<uint8_t>& target, T* const & value) const { \
+    vector<uint8_t> o; \
+    if (value == nullptr) { return packD(target,nullptr); } \
+    packD(o, *value); \
+    packT(target, Asn1PrivatePointer); \
+    packS(target, o.size()); \
+    packB(target, o); \
+    return *this; \
     }
 
+PACK(INT)
 PACK(LONG)
 PACK(ULONG)
 PACK(ULONGLONG)
+PACK(IID)
 
-void TraceDescriptor::PackSize(vector<uint8_t>& target, const size_t value) {
+void TraceDescriptor::packS(vector<uint8_t>& target, const size_t value) {
     if ((value >= 0) && (value < 0x80)) {
         target.emplace_back(uint8_t(value & 0xff));
         return;
@@ -120,40 +143,40 @@ void TraceDescriptor::PackSize(vector<uint8_t>& target, const size_t value) {
         }
     }
 
-void TraceDescriptor::PackType(vector<uint8_t>& target, const uint8_t type) {
+void TraceDescriptor::packT(vector<uint8_t>& target, const uint8_t type) {
     target.emplace_back(type);
     }
 
-void TraceDescriptor::PackBody(vector<uint8_t>& target, const vector<uint8_t>& source) {
+void TraceDescriptor::packB(vector<uint8_t>& target, const vector<uint8_t>& source) {
     for (const auto& i: source) {
         target.emplace_back(i);
         }
     }
 
-void TraceDescriptor::PackBody(vector<uint8_t>& target, const uint8_t* source, const size_t count) {
+void TraceDescriptor::packB(vector<uint8_t>& target, const uint8_t* source, const size_t count) {
     for (size_t i = 0; i < count; i++) {
         target.emplace_back(
             source[i]);
         }
     }
 
-void TraceDescriptor::PackValue(
+const TraceDescriptor& TraceDescriptor::PackValue(
     vector<uint8_t>& target, const uint8_t* source,
-    const size_t count)
+    const size_t count) const
     {
     if (source != nullptr) {
-        PackType(target, 0xc0);
-        PackSize(target, count);
-        PackBody(target, source, count);
+        packT(target, Asn1OctetString);
+        packS(target, count);
+        packB(target, source, count);
         }
     else
         {
-        PackType(target, 0x05);
-        PackSize(target, 0x00);
+        packD(target, nullptr);
         }
+    return *this;
     }
 
-HRESULT TraceDescriptor::EnterI(LONG& scope, const vector<uint8_t>& target, const NullableReference<LONG64>& size) {
+HRESULT TraceDescriptor::EnterI(LONG& scope, const vector<uint8_t>& target, const NullableReference<LONG64>& size) const {
     int status;
     scope = 0;
     if (DataSource == nullptr) {
@@ -186,7 +209,8 @@ HRESULT TraceDescriptor::EnterI(LONG& scope, const vector<uint8_t>& target, cons
                 [Size]      [BIGINT]  NULL,                      \
                 [LeavePoint][INTEGER] NULL,                      \
                 [ParentId]  [INTEGER] NULL,                      \
-                [Parameters][BLOB]    NULL                       \
+                [Parameters][BLOB]    NULL,                      \
+                [SCode]     [INTEGER] NULL                       \
                 )", nullptr,nullptr,&message)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
         if ((status = sqlite3_prepare_v2(DataSource, "\
             INSERT INTO TraceInfo([ThreadId],[LongName],[ShortName],[EntryTime],[Size],[ParentId],[Parameters])\
@@ -216,15 +240,15 @@ HRESULT TraceDescriptor::EnterI(LONG& scope, const vector<uint8_t>& target, cons
     return S_OK;
     }
 
-HRESULT TraceDescriptor::LeaveI(LONG scope,const vector<uint8_t>& target, const NullableReference<LONG64>&)
-    {
+HRESULT TraceDescriptor::LeaveI(const LONG scope,HRESULT scode, const vector<uint8_t>& target, const NullableReference<LONG64>&) const {
     int status;
     if (scope == 0)            { return E_INVALIDARG;           }
     if (DataSource == nullptr) { return COR_E_INVALIDOPERATION; }
     PopParentId();
     if (LeaveStatement == nullptr) {
         if ((status = sqlite3_prepare_v2(DataSource,
-            "INSERT INTO TraceInfo([EntryTime],[LeavePoint],[Parameters]) VALUES (@EntryTime,@LeavePoint,@Parameters)",
+            "INSERT INTO TraceInfo([EntryTime],[LeavePoint],[Parameters],[SCode],[ShortName]) \
+                    VALUES        (@EntryTime, @LeavePoint, @Parameters, @SCode, @ShortName)",
             -1, &LeaveStatement, nullptr)) != SQLITE_OK) {
             return COR_E_INVALIDOPERATION;
             }
@@ -232,8 +256,12 @@ HRESULT TraceDescriptor::LeaveI(LONG scope,const vector<uint8_t>& target, const 
     if ((status = sqlite3_bind_int64(LeaveStatement, 1, GetTickCount64())) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
     if ((status = sqlite3_bind_int(LeaveStatement, 2, scope)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
     if ((status = (!target.empty())
-        ? sqlite3_bind_blob64(InsertStatement, 3,&target[0],target.size(),nullptr)
-        : sqlite3_bind_null  (InsertStatement, 3)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
+        ? sqlite3_bind_blob64(LeaveStatement, 3,&target[0],target.size(),nullptr)
+        : sqlite3_bind_null  (LeaveStatement, 3)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
+    if ((status = sqlite3_bind_int(LeaveStatement, 4, scode)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
+        if ((status = !ShortName.empty()
+            ? sqlite3_bind_text(InsertStatement, 5, ShortName.c_str(), -1, SQLITE_TRANSIENT)
+            : sqlite3_bind_null(InsertStatement, 5)) != SQLITE_OK) { return COR_E_INVALIDOPERATION; }
     if ((status = sqlite3_step(LeaveStatement)) != SQLITE_DONE) { return COR_E_INVALIDOPERATION; }
     sqlite3_reset(LeaveStatement);
     return S_OK;

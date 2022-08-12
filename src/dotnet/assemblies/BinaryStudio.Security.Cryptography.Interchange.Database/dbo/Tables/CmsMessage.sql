@@ -13,7 +13,14 @@
 
 
 
+
+
 GO
 CREATE STATISTICS [_dta_stat_902346329_1_3]
     ON [dbo].[CmsMessage]([ObjectId], [HashAlgorithm]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_CmsMessage_47_902346329__K1]
+    ON [dbo].[CmsMessage]([ObjectId] ASC);
 

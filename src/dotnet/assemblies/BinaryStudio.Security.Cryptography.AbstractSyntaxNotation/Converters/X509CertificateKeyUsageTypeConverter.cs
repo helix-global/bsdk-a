@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -18,7 +19,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters
         #endif
         {
         public static String ToString(X509KeyUsageFlags value, CultureInfo culture) {
+            #if NET35
+            return String.Join(",", ToStringArray(value, culture).ToArray());
+            #else
             return String.Join(",", ToStringArray(value, culture));
+            #endif
             }
 
         public static IList<String> ToStringArray(X509KeyUsageFlags value, CultureInfo culture) {

@@ -30,7 +30,11 @@ namespace BinaryStudio.PlatformComponents.Win32
         /// <returns>A string that represents the current object.</returns>
         public override String ToString()
             {
+            #if NET35
+            return $"{{{((IntPtr.Size == sizeof(Int64)) ? ((Int64)Handle).ToString("x16") : ((Int32)Handle).ToString("x8"))}}}";
+            #else
             return $"{{{(Environment.Is64BitProcess ? ((Int64)Handle).ToString("x16") : ((Int32)Handle).ToString("x8"))}}}";
+            #endif
             }
 
         #region M:CloseServiceHandle([ref]IntPtr)

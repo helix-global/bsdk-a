@@ -32,6 +32,7 @@ namespace Operations
         private readonly EventWaitHandle E = new AutoResetEvent(false);
         private readonly CancellationTokenSource B = new CancellationTokenSource();
         private volatile Int32 NumberOfErrors = 0;
+        private readonly DateTime StartDateTime;
         private Int32 NumberOfFiles = 1;
         private Int64 FileIndex = 0;
         private readonly MultiThreadOption MultiThreadOption;
@@ -42,7 +43,7 @@ namespace Operations
             lock(this)
                 {
                 var fileindex = Interlocked.Read(ref FileIndex);
-                Console.Title = $"Total:{NumberOfFiles}:FileCount:{fileindex}:{((Single)fileindex/NumberOfFiles)*100:F2}%";
+                Console.Title = $"Total:{{{NumberOfFiles}}}:FileCount:{{{fileindex}}}:{{{((Single)fileindex/NumberOfFiles)*100:F2}%}}:{{{DateTime.Now - StartDateTime}}}";
                 }
             }
 
@@ -74,6 +75,7 @@ namespace Operations
                     default: throw new NotSupportedException();
                     }
                 }
+            StartDateTime = DateTime.Now;
             }
 
         public override void Break() {
@@ -151,7 +153,8 @@ namespace Operations
                 Write(Out,ConsoleColor.Gray, ":Max:");Write(Out,ConsoleColor.Cyan, $"{{{MaxElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Avg:");Write(Out,ConsoleColor.Cyan, $"{{{AvgElapsedTicks}}}");
                 Write(Out,ConsoleColor.Gray, ":Errors:");Write(Out,ConsoleColor.Red, $"{{{NumberOfErrors}}}");
-                Write(Out,ConsoleColor.Gray, ":Total:" );Write(Out,ConsoleColor.Yellow, $"{{{timer.Elapsed}}}");
+                Write(Out,ConsoleColor.Gray, ":Total:" );Write(Out,ConsoleColor.Yellow, $"{{{timer.Elapsed}}}:");
+                Write(Out,ConsoleColor.Gray, ":Avg:" );Write(Out,ConsoleColor.Yellow, $"{{{new TimeSpan(timer.ElapsedTicks/NumberOfFiles)}}}");
                 Out.WriteLine();
                 }
             catch(OperationCanceledException)

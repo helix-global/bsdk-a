@@ -3,42 +3,44 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
   </ResourceDictionary.MergedDictionaries>
-  
-  <SolidColorBrush x:Key="Accent3BrushKey"                    Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
-  <SolidColorBrush x:Key="ActiveBorderBrushKey"               Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-  <SolidColorBrush x:Key="ActiveCaptionBrushKey"              Color="#FF2d2d30"/>
-  <SolidColorBrush x:Key="ActiveCaptionTextBrushKey"          Color="#FFF1F1F1"/>
-  <SolidColorBrush x:Key="AppWorkspaceBrushKey"               Color="{DynamicResource {x:Static SystemColors.AppWorkspaceColorKey}}"/>
-  <SolidColorBrush x:Key="ControlBrushKey"                    Color="#FF2D2D30"/>
-  <SolidColorBrush x:Key="ControlDarkBrushKey"                Color="#FF656565"/>
-  <SolidColorBrush x:Key="ControlDarkDarkBrushKey"            Color="#FF3F3F46"/>
-  <SolidColorBrush x:Key="ControlLightBrushKey"               Color="#FF1D1D20"/>
-  <SolidColorBrush x:Key="ControlLightLightBrushKey"          Color="#FF0D0D10"/>
-  <SolidColorBrush x:Key="ControlTextBrushKey"                Color="#FFcccccc"/>
-  <SolidColorBrush x:Key="DesktopBrushKey"                    Color="{DynamicResource {x:Static SystemColors.DesktopColorKey}}"/>
-  <SolidColorBrush x:Key="GradientActiveCaptionBrushKey"      Color="{DynamicResource {x:Static SystemColors.GradientActiveCaptionColorKey}}"/>
-  <SolidColorBrush x:Key="GradientInactiveCaptionBrushKey"    Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
-  <SolidColorBrush x:Key="GrayTextBrushKey"                   Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
-  <SolidColorBrush x:Key="HighlightBrushKey"                  Color="#ff1c97ea"/>
-  <SolidColorBrush x:Key="HighlightLightBrushKey"             Color="#FF3399FF" Opacity="0.50"/>
-  <SolidColorBrush x:Key="HighlightLightLightBrushKey"        Color="#FF3399FF" Opacity="0.25"/>
-  <SolidColorBrush x:Key="HighlightTextBrushKey"              Color="#FFF1F1F1"/>
-  <SolidColorBrush x:Key="HotTrackBrushKey"                   Color="#ff007acc"/>
-  <SolidColorBrush x:Key="InactiveBorderBrushKey"             Color="#FF656565"/>
-  <SolidColorBrush x:Key="InactiveCaptionBrushKey"            Color="{DynamicResource {x:Static SystemColors.InactiveCaptionColorKey}}"/>
-  <SolidColorBrush x:Key="InactiveCaptionTextBrushKey"        Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}"/>
-  <SolidColorBrush x:Key="InfoBrushKey"                       Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
-  <SolidColorBrush x:Key="InfoTextBrushKey"                   Color="{DynamicResource {x:Static SystemColors.InfoTextColorKey}}"/>
-  <SolidColorBrush x:Key="MenuBrushKey"                       Color="#FF2D2D30"/>
-  <SolidColorBrush x:Key="MenuBarBrushKey"                    Color="#FF2D2D30"/>
-  <SolidColorBrush x:Key="MenuCheckMarkBackgroundBrushKey"    Color="#FF2d2d30"/>
-  <SolidColorBrush x:Key="MenuHighlightBrushKey"              Color="#FF4b4b4d"/>
-  <SolidColorBrush x:Key="MenuTextBrushKey"                   Color="#FFF1F1F1"/>
-  <SolidColorBrush x:Key="ScrollBarBrushKey"                  Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}"/>
-  <SolidColorBrush x:Key="WindowBrushKey"                     Color="#FF1b1b1c"/>
-  <SolidColorBrush x:Key="WindowFrameBrushKey"                Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
-  <SolidColorBrush x:Key="WindowTextBrushKey"                 Color="#FFF1F1F1"/>
-  <SolidColorBrush x:Key="SelectionBrush"                     Color="#FFF1F1F1"/>
+
+  <SolidColorBrush x:Key="Accent3BrushKey"                            Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+  <SolidColorBrush x:Key="ActiveBorderBrushKey"                       Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+  <SolidColorBrush x:Key="ActiveCaptionBrushKey"                      Color="#FF2d2d30"/>
+  <SolidColorBrush x:Key="ActiveCaptionTextBrushKey"                  Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="AppWorkspaceBrushKey"                       Color="{DynamicResource {x:Static SystemColors.AppWorkspaceColorKey}}"/>
+  <SolidColorBrush x:Key="ControlBrushKey"                            Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="ControlDarkBrushKey"                        Color="#FF656565"/>
+  <SolidColorBrush x:Key="ControlDarkDarkBrushKey"                    Color="#FF3F3F46"/>
+  <SolidColorBrush x:Key="ControlLightBrushKey"                       Color="#FF1D1D20"/>
+  <SolidColorBrush x:Key="ControlLightLightBrushKey"                  Color="#FF0D0D10"/>
+  <SolidColorBrush x:Key="ControlTextBrushKey"                        Color="#ffcccccc"/>
+  <SolidColorBrush x:Key="DesktopBrushKey"                            Color="{DynamicResource {x:Static SystemColors.DesktopColorKey}}"/>
+  <SolidColorBrush x:Key="GradientActiveCaptionBrushKey"              Color="{DynamicResource {x:Static SystemColors.GradientActiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="GradientInactiveCaptionBrushKey"            Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="GrayTextBrushKey"                           Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
+  <SolidColorBrush x:Key="HighlightBrushKey"                          Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="HighlightLightBrushKey"                     Color="#FF3399FF" Opacity="0.50"/>
+  <SolidColorBrush x:Key="HighlightLightLightBrushKey"                Color="#FF3399FF" Opacity="0.25"/>
+  <SolidColorBrush x:Key="HighlightTextBrushKey"                      Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="HotTrackBrushKey"                           Color="#ff007acc"/>
+  <SolidColorBrush x:Key="InactiveBorderBrushKey"                     Color="#FF656565"/>
+  <SolidColorBrush x:Key="InactiveCaptionBrushKey"                    Color="{DynamicResource {x:Static SystemColors.InactiveCaptionColorKey}}"/>
+  <SolidColorBrush x:Key="InactiveCaptionTextBrushKey"                Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}"/>
+  <SolidColorBrush x:Key="InactiveSelectionHighlightBrushKey"         Color="#FF1D1D20"/>
+  <SolidColorBrush x:Key="InactiveSelectionHighlightTextBrushKey"     Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}"/>
+  <SolidColorBrush x:Key="InfoBrushKey"                               Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
+  <SolidColorBrush x:Key="InfoTextBrushKey"                           Color="{DynamicResource {x:Static SystemColors.InfoTextColorKey}}"/>
+  <SolidColorBrush x:Key="MenuBrushKey"                               Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="MenuBarBrushKey"                            Color="#FF2D2D30"/>
+  <SolidColorBrush x:Key="MenuCheckMarkBackgroundBrushKey"            Color="#FF2d2d30"/>
+  <SolidColorBrush x:Key="MenuHighlightBrushKey"                      Color="#FF4b4b4d"/>
+  <SolidColorBrush x:Key="MenuTextBrushKey"                           Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="ScrollBarBrushKey"                          Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}"/>
+  <SolidColorBrush x:Key="WindowBrushKey"                             Color="#ff2b2b2b"/>
+  <SolidColorBrush x:Key="WindowFrameBrushKey"                        Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
+  <SolidColorBrush x:Key="WindowTextBrushKey"                         Color="#FFF1F1F1"/>
+  <SolidColorBrush x:Key="SelectionBrush"                             Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="ScrollBarBackgroundBrushKey"                Color="#ff3e3e42"/>
   <SolidColorBrush x:Key="ScrollBarDisabledBackgroundBrushKey"        Color="#FF656565" Opacity="0.25"/>
   <SolidColorBrush x:Key="ScrollBarButtonMouseOverBackgroundBrushKey" Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}" Opacity="0.2"/>
@@ -58,6 +60,7 @@
   <SolidColorBrush x:Key="GlyphForegroundBrushKey"                    Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="DockSiteAdornerForegroundBrushKey"          Color="#ff007acc"/>
   <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrushKey"     Color="#FF4b4b4d"/>
+  <SolidColorBrush x:Key="DataGridSelectedBorderBrushKey"             Color="#FFF1F1F1"/>
   <SolidColorBrush x:Key="DataGridNullTextBrushKey"                   Color="#FF908b02"/>
   <SolidColorBrush x:Key="ButtonBackgroundBrushKey"                   Color="#FF1b1b1c"/>
   <SolidColorBrush x:Key="ButtonBorderBrushKey"                       Color="#ff555555"/>
@@ -65,9 +68,99 @@
   <SolidColorBrush x:Key="ButtonMouseOverBackgroundBrushKey"          Color="#FF2D2D30"/>
   <SolidColorBrush x:Key="ButtonDefaultBackgroundBrushKey"            Color="#ff3f3f46"/>
   <SolidColorBrush x:Key="ButtonPressedBackgroundBrushKey"            Color="#ff007acc"/>
+  <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}"    Color="#FFc5c5c5"/>
   <Color x:Key="ActiveGlowColorKey">#FF3399FF</Color>
   <Color x:Key="InactiveGlowColorKey">#ff3e3e40</Color>
   <Color x:Key="ControlDarkDarkColorKey">#FF3F3F46</Color>
   <Color x:Key="ControlLightColorKey">#FF1D1D20</Color>
+  <Color x:Key="HighlightTextColorKey">#FFF1F1F1</Color>
+
+  <DrawingGroup x:Key="PictureBackward">
+    <DrawingGroup.Children>
+      <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+      <GeometryDrawing Brush="#ff3e3e40" Geometry="F1M15,8C15,11.866 11.866,15 8,15 4.134,15 1,11.866 1,8 1,4.134 4.134,1 8,1 11.866,1 15,4.134 15,8" />
+      <GeometryDrawing Brush="#FF7ac1ff" Geometry="F1M4,8L7,5 9,5 7,7 12,7 12,9 7,9 9,11 7,11z M2,8C2,11.247 4.755,14 8,14 11.245,14 14,11.247 14,8 14,4.756 11.245,2 8,2 4.755,2 2,4.756 2,8" />
+      <GeometryDrawing Brush="#FF313135" Geometry="F1M4,8L7,5 9,5 7,7 12,7 12,9 7,9 9,11 7,11z" />
+    </DrawingGroup.Children>
+  </DrawingGroup>
+  <DrawingGroup x:Key="PictureForward">
+    <DrawingGroup.Children>
+      <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+      <GeometryDrawing Brush="#ff3e3e40" Geometry="F1M15,8C15,11.866 11.866,15 8,15 4.134,15 1,11.866 1,8 1,4.134 4.134,1 8,1 11.866,1 15,4.134 15,8" />
+      <GeometryDrawing Brush="#FF7ac1ff" Geometry="F1M9,11L7,11 9,9 4,9 4,7 9,7 7,5 9,5 12,8z M8,2C4.755,2 2,4.756 2,8 2,11.247 4.755,14 8,14 11.245,14 14,11.247 14,8 14,4.756 11.245,2 8,2" />
+      <GeometryDrawing Brush="#FF313135" Geometry="F1M9,11L7,11 9,9 4,9 4,7 9,7 7,5 9,5 12,8z" />
+    </DrawingGroup.Children>
+  </DrawingGroup>
+  <XmlDataProvider x:Key="xml.xshd" IsAsynchronous="False">
+    <x:XData>
+      <SyntaxDefinition name="XML"
+                        extensions=".xml;.xsl;.xslt;.xsd;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.ilproj;.booproj;.build;.xfrm;.targets;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ps1xml;.nuspec;.emx"
+                        xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+        <Color foreground="#ff57a64a" name="Comment" exampleText="&lt;!-- comment --&gt;" />
+        <Color foreground="#ffe9d585" name="CData" exampleText="&lt;![CDATA[data]]&gt;" />
+        <Color foreground="#ff569cd6" name="DocType" exampleText="&lt;!DOCTYPE rootElement&gt;" />
+        <Color foreground="#ff858e3d" name="XmlDeclaration" exampleText='&lt;?xml version="1.0"?&gt;' />
+        <Color foreground="#ff569cd6" name="XmlTag" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="#ff92caf4" name="AttributeName" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="#ffc8c8c8" name="AttributeValue" exampleText='&lt;tag attribute="value" /&gt;' />
+        <Color foreground="Teal" name="Entity" exampleText="index.aspx?a=1&amp;amp;b=2" />
+        <Color foreground="Olive" name="BrokenEntity" exampleText="index.aspx?a=1&amp;b=2" />
+        <Color foreground="#ffffffff" name="XmlTagNS"/>
+        <RuleSet>
+          <Span color="Comment" multiline="true">
+            <Begin>&lt;!--</Begin>
+            <End>--&gt;</End>
+          </Span>
+          <Span color="CData" multiline="true">
+            <Begin>&lt;!\[CDATA\[</Begin>
+            <End>]]&gt;</End>
+          </Span>
+          <Span color="DocType" multiline="true">
+            <Begin>&lt;!DOCTYPE</Begin>
+            <End>&gt;</End>
+          </Span>
+          <Span color="XmlDeclaration" multiline="true">
+            <Begin>&lt;\?</Begin>
+            <End>\?&gt;</End>
+          </Span>
+          <Span color="XmlTag" multiline="true">
+            <Begin>&lt;</Begin>
+            <End>&gt;</End>
+            <RuleSet>
+              <!-- Treat the position before '<' as end, as that's not a valid character in attribute names and indicates the user forgot a closing quote. -->
+              <!--<Span color="XmlTagNS" multiline="false">
+                <Begin>&lt;</Begin>
+                <End>:</End>
+              </Span>-->
+              <Span color="AttributeValue" multiline="true" ruleSet="EntitySet">
+                <Begin>"</Begin>
+                <End>"|(?=&lt;)</End>
+              </Span>
+              <Span color="AttributeValue" multiline="true" ruleSet="EntitySet">
+                <Begin>'</Begin>
+                <End>'|(?=&lt;)</End>
+              </Span>
+              <Rule color="XmlTagNS">[\d\w_\-\.]+[:]</Rule>
+              <Rule color="AttributeName">[\d\w_\-\.]+(?=(\s*=))</Rule>
+              <Rule color="AttributeValue">=</Rule>
+            </RuleSet>
+          </Span>
+          <Import ruleSet="EntitySet"/>
+        </RuleSet>
+        <RuleSet name="EntitySet">
+          <Rule color="Entity">
+            &amp;
+          [\w\d\#]+
+          ;
+          </Rule>
+          <Rule color="BrokenEntity">
+            &amp;
+          [\w\d\#]*
+          #missing ;
+          </Rule>
+        </RuleSet>
+      </SyntaxDefinition>
+    </x:XData>
+  </XmlDataProvider>
 </ResourceDictionary>
   

@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Security.Cryptography.Certificates.Extensions;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 

@@ -13,12 +13,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Linq;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 using Path=System.IO.Path;
+
+#pragma warning disable 1591
 
 namespace shell
     {
@@ -48,8 +54,9 @@ namespace shell
 
         private void OnLoad(Object sender, RoutedEventArgs e)
             {
-            Theme.Apply(Theme.Themes[1]);
+            Theme.Apply(Theme.Themes[7]);
             UpdateCommandBindings();
+            LoadSyntaxHighlighting();
             var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
             if (dockgroupcontainer == null) {
                 Profile.DockRoot.Children.Add(new DocumentGroupContainer
@@ -72,7 +79,11 @@ namespace shell
 
         private void Initialize()
             {
-            //LoadFrom(@"C:\TFS\bsdk\src\dotnet\samples\SmartCardSample\bin\Debug\net40\.sqlite3\trace-SmartCardSample-2022-04-02-17-42-30.db");
+            LoadFrom(@"C:\TFS\bsdk\mdl\atl30\atl30.emx");
+            //ObjectIdentifierInfoExecuted(null,null);
+            //OpenRegistryKeyExecuted(Registry.CurrentConfig);
+            //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
+            //docmanager.AddCertificateStoreManagement();
             }
 
         private void LoadFrom(String filename) {
@@ -83,7 +94,26 @@ namespace shell
         private void UpdateCommandBindings() {
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(ApplicationCommands.Open, OpenExecuted,CanExecuteAllways));
             CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ConvertToBase64, ConvertToBase64Executed,CanExecuteAllways));
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));;
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenBase64, OpenBase64Executed,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.OpenRegistryKey, OpenRegistryKeyExecuted,CanExecuteAllways));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(DocumentCommands.ObjectIdentifierInfo, ObjectIdentifierInfoExecuted,CanExecuteAllways));
+            }
+
+        private void ObjectIdentifierInfoExecuted(Object sender, ExecutedRoutedEventArgs e)
+            {
+            var o = docmanager.LoadView(new EObjectIdentiferInfo());
+            docmanager.Add(o, "Object Identifer Info");
+            }
+
+        private void OpenRegistryKeyExecuted(Object e)
+            {
+            var o = docmanager.LoadView(e);
+            docmanager.Add(o, e.ToString());
+            }
+
+        private void OpenRegistryKeyExecuted(Object sender, ExecutedRoutedEventArgs e)
+            {
+            OpenRegistryKeyExecuted(e.Parameter);
             }
 
         private void OpenBase64Executed(Object sender, ExecutedRoutedEventArgs e)
@@ -135,7 +165,7 @@ namespace shell
         private void OpenExecuted(Object sender, ExecutedRoutedEventArgs e)
             {
             var dialog = new OpenFileDialog{
-                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db"
+                Filter = "All Files (*.*)|*.*|SQLite Files (*.db)|*.db|Model Files (*.emx)|*.emx"
                 };
             if (dialog.ShowDialog(this) == true)
                 {
@@ -147,6 +177,19 @@ namespace shell
             {
             e.CanExecute = true;
             e.Handled = true;
+            }
+
+        private static void LoadSyntaxHighlighting(String source) {
+            if (Application.Current.Resources[$"{source}.xshd"] is XmlDataProvider provider) {
+                using (var reader = new XmlNodeReader(provider.Document)) {
+                    var highlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    HighlightingManager.Instance.RegisterHighlighting($"{{{source}}}", new [] { ".custor" }, highlighting);
+                    }
+                }
+            }
+
+        private static void LoadSyntaxHighlighting() {
+            LoadSyntaxHighlighting("xml");
             }
         }
     }

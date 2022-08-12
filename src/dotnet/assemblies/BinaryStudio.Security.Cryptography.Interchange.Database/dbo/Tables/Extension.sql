@@ -10,3 +10,15 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Extension_47_101575400__K2]
+    ON [dbo].[Extension]([ObjectId] ASC);
+
+
+GO
+CREATE STATISTICS [_dta_stat_101575400_2_1]
+    ON [dbo].[Extension]([ObjectId], [ExtensionId]);
+

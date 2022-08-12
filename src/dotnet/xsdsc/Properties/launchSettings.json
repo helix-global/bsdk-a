@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "xsdsc": {
+      "commandName": "Project",
+      "commandLineArgs": "\"input:C:\\Users\\maistrenko\\Documents\\Visual Studio 2017\\Projects\\ClassLibrary1\\fox.xsd\""
+    }
+  }
+}

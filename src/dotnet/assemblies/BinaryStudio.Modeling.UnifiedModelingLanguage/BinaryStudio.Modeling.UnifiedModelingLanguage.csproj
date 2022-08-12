@@ -16,4 +16,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="PresentationFramework.Classic" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\MetadataInterchange\" />
+  </ItemGroup>
 </Project>

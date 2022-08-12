@@ -7,6 +7,7 @@
     <ApplicationManifest>App.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.1.3.50" />
     <PackageReference Include="core.GitNugetProps" Version="1.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +25,15 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna">
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Royale">
+      <Private>true</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -44,11 +54,15 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
     <ProjectReference Include="..\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

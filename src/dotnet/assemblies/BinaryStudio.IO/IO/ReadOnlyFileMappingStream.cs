@@ -21,7 +21,11 @@ namespace BinaryStudio.IO
         internal ReadOnlyFileMappingStream(String filename, Boolean flags)
             {
             if (filename == null) { throw new ArgumentNullException(nameof(filename)); }
+            #if NET35
+            if (String.IsNullOrEmpty(filename)) { throw new ArgumentOutOfRangeException(nameof(filename)); }
+            #else
             if (String.IsNullOrWhiteSpace(filename)) { throw new ArgumentOutOfRangeException(nameof(filename)); }
+            #endif
             mapping = new FileMapping(filename);
             Length = mapping.Size;
             Offset = 0;

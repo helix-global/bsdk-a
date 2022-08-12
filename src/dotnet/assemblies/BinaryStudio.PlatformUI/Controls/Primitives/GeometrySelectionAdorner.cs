@@ -67,24 +67,31 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             set { SetValue(GeometryProperty, value); }
             }
         #endregion
-        #region P:VerticalOffset:Double
-        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(Double), typeof(GeometrySelectionAdorner), new PropertyMetadata(default(Double), OnVerticalOffsetChanged));
-        private static void OnVerticalOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+        #region P:OffsetX:Double
+        public static readonly DependencyProperty OffsetXProperty = DependencyProperty.Register(nameof(OffsetX), typeof(Double), typeof(GeometrySelectionAdorner), new PropertyMetadata(default(Double), OnOffsetChanged));
+        public Double OffsetX {
+            get { return (Double)GetValue(OffsetXProperty); }
+            set { SetValue(OffsetXProperty, value); }
+            }
+        #endregion
+        #region P:OffsetY:Double
+        public static readonly DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(Double), typeof(GeometrySelectionAdorner), new PropertyMetadata(default(Double), OnOffsetChanged));
+        private static void OnOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             var source = (sender as GeometrySelectionAdorner);
             if (source != null) {
-                source.OnVerticalOffsetChanged();
+                source.OnOffsetChanged();
                 }
             }
 
-        private void OnVerticalOffsetChanged()
+        private void OnOffsetChanged()
             {
-            Transform = new TranslateTransform(0, VerticalOffset);
+            Transform = new TranslateTransform(OffsetX, OffsetY);
             InvalidateVisual();
             }
 
-        public Double VerticalOffset {
-            get { return (Double)GetValue(VerticalOffsetProperty); }
-            set { SetValue(VerticalOffsetProperty, value); }
+        public Double OffsetY {
+            get { return (Double)GetValue(OffsetYProperty); }
+            set { SetValue(OffsetYProperty, value); }
             }
         #endregion
 
@@ -92,7 +99,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <param name="context">The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext context) {
             base.OnRender(context);
-            if (IsVisible && (Geometry != null)) {
+            if (IsVisible) {
                 context.PushTransform(Transform);
                 context.PushGuidelineSet(new GuidelineSet(
                     new []{0.1, 0.1, 0.5},
@@ -106,7 +113,14 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 if (SelectionStrokeBrush != null) {
                     pen = new Pen(SelectionStrokeBrush.Clone(), SelectionStrokeThickness);
                     }
-                context.DrawGeometry(brush, pen, Geometry);
+                if (Geometry != null)
+                    {
+                    context.DrawGeometry(brush, pen, Geometry);
+                    }
+                else
+                    {
+                    context.DrawRectangle(brush, pen, new Rect(0, 0, Width, Height));
+                    }
                 context.Pop();
                 context.Pop();
                 }

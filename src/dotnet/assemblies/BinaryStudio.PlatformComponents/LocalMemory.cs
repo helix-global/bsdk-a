@@ -75,9 +75,15 @@ namespace BinaryStudio.PlatformComponents
         public override String ToString() {
             var r = new StringBuilder();
             r.Append("{");
+            #if NET35
+            r.Append((IntPtr.Size == sizeof(Int64))
+                ? ((Int64)source).ToString("X16")
+                : ((Int32)source).ToString("X8"));
+            #else
             r.Append(Environment.Is64BitProcess
                 ? ((Int64)source).ToString("X16")
                 : ((Int32)source).ToString("X8"));
+            #endif
             r.Append("}");
             if (Size > 0) {
                 r.Append(":{");

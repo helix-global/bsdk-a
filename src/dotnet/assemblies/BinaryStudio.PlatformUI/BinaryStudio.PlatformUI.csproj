@@ -29,12 +29,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="AvalonEdit" Version="6.1.3.50" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="PresentationFramework.Royale" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="System.Drawing" />
@@ -59,5 +63,13 @@
     <Resource Include="Resources\Top.png" />
     <Resource Include="Resources\TopLeft.png" />
     <Resource Include="Resources\TopRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Classic\DropDownButton.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Themes\Classic\PropertyGridControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 </Project>

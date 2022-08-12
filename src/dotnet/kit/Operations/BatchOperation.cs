@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -46,7 +47,7 @@ namespace Operations
         private readonly TraceOption TraceOption;
         private Int32 NumberOfFiles = 1;
         private Int64 FileIndex = 0;
-        private Byte GroupNumber = 1;
+        private String GroupNumber = "";
 
         public BatchOperation(TextWriter output, TextWriter error, IList<OperationOption> args) 
             : base(output, error, args)
@@ -77,7 +78,7 @@ namespace Operations
             foreach (var option in Options) {
                 if (option.StartsWith("group=", StringComparison.OrdinalIgnoreCase)) {
                     Flags |= BatchOperationFlags.Group;
-                    GroupNumber = (Byte)Int32.Parse(option.Substring(6));
+                    GroupNumber = option.Substring(6);
                     break;
                     }
                 }
@@ -163,9 +164,9 @@ namespace Operations
                             }
                         }
                     fileservice.MoveTo(targetfilename, true);
-                    File.SetCreationTime(targetfilename, source.NotBefore);
-                    File.SetLastWriteTime(targetfilename, source.NotBefore);
-                    File.SetLastAccessTime(targetfilename, source.NotBefore);
+                    PathUtils.SetCreationTime(targetfilename, source.NotBefore);
+                    PathUtils.SetLastWriteTime(targetfilename, source.NotBefore);
+                    PathUtils.SetLastAccessTime(targetfilename, source.NotBefore);
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
@@ -181,7 +182,7 @@ namespace Operations
                         }
                     }
                 }
-                    if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509Certificate(source));    }
+                 if (Flags.HasFlag(BatchOperationFlags.Install))   { store.Add(new X509Certificate(source));    }
             else if (Flags.HasFlag(BatchOperationFlags.Uninstall)) { store.Remove(new X509Certificate(source)); }
             return FileOperationStatus.Success;
             }
@@ -202,9 +203,9 @@ namespace Operations
                             }
                         }
                     fileservice.MoveTo(targetfilename, true);
-                    File.SetCreationTime(targetfilename, source.EffectiveDate);
-                    File.SetLastWriteTime(targetfilename, source.EffectiveDate);
-                    File.SetLastAccessTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetCreationTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetLastWriteTime(targetfilename, source.EffectiveDate);
+                    PathUtils.SetLastAccessTime(targetfilename, source.EffectiveDate);
                     }
                 }
             if (Flags.HasFlag(BatchOperationFlags.Serialize)) {
@@ -373,7 +374,7 @@ namespace Operations
                                     if (!PathUtils.IsSame(service.FullName, Path.Combine(targetfolder, service.FileName))) {
                                         service.CopyTo(Path.Combine(targetfolder, service.FileName), true);
                                         }
-                                    //((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
+                                    ((IFileService)certificates[0]).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".cer")), true);
                                     ((IFileService)cms).CopyTo(Path.Combine(targetfolder, Path.ChangeExtension(service.FileName, ".p7b")), true);
                                     status = FileOperation.Max(status, FileOperationStatus.Success);
                                     return status;
@@ -438,21 +439,30 @@ namespace Operations
             }
         #endregion
         #region M:Update(SqlConnection,Asn1CertificateRevocationList)
-        private static void Update(SqlConnection context, CmsMessage source, String key, Byte group, Boolean force) {
+        private static void Update(SqlConnection context, CmsMessage source, String key, String group, Boolean force) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             var r = XmlSerialize(source);
             lock(context) {
+                var ShortFileIdentifier = String.Empty;
+                if (key != null) {
+                    var match = Regex.Match(key, @"(\w+)[{](\w+)[}]");
+                    if ((match != null) && (match.Success)) {
+                        key = match.Groups[1].Value;
+                        ShortFileIdentifier = match.Groups[2].Value;
+                        }
+                    }
                 using (var transaction = context.BeginTransaction()) {
                     using (var command = context.CreateCommand()) {
                         command.Transaction = transaction;
                         command.CommandText = "[dbo].[ImportCmsMessage]";
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.Add(new SqlParameter("@Key", SqlDbType.NVarChar) { Value = key });
+                        command.Parameters.Add(new SqlParameter("@ShortFileIdentifier", SqlDbType.NVarChar) { Value = ShortFileIdentifier });
                         command.Parameters.Add(new SqlParameter("@Body", SqlDbType.Xml) { Value = new SqlXml(XElement.Parse(r).CreateReader()) });
                         command.Parameters.Add(new SqlParameter("@Thumbprint", SqlDbType.NVarChar) { Value = source.Thumbprint });
-                        command.Parameters.Add(new SqlParameter("@Group", SqlDbType.TinyInt) { Value = group });
-                        command.Parameters.Add(new SqlParameter("@Force", SqlDbType.Bit)     { Value = force });
+                        command.Parameters.Add(new SqlParameter("@Group", SqlDbType.NVarChar) { Value = group });
+                        command.Parameters.Add(new SqlParameter("@Force", SqlDbType.Bit)      { Value = force });
                         command.ExecuteNonQuery();
                         }
                     transaction.Commit();

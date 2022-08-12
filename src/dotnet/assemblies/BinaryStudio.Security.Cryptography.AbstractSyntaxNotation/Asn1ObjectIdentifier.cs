@@ -26,9 +26,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public String FriendlyName { get {
             var value = ToString();
             var r = OID.ResourceManager.GetString(value, PlatformContext.DefaultCulture);
+            #if NET35
+            return (!String.IsNullOrEmpty(r))
+                    ? r
+                    : (new Oid(value)).FriendlyName;
+            #else
             return (!String.IsNullOrWhiteSpace(r))
                     ? r
                     : (new Oid(value)).FriendlyName;
+            #endif
             }}
 
         internal Asn1ObjectIdentifier(ReadOnlyMappingStream source, Int64 forceoffset)

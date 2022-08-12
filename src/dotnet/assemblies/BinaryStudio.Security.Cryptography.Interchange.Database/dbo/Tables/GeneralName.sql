@@ -7,3 +7,10 @@
 
 
 
+
+
+
+GO
+CREATE STATISTICS [_dta_stat_133575514_2_1]
+    ON [dbo].[GeneralName]([Type], [GeneralNameId]);
+

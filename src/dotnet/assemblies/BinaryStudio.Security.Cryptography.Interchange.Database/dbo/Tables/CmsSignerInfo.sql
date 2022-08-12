@@ -15,6 +15,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_CmsSignerInfo_47_934346443__K2_K6_K5_K3_4_7]
     ON [dbo].[CmsSignerInfo]([MessageId] ASC, [HashAlgorithm] ASC, [SignatureAlgorithm] ASC, [Issuer] ASC)
@@ -29,4 +31,10 @@ CREATE STATISTICS [_dta_stat_934346443_5_6]
 GO
 CREATE STATISTICS [_dta_stat_934346443_3_2_6]
     ON [dbo].[CmsSignerInfo]([Issuer], [MessageId], [HashAlgorithm]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_CmsSignerInfo_47_934346443__K2_K6_K5_7]
+    ON [dbo].[CmsSignerInfo]([MessageId] ASC, [HashAlgorithm] ASC, [SignatureAlgorithm] ASC)
+    INCLUDE([SigningTime]);
 

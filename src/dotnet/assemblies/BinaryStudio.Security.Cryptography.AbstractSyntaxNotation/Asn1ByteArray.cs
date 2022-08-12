@@ -15,7 +15,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         internal Asn1ByteArray(Asn1Integer source)
             :this((Asn1Object)source)
             {
+            #if NET35
+            Value = source.Value;
+            #else
             Value = source.Value.ToByteArray().Reverse().ToArray();
+            #endif
             }
 
         internal Asn1ByteArray(Asn1Object source, Byte[] value)

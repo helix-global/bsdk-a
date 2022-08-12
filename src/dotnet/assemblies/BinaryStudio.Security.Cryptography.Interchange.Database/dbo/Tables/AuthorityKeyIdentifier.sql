@@ -11,3 +11,16 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_AuthorityKeyIdentifier_47_5575058__K1_3]
+    ON [dbo].[AuthorityKeyIdentifier]([ExtensionId] ASC)
+    INCLUDE([ShortKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_5575058_3_1]
+    ON [dbo].[AuthorityKeyIdentifier]([ShortKey], [ExtensionId]);
+

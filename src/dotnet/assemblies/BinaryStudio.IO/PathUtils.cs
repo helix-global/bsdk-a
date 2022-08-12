@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.DirectoryServices
     {
@@ -9,7 +10,11 @@ namespace BinaryStudio.DirectoryServices
         {
         private const Int32 MAX_PATH = 260;
         private static Boolean IsMatchPart(String pattern, String value) {
+            #if NET35
+            if (String.IsNullOrEmpty(pattern)) { return true; }
+            #else
             if (String.IsNullOrWhiteSpace(pattern)) { return true; }
+            #endif
             if ((pattern == "*") || (pattern == "*.*")) { return true; }
             if (String.Equals(pattern, value, StringComparison.OrdinalIgnoreCase)) { return true; }
             if (pattern.EndsWith  ("*") &&
@@ -68,6 +73,45 @@ namespace BinaryStudio.DirectoryServices
             if (y.StartsWith(@"\\?\")) { y = y.Substring(4); }
             if (String.Equals(x, y)) { return true; }
             return false;
+            }
+
+        public static HRESULT SetLastAccessTime(String path, DateTime value)
+            {
+            try
+                {
+                File.SetLastAccessTime(path,value);
+                return HRESULT.S_OK;
+                }
+            catch (Exception e)
+                {
+                return (HRESULT)Marshal.GetHRForException(e);
+                }
+            }
+
+        public static HRESULT SetLastWriteTime(String path, DateTime value)
+            {
+            try
+                {
+                File.SetLastWriteTime(path,value);
+                return HRESULT.S_OK;
+                }
+            catch (Exception e)
+                {
+                return (HRESULT)Marshal.GetHRForException(e);
+                }
+            }
+
+        public static HRESULT SetCreationTime(String path, DateTime value)
+            {
+            try
+                {
+                File.SetCreationTime(path,value);
+                return HRESULT.S_OK;
+                }
+            catch (Exception e)
+                {
+                return (HRESULT)Marshal.GetHRForException(e);
+                }
             }
         }
     }

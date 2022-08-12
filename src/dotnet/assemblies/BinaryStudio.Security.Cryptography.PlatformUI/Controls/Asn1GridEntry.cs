@@ -119,7 +119,7 @@ namespace BinaryStudio.Security.Cryptography.PlatformUI.Controls
                 ? ((Asn1UniversalObject)source).Type.ToString()
                 : ((IAsn1Object)source).Type.ToString();
             Header = (source.Class == Asn1ObjectClass.Universal)
-                ? String.Format("{0}", Type)
+                ? String.Format("{0}", (Type == "Null") ? "{null}" : Type)
                 : String.Format("{0}[{1}]", Class, Type);
             Offset = source.Offset.ToString();
             Length = source.Length.ToString();

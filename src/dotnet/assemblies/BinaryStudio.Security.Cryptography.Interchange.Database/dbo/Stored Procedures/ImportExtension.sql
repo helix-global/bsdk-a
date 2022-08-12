@@ -46,7 +46,7 @@ begin
       select top 1
           @LongKey = [a].value(N'@Key[1]',N'nvarchar(max)')
          ,@SerialNumber= [a].value(N'@SerialNumber[1]',N'nvarchar(max)')
-         ,@CertificateIssuer = [a].query('CertificateIssuer/RelativeDistinguishedName')
+         ,@CertificateIssuer = [a].query('CertificateAuthorityKeyIdentifier.CertificateIssuer/RelativeDistinguishedName')
       from @Body.nodes(N'//CertificateAuthorityKeyIdentifier') [a]([a])
       execute [dbo].[ImportRelativeDistinguishedNameSequence] @Body=@CertificateIssuer ,@Identifier=@CertificateIssuerId output
       insert into [dbo].[AuthorityKeyIdentifier]

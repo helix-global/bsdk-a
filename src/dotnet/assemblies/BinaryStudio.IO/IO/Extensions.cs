@@ -5,6 +5,20 @@ namespace BinaryStudio.IO
     {
     public static class Extensions
         {
+        #if NET35
+        public static void CopyTo(this Stream source, Stream target)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            var buffer = new Byte[8192];
+            while (true) {
+                var size = source.Read(buffer, 0, 8192);
+                if (size == 0) { break; }
+                target.Write(buffer, 0, size);
+                }
+            }
+        #endif
+
         public static void CopyTo(this Stream source, Stream target, Int32 buffersize, Int64 length)
             {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }

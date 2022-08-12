@@ -206,18 +206,23 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                             exceptions.Add(From(e));
                             }
                         }
+                    Marshal.FinalReleaseComObject(innerExceptions);
                     }
                 var errorinfo = exception as IErrorInfo;
                 r = (exceptions.Count == 1)
                     ? exceptions[0]
                     : Make(errorinfo?.GetDescription(), exceptions, stacktrace, scode, basetype, source);
+                if (errorinfo != null)
+                    {
+                    Marshal.FinalReleaseComObject(errorinfo);
+                    }
                 }
             else if (exception.InnerException != null)
                 {
                 r = Make(exception.Message, new []{
                     From(exception.InnerException)
                     }, stacktrace, scode, basetype, source);
-                //Marshal.FinalReleaseComObject(exception.InnerException);
+                Marshal.FinalReleaseComObject(exception.InnerException);
                 }
             else
                 {
@@ -241,7 +246,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 SetErrorInfo(0, IntPtr.Zero);
                 if (i != null)
                     {
-                    //Marshal.FinalReleaseComObject(i);
+                    Marshal.FinalReleaseComObject(i);
                     }
                 throw e ?? Marshal.GetExceptionForHR((Int32)r);
                 }
@@ -439,6 +444,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             String CrlThumbprint { get; }
             Int32 ContentSize { get; }
             Int32 MessageSize { get; }
+            Int32 Depth { get; }
+            Int32 Flags { get; }
 	        }
 
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -794,28 +801,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             };
         private class StatRecord
             {
-            //[DisplayName("Организация")]
             public String Organization { get;set; }
-            //[DisplayName("Источник ошибки")]
             public String Source { get;set; }
-            //[DisplayName("Используемый aлгоритм хэширования")]
             public String ActualDigestMethod { get;set; }
-            //[DisplayName("Статус CRYPTAPI")]
             public String CCryptError { get;set; }
-            //[DisplayName("Статус BCRYPT")]
             public String BCryptError { get;set; }
-            //[DisplayName("Модификаторы")]
             public String Modifiers { get;set; }
-            //[DisplayName("Исходный файл")]
             public String Stream { get;set; }
-            //[DisplayName("Актуальный алгоритм хэширования(Содержимое)")]
             public String ActualContentDigestMethod { get;set; }
-            //[DisplayName("Размер сообщения")]
             public Int32 MessageSize { get;set; }
-            //[DisplayName("Размер содержимого")]
             public Int32 ContentSize { get;set; }
+            public Int32 Flags { get;set; }
             public String Certificate { get;set; }
             public String Crl { get;set; }
+            public Int32 Depth { get;set; }
             public String SCode { get;set; }
             }
 
@@ -862,10 +861,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 ContentSize = j.ContentSize,
                                 MessageSize = j.MessageSize,
                                 Certificate = j.CertificateThumbprint ?? "NULL",
-                                Crl = j.CrlThumbprint ?? "NULL"
+                                Crl = j.CrlThumbprint ?? "NULL",
+                                Flags = j.Flags,
+                                Depth = j.Depth
                                 });
+                            Marshal.FinalReleaseComObject(j);
                             }
-                        var filename = $"csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
+                        var filename = $"{FintechCryptographicContext.ReportPrefix}csecapi-{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.csv";
                         using (var stream = File.OpenWrite(filename))
                         using (var target = new StreamWriter(stream, Encoding.Unicode)) {
                             var descriptors = TypeDescriptor.GetProperties(typeof(StatRecord)).OfType<PropertyDescriptor>().ToArray();
@@ -874,7 +876,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                                 target.WriteLine($"{String.Join(";", descriptors.Select(i => i.GetValue(row)))}");
                                 }
                             }
-                        Dispose(ref table);
+                        Marshal.FinalReleaseComObject(table);
                         }
                     }
                 catch (Exception e)

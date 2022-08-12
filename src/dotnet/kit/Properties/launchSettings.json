@@ -2,7 +2,7 @@
   "profiles": {
     "newProfile1": {
       "commandName": "Project",
-      "commandLineArgs": "input:d:\\icao\\rfid\\*.p7b mt:1",
+      "commandLineArgs": "input:D:\\icao\\rfid_6 report:name=chain-report",
       "remoteDebugEnabled": false,
       "nativeDebugging": false
     }

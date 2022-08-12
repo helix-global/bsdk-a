@@ -15,7 +15,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.Integer"/>.
         /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.Integer; }}
+        #if NET35
+        public Byte[] Value { get;private set; }
+        #else
         public BigInteger Value { get;private set; }
+        #endif
 
         internal Asn1Integer(ReadOnlyMappingStream source, Int64 forceoffset)
             : base(source, forceoffset)
@@ -48,7 +52,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Char IConvertible.ToChar(IFormatProvider provider)
             {
+            #if NET35
+            return ((IConvertible)(Value[0])).ToChar(provider);
+            #else
             return ((IConvertible)(UInt16)Value).ToChar(provider);
+            #endif
             }
         #endregion
         #region M:IConvertible.ToSByte(IFormatProvider):SByte
@@ -58,7 +66,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         SByte IConvertible.ToSByte(IFormatProvider provider)
             {
+            #if NET35
+            return (SByte)Value[0];
+            #else
             return (SByte)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToByte(IFormatProvider):Byte
@@ -68,7 +80,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Byte IConvertible.ToByte(IFormatProvider provider)
             {
+            #if NET35
+            return (Byte)Value[0];
+            #else
             return (Byte)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToInt16(IFormatProvider):Int16
@@ -76,9 +92,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>An 16-bit signed integer equivalent to the value of this instance.</returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider" /> interface implementation that supplies culture-specific formatting information. </param>
         /// <filterpriority>2</filterpriority>
-        Int16 IConvertible.ToInt16(IFormatProvider provider)
+        unsafe Int16 IConvertible.ToInt16(IFormatProvider provider)
             {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(Int16*)r;
+                }
+            #else
             return (Int16)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToUInt16(IFormatProvider):UInt16
@@ -86,9 +109,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>An 16-bit unsigned integer equivalent to the value of this instance.</returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider" /> interface implementation that supplies culture-specific formatting information. </param>
         /// <filterpriority>2</filterpriority>
-        UInt16 IConvertible.ToUInt16(IFormatProvider provider)
+        unsafe UInt16 IConvertible.ToUInt16(IFormatProvider provider)
             {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(UInt16*)r;
+                }
+            #else
             return (UInt16)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToInt32(IFormatProvider):Int32
@@ -98,11 +128,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Int32 IConvertible.ToInt32(IFormatProvider provider)
             {
-            return (Int32)Value;
+            return ToInt32();
             }
-        public Int32 ToInt32()
+        public unsafe Int32 ToInt32()
             {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(Int32*)r;
+                }
+            #else
             return (Int32)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToUInt32(IFormatProvider):UInt32
@@ -110,9 +147,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>An 32-bit unsigned integer equivalent to the value of this instance.</returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider" /> interface implementation that supplies culture-specific formatting information. </param>
         /// <filterpriority>2</filterpriority>
-        public UInt32 ToUInt32(IFormatProvider provider)
+        public unsafe UInt32 ToUInt32(IFormatProvider provider)
             {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(UInt32*)r;
+                }
+            #else
             return (UInt32)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToInt64(IFormatProvider)
@@ -120,9 +164,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>An 64-bit signed integer equivalent to the value of this instance.</returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider" /> interface implementation that supplies culture-specific formatting information. </param>
         /// <filterpriority>2</filterpriority>
-        Int64 IConvertible.ToInt64(IFormatProvider provider)
+        unsafe Int64 IConvertible.ToInt64(IFormatProvider provider)
             {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(Int64*)r;
+                }
+            #else
             return (Int64)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToUInt64(IFormatProvider):UInt64
@@ -130,8 +181,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>An 64-bit unsigned integer equivalent to the value of this instance.</returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider" /> interface implementation that supplies culture-specific formatting information. </param>
         /// <filterpriority>2</filterpriority>
-        public UInt64 ToUInt64(IFormatProvider provider) {
+        public unsafe UInt64 ToUInt64(IFormatProvider provider) {
+            #if NET35
+            fixed (Byte* r = Value)
+                {
+                return *(UInt64*)r;
+                }
+            #else
             return (UInt64)Value;
+            #endif
             }
         #endregion
         #region M:IConvertible.ToSingle(IFormatProvider):Single
@@ -141,7 +199,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Single IConvertible.ToSingle(IFormatProvider provider)
             {
-            return (Single)Value;
+            return ((IConvertible)this).ToInt64(provider);
             }
         #endregion
         #region M:IConvertible.ToDouble(IFormatProvider):Double
@@ -151,7 +209,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Double IConvertible.ToDouble(IFormatProvider provider)
             {
-            return (Double)Value;
+            return ((IConvertible)this).ToInt64(provider);
             }
         #endregion
         #region M:IConvertible.ToDecimal(IFormatProvider):Decimal
@@ -161,7 +219,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         Decimal IConvertible.ToDecimal(IFormatProvider provider)
             {
-            return (Decimal)Value;
+            return ((IConvertible)this).ToInt64(provider);
             }
         #endregion
         #region M:IConvertible.ToDateTime(IFormatProvider):DateTime
@@ -171,7 +229,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <filterpriority>2</filterpriority>
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
             {
-            return new DateTime((Int64)Value);
+            return new DateTime(((IConvertible)this).ToInt64(provider));
             }
         #endregion
         #region M:IConvertible.ToString(IFormatProvider):String
@@ -236,7 +294,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (IsIndefiniteLength) { return false; }
             var r = new Byte[Length];
             Content.Read(r, 0, r.Length);
+            #if NET35
+            Value = r.Reverse().ToArray();
+            #else
             Value = new BigInteger(r.Reverse().ToArray());
+            #endif
             State |= ObjectState.Decoded;
             return true;
             }
@@ -256,7 +318,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         //    writer.WriteEndElement();
         //    }
 
+        #if NET35
+        public static unsafe implicit operator Int32(Asn1Integer source) {
+            fixed (Byte* r = source.Value) {
+                return *(Int32*)r;
+                }
+            }
+        public static implicit operator Byte[](Asn1Integer source) { return source.Value; }
+        #else
         public static implicit operator Int32(Asn1Integer source) { return (Int32)source.Value; }
         public static implicit operator BigInteger(Asn1Integer source) { return source.Value; }
+        #endif
         }
     }

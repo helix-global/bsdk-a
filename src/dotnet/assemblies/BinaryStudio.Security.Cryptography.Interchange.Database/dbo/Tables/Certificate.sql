@@ -32,6 +32,8 @@
 
 
 
+
+
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20211115-200045]
     ON [dbo].[Certificate]([Thumbprint] ASC);
@@ -41,4 +43,24 @@ GO
 CREATE NONCLUSTERED INDEX [NonClusteredIndex-20220422-183716]
     ON [dbo].[Certificate]([ObjectId] ASC)
     INCLUDE([Thumbprint]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_37575172_5_6]
+    ON [dbo].[Certificate]([Issuer], [Subject]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_37575172_10_11]
+    ON [dbo].[Certificate]([SignatureAlgorithm], [HashAlgorithm]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_37575172_1_5_6_10]
+    ON [dbo].[Certificate]([ObjectId], [Issuer], [Subject], [SignatureAlgorithm]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_37575172_1_10_11_5_6]
+    ON [dbo].[Certificate]([ObjectId], [SignatureAlgorithm], [HashAlgorithm], [Issuer], [Subject]);
 

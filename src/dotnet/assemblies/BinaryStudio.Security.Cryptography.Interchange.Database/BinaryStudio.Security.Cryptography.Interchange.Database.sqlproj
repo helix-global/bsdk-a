@@ -113,6 +113,29 @@
     <Build Include="dbo\Stored Procedures\DeleteCmsMessage.sql" />
     <Build Include="dbo\Tables\SCode.sql" />
     <Build Include="dbo\Tables\Table_1.sql" />
+    <Build Include="dbo\Views\DecodingFailedInGroup2SucceededInSameGroup.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG3.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG2.sql" />
+    <Build Include="dbo\Stored Procedures\ReportG1.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteCertificateRevocationList.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteSubjectKeyIdentifier.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteExtension.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteAuthorityKeyIdentifier.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\OID.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OID.resx</DependentUpon>
+    </Compile>
+    <Compile Include="dbo\Functions\StringEquals.cs" />
+    <Compile Include="dbo\Functions\ObjectEquals.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\OID.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OID.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

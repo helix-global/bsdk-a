@@ -13,6 +13,9 @@
     <Page Update="Themes\Asn1Control.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\CertificateStoreManagementControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>

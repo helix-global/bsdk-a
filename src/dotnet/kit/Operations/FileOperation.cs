@@ -55,6 +55,7 @@ namespace Operations
                 var file = inputitem;
                 if (Path.GetFileNameWithoutExtension(file).Contains("*")) {
                     var folder = Path.GetDirectoryName(file);
+                    if (!Directory.Exists(folder)) { throw new DirectoryNotFoundException(); }
                     var pattern = Path.GetFileName(file);
                     folder = String.IsNullOrEmpty(folder) ? ".\\" : $"file://{folder}";
                     status = Max(status, Execute(

@@ -166,7 +166,11 @@ namespace BinaryStudio.IO
             var sz = size;
             Seek(0, SeekOrigin.Begin);
             for (;;) {
+                #if NET35
+                Thread.Sleep(0);
+                #else
                 Thread.Yield();
+                #endif
                 var count = (Int32)Math.Max(0, Math.Min(buffersize, sz - offset));
                 if (count == 0) { break; }
                 Read(buffer, 0, count);

@@ -7,7 +7,7 @@
 CREATE PROCEDURE [dbo].[ImportCertificateRevocationList]
   @Thumbprint AS NVARCHAR(MAX),
   @Body AS XML,
-  @Group AS TINYINT=NULL
+  @Group NVARCHAR(50)=NULL
 AS
 BEGIN
   SET NOCOUNT ON;

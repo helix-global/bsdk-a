@@ -8,7 +8,9 @@ using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
+using BinaryStudio.Security.Cryptography.PlatformUI.Controls;
 using BinaryStudio.Security.Cryptography.PlatformUI.Views;
+using Microsoft.Win32;
 
 namespace shell
     {
@@ -54,8 +56,8 @@ namespace shell
         public Object LoadObject(String filename) {
             try
                 {
-                var o = LoadSQLiteDatabase(filename);
-                if (o != null) { return o; }
+                var o = (Object)DocumentSource.Load(filename); if (o != null) { return o; }
+                o = LoadSQLiteDatabase(filename);              if (o != null) { return o; }
                 o = Max(
                     Asn1Object.Load(filename,Asn1ReadFlags.IgnoreLeadLineEnding).ToArray(),
                     Asn1Object.Load(filename).ToArray());
@@ -96,9 +98,32 @@ namespace shell
                             }));
                     }
                 }
-            else if (source is SQLiteConnection sqlitec)
+            else if (source is SQLiteConnection sqlitec) {
+                var scheme = new SQLiteConnectionSchemeBrowser(sqlitec);
+                if (scheme.TableDescriptors.Any(i => i.TableName == "TraceInfo2")) {
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = new ETraceInfo(sqlitec)
+                            }));
+                    }
+                else
+                    {
+                    r.Add(new View<Object>(
+                        new ContentControl
+                            {
+                            Content = scheme
+                            }));
+                    }
+                return r;
+                }
+            else if (source is RegistryKey regkey)
                 {
-                r.Add(new View<SQLiteConnectionSchemeBrowser>(new SQLiteConnectionSchemeBrowser(sqlitec))); return r;
+                r.Add(new View<Object>(
+                    new ContentControl
+                        {
+                        Content = new ERegistryKey(regkey)
+                        }));
                 }
             else
                 {
@@ -144,6 +169,14 @@ namespace shell
             Add(source);
             }
         #endregion
+
+        public void AddCertificateStoreManagement()
+            {
+            Add(new View<CertificateStoreManagementControl>(new CertificateStoreManagementControl())
+                {
+                Title = "Certificates"
+                });
+            }
 
         #region M:ReadCrt(Asn1Object):Asn1Certificate
         private static Asn1Certificate ReadCrt(Asn1Object o) {

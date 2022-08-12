@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -15,6 +14,10 @@ using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
+
+#if !NET35
+using System.Threading.Tasks;
+#endif
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -50,12 +53,21 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal ReadOnlyMappingStream content;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] SByte IAsn1Object.Type { get { return -1; }}
+        #if NET35
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return ((state & ObjectState.Decoded)==ObjectState.Decoded); }}
+        [Browsable(false)] public virtual Boolean IsFailed  { get { return ((state & ObjectState.Failed)==ObjectState.Failed);  }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return ((state & ObjectState.ExplicitConstructed)==ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return ((state & ObjectState.ImplicitConstructed)==ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return ((state & ObjectState.Indefinite)==ObjectState.Indefinite); }}
+        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return ((state & ObjectState.Disposed)==ObjectState.Disposed);     }}
+        #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
         [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
         [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
         [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return state.HasFlag(ObjectState.Indefinite);          }}
         [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return state.HasFlag(ObjectState.Disposed);            }}
+        #endif
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
         private static Int32 gref;
@@ -545,7 +557,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             #if TRACE
             #endif
                 {
-                #if FEATURE_MULTI_THREAD_PROCESSING
+                #if FEATURE_MULTI_THREAD_PROCESSING && !NET35
                 var r = new List<Task<Boolean>>();
                 foreach (var item in items)
                     {

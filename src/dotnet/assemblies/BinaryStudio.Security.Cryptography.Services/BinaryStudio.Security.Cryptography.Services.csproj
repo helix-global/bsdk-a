@@ -1,9 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net40</TargetFrameworks>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Reporting\**" />
+    <EmbeddedResource Remove="Reporting\**" />
+    <None Remove="Reporting\**" />
+    <Page Remove="Reporting\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
   </ItemGroup>
 </Project>

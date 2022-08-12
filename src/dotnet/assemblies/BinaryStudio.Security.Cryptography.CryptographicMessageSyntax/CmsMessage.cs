@@ -121,7 +121,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             if ((source.Class == Asn1ObjectClass.Universal) && (source is Asn1Sequence)) {
                 using (new TraceScope()) {
                     if (source.Count <= 1) { throw new ArgumentOutOfRangeException(nameof(source)); }
-                    if (!(source[0] is Asn1ObjectIdentifier))       { throw new ArgumentOutOfRangeException(nameof(source)); }
+                    if (!(source[0] is Asn1ObjectIdentifier))       { return; }
                     if (!(source[1] is Asn1ContextSpecificObject))  { throw new ArgumentOutOfRangeException(nameof(source)); }
                     if (((Asn1ContextSpecificObject)source[1]).Type != 0) { throw new ArgumentOutOfRangeException(nameof(source)); }
                     ContentType = new Oid(((Asn1ObjectIdentifier)source[0]).ToString());

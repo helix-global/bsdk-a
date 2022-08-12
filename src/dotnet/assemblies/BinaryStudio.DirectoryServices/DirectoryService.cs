@@ -22,7 +22,8 @@ namespace BinaryStudio.DirectoryServices
                         if (uri.Scheme == "file") {
                             if (Directory.Exists(uri.LocalPath)) return new LocalFolder(uri.LocalPath);
                             if (File.Exists(uri.LocalPath)) {
-                                switch (Path.GetExtension(uri.LocalPath).ToLower()) {
+                                String extension;
+                                switch (extension = Path.GetExtension(uri.LocalPath).ToLower()) {
                                     case ".rar": { return new ArchiveService(uri.LocalPath, RarArchive.Open(uri.LocalPath));      }
                                     case ".jar":
                                     case ".zip": { return new ArchiveService(uri.LocalPath, ZipArchive.Open(uri.LocalPath));      }
@@ -52,7 +53,7 @@ namespace BinaryStudio.DirectoryServices
                             }
                         }
                     else if (source is IFileService file) {
-                        var filename = file.FileName;
+                        var filename = file.FullName;
                         if (Uri.TryCreate($"file://{filename}", UriKind.Absolute, out uri)) { return GetService(uri, service); }
                         if (Uri.TryCreate($"file://{filename}", UriKind.Relative, out uri)) { return GetService(uri, service); }
                         return GetService(filename, service);

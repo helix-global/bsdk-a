@@ -49,3 +49,4 @@ private:
 #pragma pop_macro("FormatMessage")
 #pragma pop_macro("GetModuleFileName")
 #pragma pop_macro("QueryFullProcessImageName")
+

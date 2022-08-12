@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
-    internal class FintechCryptographicContext : CryptographicObject, ICryptographicContext
+    public class FintechCryptographicContext : CryptographicObject, ICryptographicContext
         {
         private IntPtr _handle;
         protected internal override ILogger Logger { get; }
@@ -18,6 +18,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         String ICryptographicContext.ProviderName { get { return "Fintech Cryptographic Library Context."; }}
         CRYPT_PROVIDER_TYPE ICryptographicContext.ProviderType { get { return CRYPT_PROVIDER_TYPE.FINTECH; }}
         Boolean ICryptographicContext.UseMachineKeySet { get { return false; }}
+        public static String ReportPrefix { get;set; }
 
         /// <summary>
         /// Constructs <see cref="FintechCryptographicContext"/> instance using <paramref name="flags"/>.
@@ -95,6 +96,28 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         IX509CertificateChainPolicy ICryptographicContext.GetChainPolicy(CertificateChainPolicy policy) {
             return null;
+            }
+
+        /// <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
+        /// <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
+        /// <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>
+        /// <param name="applicationpolicy">Application policy.</param>
+        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+        /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+        /// <param name="flags">Flag values that indicate special processing.</param>
+        /// <param name="chainengine">A handle of the chain engine.</param>
+        /// <returns>Returns chain context created.</returns>
+        public IX509CertificateChainContext GetCertificateChain(IX509Certificate certificate, IX509CertificateStorage store,
+            OidCollection applicationpolicy, OidCollection issuancepolicy, TimeSpan timeout, DateTime datetime,
+            CERT_CHAIN_FLAGS flags, IntPtr chainengine)
+            {
+            using (var context = new CryptographicContext(null, CRYPT_PROVIDER_TYPE.PROV_RSA_FULL, CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                return context.GetCertificateChain(
+                    certificate, store,
+                    applicationpolicy, issuancepolicy,
+                    timeout, datetime, flags, chainengine);
+                }
             }
 
         /// <summary>

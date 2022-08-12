@@ -38,7 +38,11 @@ namespace BinaryStudio.PlatformComponents.Win32
                 var r = new Thread(()=>{
                     while (CurrentState != SERVICE_STATE.SERVICE_RUNNING)
                         {
+                        #if NET35
+                        Thread.Sleep(0);
+                        #else
                         Thread.Yield();
+                        #endif
                         }
                     });
                 r.Start();
@@ -66,7 +70,11 @@ namespace BinaryStudio.PlatformComponents.Win32
                 var r = new Thread(()=>{
                     while (CurrentState != SERVICE_STATE.SERVICE_STOPPED)
                         {
+                        #if NET35
+                        Thread.Sleep(0);
+                        #else
                         Thread.Yield();
+                        #endif
                         }
                     });
                 r.Start();

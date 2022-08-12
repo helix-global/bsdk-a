@@ -78,8 +78,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 }
             }
 
-        #region M:Verify(X509CertificateChain,Int32,IX509CertificateStorage,DateTime,ICryptographicContext)
-        private void Verify(X509CertificateChain chain, Int32 index, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
+        #region M:Verify(IX509CertificateChain,Int32,IX509CertificateStorage,DateTime,ICryptographicContext)
+        private void Verify(IX509CertificateChain chain, Int32 index, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
             {
             if (chain[index].ErrorStatus != 0) {
                 try
@@ -105,11 +105,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }
         #endregion
         #region M:Verify(IX509Certificate,X509Certificate,IX509CertificateStorage,DateTime,ICryptographicContext)
-        private void Verify(IX509Certificate subject, X509Certificate issuer, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
+        private void Verify(IX509Certificate subject, IX509Certificate issuer, IX509CertificateStorage store, DateTime datetime, ICryptographicContext context)
             {
             var exceptions = new List<Exception>();
             var country = issuer.Country;
-            var isr_o = GetO(issuer.Subject);
+            var isr_o = GetO(((X509Certificate)issuer).Subject);
             foreach (var i in store.CertificateRevocationLists.Where(i => (i.Country == country) && String.Equals(GetO(i.Issuer), isr_o, StringComparison.OrdinalIgnoreCase))) {
                 Thread.Sleep(0);
                 var descriptor = ToString(i);

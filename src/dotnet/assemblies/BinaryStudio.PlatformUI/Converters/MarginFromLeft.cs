@@ -8,10 +8,11 @@ namespace BinaryStudio.PlatformUI
     public class MarginFromLeft : IValueConverter
         {
         public MarginFromLeft() {
-            Identation = 16;
+            Multiplier = 1;
             }
 
-        public Double Identation {get;set;}
+        public Double Multiplier {get;set;}
+        public Double Addendum { get;set; }
 
         /// <summary>Converts a value. </summary>
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
@@ -21,8 +22,8 @@ namespace BinaryStudio.PlatformUI
         /// <param name="culture">The culture to use in the converter.</param>
         Object IValueConverter.Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
             if (targetType == typeof(Thickness)) {
-                var r = (value is Double)
-                    ? (Double)value
+                var r = (value is IConvertible e)
+                    ? e.ToDouble(null)
                     : 0.0;
                 r = Double.IsNaN(r) ? 0.0 : r;
                 return new Thickness(Convert(r),0,0,0);
@@ -38,7 +39,7 @@ namespace BinaryStudio.PlatformUI
             }
 
         private Double Convert(Double value) {
-            return value + Identation;
+            return value * Multiplier + Addendum;
             }
 
         /// <summary>Converts a value. </summary>

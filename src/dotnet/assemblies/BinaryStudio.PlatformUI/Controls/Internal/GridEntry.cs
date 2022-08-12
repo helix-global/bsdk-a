@@ -374,6 +374,7 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                 var converter = ((context != null) && (context.PropertyDescriptor != null))
                     ? GetConverter(context.PropertyDescriptor, source)
                     : TypeDescriptor.GetConverter(source);
+                var X = converter.GetProperties(source);
                 //var descriptors = (converter != null) && (context != null)
                 //    ? converter.GetPropertiesSupported(context)
                 //        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray()
@@ -381,10 +382,10 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                 //    : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
                 var descriptors = (converter != null)
                     ? converter.GetPropertiesSupported(context)
-                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[] { new BrowsableAttribute(true) })).ToArray()
-                        : new PropertyDescriptor[0]
-                    : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ new BrowsableAttribute(true) })).ToArray();
-                foreach (var e in descriptors.Select(i => new GridEntry(i, source, level, owner))) {
+                        ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[] { BrowsableAttribute.Yes })).ToArray()
+                        : OfType<PropertyDescriptor>(DefaultTypeConverter.GetProperties(context, source, new Attribute[]{ BrowsableAttribute.Yes })).ToArray()
+                    : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ BrowsableAttribute.Yes })).ToArray();
+                foreach (var e in descriptors.OrderBy(i => i.DisplayName).Select(i => new GridEntry(i, source, level, owner))) {
                     yield return e;
                     }
                 //foreach (var e in descriptors.OrderBy(i => i.DisplayName).Select(i => new GridEntry(i, source, level, owner))) {
@@ -433,5 +434,7 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                 }
             return r;
             }
+
+        private static readonly TypeConverter DefaultTypeConverter = new ObjectTypeConverter();
         }
     }

@@ -29,7 +29,7 @@ namespace BinaryStudio.PlatformUI.Controls
             NotifyPropertyChanged("Binding");
             }
 
-        /// <summary>Gets an element defined by the <see cref="P:System.Windows.Controls.DataGridTemplateColumn.CellTemplate"/> that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</summary>
+        /// <summary>Gets an element defined by the <see cref="P:System.Windows.Controls.DataGridTemplateColumn.DisplayTemplate"/> that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</summary>
         /// <returns>A new, read-only element that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</returns>
         /// <param name="cell">The cell that will contain the generated element.</param>
         /// <param name="dataItem">The data item represented by the row that contains the intended cell.</param>
@@ -46,7 +46,7 @@ namespace BinaryStudio.PlatformUI.Controls
             return contentPresenter;
             }
 
-        /// <summary>Gets an element defined by the <see cref="P:System.Windows.Controls.DataGridTemplateColumn.CellEditingTemplate"/> that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</summary>
+        /// <summary>Gets an element defined by the <see cref="P:System.Windows.Controls.DataGridTemplateColumn.EditTemplate"/> that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</summary>
         /// <returns>A new editing element that is bound to the column's <see cref="P:System.Windows.Controls.DataGridBoundColumn.Binding"/> property value.</returns>
         /// <param name="cell">The cell that will contain the generated element.</param>
         /// <param name="dataItem">The data item represented by the row that contains the intended cell.</param>

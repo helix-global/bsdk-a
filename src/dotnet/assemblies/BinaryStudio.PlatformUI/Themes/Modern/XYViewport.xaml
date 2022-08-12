@@ -1,0 +1,192 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Controls.Primitives">
+  <Style TargetType="{x:Type e:XYViewport}">
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Background" Value="White"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:XYViewport}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <e:XYViewportSelector ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Children,Mode=OneWay}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type e:XYViewportSelector}">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:XYViewportSelector}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <ScrollViewer CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollViewer">
+                <ItemsPresenter/>
+              </ScrollViewer>
+              <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0">ContentHorizontalOffset:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1">ContentVerticalOffset:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="2">ExtentHeight:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="3">ExtentWidth:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="4">HorizontalOffset:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="5">ScrollableHeight:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="6">ScrollableWidth:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="7">VerticalOffset:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="8">ViewportHeight:</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="9">ViewportWidth:</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ElementName=ScrollViewer,Path=ContentHorizontalOffset,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ElementName=ScrollViewer,Path=ContentVerticalOffset,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding ElementName=ScrollViewer,Path=ExtentHeight,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ElementName=ScrollViewer,Path=ExtentWidth,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding ElementName=ScrollViewer,Path=HorizontalOffset,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding ElementName=ScrollViewer,Path=ScrollableHeight,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding ElementName=ScrollViewer,Path=ScrollableWidth,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding ElementName=ScrollViewer,Path=VerticalOffset,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding ElementName=ScrollViewer,Path=ViewportHeight,Mode=OneWay}"/>
+                <TextBlock Grid.Column="1" Grid.Row="9" Text="{Binding ElementName=ScrollViewer,Path=ViewportWidth,Mode=OneWay}"/>
+              </Grid>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <e:XYViewportPanel Padding="20"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type e:XYViewportSelectorItem}">
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="Black"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:XYViewportSelectorItem}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <ContentPresenter Content="{TemplateBinding Content}"/>
+              <e:XYViewportItemSizeControl Visibility="Hidden" x:Name="ShapeSize" LinkedControl="{Binding RelativeSource={RelativeSource TemplatedParent}}" Margin="0"
+                                           ShowsPreview="True"/>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="ShapeSize" Property="Visibility" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:XYViewportItemSizeControl}">
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="Black"/>
+    <Setter Property="ShowsPreview" Value="True"/>
+    <Setter Property="PreviewStyle">
+      <Setter.Value>
+        <Style TargetType="{x:Type Control}">
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type Control}">
+                <Border BorderThickness="1" BorderBrush="IndianRed" Background="IndianRed"/>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:XYViewportItemSizeControl}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid Margin="-3">
+              <Grid.Resources>
+                <Style TargetType="{x:Type e:Thumb}">
+                  <Setter Property="BorderThickness" Value="0"/>
+                  <Setter Property="BorderBrush" Value="{x:Null}"/>
+                  <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                  <Setter Property="SnapsToDevicePixels" Value="True"/>
+                  <Setter Property="Width" Value="5"/>
+                  <Setter Property="Height" Value="5"/>
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="{x:Type e:Thumb}">
+                        <Rectangle StrokeThickness="{TemplateBinding BorderThickness}"
+                                   Stroke="{TemplateBinding BorderBrush}"
+                                   Fill="{TemplateBinding Background}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </Grid.Resources>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              
+              <Rectangle Fill="Transparent" Margin="5" Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Grid.ColumnSpan="5"/>
+              <e:Thumb Grid.Row="0" Grid.Column="0" Cursor="SizeNWSE" Name="ThumbLeftTop"/>
+              <e:Thumb Grid.Row="0" Grid.Column="5" Cursor="SizeNESW" Name="ThumbRightTop"/>
+              <e:Thumb Grid.Row="4" Grid.Column="0" Cursor="SizeNESW" Name="ThumbLeftBottom"/>
+              <e:Thumb Grid.Row="4" Grid.Column="5" Cursor="SizeNWSE" Name="ThumbRightBottom"/>
+              <e:Thumb Grid.Row="2" Grid.Column="0" Cursor="SizeWE"   Name="ThumbLeft"/>
+              <e:Thumb Grid.Row="2" Grid.Column="5" Cursor="SizeWE"   Name="ThumbRight"/>
+              <e:Thumb Grid.Row="0" Grid.Column="2" Cursor="SizeNS"   Name="ThumbTop"/>
+              <e:Thumb Grid.Row="4" Grid.Column="2" Cursor="SizeNS"   Name="ThumbBottom"/>
+              <e:Thumb Background="Green" Grid.Column="4" Grid.Row="0" Name="ThumbAll" Cursor="SizeAll" Width="5" Height="5"/>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>
