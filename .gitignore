@@ -115,3 +115,4 @@
 /.vs
 /src/dotnet/assemblies/BinaryStudio.Modeling.PlatformUI/obj
 /src/dotnet/samples/XYViewportSample/obj
+/src/dotnet/.vs/ProjectEvaluation
